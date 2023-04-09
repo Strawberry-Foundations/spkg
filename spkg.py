@@ -40,7 +40,7 @@ if language == "de":
     SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
     ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN}"
     ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
-    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.CYAN}"
+    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
     
     
 elif language == "en":
@@ -257,6 +257,10 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         print(f"{Fore.GREEN}[/] {Fore.RESET}{SearchingDatabaseForPackage}")
         try:
             continue_pkg_installation = input(f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+            if continue_pkg_installation == "j" or "J" or "y" or "Y": 
+                print("")
+            else: 
+                exit()
             
         except KeyboardInterrupt as e:
             print(f"\n{Canceled}") 
