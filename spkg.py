@@ -11,6 +11,7 @@ from sqlite3 import *
 from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
+import requests
 
 version = "0.1"
 
@@ -36,6 +37,10 @@ if language == "de":
     SuccessSyncingPackageDatabase = f"{Colors.BOLD}Die Paketdatenbank wurde synchronisiert. Führe {Fore.CYAN}spkg update{Fore.RESET} aus, um nach Paketupdates zu suchen.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
+    SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
+    ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN}"
+    ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
+    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.CYAN}"
     
     
 elif language == "en":
@@ -50,6 +55,7 @@ elif language == "en":
     SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
+    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching trough the database ...{Colors.RESET}"
     
 
 def help_en():
@@ -226,18 +232,36 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
     else:
         print(NoArgument)
         exit()
-        
+    
+    spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    spinner_db_search.start()
+    
+    
     try:
         c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?" , (pkg_name,))
         
     except OperationalError:
         print(PackageDatabaseNotSynced)
         exit()
-
+        
     for row in c:
         url = row[1]
         filename = row[2]
-
+        
+        
+        response = requests.head(url)
+        file_size_bytes = int(response.headers.get('Content-Length', 0))
+        file_size_mb = file_size_bytes / (1024 * 1024)
+        
+        spinner_db_search.stop()
+        print(f"{Fore.GREEN}[/] {Fore.RESET}{SearchingDatabaseForPackage}")
+        try:
+            continue_pkg_installation = input(f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+            
+        except KeyboardInterrupt as e:
+            print(f"\n{Canceled}") 
+            exit()
+        
     try:
         req = urllib.request.Request(
             url,
@@ -254,7 +278,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
         
-        with open(filename, 'wb') as file:
+        with open(f"/tmp/{filename}", 'wb') as file:
             file.write(f.read())
 
         download_time_end = time.time()
@@ -263,9 +287,10 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
     except HTTPError as e:
         print(UnknownError)
         print(e)
+        
 
     except NameError as e: 
-        print(PackageNotFound) 
+        print(f"\n{PackageNotFound}") 
 
     except KeyboardInterrupt as e:
         print(f"\n{Canceled}") 
@@ -285,6 +310,4 @@ else:
         help_de()
         
     
-
-
 db.close()
