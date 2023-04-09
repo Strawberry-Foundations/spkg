@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if (( $(id -u) != 0 )); then
+    echo "This installation script can only be run as root (permisson denied)"
+    exit
+fi
+
+echo "Installing Dependencies ... "
+apt install build-essential gcc g++ make libncurses-dev &> /dev/null
