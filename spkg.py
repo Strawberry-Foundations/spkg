@@ -7,6 +7,7 @@ import json
 import sqlite3 as sql
 import urllib.request
 
+from sqlite3 import *
 from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
@@ -34,6 +35,7 @@ if language == "de":
     SyncingPackageDatabase = f"Synchronisieren von"
     SuccessSyncingPackageDatabase = f"{Colors.BOLD}Die Paketdatenbank wurde synchronisiert. Führe {Fore.CYAN}spkg update{Fore.RESET} aus, um nach Paketupdates zu suchen.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
+    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
     
     
 elif language == "en":
@@ -47,6 +49,7 @@ elif language == "en":
     SyncingPackageDatabase = f"Synchronize from"
     SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
+    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     
 
 def help_en():
@@ -86,7 +89,7 @@ db = sql.connect("./fakeroot/etc/spkg/package.db")
 c = db.cursor()
 
 
-# Package Info Function
+# * --- Package Info Function --- * 
 if len(sys.argv) > 1 and sys.argv[1] == "info":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
@@ -94,8 +97,12 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     else:
         print(NoArgument)
         exit()
-
-    c.execute("SELECT name FROM packages where name = ?" , (pkg_name,))
+    try:
+        c.execute("SELECT name FROM packages where name = ?" , (pkg_name,))
+    
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
 
     if c.fetchall():
         c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ?", (pkg_name,))
@@ -114,7 +121,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     db.close()
 
 
-# Download Function
+# * --- Download Function --- * 
 elif len(sys.argv) > 1 and sys.argv[1] == "download":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
@@ -122,8 +129,13 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
     else:
         print(NoArgument)
         exit()
-                  
-    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?" , (pkg_name,))
+        
+    try:                  
+        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?" , (pkg_name,))
+        
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
 
     for row in c:
         url = row[1]
@@ -159,14 +171,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         print(PackageNotFound)
 
 
-# Sync Function
+# * --- Sync Function --- * 
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":        
     with open("./fakeroot/etc/spkg/repositories.json", "r") as f: 
         data = json.load(f)
     
     
     repo = f"{data['main']}/package.db"
-    filename = "./package.db"
+    filename = "./fakeroot/etc/spkg/package.db"
     
     try:
         req = urllib.request.Request(
@@ -195,15 +207,18 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         print(e)
         
 
-# List Function        
+# * --- List Function --- * 
 elif len(sys.argv) > 1 and sys.argv[1] == "list":
-    c.execute("SELECT * FROM packages")
-    
-    for row in c:
-            print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}")
+    try:
+        c.execute("SELECT * FROM packages")
+        for row in c:
+                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}")
+                
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
 
 
-# Install Function
+# * --- Install Function --- * 
 elif len(sys.argv) > 1 and sys.argv[1] == "install":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
@@ -211,8 +226,13 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
     else:
         print(NoArgument)
         exit()
-
-    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?" , (pkg_name,))
+        
+    try:
+        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?" , (pkg_name,))
+        
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
 
     for row in c:
         url = row[1]
@@ -251,8 +271,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         print(f"\n{Canceled}") 
 
 
-
-# Help Function
+# * --- Help Function --- * 
 elif len(sys.argv) > 1 and sys.argv[1] == "help":
     if language == "en":
         help_en()
