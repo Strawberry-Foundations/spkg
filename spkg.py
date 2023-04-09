@@ -41,6 +41,7 @@ if language == "de":
     ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN}"
     ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
     ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
+    Abort = "Abbruch ... "
     
     
 elif language == "en":
@@ -56,6 +57,10 @@ elif language == "en":
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     SearchingDatabaseForPackage = f"{Colors.BOLD}Searching trough the database ...{Colors.RESET}"
+    ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN}"
+    ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires  "
+    ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
+    Abort = "Aborting ..."
     
 
 def help_en():
@@ -257,13 +262,19 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         print(f"{Fore.GREEN}[/] {Fore.RESET}{SearchingDatabaseForPackage}")
         try:
             continue_pkg_installation = input(f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
-            if continue_pkg_installation == "j" or "J" or "y" or "Y": 
-                print("")
-            else: 
-                exit()
             
         except KeyboardInterrupt as e:
             print(f"\n{Canceled}") 
+            exit()
+            
+        if continue_pkg_installation.lower() == "j": 
+            continue
+        
+        elif continue_pkg_installation.lower() == "y": 
+            continue
+        
+        else:
+            print(Abort)
             exit()
         
     try:
