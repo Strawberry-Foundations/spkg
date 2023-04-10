@@ -15,7 +15,7 @@ from sys import exit
 import requests
 import subprocess
 
-version = "1.1.3"
+version = "1.1.4"
 
 
 class Colors:
@@ -45,13 +45,13 @@ if language == "de":
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
     SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
-    ContinuePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN + Colors.BOLD}"
-    ContinuePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
-    ContinuePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
+    ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN + Colors.BOLD}"
+    ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
+    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Abbruch ... "
     ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
-    MissingPermission = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
-    MissingPermissionPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
+    MissingPermissons = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
+    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
 
 
 elif language == "en":
@@ -67,17 +67,17 @@ elif language == "en":
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     SearchingDatabaseForPackage = f"{Colors.BOLD}Searching trough the database ...{Colors.RESET}"
-    ContinuePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
-    ContinuePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
-    ContinuePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
+    ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
+    ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
+    ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Aborting ..."
     ExecutingSetup = f"Executing Setup Script... Please wait"
-    MissingPermission = f"{Colors.BOLD}Missing Permissions{Colors.RESET}"
-    MissingPermissionsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD} The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
+    MissingPermissons = f"{Colors.BOLD}Missing Permissons{Colors.RESET}"
+    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
 
 
 def help_en():
-    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Management (spkg) {version}{Colors.RESET}\n")
+    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version}{Colors.RESET}\n")
     print(
         f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg {Fore.GREEN}[command]{Fore.RED} <argument>\n")
     print(f"spkg is a package manager that downloads the source code from the \nofficial sources, and then compiles it specifically for your device.")
@@ -88,25 +88,25 @@ def help_en():
     print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gives you information about a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installs the specified package{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Synchronizes the package database{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET} (not available yet)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET} (not available yet)")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
 def help_de():
-    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Management (spkg) {version}{Colors.RESET}\n")
+    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version}{Colors.RESET}\n")
     print(
         f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg {Fore.GREEN}[Befehl]{Fore.RED} <Argument>\n")
     print(f"spkg ist ein Paketmanager, der den Quellcode von den \noffiziellen Quellen herunterlädt, und diesen dann spezifisch für dein Gerät kompiliert.")
-    print(f"Das Ziel von spkg ist, einfach und auch ohne viel Erfahrungen die neusten Versionen \nvon Programmen zu erhalten, auch unter Distribution die nicht die neuste Version anbieten.")
+    print(f"Das Ziel von spkg ist, einfach und auch ohne viel Erfahrungen die neusten Versionen \nvon Programmen zu erhalten, auch unter Distrobutionen die nicht die neuste Version anbieten.")
     print(f"Durch das kompilieren des Paketes ist das Programm für dein Gerät optimiert und kann schneller laufen.")
     print(f"So bietet dir spkg eine hohe Sicherheit, sodass du dir keine Sorgen um Viren in Paketen machen musst.\n")
     print(f"{Colors.UNDERLINE + Colors.BOLD}Befehle:{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gibt dir Informationen über ein bestimmtes Paket aus{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Lädt ein bestimmtes Paket herunter{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installiert das angegebene Paket{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Synchronisiert die Paketdatenbank{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET} (Noch nicht verfügbar)")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
@@ -205,6 +205,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     with open("/etc/spkg/repositories.json", "r") as f:
         data = json.load(f)
+        
+    
 
     repo = f"{data['main']}/package.db"
     filename = "/etc/spkg/package.db"
@@ -212,8 +214,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     if os.geteuid() == 0:
         None
     else:
-        print(f"{Fore.CYAN}{filename}{Fore.RESET + Colors.BOLD}: {MissingPermission}")
-        print(MissingPermissionsPackageDatabaseUpdate)
+        print(f"{Fore.CYAN}{filename}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+        print(MissingPermissonsPackageDatabaseUpdate)
         exit()
 
     try:
@@ -291,7 +293,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
         try:
             continue_pkg_installation = input(
-                f"{ContinuePackageInstallation1}{filename}{Colors.RESET}{ContinuePackageInstallation2}{round(file_size_mb, 2)} MB{ContinuePackageInstallation3} ")
+                f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
 
         except KeyboardInterrupt as e:
             print(f"\n{Canceled}")
