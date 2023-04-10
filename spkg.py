@@ -11,10 +11,11 @@ from sqlite3 import *
 from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
+from sys import exit
 import requests
 import subprocess
 
-version = "1.1.2"
+version = "1.1.3"
 
 
 class Colors:
@@ -199,7 +200,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
     except NameError as e:
         print(PackageNotFound)
-
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
