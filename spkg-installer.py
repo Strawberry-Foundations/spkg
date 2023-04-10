@@ -3,6 +3,7 @@
 import time
 import sqlite3 as sql
 import urllib.request
+import os
 
 from sqlite3 import *
 from urllib.error import HTTPError
@@ -18,7 +19,7 @@ class Colors:
     RESET = '\033[0m'
 
 
-version = "1.0"
+version = "1.0.1"
 
 db = sql.connect("/tmp/spkg_installer.db")
 c = db.cursor()
@@ -95,9 +96,9 @@ if c.fetchall():
 print(f"{Colors.BOLD + Colors.UNDERLINE}Please select the version of spkg you want to install:{Colors.RESET}")
 print(
     f"{Colors.BOLD + Fore.CYAN}[i]{Fore.RESET} You don't know which version is the right one for you? Get help with '?' or 'help'.\nType 'exit' or 'q' to exit")
-print(f"{Colors.BOLD} -> {Fore.BLUE}spkg-py ({spkg_py_ver}) {Fore.CYAN}@ {spkg_py_branch}{Fore.RESET}{Colors.RESET}")
-print(f"{Colors.BOLD} -> {Fore.BLUE}spkg-bin ({spkg_bin_ver}) {Fore.CYAN}@ {spkg_bin_branch}{Fore.RESET}{Colors.RESET}")
-print(f"{Colors.BOLD} -> {Fore.BLUE}spkg-git ({spkg_git_ver}) {Fore.CYAN}@ {spkg_git_branch}{Fore.RESET}{Colors.RESET}")
+print(f"{Colors.BOLD} -> 1. {Fore.BLUE}spkg-py ({spkg_py_ver}) {Fore.CYAN}@ {spkg_py_branch}{Fore.RESET}{Colors.RESET}")
+print(f"{Colors.BOLD} -> 2. {Fore.BLUE}spkg-bin ({spkg_bin_ver}) {Fore.CYAN}@ {spkg_bin_branch}{Fore.RESET}{Colors.RESET}")
+print(f"{Colors.BOLD} -> 3. {Fore.BLUE}spkg-git ({spkg_git_ver}) {Fore.CYAN}@ {spkg_git_branch}{Fore.RESET}{Colors.RESET}")
 
 spinner.stop()
 while 1:
@@ -124,7 +125,7 @@ while 1:
             f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Canceled installation of spkg.{Colors.RESET}")
         exit()
 
-    if install_version_input == "spkg-py":
+    if install_version_input == "spkg-py" or install_version_input == "1":
         time.sleep(1)
         print(f"{Colors.BOLD}Preparing installation of spkg-py ...{Colors.RESET}")
 
@@ -183,7 +184,11 @@ while 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_py.setup'])
             subprocess.run(['sudo', 'bash', f'/tmp/spkg_py.setup'])
             
-            print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
+            if os.path.exists('/usr/bin/spkg'):
+                print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
+            else: 
+                print(f"{Colors.BOLD + Fore.RED}Error occured while installing spkg. Try asking a developer.{Colors.RESET + Fore.RESET}")
+                exit()
             
             exit()
         
@@ -202,7 +207,7 @@ while 1:
             exit()
 
 
-    if install_version_input == "spkg-bin":
+    if install_version_input == "spkg-bin" or install_version_input == "2":
         time.sleep(1)
         print(f"{Colors.BOLD}Preparing installation of spkg-bin ...{Colors.RESET}")
 
@@ -261,8 +266,12 @@ while 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_bin.setup'])
             subprocess.run(['sudo', 'bash', f'/tmp/spkg_bin.setup'])
             
-            print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
-            
+            if os.path.exists('/usr/bin/spkg'):
+                print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
+            else: 
+                print(f"{Colors.BOLD + Fore.RED}Error occured while installing spkg. Try asking a developer.{Colors.RESET + Fore.RESET}")
+                exit()
+        
             exit()
 
         except HTTPError as e:
@@ -280,7 +289,7 @@ while 1:
             exit()
 
 
-    if install_version_input == "spkg-git":
+    if install_version_input == "spkg-git" or install_version_input == "3":
         time.sleep(1)
         print(f"{Colors.BOLD}Preparing installation of spkg-git ...{Colors.RESET}")
 
@@ -339,7 +348,11 @@ while 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_git.setup'])
             subprocess.run(['sudo', 'bash', f'/tmp/spkg_git.setup'])
             
-            print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
+            if os.path.exists('/usr/bin/spkg'):
+                print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
+            else: 
+                print(f"{Colors.BOLD + Fore.RED}Error occured while installing spkg. Try asking a developer.{Colors.RESET + Fore.RESET}")
+                exit()
             
             exit()
 
@@ -356,8 +369,16 @@ while 1:
             print(
                 f"\n{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Canceled installation of spkg.{Colors.RESET}")
             exit()
+            
+            
+    else:
+        print(f"{Fore.RED + Colors.BOLD}Unknown Input")
 
 subprocess.run(['sudo', 'rm', '-r', '/tmp/target*'])
 subprocess.run(['sudo', 'rm', '-r' ,'/tmp/spkg_*'])
 
 exit()
+
+
+# 1, 2, 3 and unknown Warning Error when you selecting the package
+# check if /usr/bin/spkg exists, if not Installation is not completed
