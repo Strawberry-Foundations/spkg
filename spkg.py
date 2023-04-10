@@ -12,8 +12,10 @@ from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
 import requests
+import subprocess
 
-version = "0.1"
+version = "1.0"
+
 
 class Colors:
     BOLD = '\033[1m'
@@ -43,6 +45,7 @@ if language == "de":
     ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
     ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Abbruch ... "
+    ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
 
 
 elif language == "en":
@@ -62,11 +65,13 @@ elif language == "en":
     ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
     ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Aborting ..."
+    ExecutingSetup = f"Executing Setup Script... Please wait"
 
 
 def help_en():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version}{Colors.RESET}\n")
-    print(f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg {Fore.GREEN}[command]{Fore.RED} <argument>\n")
+    print(
+        f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg {Fore.GREEN}[command]{Fore.RED} <argument>\n")
     print(f"spkg is a package manager that downloads the source code from the \nofficial sources, and then compiles it specifically for your device.")
     print(f"The goal of spkg is to get the latest versions of programs easily and \nwithout much experience, even under distros that do not offer the latest version.")
     print(f"By compiling the package, the program is optimized for your device and can run faster.")
@@ -83,7 +88,8 @@ def help_en():
 
 def help_de():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version}{Colors.RESET}\n")
-    print(f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg {Fore.GREEN}[Befehl]{Fore.RED} <Argument>\n")
+    print(
+        f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg {Fore.GREEN}[Befehl]{Fore.RED} <Argument>\n")
     print(f"spkg ist ein Paketmanager, der den Quellcode von den \noffiziellen Quellen herunterlädt, und diesen dann spezifisch für dein Gerät kompiliert.")
     print(f"Das Ziel von spkg ist, einfach und auch ohne viel Erfahrungen die neusten Versionen \nvon Programmen zu erhalten, auch unter Distrobutionen die nicht die neuste Version anbieten.")
     print(f"Durch das kompilieren des Paketes ist das Programm für dein Gerät optimiert und kann schneller laufen.")
@@ -251,7 +257,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
     try:
         c.execute(
-            "SELECT name, fetch_url, file_name FROM packages where name = ?", (pkg_name,))
+            "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (pkg_name,))
 
     except OperationalError:
         print(PackageDatabaseNotSynced)
@@ -260,6 +266,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
     for row in c:
         url = row[1]
         filename = row[2]
+        setup_script = row[3]
 
         response = requests.head(url)
         file_size_bytes = int(response.headers.get('Content-Length', 0))
@@ -308,6 +315,31 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
         download_time_end = time.time()
         print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+
+        spinner_setup = Halo(text=f"{ExecutingSetup}: {url}", spinner={'interval': 150, 'frames': [
+            '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner_setup.start()
+
+        setup_req = urllib.request.Request(
+            setup_script,
+            data=None,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        )
+
+        f_setup = urllib.request.urlopen(setup_req)
+
+        with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+            file_setup.write(f_setup.read())
+
+        spinner_setup.stop()
+        print(
+            f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
+
+        spinner.stop()
+        subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
+        subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
 
     except HTTPError as e:
         print(UnknownError)
