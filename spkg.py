@@ -14,7 +14,7 @@ from halo import Halo
 import requests
 import subprocess
 
-version = "1.0"
+version = "1.1.2"
 
 
 class Colors:
@@ -23,10 +23,13 @@ class Colors:
     RESET = '\033[0m'
 
 
-with open("./fakeroot/etc/spkg/config.json", "r") as f:
+with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
 
 language = data['language']
+
+if not language == "de" and not language == "en":
+    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 if language == "de":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
@@ -46,6 +49,8 @@ if language == "de":
     ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Abbruch ... "
     ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
+    MissingPermissons = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
+    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
 
 
 elif language == "en":
@@ -66,6 +71,8 @@ elif language == "en":
     ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Aborting ..."
     ExecutingSetup = f"Executing Setup Script... Please wait"
+    MissingPermissons = f"{Colors.BOLD}Missing Permissons{Colors.RESET}"
+    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
 
 
 def help_en():
@@ -81,8 +88,8 @@ def help_en():
     print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installs the specified package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET} (not available yet)")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET} (not available yet)")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -99,12 +106,12 @@ def help_de():
     print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installiert das angegebene Paket{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET} (Noch nicht verfügbar)")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
-db = sql.connect("./fakeroot/etc/spkg/package.db")
+db = sql.connect("/etc/spkg/package.db")
 c = db.cursor()
 
 
@@ -196,11 +203,20 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
-    with open("./fakeroot/etc/spkg/repositories.json", "r") as f:
+    with open("/etc/spkg/repositories.json", "r") as f:
         data = json.load(f)
+        
+    
 
     repo = f"{data['main']}/package.db"
-    filename = "./fakeroot/etc/spkg/package.db"
+    filename = "/etc/spkg/package.db"
+    
+    if os.geteuid() == 0:
+        None
+    else:
+        print(f"{Fore.CYAN}{filename}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+        print(MissingPermissonsPackageDatabaseUpdate)
+        exit()
 
     try:
         req = urllib.request.Request(
