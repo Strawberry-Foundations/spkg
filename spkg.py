@@ -16,8 +16,8 @@ from sys import exit
 import requests
 import subprocess
 
-version = "1.2.0"
-world_database = "./fakeroot/etc/spkg/world.db"
+version = "1.2.1"
+world_database = "/etc/spkg/world.db"
 
 class Colors:
     BOLD = '\033[1m'
@@ -54,9 +54,11 @@ if language == "de":
     MissingPermissons = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt?{Colors.RESET}"
+    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world auszuführen){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket wurde bereits installiert. Es gibt nichts zu tun.{Colors.RESET}"
-    PackageNotInstalled = PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
+    PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
+    BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
+    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
 
 
 elif language == "en":
@@ -71,7 +73,7 @@ elif language == "en":
     SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching trough the database ...{Colors.RESET}"
+    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
     ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
     ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
     ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
@@ -80,9 +82,11 @@ elif language == "en":
     MissingPermissons = f"{Colors.BOLD}Missing Permissons{Colors.RESET}"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt?{Colors.RESET}"
+    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
-    PackageNotInstalled = PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
+    PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
+    BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
+    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
 
 
 def help_en():
@@ -101,6 +105,8 @@ def help_en():
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET} (not available yet)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Builts various things{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Rebuilds the World database{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -120,8 +126,57 @@ def help_de():
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Erstellt verschiedene Dinge{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Baut die World Datenbank neu auf{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
+
+# * --- Build Function --- *
+if len(sys.argv) > 1 and sys.argv[1] == "build":
+    if len(sys.argv) > 2 and sys.argv[2] == "world":
+        url = "https://sources.juliandev02.ga/packages/world_base.db"
+        try:
+            req = urllib.request.Request(
+                url,
+                data=None,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                }
+            )
+            
+            if os.geteuid() == 0:
+                None
+            else:
+                print(f"{Fore.CYAN}{world_database}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+                print(MissingPermissonsPackageDatabaseUpdate)
+                exit()
+
+            f = urllib.request.urlopen(req)
+
+            download_time_start = time.time()
+
+            spinner = Halo(text=f"{BuildingWorldDatabase} ({url})", spinner={'interval': 150, 'frames': [
+                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            spinner.start()
+
+            with open(world_database, 'wb') as file:
+                file.write(f.read())
+
+            download_time_end = time.time()
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_database}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            print(SuccessBuildingWorldDatabase)
+            exit()
+
+        except HTTPError as e:
+            print(UnknownError)
+            print(e)
+
+        except NameError as e:
+            print(PackageNotFound)
+
+    else:
+        print(NoArgument)
+        exit()
 
 try:
     db = sql.connect("/etc/spkg/package.db")
@@ -424,6 +479,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
 
 # * --- Upgrade Function --- *
+# TODO: CHECK IF LOCAL VERSION IS NOT THE SAME WITH THE PACKAGE DATABASE
 elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
@@ -732,7 +788,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "update":
         for row in result2:
             if row not in result1:
                 print(row)
-
+        
 
 # * --- Help Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "help":
