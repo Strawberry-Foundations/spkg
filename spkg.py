@@ -16,7 +16,7 @@ from sys import exit
 import requests
 import subprocess
 
-version = "1.2.1"
+version = "1.2.2"
 world_database = "/etc/spkg/world.db"
 
 class Colors:
@@ -54,7 +54,7 @@ if language == "de":
     MissingPermissons = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world auszuführen){Colors.RESET + Fore.RESET}"
+    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET} auszuführen){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket wurde bereits installiert. Es gibt nichts zu tun.{Colors.RESET}"
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
@@ -84,7 +84,7 @@ elif language == "en":
     MissingPermissons = f"{Colors.BOLD}Missing Permissons{Colors.RESET}"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world){Colors.RESET + Fore.RESET}"
+    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
