@@ -60,6 +60,7 @@ if language == "de":
     BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
+    RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
 
 
 elif language == "en":
@@ -89,6 +90,8 @@ elif language == "en":
     BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
+    RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
+    
 
 
 def help_en():
@@ -353,6 +356,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
     else:
         print(NoArgument)
         exit()
+        
+    if os.geteuid() == 0:
+                None
+    else:
+        print(RecommendedRunningAsRoot)
     
     try:
         world_c.execute("SELECT name from world where name = ?", (pkg_name,))
