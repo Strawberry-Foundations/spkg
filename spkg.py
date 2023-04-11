@@ -161,10 +161,14 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
 
             with open(world_database, 'wb') as file:
                 file.write(f.read())
+            
+            subprocess.run(['sudo', 'chmod', '777', f'{world_database}'])
 
             download_time_end = time.time()
             print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_database}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
             print(SuccessBuildingWorldDatabase)
+            
+            
             exit()
 
         except HTTPError as e:
@@ -461,6 +465,13 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         except OperationalError:
             print(PackageDatabaseNotSynced)
             exit()
+            
+        if os.geteuid() == 0:
+                None
+        else:
+            print(f"{Fore.CYAN}{world_database}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(MissingPermissonsPackageDatabaseUpdate)
+            
     
         world_c.execute("INSERT INTO world (name, version) VALUES (?, ?)", (name, version))
         world_db.commit()
