@@ -59,6 +59,7 @@ if language == "de":
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
+    MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
 
 
 elif language == "en":
@@ -87,6 +88,7 @@ elif language == "en":
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
+    MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
 
 
 def help_en():
@@ -470,8 +472,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
                 None
         else:
             print(f"{Fore.CYAN}{world_database}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
-            print(MissingPermissonsPackageDatabaseUpdate)
-            
+            print(MissingPermissonsWorldDatabaseInsert)
+            exit()
     
         world_c.execute("INSERT INTO world (name, version) VALUES (?, ?)", (name, version))
         world_db.commit()
