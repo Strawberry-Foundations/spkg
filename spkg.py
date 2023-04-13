@@ -7,16 +7,19 @@ import json
 import sqlite3 as sql
 import urllib.request
 import platform
+import requests
+import subprocess
+import glob
 
 from sqlite3 import *
 from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
 from sys import exit
-import requests
-import subprocess
 
-version = "1.2.2"
+from plugins.sandbox import *        
+
+version = "1.3"
 world_database = "/etc/spkg/world.db"
 
 class Colors:
