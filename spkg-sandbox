@@ -14,17 +14,17 @@ Cyan='\033[0;36m'
 White='\033[0;37m'
 
 if (( $(id -u) != 0 )); then
-    echo "spkg-sandbox only works with root"
+    echo -e "${Red}${Bold}Error:${Reset} spkg-sandbox only works with root"
     exit
 fi
 
 if ! [ -f "/usr/sbin/debootstrap" ]; then
-    echo "spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'"
+    echo -e "${Red}${Bold}Error:${Reset} spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'"
     exit
 fi
 
 if ! [ -f "/usr/share/debootstrap/scripts/jammy" ]; then
-    echo "Your version of debootstrap is outdated and doesn't support to build ubuntu-22.04."
+    echo -e "${Yellow}${Bold}Warning:${Reset} Your version of debootstrap is outdated and doesn't support to build ubuntu-22.04."
     echo "Using focal (ubuntu-20.04) build script instead ..."
     DIST="focal"
 fi

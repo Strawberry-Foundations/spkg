@@ -1,18 +1,7 @@
-import os
-import sys
-import time
 import json
-import sqlite3 as sql
-import urllib.request
-import platform
-
 from sqlite3 import *
-from urllib.error import HTTPError
-from colorama import Fore, Back, Style
-from halo import Halo
+from colorama import Fore
 from sys import exit
-import requests
-import subprocess
 from api import * 
 
 # Language Config
@@ -27,19 +16,19 @@ if not language == "de" and not language == "en":
 
 # Language Strings
 if language == "de":
-    Description = "spkg-sandbox installiert Pakete in einer isolierten Umgebung."
+    Description = "Was? Was ist das!"
 
 elif language == "en":
-    Description = "spkg-sandbox installs packages in a isolated environment."
+    Description = "What? What is this!"
 
 # Spec Class for more Details about the Plugin
 class Spec:
-    Name = "spkg-sandbox"
+    Name = "Test Plugin"
     Desc = Description
-    Version = "0.2.1"
+    Version = "1.0"
 
 # PluginHandler Main Class
 class PluginHandler:
     def setup():
-        print("")
+        print("This is a test plugin for spkg.")
         

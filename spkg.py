@@ -9,15 +9,16 @@ import urllib.request
 import platform
 import requests
 import subprocess
-import glob
 
 from sqlite3 import *
 from urllib.error import HTTPError
 from colorama import Fore, Back, Style
 from halo import Halo
 from sys import exit
+from plugin_daemon import *
 
-from plugins.sandbox import *        
+plugin_daemon.import_plugin("sandbox")
+
 
 version = "1.3"
 world_database = "/etc/spkg/world.db"
@@ -115,6 +116,9 @@ def help_en():
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Builts various things{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Rebuilds the World database{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin manager{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}list:{Fore.RESET} Lists all plugins{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Executes a command from the plugin{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -136,6 +140,9 @@ def help_de():
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Erstellt verschiedene Dinge{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Baut die World Datenbank neu auf{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin Verwaltung{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}list:{Fore.RESET} Zählt alle Plugins auf{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Führt einen Befehl vom Plugin aus{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -770,14 +777,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
 
 # * --- Update Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "update":
-    
-    # try:
-    #     world_c.execute("SELECT name and version from world")
-    
-    # except OperationalError as e:
-    #     print(WorldDatabaseNotBuilded)
-    #     exit()
-
     tableCompare = "SELECT name, version FROM world WHERE packages='table' order by name"
     
     result1 = world_c.execute(tableCompare)
@@ -814,6 +813,25 @@ elif len(sys.argv) > 1 and sys.argv[1] == "update":
                 print(row)
         
 
+
+
+# --- PLUGIN MANAGEMENT ---
+if len(sys.argv) > 1 and sys.argv[1] == "plugins":
+    if len(sys.argv) > 2 and sys.argv[2] == "list":
+        plugin_management.list_plugins()
+
+    elif len(sys.argv) > 4 and sys.argv[2] == "exec":
+        plugin = sys.argv[3]
+        plugin_daemon.import_plugin(plugin)
+        plugin_management.exec(sys.argv[4])
+        
+        
+    else:
+        print(NoArgument)
+        exit()
+    
+
+
 # * --- Help Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "help":
     if language == "en":
@@ -826,6 +844,6 @@ else:
         help_en()
     elif language == "de":
         help_de()
-
+        
 
 db.close()
