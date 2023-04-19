@@ -24,6 +24,11 @@ version = "1.3"
 world_database = "/etc/spkg/world.db"
 home_dir = os.getenv("HOME")
 
+if os.environ.get('SUDO_USER'):
+    home_dir = os.path.expanduser(f"~{os.environ['SUDO_USER']}")
+else:
+    home_dir = os.path.expanduser("~")
+
 class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
@@ -463,7 +468,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         spinner.start()
         
         if check_plugin_enabled_silent("sandbox") == True: 
-            
             with open(f"{home_dir}/.local/spkg/sandbox/tmp/{filename}", 'wb') as file:
                 file.write(f.read())
             
