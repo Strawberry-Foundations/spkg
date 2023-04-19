@@ -20,7 +20,7 @@ from plugin_daemon import *
 plugin_daemon.import_plugin("sandbox")
 
 
-version = "1.3"
+version = "1.4-beta"
 world_database = "/etc/spkg/world.db"
 home_dir = os.getenv("HOME")
 
