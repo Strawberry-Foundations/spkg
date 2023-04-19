@@ -1,19 +1,13 @@
-import os
-import sys
-import time
-import json
-import sqlite3 as sql
-import urllib.request
-import platform
+"""
+Sandbox System for spkg - Made by Juliandev02
+"""
 
+import json
 from sqlite3 import *
-from urllib.error import HTTPError
-from colorama import Fore, Back, Style
+from colorama import Fore
 from halo import Halo
 from sys import exit
-import requests
 import subprocess
-from api import * 
 
 # Language Config
 spkg_config = "/etc/spkg/config.json"
@@ -45,5 +39,4 @@ class Spec:
 # PluginHandler Main Class
 class PluginHandler:
     def setup():
-        print("")
-        
+        subprocess.run(['sudo', 'bash', './spkg-sandbox'])
