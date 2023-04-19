@@ -22,6 +22,7 @@ plugin_daemon.import_plugin("sandbox")
 
 version = "1.3"
 world_database = "/etc/spkg/world.db"
+home_dir = os.getenv("HOME")
 
 class Colors:
     BOLD = '\033[1m'
@@ -65,6 +66,10 @@ if language == "de":
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
+    PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist nicht aktiviert.{Colors.RESET}"
+    PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits aktiviert.{Colors.RESET}"
+    PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits deaktiviert.{Colors.RESET}"
+    MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
 
 
 elif language == "en":
@@ -95,6 +100,10 @@ elif language == "en":
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
+    PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is not activated.{Colors.RESET}"
+    PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
+    PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
+    MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
     
 
 
@@ -119,6 +128,8 @@ def help_en():
     print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin manager{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}list:{Fore.RESET} Lists all plugins{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Executes a command from the plugin{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Enables a Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Disables a Plugin{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -143,6 +154,8 @@ def help_de():
     print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin Verwaltung{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}list:{Fore.RESET} Zählt alle Plugins auf{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Führt einen Befehl vom Plugin aus{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Aktiviert ein Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Deaktiviert ein Plugin{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
@@ -243,6 +256,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
             print(f"{StrArchitecture}:", row[3])
             print("Download URL:", row[4])
             print("Setup URL:", row[5])
+            exit()
 
     else:
         print(PackageNotFound)
@@ -293,6 +307,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
         download_time_end = time.time()
         print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        exit()
 
     except HTTPError as e:
         print(UnknownError)
@@ -340,6 +355,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
 
         download_time_end = time.time()
         print(f"\n{SuccessSyncingPackageDatabase}{Colors.RESET}")
+        exit()
 
     except HTTPError as e:
         print(UnknownError)
@@ -353,12 +369,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
         for row in c:
             print(
                 f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}")
+    
+        exit()
 
     except OperationalError:
         print(PackageDatabaseNotSynced)
 
 
-# * --- Install Function --- *
+# * --- PACKAGE INSTALLATION FUNCTION --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "install":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
@@ -368,7 +386,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         exit()
         
     if os.geteuid() == 0:
-                None
+        None
     else:
         print(RecommendedRunningAsRoot)
     
@@ -443,9 +461,15 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
-
-        with open(f"/tmp/{filename}", 'wb') as file:
-            file.write(f.read())
+        
+        if check_plugin_enabled_silent("sandbox") == True: 
+            
+            with open(f"{home_dir}/.local/spkg/sandbox/tmp/{filename}", 'wb') as file:
+                file.write(f.read())
+            
+        else:
+            with open(f"/tmp/{filename}", 'wb') as file:
+                file.write(f.read())
 
         download_time_end = time.time()
         print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
@@ -463,9 +487,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         )
 
         f_setup = urllib.request.urlopen(setup_req)
-
-        with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
-            file_setup.write(f_setup.read())
+        
+        if check_plugin_enabled_silent("sandbox") == True: 
+            with open(f"{home_dir}/.local/spkg/sandbox/tmp/{row[0]}.setup", 'wb') as file_setup:
+                file_setup.write(f_setup.read())
+                
+        else:
+            with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                file_setup.write(f_setup.read())
 
         spinner_setup.stop()
         print(
@@ -473,8 +502,13 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
         spinner.stop()
         
-        subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
-        subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+        if check_plugin_enabled_silent("sandbox") == True: 
+            subprocess.run(['sudo', 'chmod', '+x', f'{home_dir}/.local/spkg/sandbox/tmp/{row[0]}.setup'])
+            os.system(f"sudo chroot {home_dir}/.local/spkg/sandbox bash /tmp/{row[0]}.setup")
+            
+        else:
+            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
+            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
         
         try:
             c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
@@ -496,6 +530,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         world_c.execute("INSERT INTO world (name, version) VALUES (?, ?)", (name, version))
         world_db.commit()
         world_db.close()
+        
+        exit()
     
     
     except HTTPError as e:
@@ -623,6 +659,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
         subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
         subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', "--upgrade"])
         
+        
+        
         try:
             c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
             for row in c:
@@ -632,6 +670,9 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
         except OperationalError:
             print(PackageDatabaseNotSynced)
             exit()
+            
+        
+        exit()
             
                 
     except HTTPError as e:
@@ -763,6 +804,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
             print(PackageDatabaseNotSynced)
             exit()
             
+        
+        exit()
                 
     except HTTPError as e:
         print(UnknownError)
@@ -820,12 +863,84 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins":
     if len(sys.argv) > 2 and sys.argv[2] == "list":
         plugin_management.list_plugins()
 
+
     elif len(sys.argv) > 4 and sys.argv[2] == "exec":
         plugin = sys.argv[3]
-        plugin_daemon.import_plugin(plugin)
-        plugin_management.exec(sys.argv[4])
+
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(PluginNotEnabled)
+            exit()
+
+        else: 
+            plugin_daemon.import_plugin(plugin)
+            plugin_management.exec(sys.argv[4])
+            
+            
+    elif len(sys.argv) > 3 and sys.argv[2] == "enable":
+        enabled_plugins_cfg = "./data/etc/spkg/enabled_plugins.json"
+        plugin = sys.argv[3]
+        
+        if os.geteuid() == 0:
+            None
+            
+        else:
+            print(f"{Fore.CYAN}{enabled_plugins_cfg}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(MissingPermissonsPluginConfig)
+            exit()
         
         
+        if check_plugin_enabled_silent(plugin) == True: 
+            print(PluginIsAlreadyEnabled)
+            exit()
+
+        else: 
+            with open(enabled_plugins_cfg, 'r') as f:
+                data = json.load(f)
+                
+            data[plugin] = True
+            
+            with open(enabled_plugins_cfg, 'w') as f:
+                json.dump(data, f)
+
+
+    elif len(sys.argv) > 3 and sys.argv[2] == "disable":
+        enabled_plugins_cfg = "./data/etc/spkg/enabled_plugins.json"
+        plugin = sys.argv[3]
+        
+        if os.geteuid() == 0:
+            None
+            
+        else:
+            print(f"{Fore.CYAN}{enabled_plugins_cfg}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(MissingPermissonsPluginConfig)
+            exit()
+        
+        
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(PluginIsAlreadyDisabled)
+            exit()
+
+        else: 
+            with open(enabled_plugins_cfg, 'r') as f:
+                data = json.load(f)
+                
+            data[plugin] = False
+            
+            with open(enabled_plugins_cfg, 'w') as f:
+                json.dump(data, f)
+
+
+    elif len(sys.argv) > 3: 
+        plugin = sys.argv[2]
+
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(PluginNotEnabled)
+            exit()
+
+        else: 
+            plugin_daemon.import_plugin(plugin)
+            plugin_management.exec(sys.argv[3])
+
     else:
         print(NoArgument)
         exit()

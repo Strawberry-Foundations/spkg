@@ -79,9 +79,9 @@ class plugin_daemon:
 def check_plugin_enabled_silent(plugin):
     plugin_data = data[plugin]
     if plugin_data == True:
-        pass
+        return True
     else:
-        pass
+        return False
 
 
 def check_plugin_enabled_ret(plugin):
@@ -109,6 +109,7 @@ class plugin_management:
         try:
             plugin_handler = module.PluginHandler
             getattr(plugin_handler, cmd)()
+            
         except AttributeError as Err:
             print(ErrorOccured)
             print(f"{Fore.RED + Colors.BOLD}{ErrCode} 043:{Fore.RESET + Colors.BOLD} {Err}")

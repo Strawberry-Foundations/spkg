@@ -8,6 +8,7 @@ from colorama import Fore
 from halo import Halo
 from sys import exit
 import subprocess
+import os
 
 # Language Config
 spkg_config = "/etc/spkg/config.json"
@@ -39,4 +40,8 @@ class Spec:
 # PluginHandler Main Class
 class PluginHandler:
     def setup():
-        subprocess.run(['sudo', 'bash', './spkg-sandbox'])
+        os.system('bash ./spkg-sandbox')
+        
+    
+    def config():
+        print("config")
