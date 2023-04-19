@@ -46,6 +46,9 @@ if language == "de":
     Condition = "Zustand"
     Description = "Beschreibung"
     Version = "Version"
+    Commands = "Befehle"
+    ErrorOccured = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Ein Fehler ist aufgetreten. Überprüfe deine Eingabe. Wenn dies nicht weiterhilft, öffne ein Issue auf GitHub{Colors.RESET}"
+    ErrCode = "Fehlercode"
 
 elif language == "en":
     PluginManagement = "Plugin Management"
@@ -56,6 +59,9 @@ elif language == "en":
     Condition = "Condition"
     Description = "Description"
     Version = "Version"
+    Commands = "Commands"
+    ErrorOccured = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} An error has occurred. Check your input. If this does not help, open an issue on GitHub{Colors.RESET}"
+    ErrCode = "Errorcode"
 
 
 class plugin_daemon:
@@ -97,8 +103,12 @@ class plugin_management:
             print(f"{Fore.CYAN + Colors.BOLD}{Description}:{Fore.RESET + Colors.RESET} {module.Spec.Desc}")
             print(f"{Fore.CYAN + Colors.BOLD}{Condition}:{Fore.RESET + Colors.RESET} {check_plugin_enabled_ret(entry)}")
             print(f"{Fore.CYAN + Colors.BOLD}{Version}:{Fore.RESET + Colors.RESET} {module.Spec.Version}")
-            print("")
+            print(f"{Fore.CYAN + Colors.BOLD}{Commands}:{Fore.RESET + Colors.RESET} {module.Spec.Commands}")
     
     def exec(cmd):
-        plugin_handler = module.PluginHandler
-        getattr(plugin_handler, cmd)()
+        try:
+            plugin_handler = module.PluginHandler
+            getattr(plugin_handler, cmd)()
+        except AttributeError as Err:
+            print(ErrorOccured)
+            print(f"{Fore.RED + Colors.BOLD}{ErrCode} 043:{Fore.RESET + Colors.BOLD} {Err}")

@@ -37,6 +37,10 @@ class Spec:
     Name = "spkg-sandbox"
     Desc = Description
     Version = "0.2.1"
+    Commands = f"""
+    -> setup
+    -> config
+    """
 
 # PluginHandler Main Class
 class PluginHandler:

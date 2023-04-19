@@ -1,5 +1,4 @@
 import json
-from sqlite3 import *
 from colorama import Fore
 from sys import exit
 from api import * 
@@ -26,9 +25,15 @@ class Spec:
     Name = "Test Plugin"
     Desc = Description
     Version = "1.0"
+    Commands = f"""
+    -> setup
+    -> hello"""
 
 # PluginHandler Main Class
 class PluginHandler:
     def setup():
         print("This is a test plugin for spkg.")
+    
+    def hello():
+        print("Hello World!")
         
