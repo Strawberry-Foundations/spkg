@@ -71,7 +71,8 @@ class PluginHandler:
             print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Enabling Verbose Mode")
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Detecting Operating System")
-        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected {os_info['NAME']}")
+        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Distrobution {os_info['NAME']}")
+        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Version {os_info['ID']}")
 
         if not os.path.exists("/usr/sbin/debootstrap"):
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'")
@@ -219,7 +220,7 @@ class PluginHandler:
 
     def remove():
         print(
-            f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET}Removing sandbox ... This can take some time.")
+            f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
         os.system(f"sudo rm -rf {bootstrap_location}")
         exit()
 
