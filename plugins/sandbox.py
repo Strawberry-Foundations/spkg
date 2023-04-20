@@ -128,17 +128,17 @@ class PluginHandler:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Your architecture is currently not supported.")
             exit()
             
-        # if os.path.exists(bootstrap_location):
-        #     print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} You have already a installation of spkg-sandbox. Reinstalling spkg-sandbox ...")
-        #     os.system(f"sudo rm -rf {bootstrap_location}")
+        if os.path.exists(bootstrap_location):
+            print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} You have already a installation of spkg-sandbox. Reinstalling spkg-sandbox ...")
+            os.system(f"sudo rm -rf {bootstrap_location}")
         
         start_time = time.time()
         
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Bootstrapping your spkg-sandbox ... This could take some time depending on your drive speed and internet speed")
         print(f"{Fore.CYAN + BOLD}[i]{Fore.RESET + RESET} Installing to {bootstrap_location}")
-        # os.mkdir(bootstrap_location)
+        os.mkdir(bootstrap_location)
         
-        # os.system(f"sudo debootstrap --arch={arch} --variant=minbase --include=wget,ca-certificates,busybox-static {dist} {bootstrap_location} {repo}")
+        os.system(f"sudo debootstrap --arch={arch} --variant=minbase --include=wget,ca-certificates,busybox-static {dist} {bootstrap_location} {repo}")
         
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Updating your sandbox ...")
         
