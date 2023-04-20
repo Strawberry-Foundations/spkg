@@ -72,7 +72,7 @@ class PluginHandler:
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Detecting Operating System")
         print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Distrobution {os_info['NAME']}")
-        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Version {os_info['ID']}")
+        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Version {os_info['VERSION_ID']}")
 
         if not os.path.exists("/usr/sbin/debootstrap"):
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'")
@@ -87,14 +87,16 @@ class PluginHandler:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your version of debootstrap is outdated and doesn't support to build Ubuntu 22.04 Jammy Jellyfish.")
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
             dist = "focal"
+            
+        elif os_info['ID'] == "Ubuntu" and os_info['VERSION_ID'] == '"22.04"':
+            dist = "jammy"
 
-        elif os_info['ID'] == "ubuntu" or os_info['ID'] == "Ubuntu" and os_info['VERSION_ID'] == '"20.04"':
+        elif os_info['ID'] == "Ubuntu" and os_info['VERSION_ID'] == '"20.04"':
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your version of ubuntu is outdated and the sandbox cannot continue to work with Ubuntu 22.04 Jammy Jellyfish")
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
             dist = "focal"
             
-        elif os_info['ID'] == "ubuntu" or os_info['ID'] == "Ubuntu" and os_info['VERSION_ID'] == '"22.04"':
-            dist = "jammy"
+
 
         else:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your Linux distrobution has not yet been tested by the spkg developers. It is possible that spkg-sandbox does not work. Please open a GitHub issue if something is not working. ")
