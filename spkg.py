@@ -863,7 +863,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "update":
 
 
 # --- PLUGIN MANAGEMENT ---
-if len(sys.argv) > 1 and sys.argv[1] == "plugins" or sys.argv[1] == "plugin":
+if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
     if len(sys.argv) > 2 and sys.argv[2] == "list":
         plugin_management.list_plugins()
 
