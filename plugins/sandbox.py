@@ -202,16 +202,31 @@ class PluginHandler:
         if debug == True:
             os.system(f"sudo chroot {bootstrap_location} apt update")
             os.system(f"sudo chroot {bootstrap_location} apt install -y python3 python3-dev python3-pip")
+            
             print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
             os.system(f"sudo chroot {bootstrap_location} apt upgrade -y")
+            os.system(f"sudo chroot {bootstrap_location} apt clean all")
+            
+            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+            os.system(f"sudo chroot {bootstrap_location} apt autoclean")
+            os.system(f"sudo chroot {bootstrap_location} apt autoremove -y")
             
         else:
             subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
             print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
             subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "upgrade", "-y"],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoclean"],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoremove"],
                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         end_time = time.time()
