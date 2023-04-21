@@ -181,7 +181,7 @@ class PluginHandler:
             os.system(
                 f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist}-updates main restricted universe multiverse"')
 
-        else:
+        elif arch == "arm64":
             os.system(
                 f"sudo sh -c 'echo deb http://ports.ubuntu.com/ubuntu-ports {dist} main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
@@ -192,6 +192,9 @@ class PluginHandler:
                 f"sudo sh -c 'echo deb http://ports.ubuntu.com/ubuntu-ports {dist}-security main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
                 f"sudo sh -c 'echo deb http://ports.ubuntu.com/ubuntu-ports {dist}-updates main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
+        
+        else:
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} That shouldn't happend. Please open an issue on GitHub.")
 
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Installing some base packages ... ")
