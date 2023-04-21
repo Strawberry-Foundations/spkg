@@ -171,15 +171,15 @@ class PluginHandler:
 
         if arch == "amd64" or arch == "i386":
             os.system(
-                f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist} main restricted universe multiverse"')
+                f"sudo sh -c 'echo deb http://archive.ubuntu.com/ubuntu-ports {dist} main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
-                f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist}-backports main restricted universe multiverse"')
+                f"sudo sh -c 'echo deb http://archive.ubuntu.com/ubuntu-ports {dist}-backports main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
-                f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist}-proposed main restricted universe multiverse"')
+                f"sudo sh -c 'echo deb http://archive.ubuntu.com/ubuntu-ports {dist}-proposed main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
-                f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist}-security main restricted universe multiverse"')
+                f"sudo sh -c 'echo deb http://archive.ubuntu.com/ubuntu-ports {dist}-security main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
             os.system(
-                f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist}-updates main restricted universe multiverse"')
+                f"sudo sh -c 'echo deb http://archive.ubuntu.com/ubuntu-ports {dist}-updates main restricted universe multiverse >> {bootstrap_location}/etc/apt/sources.list'")
 
         elif arch == "arm64":
             os.system(
