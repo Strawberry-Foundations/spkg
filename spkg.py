@@ -19,7 +19,6 @@ from plugin_daemon import *
 
 plugin_daemon.import_plugin("sandbox")
 
-
 version = "1.4-beta"
 world_database = "/etc/spkg/world.db"
 home_dir = os.getenv("HOME")
@@ -29,11 +28,21 @@ if os.environ.get('SUDO_USER'):
 else:
     home_dir = os.path.expanduser("~")
 
+arch = platform.machine()
+
+if arch == "x86_64":
+    arch = "amd64"
+
+elif arch == "x86":
+    arch = "i386"
+
+elif arch == "aarch64":
+    arch = "arm64"
+
 class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
-
 
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
@@ -243,7 +252,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         print(NoArgument)
         exit()
     try:
-        c.execute("SELECT name FROM packages where name = ?", (pkg_name,))
+        c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
 
     except OperationalError:
         print(PackageDatabaseNotSynced)
@@ -251,7 +260,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
 
     if c.fetchall():
         c.execute(
-            "SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ?", (pkg_name,))
+            "SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (pkg_name, arch))
         for row in c:
             print(
                 f"{Colors.BOLD + Colors.UNDERLINE}{PackageInformationTitle} {row[0]} ({row[1]})\n{Colors.RESET}")
@@ -277,18 +286,40 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
     else:
         print(NoArgument)
         exit()
-
+        
+    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    
     try:
-        c.execute(
-            "SELECT name, fetch_url, file_name FROM packages where name = ?", (pkg_name,))
-
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
         exit()
-
+    
+    if result == "all":
+        try:
+            c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (pkg_name,))
+        
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+        
+    else:
+        try:
+            c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+            
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+    
+    
     for row in c:
         url = row[1]
         filename = row[2]
+        
+        response = requests.head(url)
+        file_size_bytes = int(response.headers.get('Content-Length', 0))
+        file_size_mb = file_size_bytes / (1024 * 1024)
 
     try:
         req = urllib.request.Request(
@@ -300,6 +331,26 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         )
 
         f = urllib.request.urlopen(req)
+        
+        print(
+            f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        try:
+            continue_pkg_installation = input(
+                f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+
+        except KeyboardInterrupt as e:
+            print(f"\n{Canceled}")
+            exit()
+
+        if continue_pkg_installation.lower() == "j":
+            pass
+
+        elif continue_pkg_installation.lower() == "y":
+            pass
+
+        else:
+            print(Abort)
+            exit()
 
         download_time_start = time.time()
 
@@ -317,9 +368,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
     except HTTPError as e:
         print(UnknownError)
         print(e)
+        exit()
 
     except NameError as e:
         print(PackageNotFound)
+        exit()
+
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
@@ -373,7 +427,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
         c.execute("SELECT * FROM packages")
         for row in c:
             print(
-                f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}")
+                f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
     
         exit()
 
@@ -412,13 +466,31 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
                              'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
     spinner_db_search.start()
 
-    try:
-        c.execute(
-            "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (pkg_name,))
 
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
+    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    
+    try:
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
         exit()
+    
+    if result == "all":
+        try:
+            c.execute("SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (pkg_name,))
+        
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+        
+    else:
+        try:
+            c.execute("SELECT name, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+            
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
 
     for row in c:
         url = row[1]
@@ -515,7 +587,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
         
         try:
-            c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
+            c.execute("SELECT name, version FROM packages where name = ? AND arch = ?", (pkg_name, arch))
             for row in c:
                 name = row[0]
                 version = row[1]
@@ -544,9 +616,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
     except NameError as e:
         print(f"\n{PackageNotFound}")
+        exit()
 
     except KeyboardInterrupt as e:
         print(f"\n{Canceled}")
+        exit()
 
 
 # * --- Upgrade Function --- *

@@ -96,8 +96,6 @@ class PluginHandler:
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
             dist = "focal"
             
-
-
         else:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your Linux distrobution has not yet been tested by the spkg developers. It is possible that spkg-sandbox does not work. Please open a GitHub issue if something is not working. ")
             dist = "jammy"
