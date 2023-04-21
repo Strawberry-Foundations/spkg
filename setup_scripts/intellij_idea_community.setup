@@ -21,32 +21,28 @@ if (( $(id -u) != 0 )); then
     exit
 fi
 
-# if [ "$1" = "--upgrade" ]; then
-#     echo -e "${Green}${Bold}[!]${Reset} Starting Upgrade for Package ... "
-#     echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
-#     cd /tmp/
-#     mv idea*.tar /tmp/target.tar
-#     mkdir /tmp/target
+if [ "$1" = "--upgrade" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Starting Upgrade for Package ... "
+    echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
+    cd /tmp/
+    mv idea*.tar.gz /tmp/target.tar.gz
+    mkdir /tmp/target
 
-#     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
-#     cp /tmp/target/spkg.py /usr/bin/spkg
-#     chmod +x /usr/bin/spkg
+    echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
+    tar xf /tmp/target.tar.gz --directory /tmp/target/
+    cd /tmp/target/
 
-#     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
-#     rm -rf /tmp/target/
-#     rm -f /tmp/*.setup
-#     rm -f /tmp/target.tar
+    echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+    cp -r /tmp/target/idea* /opt/
+    bash /opt/idea*/bin/idea.sh
 
-#     echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
+    echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
+    rm -rf /tmp/target/
+    rm -f /tmp/*.setup
+    rm -f /tmp/target.tar.gz
 
-#     exit
-# fi
-
-# echo -e "${Yellow}${Bold}[!]${Reset} Installing Base Dependencies ... "
-# apt install -y python3 python3-dev python3-pip python3-sql python3-urllib3 &> /dev/null
-
-# echo -e "${Yellow}${Bold}[!]${Reset} Installing PIP Dependencies ... "
-# sudo -H pip install colorama halo requests
+    exit
+fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
 cd /tmp/
