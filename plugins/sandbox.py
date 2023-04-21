@@ -169,7 +169,7 @@ class PluginHandler:
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Modifying /etc/apt/sources.list ({bootstrap_location}) for the best program compability")
         os.system(f"sudo rm {bootstrap_location}/etc/apt/sources.list")
 
-        if arch == "x86_64" or arch == "x86":
+        if arch == "amd64" or arch == "i386":
             os.system(
                 f'sudo tee -a {bootstrap_location}/etc/apt/sources.list <<< "deb http://archive.ubuntu.com/ubuntu {dist} main restricted universe multiverse"')
             os.system(
