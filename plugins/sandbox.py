@@ -195,6 +195,7 @@ class PluginHandler:
         
         else:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} That shouldn't happend. Please open an issue on GitHub.")
+            exit()
 
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Installing some base packages ... ")
