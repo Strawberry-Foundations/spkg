@@ -186,21 +186,6 @@ except OperationalError:
     print(PackageDatabaseNotSynced)
     exit()
 
-# If the world database doensn't exists, return a error
-if not os.path.exists(world_database):
-    print(WorldDatabaseNotBuilded)
-    exit()
-    
-# Try to connect to the world database
-try:
-    world_db = sql.connect(world_database)
-    world_c = world_db.cursor()
-    
-# If the Database doesn't exists/no entries, return a error
-except OperationalError:
-    print(WorldDatabaseNotBuilded)
-    exit()
-
 
 # * --- Build Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "build":
@@ -252,6 +237,20 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
         print(NoArgument)
         exit()
 
+# If the world database doensn't exists, return a error
+if not os.path.exists(world_database):
+    print(WorldDatabaseNotBuilded)
+    exit()
+
+# Try to connect to the world database
+try:
+    world_db = sql.connect(world_database)
+    world_c = world_db.cursor()
+    
+# If the Database doesn't exists/no entries, return a error
+except OperationalError:
+    print(WorldDatabaseNotBuilded)
+    exit()
 
 # * --- Package Info Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "info":
