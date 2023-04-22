@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
 
-import os
-import sys
-import time
 import json
-import sqlite3 as sql
-import urllib.request
-import platform
-import requests
-import subprocess
 
 from sqlite3 import *
-from urllib.error import HTTPError
-from colorama import Fore, Back, Style
-from halo import Halo
+from colorama import Fore
 from sys import exit
 import importlib
 

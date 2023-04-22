@@ -1,7 +1,6 @@
 import json
 from colorama import Fore
 from sys import exit
-from api import * 
 
 # Language Config
 spkg_config = "/etc/spkg/config.json"
