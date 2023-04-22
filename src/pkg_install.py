@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
-from plugin_daemon import plugin_daemon, check_plugin_enabled_ret, check_plugin_enabled_silent
+from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
@@ -68,7 +68,10 @@ except OperationalError:
     print(PackageDatabaseNotSynced)
     exit()
 
-plugin_daemon.import_plugin("sandbox")
+if check_plugin_enabled_ret("sandbox") == True:
+    plugin_daemon.import_plugin("sandbox")
+else:
+    pass
 
 world_database = "/etc/spkg/world.db"
 home_dir = os.getenv("HOME")

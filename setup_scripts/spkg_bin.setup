@@ -33,16 +33,18 @@ if [ "$1" = "--upgrade" ]; then
     python3 -m nuitka ./spkg.py --follow-imports --onefile
 
     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+    rm -f /usr/bin/spkg
+    rm -rf /usr/share/spkg/
     rm /tmp/target/spkg.py
     cp -r /tmp/target/ /usr/share/spkg/
     cp /tmp/target/spkg.bin /usr/share/spkg/spkg
     cd /usr/share/spkg/
-    rm -r build
-    rm -r data
-    rm -r resources
-    rm -r setup_scripts
-    rm packages.db
-    rm spkg-installer.py
+    rm -rf build
+    rm -rf data
+    rm -rf resources
+    rm -rf setup_scripts
+    rm -f package.db
+    rm -f spkg-installer.py
     chmod a+x /usr/share/spkg/spkg
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
@@ -75,18 +77,21 @@ echo -e "${Green}${Bold}[!]${Reset} Building ..."
 python3 -m nuitka ./spkg.py --follow-imports --onefile
 
 echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+rm -f /usr/bin/spkg
+rm -rf /usr/share/spkg/
 rm /tmp/target/spkg.py
 cp -r /tmp/target/ /usr/share/spkg/
 cp -r /tmp/target/data/etc/ /
 cp /tmp/target/spkg.bin /usr/share/spkg/spkg
 cd /usr/share/spkg/
-rm -r build
-rm -r data
-rm -r resources
-rm -r setup_scripts
-rm packages.db
-rm spkg-installer.py
+rm -rf build
+rm -rf data
+rm -rf resources
+rm -rf setup_scripts
+rm -f package.db
+rm -f spkg-installer.py
 chmod a+x /usr/share/spkg/spkg
+
 ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"

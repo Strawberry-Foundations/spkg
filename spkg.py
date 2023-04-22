@@ -18,9 +18,12 @@ from plugin_daemon import *
 from src.pkg_install import * 
 from src.pkg_download import *
 
-plugin_daemon.import_plugin("sandbox")
+if check_plugin_enabled_ret("sandbox") == True:
+    plugin_daemon.import_plugin("sandbox")
+else:
+    pass
 
-version = "1.4"
+version = "1.4.1"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
@@ -54,6 +57,10 @@ with open("/etc/spkg/config.json", "r") as f:
 
 language = data['language']
 
+# Check if user config path exists
+if not os.path.exists(f"{home_dir}/.config/spkg"):
+    os.mkdir(f"{home_dir}/.config/spkg")
+    
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 

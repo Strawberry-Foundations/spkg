@@ -11,6 +11,11 @@ import platform
 import time
 import subprocess
 
+# Color Variables
+BOLD = '\033[1m'
+UNDERLINE = '\033[4m'
+RESET = '\033[0m'
+
 # Define Home Directory
 home_dir = os.getenv("HOME")
 
@@ -20,29 +25,60 @@ if os.environ.get('SUDO_USER'):
 else:
     home_dir = os.path.expanduser("~")
 
-# Language Config
+# Get user name
+if os.environ.get('SUDO_USER'):
+    user_name = os.environ['SUDO_USER']
+    
+else:
+    user_name = os.environ['USER']
+
+# Check if user config path exists
+if not os.path.exists(f"{home_dir}/.config/spkg"):
+    os.system(f"rm -rf {home_dir}/.config/spkg")
+    os.mkdir(f"{home_dir}/.config/spkg")
+    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+    os.system(f"touch {user_sandbox_config}")
+    os.system("sh -c 'echo {} >> " + user_sandbox_config + "'")
+    with open(user_sandbox_config, "r") as f:
+        data = json.load(f)
+    
+    data["bootstrap_location"] = f"{home_dir}/.local/spkg/sandbox/"
+    data["sandbox_handler"] = "chroot"
+    
+    with open(user_sandbox_config, 'w') as f:
+        json.dump(data, f)
+    
+    
+# Check if config file exists
+if not os.path.exists(f"{home_dir}/.config/spkg/sandbox.json"):
+    print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your user configuration doesn't exist.")
+
+# Config
 spkg_config = "/etc/spkg/config.json"
+user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+
 with open(spkg_config, "r") as f:
     spkg_cfg = json.load(f)
 
-sandbox_config = "/etc/spkg/sandbox.json"
-with open(sandbox_config, "r") as f:
-    sandbox_cfg = json.load(f)
-
+if os.path.exists(f"{home_dir}/.config/spkg/sandbox.json"):
+    with open(user_sandbox_config, "r") as f:
+        user_sandbox_cfg = json.load(f)
+else:
+    user_sandbox_cfg = "{}"
+    
 language = spkg_cfg['language']
 
 if not language == "de" and not language == "en":
     exit()
 
 # Basic Variables
-bootstrap_location = f"{home_dir}/{sandbox_cfg['bootstrap_location']}"
-dist = "jammy"
-sandbox_handler = sandbox_cfg['sandbox_handler']
-
-BOLD = '\033[1m'
-UNDERLINE = '\033[4m'
-RESET = '\033[0m'
-
+try:
+    bootstrap_location = user_sandbox_cfg['bootstrap_location']
+    dist = "jammy"
+    sandbox_handler = user_sandbox_cfg['sandbox_handler']
+    
+except TypeError or FileNotFoundError: 
+    pass
 
 with open('/etc/os-release') as f:
     os_info = dict(line.strip().split('=') for line in f if '=' in line)
@@ -149,10 +185,14 @@ class PluginHandler:
         else:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Your architecture is currently not supported.")
             exit()
+            
+        if not os.path.exists(f"{home_dir}/.local/spkg"):
+            os.mkdir(f"{home_dir}/.local/spkg")
 
         if os.path.exists(bootstrap_location):
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} You have already a installation of spkg-sandbox. Reinstalling spkg-sandbox ...")
             os.system(f"sudo rm -rf {bootstrap_location}")
+            
 
         start_time = time.time()
 
@@ -280,7 +320,26 @@ class PluginHandler:
         print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
 
     def config():
-        print("Soon")
+        if os.geteuid() == 0:
+                print(f"{Fore.YELLOW + BOLD}That shouldn't happen. Don't generate your config as root!{Fore.RESET + RESET}")
+        else:
+            pass
+            
+        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Regenerating config ...")
+        os.system(f"rm -rf {home_dir}/.config/spkg")
+        os.mkdir(f"{home_dir}/.config/spkg")
+        user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+        os.system(f"touch {user_sandbox_config}")
+        os.system("sh -c 'echo {} >> " + user_sandbox_config + "'")
+        with open(user_sandbox_config, "r") as f:
+            data = json.load(f)
+        
+        data["bootstrap_location"] = f"{home_dir}/.local/spkg/sandbox/"
+        data["sandbox_handler"] = "chroot"
+        
+        with open(user_sandbox_config, 'w') as f:
+            json.dump(data, f)
+    
 
     def remove():
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")

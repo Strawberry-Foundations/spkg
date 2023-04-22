@@ -29,15 +29,17 @@ if [ "$1" = "--upgrade" ]; then
     mkdir /tmp/target
 
     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+    rm -f /usr/bin/spkg
+    rm -rf /usr/share/spkg/
     cp -r /tmp/target/spkg-main/ /usr/share/spkg/
     cd /usr/share/spkg/
     mv spkg.py spkg
-    rm -r build
-    rm -r data
-    rm -r resources
-    rm -r setup_scripts
-    rm packages.db
-    rm spkg-installer.py
+    rm -rf build
+    rm -rf data
+    rm -rf resources
+    rm -rf setup_scripts
+    rm -f package.db
+    rm -f spkg-installer.py
     chmod a+x /usr/share/spkg/spkg
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
@@ -67,16 +69,18 @@ tar xf /tmp/target.tar.gz --directory /tmp/target/
 cd /tmp/target/spkg-main
 
 echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+rm -f /usr/bin/spkg
+rm -rf /usr/share/spkg/
 cp -r /tmp/target/spkg-main/ /usr/share/spkg/
 cp -r /tmp/target/spkg-main/data/etc/ /
 cd /usr/share/spkg/
 mv spkg.py spkg
-rm -r build
-rm -r data
-rm -r resources
-rm -r setup_scripts
-rm packages.db
-rm spkg-installer.py
+rm -rf build
+rm -rf data
+rm -rf resources
+rm -rf setup_scripts
+rm -f package.db
+rm -f spkg-installer.py
 chmod a+x /usr/share/spkg/spkg
 ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
