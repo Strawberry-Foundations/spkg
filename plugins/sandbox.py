@@ -202,7 +202,12 @@ class PluginHandler:
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Bootstrapping your spkg-sandbox ... This could take some time depending on your drive speed and internet speed")
         print(f"{Fore.CYAN + BOLD}[i]{Fore.RESET + RESET} Installing to {bootstrap_location}")
-        os.mkdir(bootstrap_location)
+        
+        try:
+            os.mkdir(bootstrap_location)
+            
+        except:
+            print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Couldn't create directory ...")
 
         if debug == True:
             os.system(f"sudo debootstrap --arch={arch} --variant=minbase --include=wget,ca-certificates,busybox-static {dist} {bootstrap_location} {repo}")
