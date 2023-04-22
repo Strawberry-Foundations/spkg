@@ -27,7 +27,8 @@ class Spec:
     Version = "1.0"
     Commands = f"""
     -> setup
-    -> hello"""
+    -> hello
+    """
 
 # PluginHandler Main Class
 class PluginHandler:
