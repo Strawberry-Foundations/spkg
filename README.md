@@ -40,12 +40,12 @@ spkg-docker installs packages in a Docker container. This provides more security
 ## **Supported Platforms**
 spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or higher. All Python versions below 3.9 are untested and therefore not recommended. Therefore, please do not open an issue if spkg does not work under Python 3.8 or lower. 
 
-| Version       | Supported | Status            |
-| --            | --        | --                | 
-| Python 3.8    | -         | Untested          |
-| Python 3.9    | Yes       | Tested, working   |
-| Python 3.10   | Yes       | Tested, working   |
-| Python 3.11   | Yes       | Tested, working   |
+| Version       | Supported | Status                                                    |
+| --            | --        | --                                                        | 
+| Python 3.8    | ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
+| Python 3.9    | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
+| Python 3.10   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
+| Python 3.11   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 
 ## **Linux Support**
 Distrobutions and versions that are not listed are not supported by us. 
@@ -60,7 +60,7 @@ Distrobutions and versions that are not listed are not supported by us.
 | Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker
 | Ubuntu    | 20.04         | Yes           | ![](https://img.shields.io/badge/-LTS-green)              | native, sandbox, docker
 | Ubuntu    | 22.04         | Yes           | ![](https://img.shields.io/badge/-LTS-success)            | native, sandbox, docker
-| Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-green) | native, sandbox, docker
+| Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-green)       | native, sandbox, docker
 | Ubuntu    | 23.04         | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Gentoo    | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
 | Arch      | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
