@@ -13,6 +13,7 @@ So spkg offers you a high security, so you don't have to worry about viruses in 
 
 spkg also offers pre-build packages, so you don't have to build big packages like Java yourself. 
 
+<br>
 
 # **Plugins**
 spkg offers a convenient plugin system, allowing users to enable advanced features such as installing packages over a secure sandbox! 
@@ -26,6 +27,8 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 
 spkg-sandbox installs packages in a separate environment from the system to provide more security and compatibility. spkg-sandbox works on any system, regardless of the package manager, while spkg without spkg-sandbox currently only works on deb-based systems. It uses Ubuntu 22.04 or 20.04 as base. 
 
+<br>
+
 ## **Docker Containers  ![spkg-docker](https://img.shields.io/badge/spkg--docker-important)**
 
 ![spkg-docker](https://img.shields.io/badge/spkg--docker-0.1.0-informational)
@@ -35,3 +38,14 @@ spkg-sandbox installs packages in a separate environment from the system to prov
 
 spkg-docker installs packages in a Docker container. This provides more security, and is more convenient. Therefore, spkg works on any system that supports docker. The Docker image used is an Ubuntu 22.04 or 20.04 image.
 
+<br><br>
+
+## **Supported Platforms**
+spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or higher. All Python versions below 3.9 are untested and therefore not recommended. Therefore, please do not open an issue if spkg does not work under Python 3.8 or lower. 
+
+| Version       | Supported | Status            |
+| --            | --        | --                | 
+| Python 3.8    | -         | Untested          |
+| Python 3.9    | Yes       | Tested, working   |
+| Python 3.10   | Yes       | Tested, working   |
+| Python 3.11   | Yes       | Tested, working   |
