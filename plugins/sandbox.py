@@ -94,7 +94,7 @@ elif language == "en":
 class Spec:
     Name = "spkg-sandbox"
     Desc = Description
-    Version = "1.0.0"
+    Version = "1.1.0"
     Commands = f"""
     -> setup
     -> config
@@ -141,6 +141,9 @@ class PluginHandler:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your version of debootstrap is outdated and doesn't support to build Ubuntu 22.04 Jammy Jellyfish.")
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
             dist = "focal"
+        
+        elif os_info['ID'] == "debian" and os_info['VERSION_ID'] == '"12"':
+            dist = "jammy"
             
         elif os_info['ID'] == "Ubuntu" and os_info['VERSION_ID'] == '"22.04"':
             dist = "jammy"
