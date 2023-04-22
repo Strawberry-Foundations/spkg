@@ -12,7 +12,6 @@ By compiling the package, the program is optimized for your device and can run f
 So spkg offers you a high security, so you don't have to worry about viruses in packages.
 
 spkg also offers pre-build packages, so you don't have to build big packages like Java yourself. 
-
 <br>
 
 # **Plugins**
@@ -26,7 +25,6 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 ![sandbox-architetures](https://img.shields.io/badge/Architectures-x86__64%2C%20x86%2C%20aarch64-success)
 
 spkg-sandbox installs packages in a separate environment from the system to provide more security and compatibility. spkg-sandbox works on any system, regardless of the package manager, while spkg without spkg-sandbox currently only works on deb-based systems. It uses Ubuntu 22.04 or 20.04 as base. 
-
 <br>
 
 ## **Docker Containers  ![spkg-docker](https://img.shields.io/badge/spkg--docker-important)**
@@ -37,7 +35,6 @@ spkg-sandbox installs packages in a separate environment from the system to prov
 ![docker-architetures](https://img.shields.io/badge/Architectures-depending%20on%20docker%20image-success)
 
 spkg-docker installs packages in a Docker container. This provides more security, and is more convenient. Therefore, spkg works on any system that supports docker. The Docker image used is an Ubuntu 22.04 or 20.04 image.
-
 <br><br>
 
 ## **Supported Platforms**
