@@ -84,6 +84,23 @@ user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
 world_database = "/etc/spkg/world.db"
 arch = platform.machine()
 
+# Check if user config path exists
+if not os.path.exists(f"{home_dir}/.config/spkg"):
+    os.mkdir(f"{home_dir}/.config/spkg")
+    os.system(f"rm -rf {home_dir}/.config/spkg")
+    os.mkdir(f"{home_dir}/.config/spkg")
+    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+    os.system(f"touch {user_sandbox_config}")
+    os.system("sh -c 'echo {} >> " + user_sandbox_config + "'")
+    with open(user_sandbox_config, "r") as f:
+        data = json.load(f)
+    
+    data["bootstrap_location"] = f"{home_dir}/.local/spkg/sandbox/"
+    data["sandbox_handler"] = "chroot"
+    
+    with open(user_sandbox_config, 'w') as f:
+        json.dump(data, f)
+
 with open(user_sandbox_config, "r") as f:
     user_sandbox_cfg = json.load(f)
     
