@@ -361,7 +361,7 @@ def upgrade(name):
         spinner.stop()
 
         if check_plugin_enabled_silent("sandbox") == True:
-            os.system(f"sudo chroot{bootstrap_location} bash /tmp/{row[0]}.setup --upgrade")
+            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup --upgrade")
 
         else:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
