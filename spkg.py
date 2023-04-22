@@ -22,6 +22,11 @@ plugin_daemon.import_plugin("sandbox")
 
 version = "1.4-beta"
 world_database = "/etc/spkg/world.db"
+world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
+package_database = "/etc/spkg/package.db"
+spkg_repositories = "/etc/spkg/repositories.json"
+enabled_plugins_cfg = "/etc/spkg/enabled_plugins.json"
+
 home_dir = os.getenv("HOME")
 arch = platform.machine()
 
@@ -173,7 +178,7 @@ def help_de():
 
 # Try to connect to the locally saved package database
 try:
-    db = sql.connect("/etc/spkg/package.db")
+    db = sql.connect(package_database)
     c = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
@@ -200,7 +205,7 @@ except OperationalError:
 # * --- Build Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "build":
     if len(sys.argv) > 2 and sys.argv[2] == "world":
-        url = "https://sources.juliandev02.ga/packages/world_base.db"
+        url = world_database_url
         try:
             req = urllib.request.Request(
                 url,
@@ -283,6 +288,47 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     db.close()
 
 
+# * --- List Function --- *
+elif len(sys.argv) > 1 and sys.argv[1] == "list":
+    # List installed programms
+    if len(sys.argv) > 2 and sys.argv[2] == "--installed":
+        # Select * from the world database
+        try:
+            world_c.execute("SELECT * FROM world")
+            
+            # Print the entries 
+            for row in world_c:
+                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}")
+            exit()
+
+        except OperationalError:
+            print(WorldDatabaseNotBuilded)
+        
+    # Check if second argument is --arch; List programms that match the architecture from the third argument [all, arm64, amd64, ...]
+    else:
+        if len(sys.argv) > 2 and sys.argv[2] == "--arch":
+            arch_a = sys.argv[3]
+            try:
+                c.execute("SELECT * FROM packages where arch = ?", (arch_a, ))
+                for row in c:
+                    print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
+                exit()
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+                
+        # If not, print just all packages
+        else:
+            try:
+                c.execute("SELECT * FROM packages")
+                for row in c:
+                    print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
+                exit()
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+            
+            
 # * --- Download Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "download":
     if len(sys.argv) > 2:
@@ -297,11 +343,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
-    with open("/etc/spkg/repositories.json", "r") as f:
+    with open(spkg_repositories, "r") as f:
         data = json.load(f)
         
     repo = f"{data['main']}/package.db"
-    filename = "/etc/spkg/package.db"
+    filename = package_database
     
     if os.geteuid() == 0:
         None
@@ -337,33 +383,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     except HTTPError as e:
         print(UnknownError)
         print(e)
-
-
-# * --- List Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "list":
-    # List installed programms
-    if len(sys.argv) > 2 and sys.argv[2] == "--installed":
-        # Select * from the world database
-        try:
-            world_c.execute("SELECT * FROM world")
-            
-            # Print the entries 
-            for row in world_c:
-                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}")
-            exit()
-
-        except OperationalError:
-            print(WorldDatabaseNotBuilded)
-        
-    else:
-        try:
-            c.execute("SELECT * FROM packages")
-            for row in c:
-                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
-            exit()
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
 
 
 # * --- Install Function --- *
@@ -495,7 +514,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
 #                 print(row)
         
 
-# --- PLUGIN MANAGEMENT ---
+# * --- Plugin Managment --- *
 if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
     if len(sys.argv) > 2 and sys.argv[2] == "list":
         plugin_management.list_plugins()
@@ -516,7 +535,6 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             
     # Enable a plugin
     elif len(sys.argv) > 3 and sys.argv[2] == "enable":
-        enabled_plugins_cfg = "./data/etc/spkg/enabled_plugins.json"
         plugin = sys.argv[3]
         
         if os.geteuid() == 0:
@@ -544,7 +562,6 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
 
     # Disable a plugin
     elif len(sys.argv) > 3 and sys.argv[2] == "disable":
-        enabled_plugins_cfg = "./data/etc/spkg/enabled_plugins.json"
         plugin = sys.argv[3]
         
         if os.geteuid() == 0:

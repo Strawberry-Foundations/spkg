@@ -31,6 +31,7 @@ if not language == "de" and not language == "en":
     exit()
 
 # Basic Variables
+sandbox_config = "/etc/spkg/sandbox.json"
 bootstrap_location = f"{home_dir}/.local/spkg/sandbox/"
 dist = "jammy"
 sandbox_handler = "bwrap"
@@ -273,15 +274,13 @@ class PluginHandler:
 
         end_time = time.time()
 
-        print(
-            f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
+        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
 
     def config():
         print("Soon")
 
     def remove():
-        print(
-            f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
+        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
         os.system(f"sudo rm -rf {bootstrap_location}")
         exit()
 

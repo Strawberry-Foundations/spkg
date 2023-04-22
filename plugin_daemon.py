@@ -22,7 +22,7 @@ class Colors:
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
 
-enabled_plugins_cfg = "./data/etc/spkg/enabled_plugins.json"
+enabled_plugins_cfg = "/etc/spkg/enabled_plugins.json"
 with open(enabled_plugins_cfg, "r") as f:
     data = json.load(f)
 
