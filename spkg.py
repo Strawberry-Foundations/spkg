@@ -25,7 +25,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-version = "1.4.1"
+version = "1.4.2"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"

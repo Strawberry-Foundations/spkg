@@ -19,7 +19,7 @@ class Colors:
     RESET = '\033[0m'
 
 
-version = "1.0.1"
+version = "1.1.0"
 
 db = sql.connect("/tmp/spkg_installer.db")
 c = db.cursor()
@@ -59,7 +59,7 @@ except HTTPError as e:
         f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}")
     print(e)
 
-spkg_py = "spkg-py"
+spkg_py = "spkg"
 spkg_bin = "spkg-bin"
 spkg_git = "spkg-git"
 
