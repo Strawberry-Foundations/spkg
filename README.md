@@ -18,7 +18,7 @@ spkg also offers pre-build packages, so you don't have to build big packages lik
 spkg offers a convenient plugin system, allowing users to enable advanced features such as installing packages over a secure sandbox! 
 
 ## **Sandbox  ![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-important)**
----
+
 ![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.0.0-informational)
 ![sandbox-release](https://img.shields.io/badge/Release-stable-success)
 ![sandbox-methods](https://img.shields.io/badge/Methods-bwrap%2C%20chroot-important)
@@ -27,7 +27,7 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 spkg-sandbox installs packages in a separate environment from the system to provide more security and compatibility. spkg-sandbox works on any system, regardless of the package manager, while spkg without spkg-sandbox currently only works on deb-based systems. It uses Ubuntu 22.04 or 20.04 as base. 
 
 ## **Docker Containers  ![spkg-docker](https://img.shields.io/badge/spkg--docker-important)**
----
+
 ![spkg-docker](https://img.shields.io/badge/spkg--docker-0.1.0-informational)
 ![docker-release](https://img.shields.io/badge/Release-Not%20released-critical)
 ![docker-methods](https://img.shields.io/badge/Methods-docker%2C%20podman%20(%3F)-important)
