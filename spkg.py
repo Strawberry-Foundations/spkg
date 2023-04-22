@@ -306,6 +306,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         print(PackageNotFound)
 
     db.close()
+    exit()
 
 
 # * --- List Function --- *
@@ -347,6 +348,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
 
             except OperationalError:
                 print(PackageDatabaseNotSynced)
+        exit()
+    exit()
             
             
 # * --- Download Function --- *
@@ -359,6 +362,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         exit()
         
     download(pkg_name)
+    exit()
 
 
 # * --- Sync Function --- *
@@ -658,6 +662,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
     else:
         print(NoArgument)
         exit()
+        
+    exit()
     
     
 # * --- Package Info Function --- *
