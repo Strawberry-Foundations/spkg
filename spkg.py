@@ -11,13 +11,15 @@ import subprocess
 
 from sqlite3 import *
 from urllib.error import HTTPError
-from colorama import Fore, Back, Style
+from colorama import Fore
 from halo import Halo
 from sys import exit
 from plugin_daemon import *
 from src.pkg_install import * 
 from src.pkg_download import *
 
+
+# import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
     plugin_daemon.import_plugin("sandbox")
 else:
@@ -40,10 +42,8 @@ else:
 
 if arch == "x86_64":
     arch = "amd64"
-    
 elif arch == "x86":
     arch = "i386"
-    
 elif arch == "aarch64":
     arch = "arm64"
 
@@ -52,6 +52,7 @@ class Colors:
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
 
+# Open spkg config file
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
 
@@ -61,9 +62,11 @@ language = data['language']
 if not os.path.exists(f"{home_dir}/.config/spkg"):
     os.mkdir(f"{home_dir}/.config/spkg")
     
+# If language is either "de" and "en", print Error Message
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
+# Language Strings for German
 if language == "de":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
@@ -97,8 +100,10 @@ if language == "de":
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits deaktiviert.{Colors.RESET}"
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Ungültige Operation: {Colors.RESET}"
+    MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
 
 
+# Language Strings for English
 elif language == "en":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
@@ -132,8 +137,9 @@ elif language == "en":
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
+    MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
     
-
+# Help Function for English Language
 def help_en():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}\n")
     print(f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg {Fore.GREEN}[command]{Fore.RED} <argument>\n")
@@ -156,9 +162,12 @@ def help_en():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Executes a command from the plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Enables a Plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Disables a Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Configuration manager{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Configure the language of spkg{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
 
 
+# Help Function for English German
 def help_de():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}\n")
     print(f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg {Fore.GREEN}[Befehl]{Fore.RED} <Argument>\n")
@@ -181,7 +190,10 @@ def help_de():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Führt einen Befehl vom Plugin aus{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Aktiviert ein Plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Deaktiviert ein Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Konfigurationsverwaltung{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Konfiguriere die Sprache von spkg{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
+
 
 # Try to connect to the locally saved package database
 try:
@@ -244,7 +256,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
         print(NoArgument)
         exit()
 
-# If the world database doensn't exists, return a error
+
+# If the world database doesn't exists, return a error
 if not os.path.exists(world_database):
     print(WorldDatabaseNotBuilded)
     exit()
@@ -253,11 +266,12 @@ if not os.path.exists(world_database):
 try:
     world_db = sql.connect(world_database)
     world_c = world_db.cursor()
-    
+
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(WorldDatabaseNotBuilded)
     exit()
+
 
 # * --- Package Info Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "info":
@@ -482,6 +496,37 @@ elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
     exit()
 
 
+# * --- Upgrade Function --- *
+elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
+    if len(sys.argv) > 2:
+        pkg_name = sys.argv[2]
+
+    else:
+        print(NoArgument)
+        exit()
+    
+    try:
+        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
+    
+    except OperationalError as e:
+        print(WorldDatabaseNotBuilded)
+        exit()
+    
+    upgrade(pkg_name)
+        
+    try:
+        c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
+        for row in c:
+            name = row[0]
+            version = row[1]
+
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
+    
+    exit()
+
+
 # * --- Update Function --- *
 # elif len(sys.argv) > 1 and sys.argv[1] == "update":
 #     tableCompare = "SELECT name, version FROM world WHERE packages='table' order by name"
@@ -615,6 +660,31 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
         exit()
     
     
+# * --- Package Info Function --- *
+if len(sys.argv) > 1 and sys.argv[1] == "config":
+    if len(sys.argv) > 3 and sys.argv[2] == "language":
+        if os.geteuid() == 0:
+            None
+        else:
+            print(f"{Fore.CYAN}{spkg_config}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(MissingPermissonsSpkgConfig)
+            exit()
+        lang = sys.argv[3]
+        
+        with open(spkg_config, "r") as f:
+            data = json.load(f)
+
+            data["language"] = lang
+            
+        with open(spkg_config, 'w') as f:
+            json.dump(data, f)
+        
+    # If no Argument was passed, print an error
+    else:
+        print(NoArgument)
+        exit()
+        
+        
 # * --- Help Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "help":
     if language == "en":

@@ -16,6 +16,7 @@ from halo import Halo
 from sys import exit
 from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 
+
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
 
@@ -25,7 +26,6 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
-
 
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
@@ -73,7 +73,6 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-world_database = "/etc/spkg/world.db"
 home_dir = os.getenv("HOME")
 
 if os.environ.get('SUDO_USER'):
@@ -81,7 +80,15 @@ if os.environ.get('SUDO_USER'):
 else:
     home_dir = os.path.expanduser("~")
 
+user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+world_database = "/etc/spkg/world.db"
 arch = platform.machine()
+
+with open(user_sandbox_config, "r") as f:
+    user_sandbox_cfg = json.load(f)
+    
+bootstrap_location = user_sandbox_cfg['bootstrap_location']
+sandbox_handler = user_sandbox_cfg['sandbox_handler']
 
 if arch == "x86_64":
     arch = "amd64"
@@ -179,7 +186,7 @@ def install(name):
         spinner.start()
 
         if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{home_dir}/.local/spkg/sandbox/tmp/{filename}", 'wb') as file:
+            with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
                 file.write(f.read())
 
         else:
@@ -204,7 +211,7 @@ def install(name):
         f_setup = urllib.request.urlopen(setup_req)
 
         if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{home_dir}/.local/spkg/sandbox/tmp/{row[0]}.setup", 'wb') as file_setup:
+            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
                 file_setup.write(f_setup.read())
 
         else:
@@ -217,12 +224,148 @@ def install(name):
         spinner.stop()
 
         if check_plugin_enabled_silent("sandbox") == True:
-            subprocess.run(['sudo', 'chmod', '+x', f'{home_dir}/.local/spkg/sandbox/tmp/{row[0]}.setup'])
-            os.system(f"sudo chroot {home_dir}/.local/spkg/sandbox bash /tmp/{row[0]}.setup")
+            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
 
         else:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
             subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+
+    except HTTPError as e:
+        print(UnknownError)
+        print(e)
+
+    except NameError as e:
+        print(f"\n{PackageNotFound}")
+        exit()
+
+    except KeyboardInterrupt as e:
+        print(f"\n{Canceled}")
+        exit()
+
+
+def upgrade(name):
+    spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
+                             'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    spinner_db_search.start()
+
+    c.execute("SELECT arch FROM packages where name = ?", (name,))
+
+    try:
+        result = c.fetchone()[0]
+
+    except TypeError:
+        print(PackageNotFound)
+        exit()
+
+    if result == "all":
+        try:
+            c.execute(
+                "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+
+    else:
+        try:
+            c.execute(
+                "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (name, arch))
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+
+    for row in c:
+        url = row[1]
+        filename = row[2]
+        setup_script = row[3]
+
+        response = requests.head(url)
+        file_size_bytes = int(response.headers.get('Content-Length', 0))
+        file_size_mb = file_size_bytes / (1024 * 1024)
+
+        spinner_db_search.stop()
+        print(
+            f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        try:
+            continue_pkg_installation = input(
+                f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+
+        except KeyboardInterrupt as e:
+            print(f"\n{Canceled}")
+            exit()
+
+        if continue_pkg_installation.lower() == "j":
+            continue
+
+        elif continue_pkg_installation.lower() == "y":
+            continue
+
+        else:
+            print(Abort)
+            exit()
+
+    try:
+        req = urllib.request.Request(
+            url,
+            data=None,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        )
+
+        f = urllib.request.urlopen(req)
+
+        download_time_start = time.time()
+
+        spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
+                       '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner.start()
+
+        if check_plugin_enabled_silent("sandbox") == True:
+            with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                file.write(f.read())
+
+        else:
+            with open(f"/tmp/{filename}", 'wb') as file:
+                file.write(f.read())
+
+        download_time_end = time.time()
+        print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+
+        spinner_setup = Halo(text=f"{ExecutingSetup}: {url}", spinner={'interval': 150, 'frames': [
+            '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner_setup.start()
+
+        setup_req = urllib.request.Request(
+            setup_script,
+            data=None,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        )
+
+        f_setup = urllib.request.urlopen(setup_req)
+
+        if check_plugin_enabled_silent("sandbox") == True:
+            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
+                file_setup.write(f_setup.read())
+
+        else:
+            with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                file_setup.write(f_setup.read())
+
+        spinner_setup.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
+
+        spinner.stop()
+
+        if check_plugin_enabled_silent("sandbox") == True:
+            os.system(f"sudo chroot{bootstrap_location} bash /tmp/{row[0]}.setup --upgrade")
+
+        else:
+            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
+            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--upgrade'])
 
     except HTTPError as e:
         print(UnknownError)
