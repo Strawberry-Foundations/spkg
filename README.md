@@ -60,7 +60,7 @@ Distrobutions and versions that are not listed are not supported by us.
 | Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker
 | Ubuntu    | 20.04         | Yes           | ![](https://img.shields.io/badge/-LTS-green)              | native, sandbox, docker
 | Ubuntu    | 22.04         | Yes           | ![](https://img.shields.io/badge/-LTS-success)            | native, sandbox, docker
-| Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-yellowgreen) | native, sandbox, docker
+| Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-green) | native, sandbox, docker
 | Ubuntu    | 23.04         | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Gentoo    | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
 | Arch      | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
