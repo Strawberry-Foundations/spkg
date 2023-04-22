@@ -33,6 +33,7 @@ if not language == "de" and not language == "en":
 # Basic Variables
 bootstrap_location = f"{home_dir}/.local/spkg/sandbox/"
 dist = "jammy"
+sandbox_handler = "bwrap"
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -65,6 +66,15 @@ class Spec:
 class PluginHandler:
     def setup():
         debug = False
+           
+        if sandbox_handler == "chroot":
+            sandbox_enter_cmd = f"sudo chroot {bootstrap_location}"
+        
+        elif sandbox_handler == "bwrap":
+            sandbox_enter_cmd = f"sudo bwrap --bind {bootstrap_location} / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp"
+        
+        else:
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} Unknown Config for sandbox_handler. Check your config")
 
         if len(argv) > 4 and argv[4] == "--debug" or len(argv) > 4 and argv[4] == "--verbose" or len(argv) > 4 and argv[4] == "-v" or len(argv) > 4 and argv[4] == "--v":
             debug = True
@@ -76,6 +86,10 @@ class PluginHandler:
 
         if not os.path.exists("/usr/sbin/debootstrap"):
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'")
+            exit()
+        
+        if not os.path.exists("/usr/bin/bwrap"):
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'bwrap' (bubblewrap)")
             exit()
 
         if os_info['ID'] == "debian" and os_info['VERSION_ID'] == '"10"':
@@ -153,17 +167,25 @@ class PluginHandler:
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Updating your sandbox ...")
         if debug == True:
-            os.system(f"sudo chroot {bootstrap_location} apt clean all")
-            os.system(f"sudo chroot {bootstrap_location} apt autoclean")
-            os.system(f"sudo chroot {bootstrap_location} apt update")
+            os.system(f"{sandbox_enter_cmd} apt clean all")
+            os.system(f"{sandbox_enter_cmd} apt autoclean")
+            os.system(f"{sandbox_enter_cmd} apt update")
 
         else:
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autpclean"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if sandbox_handler == "chroot":
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoclean"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            elif sandbox_handler == "bwrap": 
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "clean", "all"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "autoclean"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "update"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Modifying /etc/apt/sources.list ({bootstrap_location}) for the best program compability")
@@ -200,34 +222,54 @@ class PluginHandler:
 
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Installing some base packages ... ")
         if debug == True:
-            os.system(f"sudo chroot {bootstrap_location} apt update")
-            os.system(f"sudo chroot {bootstrap_location} apt install -y python3 python3-dev python3-pip")
+            os.system(f"{sandbox_enter_cmd} apt update")
+            os.system(f"{sandbox_enter_cmd} apt install -y python3 python3-dev python3-pip")
             
             print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
-            os.system(f"sudo chroot {bootstrap_location} apt upgrade -y")
-            os.system(f"sudo chroot {bootstrap_location} apt clean all")
+            os.system(f"{sandbox_enter_cmd} apt upgrade -y")
+            os.system(f"{sandbox_enter_cmd} apt clean all")
             
             print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
-            os.system(f"sudo chroot {bootstrap_location} apt autoclean")
-            os.system(f"sudo chroot {bootstrap_location} apt autoremove -y")
+            os.system(f"{sandbox_enter_cmd} apt autoclean")
+            os.system(f"{sandbox_enter_cmd} apt autoremove -y")
             
         else:
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if sandbox_handler == "chroot":
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "upgrade", "-y"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoclean"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoremove", "-y"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "upgrade", "-y"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoclean"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoremove"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            elif sandbox_handler == "bwrap": 
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "update"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "upgrade", "-y"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "clean", "all"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
+                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "autoclean"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "autoremove", "-y"],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                
 
         end_time = time.time()
 
@@ -235,7 +277,7 @@ class PluginHandler:
             f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
 
     def config():
-        print("config")
+        print("Soon")
 
     def remove():
         print(
@@ -244,4 +286,13 @@ class PluginHandler:
         exit()
 
     def enter():
-        os.system(f'sudo chroot {bootstrap_location}')
+        if sandbox_handler == "chroot":
+            sandbox_enter_cmd = f"sudo chroot {bootstrap_location}"
+        
+        elif sandbox_handler == "bwrap":
+            sandbox_enter_cmd = f"sudo bwrap --bind {bootstrap_location} / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp /bin/bash"
+        
+        else:
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} Unknown Config for sandbox_handler. Check your config")
+            
+        os.system(f'{sandbox_enter_cmd}')
