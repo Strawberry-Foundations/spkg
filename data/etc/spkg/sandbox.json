@@ -1,3 +1,4 @@
 {
-    "language": "en"
+    "sandbox_handler": "chroot",
+    "bootstrap_location": ".local/spkg/sandbox/"
 }

@@ -25,16 +25,19 @@ spkg_config = "/etc/spkg/config.json"
 with open(spkg_config, "r") as f:
     spkg_cfg = json.load(f)
 
+sandbox_config = "/etc/spkg/sandbox.json"
+with open(sandbox_config, "r") as f:
+    sandbox_cfg = json.load(f)
+
 language = spkg_cfg['language']
 
 if not language == "de" and not language == "en":
     exit()
 
 # Basic Variables
-sandbox_config = "/etc/spkg/sandbox.json"
-bootstrap_location = f"{home_dir}/.local/spkg/sandbox/"
+bootstrap_location = f"{home_dir}/{sandbox_cfg['bootstrap_location']}"
 dist = "jammy"
-sandbox_handler = "bwrap"
+sandbox_handler = sandbox_cfg['sandbox_handler']
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
