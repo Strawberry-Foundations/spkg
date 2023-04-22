@@ -20,7 +20,7 @@ from src.pkg_download import *
 
 plugin_daemon.import_plugin("sandbox")
 
-version = "1.4 (pre-release)"
+version = "1.4"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
