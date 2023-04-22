@@ -49,18 +49,18 @@ spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or hi
 
 ## **Linux Support**
 Distrobutions and versions that are not listed are not supported by us. 
-| Platform  | Version       | Supported     | Branch        | Package Method    |
-| --        | --            | --            | --            | --                |   
-| Debian    | 9 and below   | No            | OldOldstable  | -
-| Debian    | 10            | Yes           | Oldstable     | native, sandbox, docker
-| Debian    | 11            | Yes           | Stable        | native, sandbox, docker
-| Debian    | 12            | Yes           | Testing       | native, sandbox, docker
-| Debian    | Sid           | Yes           | Unstable      | native, sandbox, docker
-| Ubuntu    | 16.04         | No            | ESM           | -
-| Ubuntu    | 18.04         | Not offical   | Soon ESM      | sandbox, docker
-| Ubuntu    | 20.04         | Yes           | LTS           | native, sandbox, docker
-| Ubuntu    | 22.04         | Yes           | LTS           | native, sandbox, docker
-| Ubuntu    | 22.10         | Yes           | (Old) Stable  | native, sandbox, docker
-| Ubuntu    | 23.04         | Yes           | Stable        | native, sandbox, docker
-| Gentoo    | -             | Yes           | RR            | sandbox, docker
-| Arch      | -             | Yes           | RR            | sandbox, docker
+| Platform  | Version       | Supported     | Branch                                                    | Package Method    |
+| --        | --            | --            | --                                                        | --                |   
+| Debian    | 9 and below   | No            | ![](https://img.shields.io/badge/-End_of_Life-red)        | -
+| Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldStable-yellowgreen)  | native, sandbox, docker
+| Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
+| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Testing-informational)  | native, sandbox, docker
+| Debian    | Sid           | Yes           | ![](https://img.shields.io/badge/-Unstable-orange)        | native, sandbox, docker
+| Ubuntu    | 16.04         | No            | ![](https://img.shields.io/badge/-ESM-orange)             | -
+| Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker
+| Ubuntu    | 20.04         | Yes           | ![](https://img.shields.io/badge/-LTS-green)              | native, sandbox, docker
+| Ubuntu    | 22.04         | Yes           | ![](https://img.shields.io/badge/-LTS-success)            | native, sandbox, docker
+| Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-yellowgreen) | native, sandbox, docker
+| Ubuntu    | 23.04         | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
+| Gentoo    | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
+| Arch      | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
