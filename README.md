@@ -1,5 +1,5 @@
 # **Advanced Source Package Managment (spkg)**
-![spkg - v1.4](https://img.shields.io/badge/spkg-1.4.2-success) 
+![spkg - v1.4](https://img.shields.io/badge/spkg-1.4.3-success) 
 ![Code Size](https://img.shields.io/github/languages/code-size/Juliandev02/spkg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/Juliandev02/spkg)
 ![License](https://img.shields.io/github/license/Juliandev02/spkg)

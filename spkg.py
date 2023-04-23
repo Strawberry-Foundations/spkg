@@ -25,7 +25,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-version = "1.4.2"
+version = "1.4.3"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
@@ -356,11 +356,24 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
 elif len(sys.argv) > 1 and sys.argv[1] == "download":
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
-
+    
     else:
         print(NoArgument)
         exit()
         
+    if len(sys.argv) > 3:
+        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        download_time_start = time.time()
+        
+        for pkg_name in sys.argv[2:]:
+            download_compact(pkg_name)
+        
+        
+        packages = ', '.join(sys.argv[2:])
+        download_time_end = time.time()
+        print(f"{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        exit()
+
     download(pkg_name)
     exit()
 
