@@ -19,7 +19,6 @@ fi
 [[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
 [[ -f "/sbin/apk" ]] && pkg_mgr="apk"
 
-
 if (( $(id -u) != 0 )); then
     echo "This installation script can only be run with root (permisson denied)"
     exit
@@ -27,50 +26,50 @@ fi
 
 if [ "$1" = "--upgrade" ]; then
     echo -e "${Green}${Bold}[!]${Reset} Starting Upgrade for Package ... "
+
     echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
     cd /tmp/
-    mv cpufetch*.tar.gz /tmp/target.tar.gz
+    mv htop*.tar.gz /tmp/target.tar.gz
     mkdir /tmp/target
 
     echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
     tar xf /tmp/target.tar.gz --directory /tmp/target/
-    cd /tmp/target/cpufetch*
+    cd /tmp/target/htop*
 
     echo -e "${Green}${Bold}[!]${Reset} Building ..."
-    make
+    ./autogen.sh && ./configure && make
 
     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
-    cp /tmp/target/cpufetch*/cpufetch /usr/bin/
+    make install
 
     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
     rm -rf /tmp/target/
     rm -f /tmp/*.setup
     rm -f /tmp/target.tar.gz
-
     echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
 
     exit
 fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
-[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y clang build-essential gcc g++ make libncurses-dev tar"
-[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add clang gcc g++ make ncurses-dev tar"
+[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y libncursesw5-dev autotools-dev autoconf automake build-essential tar"
+[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add gcc g++ make ncurses-dev tar automake autoconf"
 $cmd &> /dev/null
 
 echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
 cd /tmp/
-mv cpufetch*.tar.gz /tmp/target.tar.gz
+mv htop*.tar.gz /tmp/target.tar.gz
 mkdir /tmp/target
 
 echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
 tar xf /tmp/target.tar.gz --directory /tmp/target/
-cd /tmp/target/cpufetch*
+cd /tmp/target/htop*
 
 echo -e "${Green}${Bold}[!]${Reset} Building ..."
-make
+./autogen.sh && ./configure && make
 
 echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
-cp /tmp/target/cpufetch*/cpufetch /usr/bin/
+make install
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
 rm -rf /tmp/target/

@@ -11,10 +11,10 @@ Purple='\033[0;35m'
 Cyan='\033[0;36m'
 White='\033[0;37m'
 
-if ! [ -f "/usr/bin/apt" ]; then
-    echo "This build script cannot be executed on your system. Sorry"
-    exit
-fi
+# if ! [ -f "/usr/bin/apt" ]; then
+#     echo "This build script cannot be executed on your system. Sorry"
+#     exit
+# fi
 
 if (( $(id -u) != 0 )); then
     echo "This installation script can only be run with root (permisson denied)"

@@ -11,10 +11,12 @@ Purple='\033[0;35m'
 Cyan='\033[0;36m'
 White='\033[0;37m'
 
-if ! [ -f "/usr/bin/apt" ]; then
-    echo "This build script cannot be executed on your system. Sorry"
-    exit
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "Make sure, you have installed the following dependencies: bash"
 fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
 
 if (( $(id -u) != 0 )); then
     echo "This installation script can only be run with root (permisson denied)"
@@ -38,7 +40,9 @@ if [ "$1" = "--upgrade" ]; then
 fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
-apt install -y bash &> /dev/null
+[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y bash"
+[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash"
+$cmd &> /dev/null
 
 echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
 cd /tmp/
