@@ -7,6 +7,10 @@ from colorama import Fore
 from sys import exit
 import importlib
 import sqlite3 as sql
+from halo import Halo
+import urllib
+from urllib.error import HTTPError
+import time
 
 class Colors:
     BOLD = '\033[1m'
@@ -44,6 +48,14 @@ if language == "de":
     UserConfigNotExists = f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + Colors.RESET} Deine Nutzerkonfiguration existiert nicht."
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
     PluginMarketplace = "Advanced Source Package Managment - Plugin Marketplace"
+    UsageInstall = f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg plugin get{Fore.GREEN} [Plugin]\n"
+    SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Plugin ...{Colors.RESET}"
+    StrGet = "Holen"
+    FinishedDownloading = f"Download abgeschlossen für"
+    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
+    PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Plugin wurde nicht gefunden{Colors.RESET}"
+    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
+    PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} wurde installiert{Colors.RESET}"
 
 elif language == "en":
     PluginManagement = "Plugin Management"
@@ -59,6 +71,15 @@ elif language == "en":
     ErrCode = "Errorcode"
     UserConfigNotExists = f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + Colors.RESET} Your user configuration doesn't exist."
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
+    PluginMarketplace = "Advanced Source Package Managment - Plugin Marketplace"
+    UsageInstall = f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg plugin get{Fore.GREEN} [plugin]\n"
+    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
+    StrGet = "Get"
+    FinishedDownloading = f"Finished downloading"
+    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
+    PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Plugin not found{Colors.RESET}"
+    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
+    PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} has been installed{Colors.RESET}"
     
 
 # Try to connect to the locally saved package database
@@ -114,6 +135,7 @@ class plugin_management:
         except FileNotFoundError:
             print(UserConfigNotExists)
     
+    
     def exec(cmd):
         try:
             plugin_handler = module.PluginHandler
@@ -125,7 +147,8 @@ class plugin_management:
     
     
     def marketplace():
-        print(f"{Colors.BOLD + Colors.UNDERLINE + Fore.CYAN}{PluginMarketplace}\n")
+        print(f"{Colors.BOLD + Colors.UNDERLINE + Fore.CYAN}{PluginMarketplace}")
+        print(UsageInstall)
         try:
                 c.execute("SELECT * FROM plugins")
                 for row in c:
@@ -138,3 +161,58 @@ class plugin_management:
 
         except OperationalError:
             print(PackageDatabaseNotSynced)
+    
+    
+    def get(name):
+        spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner_db_search.start()
+
+        
+        c.execute("SELECT name, fetch_url, filename FROM plugins where name = ?", (name,))
+
+        for row in c:
+            url = row[1]
+            filename = row[2]
+
+            spinner_db_search.stop()
+            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            
+            download_time_start = time.time()
+            
+            spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
+                            '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            spinner.start()
+            
+        try:
+            req = urllib.request.Request(
+                url,
+                data=None,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                }
+            )
+
+            f = urllib.request.urlopen(req)
+
+            
+
+            download_time_end = time.time()
+            # spinner.stop()
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            
+            with open(f"/usr/share/spkg/plugins/{filename}", 'wb') as file:
+                file.write(f.read())
+                
+            print(PluginInstalledSuccess % name)
+
+        except HTTPError as e:
+            print(UnknownError)
+            print(e)
+
+        except NameError as e:
+            print(f"\n{PackageNotFound}")
+            exit()
+
+        except KeyboardInterrupt as e:
+            print(f"\n{Canceled}")
+            exit()

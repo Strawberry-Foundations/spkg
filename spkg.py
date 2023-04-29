@@ -100,6 +100,7 @@ if language == "de":
     PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits aktiviert.{Colors.RESET}"
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits deaktiviert.{Colors.RESET}"
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
+    MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Ungültige Operation: {Colors.RESET}"
     MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     ChangedLanguage = f"{Colors.BOLD}Sprache wurde zu {Fore.CYAN}%s{Fore.RESET} geändert{Colors.RESET}"
@@ -139,6 +140,7 @@ elif language == "en" or language == "us" or language == "en_us":
     PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
+    MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}The plugin could not be installed. (Is spkg running as root?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
     MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
     ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
@@ -153,13 +155,14 @@ def help_en():
     print(f"By compiling the package, the program is optimized for your device and can run faster.")
     print(f"So spkg offers you a high security, so you don't have to worry about viruses in packages.\n")
     print(f"{Colors.UNDERLINE + Colors.BOLD}Commands:{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gives you information about a specific package{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installs the specified package{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Reinstalls the specified package{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}reinstall:{Fore.RESET} Reinstalls the specified package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET} (not available yet)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gives you information about a specific package{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Lists all available packages{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Downloads a specific package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Builts various things{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Rebuilds the World database{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin manager{Colors.RESET}")
@@ -167,6 +170,9 @@ def help_en():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Executes a command from the plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Enables a Plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Disables a Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}marketplace/market:{Fore.RESET} Plugin Marketplace{Colors.RESET}")
+    print(f"{Colors.BOLD}       -> {Fore.BLUE}list:{Fore.RESET} Lists available Plugins{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}get:{Fore.RESET} Installs a Plugin{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Configuration manager{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Configure the language of spkg{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
@@ -181,13 +187,14 @@ def help_de():
     print(f"Durch das kompilieren des Paketes ist das Programm für dein Gerät optimiert und kann schneller laufen.")
     print(f"So bietet dir spkg eine hohe Sicherheit, sodass du dir keine Sorgen um Viren in Paketen machen musst.\n")
     print(f"{Colors.UNDERLINE + Colors.BOLD}Befehle:{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gibt dir Informationen über ein bestimmtes Paket aus{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Lädt ein bestimmtes Paket herunter{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installiert das angegebene Paket{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}reinstall:{Fore.RESET} Installiert das angegebene Paket neu{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gibt dir Informationen über ein bestimmtes Paket aus{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}list:{Fore.RESET} Zählt alle verfügbaren Pakete auf{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Lädt ein bestimmtes Paket herunter{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}build:{Fore.RESET} Erstellt verschiedene Dinge{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}world:{Fore.RESET} Baut die World Datenbank neu auf{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}plugins:{Fore.RESET} Plugin Verwaltung{Colors.RESET}")
@@ -195,6 +202,9 @@ def help_de():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}exec:{Fore.RESET} Führt einen Befehl vom Plugin aus{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}enable:{Fore.RESET} Aktiviert ein Plugin{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}disable:{Fore.RESET} Deaktiviert ein Plugin{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}marketplace/market:{Fore.RESET} Plugin Marketplace{Colors.RESET}")
+    print(f"{Colors.BOLD}       -> {Fore.BLUE}list:{Fore.RESET} Zählt verfügbare Plugins auf{Colors.RESET}")
+    print(f"{Colors.BOLD}    -> {Fore.BLUE}get:{Fore.RESET} Installiert ein Plugin{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Konfigurationsverwaltung{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Konfiguriere die Sprache von spkg{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
@@ -400,6 +410,10 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         print(f"{Fore.CYAN + Colors.BOLD}{filename}{Fore.RESET}{MissingPermissons}")
         print(MissingPermissonsPackageDatabaseUpdate)
         exit()
+        
+    spinner = Halo(text=f"{SyncingPackageDatabase} {data['main']} ...", spinner={
+                    'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    spinner.start()
 
     try:
         req = urllib.request.Request(
@@ -414,9 +428,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
 
         download_time_start = time.time()
 
-        spinner = Halo(text=f"{SyncingPackageDatabase} {data['main']} ...", spinner={
-                       'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-        spinner.start()
+        
 
         with open(filename, 'wb') as file:
             file.write(f.read())
@@ -688,6 +700,21 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             
             with open(enabled_plugins_cfg, 'w') as f:
                 json.dump(data, f)
+                
+        
+    # Installs a plugin
+    elif len(sys.argv) > 3 and sys.argv[2] == "get":
+        plugin = sys.argv[3]
+        
+        if os.geteuid() == 0:
+            None
+            
+        else:
+            print(f"{Fore.CYAN + Colors.BOLD}/usr/share/spkg/plugins/{Fore.RESET}{MissingPermissons}")
+            print(MissingPermissonsPluginInstallation)
+            exit()
+        
+        plugin_management.get(plugin)
             
     # Execution of a plugin-command without 'exec'
     elif len(sys.argv) > 3: 
@@ -705,7 +732,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
         else: 
             plugin_daemon.import_plugin(plugin)
             plugin_management.exec(sys.argv[3])
-            
+
 
     # If no Argument was passed, print an error
     else:
