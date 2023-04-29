@@ -769,9 +769,9 @@ if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
                 
             lang = sys.argv[3]
             
-            if not lang == "de" or not lang == "en": 
-                print(UnknownLanguage)
-                exit()
+            # if not lang == "de" or not lang == "en": 
+            #     print(UnknownLanguage)
+            #     exit()
             
             with open(spkg_config, "r") as f:
                 data = json.load(f)
