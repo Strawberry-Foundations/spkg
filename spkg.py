@@ -106,6 +106,7 @@ if language == "de":
     ChangedLanguage = f"{Colors.BOLD}Sprache wurde zu {Fore.CYAN}%s{Fore.RESET} geändert{Colors.RESET}"
     UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unbekannte Sprache.{Colors.RESET}"
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
+    ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
 
 
 # Language Strings for English
@@ -147,6 +148,7 @@ elif language == "en" or language == "us" or language == "en_us":
     ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
     UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
+    ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
     
 # Help Function for English Language
 def help_en():
@@ -517,6 +519,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
 # * --- Reinstall Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
+    # Check if you have runned spkg with sudo
+    if os.geteuid() == 0:
+        print(ReinstallNotAsRoot)
+        time.sleep(3)
+        
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
 
