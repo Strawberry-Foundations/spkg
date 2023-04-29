@@ -25,7 +25,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-version = "1.4.3"
+version = "1.4.4"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
@@ -85,7 +85,7 @@ if language == "de":
     ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Abbruch ... "
     ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
-    MissingPermissons = f"{Colors.BOLD}Fehlende Berechtigung{Colors.RESET}"
+    MissingPermissons = f"{Fore.RESET + Colors.RESET}: Fehlende Berechtigung"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
     WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET} auszuführen){Colors.RESET + Fore.RESET}"
@@ -122,7 +122,7 @@ elif language == "en":
     ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Aborting ..."
     ExecutingSetup = f"Executing Setup Script... Please wait"
-    MissingPermissons = f"{Colors.BOLD}Missing Permissons{Colors.RESET}"
+    MissingPermissons = f"{Fore.RESET + Colors.RESET}Missing Permissons"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
     WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
@@ -222,7 +222,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             if os.geteuid() == 0:
                 None
             else:
-                print(f"{Fore.CYAN}{world_database}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
                 print(MissingPermissonsPackageDatabaseUpdate)
                 exit()
 
@@ -328,8 +328,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
     # Check if second argument is --arch; List programms that match the architecture from the third argument [all, arm64, amd64, ...]
     else:
         if len(sys.argv) > 2 and sys.argv[2] == "--arch":
-            arch_a = sys.argv[3]
             try:
+                arch_a = sys.argv[3]
                 c.execute("SELECT * FROM packages where arch = ?", (arch_a, ))
                 for row in c:
                     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
@@ -337,6 +337,9 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
 
             except OperationalError:
                 print(PackageDatabaseNotSynced)
+            
+            except IndexError:
+                print(NoArgument)
                 
         # If not, print just all packages
         else:
@@ -389,7 +392,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     if os.geteuid() == 0:
         None
     else:
-        print(f"{Fore.CYAN}{filename}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+        print(f"{Fore.CYAN + Colors.BOLD}{filename}{Fore.RESET}{MissingPermissons}")
         print(MissingPermissonsPackageDatabaseUpdate)
         exit()
 
@@ -464,6 +467,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         except OperationalError:
             print(PackageDatabaseNotSynced)
             exit()
+        
+        if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
+            if len(sys.argv) > 3:
+                pkg_name = sys.argv[3]
+            sandbox_install(pkg_name)
             
         # Install the package
         install(pkg_name)
@@ -471,7 +479,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         if os.geteuid() == 0:
                 None
         else:
-            print(f"{Fore.CYAN}{world_database}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
             print(MissingPermissonsWorldDatabaseInsert)
             exit()
     
@@ -609,7 +617,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             None
             
         else:
-            print(f"{Fore.CYAN}{enabled_plugins_cfg}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_cfg}{Fore.RESET}{MissingPermissons}")
             print(MissingPermissonsPluginConfig)
             exit()
         
@@ -636,7 +644,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             None
             
         else:
-            print(f"{Fore.CYAN}{enabled_plugins_cfg}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
+            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_cfg}{Fore.RESET}{MissingPermissons}")
             print(MissingPermissonsPluginConfig)
             exit()
         
@@ -679,24 +687,27 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
     exit()
     
     
-# * --- Package Info Function --- *
-if len(sys.argv) > 1 and sys.argv[1] == "config":
-    if len(sys.argv) > 3 and sys.argv[2] == "language":
-        if os.geteuid() == 0:
-            None
-        else:
-            print(f"{Fore.CYAN}{spkg_config}{Fore.RESET + Colors.BOLD}: {MissingPermissons}")
-            print(MissingPermissonsSpkgConfig)
-            exit()
-        lang = sys.argv[3]
-        
-        with open(spkg_config, "r") as f:
-            data = json.load(f)
-
-            data["language"] = lang
+# * --- Config Function --- *
+if len(sys.argv) > 1 and sys.argv[1] == "config" or sys.argv[1] == "conf":
+    if len(sys.argv) > 3 and sys.argv[2] == "language" or sys.argv[2] == "lang":
+        try:
+            if os.geteuid() == 0:
+                None
+            else:
+                print(f"{Fore.CYAN + Colors.BOLD}{spkg_config}{Fore.RESET}{MissingPermissons}")
+                print(MissingPermissonsSpkgConfig)
+                exit()
+            lang = sys.argv[3]
             
-        with open(spkg_config, 'w') as f:
-            json.dump(data, f)
+            with open(spkg_config, "r") as f:
+                data = json.load(f)
+
+                data["language"] = lang
+                
+            with open(spkg_config, 'w') as f:
+                json.dump(data, f)
+        except IndexError: 
+            print(NoArgument)
         
     # If no Argument was passed, print an error
     else:

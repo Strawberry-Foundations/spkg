@@ -94,7 +94,7 @@ elif language == "en":
 class Spec:
     Name = "spkg-sandbox"
     Desc = Description
-    Version = "1.1.0"
+    Version = "1.2.0"
     Commands = f"""
     -> setup
     -> config
