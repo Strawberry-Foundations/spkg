@@ -619,6 +619,22 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             plugin_daemon.import_plugin(plugin)
             plugin_management.exec(sys.argv[4])
             
+    
+        # Plugin Marketplace
+    elif len(sys.argv) > 2 and sys.argv[2] == "market":
+        if len(sys.argv) > 3 and sys.argv[3] == "list":
+            try:
+                c.execute("SELECT * FROM plugins")
+                for row in c:
+                    print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[5]}{Fore.RESET}")
+                exit()
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+        else:
+            plugin_management.marketplace()
+            exit()
+            
             
     # Enable a plugin
     elif len(sys.argv) > 3 and sys.argv[2] == "enable":
@@ -672,7 +688,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
             
             with open(enabled_plugins_cfg, 'w') as f:
                 json.dump(data, f)
-
+            
     # Execution of a plugin-command without 'exec'
     elif len(sys.argv) > 3: 
         plugin = sys.argv[2]
@@ -689,6 +705,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
         else: 
             plugin_daemon.import_plugin(plugin)
             plugin_management.exec(sys.argv[3])
+            
 
     # If no Argument was passed, print an error
     else:

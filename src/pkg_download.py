@@ -218,7 +218,7 @@ def download_compact(name):
 
         f = urllib.request.urlopen(req)
 
-        spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
+        spinner = Halo(text=f"{StrGet}: {url} ({round(file_size_mb, 2)} MB)", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
 

@@ -48,6 +48,11 @@ if [ "$1" = "--upgrade" ]; then
     chmod a+x /usr/share/spkg/spkg
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
+    echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
+    spkg build world
+    spkg sync
+    spkg plugin disable sandbox
+
     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
     rm -rf /tmp/target/
     rm -f /tmp/*.setup
@@ -93,6 +98,11 @@ rm -f spkg-installer.py
 chmod a+x /usr/share/spkg/spkg
 
 ln -s /usr/share/spkg/spkg /usr/bin/spkg
+
+echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
+spkg build world
+spkg sync
+spkg plugin disable sandbox
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
 rm -rf /tmp/target/
