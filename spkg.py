@@ -65,6 +65,7 @@ if not os.path.exists(f"{home_dir}/.config/spkg"):
 # If language is either "de" and "en", print Error Message
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
+    exit()
 
 # Language Strings for German
 if language == "de":
@@ -101,10 +102,12 @@ if language == "de":
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Ungültige Operation: {Colors.RESET}"
     MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
+    ChangedLanguage = f"{Colors.BOLD}Sprache wurde zu {Fore.CYAN}%s{Fore.RESET} geändert{Colors.RESET}"
+    UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unbekannte Sprache.{Colors.RESET}"
 
 
 # Language Strings for English
-elif language == "en":
+elif language == "en" or language == "us" or language == "en_us":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
@@ -138,6 +141,8 @@ elif language == "en":
     MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
     UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
     MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
+    ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
+    UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
     
 # Help Function for English Language
 def help_en():
@@ -473,6 +478,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
                 pkg_name = sys.argv[3]
             sandbox_install(pkg_name)
             
+        elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
+            if len(sys.argv) > 3:
+                pkg_name = sys.argv[3]
+            print("Currently not working ...")
+            exit()
+            
         # Install the package
         install(pkg_name)
         
@@ -688,8 +699,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.a
     
     
 # * --- Config Function --- *
-if len(sys.argv) > 1 and sys.argv[1] == "config" or sys.argv[1] == "conf":
-    if len(sys.argv) > 3 and sys.argv[2] == "language" or sys.argv[2] == "lang":
+if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
+    if len(sys.argv) > 3 and (sys.argv[2] == "language" or sys.argv[2] == "lang"):
         try:
             if os.geteuid() == 0:
                 None
@@ -697,7 +708,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "config" or sys.argv[1] == "conf":
                 print(f"{Fore.CYAN + Colors.BOLD}{spkg_config}{Fore.RESET}{MissingPermissons}")
                 print(MissingPermissonsSpkgConfig)
                 exit()
+                
             lang = sys.argv[3]
+            languages = ["de", "en"]
+            
+            if not lang in language: 
+                print(UnknownLanguage)
+                exit()
             
             with open(spkg_config, "r") as f:
                 data = json.load(f)
@@ -706,6 +723,15 @@ if len(sys.argv) > 1 and sys.argv[1] == "config" or sys.argv[1] == "conf":
                 
             with open(spkg_config, 'w') as f:
                 json.dump(data, f)
+                
+            
+            if lang == "de": 
+                lang = "Deutsch (German)"
+            if lang == "en": 
+                lang = "English"
+                
+            print(ChangedLanguage % lang)
+                
         except IndexError: 
             print(NoArgument)
         
