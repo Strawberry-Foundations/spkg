@@ -768,9 +768,8 @@ if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
                 exit()
                 
             lang = sys.argv[3]
-            languages = ["de", "en"]
             
-            if not lang in language: 
+            if not lang == "de" or not lang == "en": 
                 print(UnknownLanguage)
                 exit()
             
