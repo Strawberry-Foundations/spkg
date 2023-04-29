@@ -1,0 +1,4 @@
+colorama
+halo
+requests
+urllib3
