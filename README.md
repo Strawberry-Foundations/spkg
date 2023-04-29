@@ -54,7 +54,7 @@ Distrobutions and versions that are not listed are not supported by us.
 | Debian    | 9 and below   | No            | ![](https://img.shields.io/badge/-End_of_Life-red)        | -
 | Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldStable-yellowgreen)  | native, sandbox, docker
 | Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
-| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Testing-informational)  | native, sandbox, docker
+| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Future-success)  | native, sandbox, docker
 | Debian    | Sid           | Yes           | ![](https://img.shields.io/badge/-Unstable-orange)        | native, sandbox, docker
 | Ubuntu    | 16.04         | No            | ![](https://img.shields.io/badge/-ESM-orange)             | -
 | Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker
