@@ -1,1 +1,1 @@
-{"sandbox": true, "test": false, "docker": false}
+{"sandbox": false, "test": false, "docker": false}
