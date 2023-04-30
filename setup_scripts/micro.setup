@@ -72,7 +72,7 @@ echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
 sudo mv /tmp/target/micro-master/micro /usr/local/bin/micro
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
-#rm -rf /tmp/target/
+rm -rf /tmp/target/
 rm -f /tmp/*.setup
 rm -f /tmp/target.zip
 
