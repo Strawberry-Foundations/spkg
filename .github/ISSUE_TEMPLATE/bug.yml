@@ -63,9 +63,9 @@ body:
 - type: input
     id: operating-system-specific-version
     attributes:
-      label: Operating System Version
+      label: Operating System Version (only fill when selected "other")
     validations:
-      required: true
+      required: false
 
   - type: input
     id: operating-system-specific-other
