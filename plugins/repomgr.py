@@ -35,7 +35,7 @@ if language == "de":
     Description = "Das Repo Manager Plugin für spkg ermöglicht es dir einfach Repositories zu verwalten, auszuwählen, hinzuzufügen und anderes!"
     MissingPermissonsPluginConfig = f"{Fore.RED + BOLD}Die Repository-Konfiguration konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){RESET}"
     MissingPermissons = f"{Fore.RESET + RESET}: Fehlende Berechtigung"
-    WarningRegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Warnung! Dies löscht deine Aktuelle Repositorie-Liste! Möchtest du wirklich fortfahren? [J/N]"
+    WarningRegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Warnung! Dies löscht deine Aktuelle Repositorie-Liste! Möchtest du wirklich fortfahren? [J/N] "
     RegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Die Repositorie-Konfiguration wird neu generiert ..."
     Abort = "Abbruch ... "
     Canceled = f"{Fore.RED + BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{RESET}"
@@ -45,7 +45,7 @@ elif language == "en":
     MissingPermissonsPluginConfig = f"{Fore.RED + BOLD}The repository configuration could not be edited. (Is spkg running as root?){RESET}"
     MissingPermissons = f"{Fore.RESET + RESET}Missing Permissons"
     RegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} The repository configuration is regenerated ..."
-    WarningRegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Warning! This will delete your current Repository list! Do you really want to continue? [Y/N]"
+    WarningRegeneratingConfig = f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Warning! This will delete your current Repository list! Do you really want to continue? [Y/N] "
     Abort = "Aborting ... "
     Canceled = f"{Fore.RED + BOLD}[!!!]{Fore.RESET} Process canceled!{RESET}"
 
@@ -93,8 +93,7 @@ class PluginHandler:
             exit()
             
         print(RegeneratingConfig)
-        os.system(f"rm -f ")
-        os.mkdir(repomgr_list)
+        os.system(f"rm -f {repomgr_list}")
         os.system(f"touch {repomgr_list}")
         os.system("sh -c 'echo {} >> " + repomgr_list + "'")
         with open(repomgr_list, "r") as f:
