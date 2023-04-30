@@ -25,7 +25,6 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-# version = "1.4.4"
 version = "1.5.0-git-20230430"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
@@ -228,8 +227,10 @@ except OperationalError:
 
 # * --- Build Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "build":
+    # Check if second argument is world
     if len(sys.argv) > 2 and sys.argv[2] == "world":
         url = world_database_url
+        # fetch url
         try:
             req = urllib.request.Request(
                 url,
@@ -239,6 +240,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 }
             )
             
+            # check if you are root
             if os.geteuid() == 0:
                 None
             else:

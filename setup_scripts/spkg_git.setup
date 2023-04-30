@@ -43,6 +43,8 @@ if [ "$1" = "--upgrade" ]; then
     rm -rf setup_scripts
     rm -f package.db
     rm -f spkg-installer.py
+    rm -f requirements.txt
+    rm -f rmcache.sh
     chmod a+x /usr/share/spkg/spkg
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
@@ -90,6 +92,8 @@ rm -rf resources
 rm -rf setup_scripts
 rm -f package.db
 rm -f spkg-installer.py
+rm -f requirements.txt
+rm -f rmcache.sh
 chmod a+x /usr/share/spkg/spkg
 ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
