@@ -25,3 +25,7 @@ body:
         - label: |
             This feature was not already suggested
           required: true
+        - label: |
+            This feature is not on our todo-list
+          required: true
+
