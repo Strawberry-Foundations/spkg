@@ -52,8 +52,8 @@ if [ "$1" = "--upgrade" ]; then
 fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
-[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y make golang"
-[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add make go"
+[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y make golang unzip"
+[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add make go unzip"
 $cmd &> /dev/null
 
 echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
