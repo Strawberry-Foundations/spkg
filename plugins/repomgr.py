@@ -70,7 +70,7 @@ class PluginHandler:
     def reconfigure():
         if not os.geteuid() == 0:
                 print(f"{Fore.CYAN + BOLD}{spkg_repositories}: {Fore.RESET}")
-                print({MissingPermissonsPluginConfig})
+                print(MissingPermissonsPluginConfig)
                 exit()
         else:
             pass
