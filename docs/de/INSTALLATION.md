@@ -28,3 +28,6 @@ Falls beide Methoden nicht gehen sollten, oder du ein bisschen experimentieren w
 8. Synchronisere die Datenbank und baue die World Datenbank neu `sudo spkg build  world && sudo spkg sync`
 
 Das wars! 
+
+# Verwendung
+spkg ist sehr einfach zu Bedienen. Rufe die Hilfeseite mit `spkg help` auf. Dort werden dir alle verfügbaren Befehle angezeigt, mit einer kleinen Beschreibung, was diese machen. Bei Hilfe kannst du gerne ein [Issue eröffnen](https://github.com/Salware-Foundations/spkg/issues/new/choose) oder mir auf Discord schreiben (`$ Juliandev02#6046`)
