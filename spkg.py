@@ -70,7 +70,7 @@ if not language == "de" and not language == "en":
 
 # Language Strings for German
 if language == "de":
-    # NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
+    NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information über das Paket"
     FinishedDownloading = f"Download abgeschlossen für"
