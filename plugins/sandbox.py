@@ -69,7 +69,7 @@ else:
 language = spkg_cfg['language']
 
 if not language == "de" and not language == "en":
-    exit()
+    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 # Basic Variables
 try:
