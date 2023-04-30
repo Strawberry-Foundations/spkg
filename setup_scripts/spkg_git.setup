@@ -31,6 +31,10 @@ if [ "$1" = "--upgrade" ]; then
     mv spkg*.tar.gz /tmp/target.tar.gz
     mkdir /tmp/target
 
+    echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
+    tar xf /tmp/target.tar.gz --directory /tmp/target/
+    cd /tmp/target/spkg-main
+
     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
