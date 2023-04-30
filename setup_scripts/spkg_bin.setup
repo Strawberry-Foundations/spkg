@@ -29,6 +29,10 @@ if [ "$1" = "--upgrade" ]; then
     mv spkg*.tar /tmp/target.tar
     mkdir /tmp/target
 
+    echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
+    tar xf /tmp/target.tar --directory /tmp/target/
+    cd /tmp/target/
+
     echo -e "${Green}${Bold}[!]${Reset} Building ..."
     python3 -m nuitka ./spkg.py --follow-imports --onefile
 
@@ -52,7 +56,7 @@ if [ "$1" = "--upgrade" ]; then
 
     echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
     spkg sync
-    spkg plugin disable sandbox
+    # spkg plugin disable sandbox
 
     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
     rm -rf /tmp/target/
@@ -105,7 +109,7 @@ ln -s /usr/share/spkg/spkg /usr/bin/spkg
 echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
 spkg build world
 spkg sync
-spkg plugin disable sandbox
+# spkg plugin disable sandbox
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
 rm -rf /tmp/target/

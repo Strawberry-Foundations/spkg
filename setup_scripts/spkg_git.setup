@@ -54,7 +54,7 @@ if [ "$1" = "--upgrade" ]; then
 
     echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
     spkg sync
-    spkg plugin disable sandbox
+    # spkg plugin disable sandbox
 
     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
     rm -rf /tmp/target/
@@ -104,7 +104,7 @@ ln -s /usr/share/spkg/spkg /usr/bin/spkg
 echo -e "${Green}${Bold}[!]${Reset} Setting up ..."
 spkg build world
 spkg sync
-spkg plugin disable sandbox
+# spkg plugin disable sandbox
 
 echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
 rm -rf /tmp/target/
