@@ -65,7 +65,23 @@ class Spec:
 # PluginHandler Main Class
 class PluginHandler:
     def list():
-        pass
+        with open(repomgr_list, "r") as f:
+            data = json.load(f)
+        
+        for key, value in data.items():
+            print(f"{Fore.GREEN + BOLD}{key}:{Fore.CYAN} {value}")
+        exit()
+        
+    def current():
+        with open(spkg_repositories, "r") as f:
+            data = json.load(f)
+        
+        for key, value in data.items():
+            print(f"{Fore.GREEN + BOLD}{key} -->{Fore.CYAN} {value}")
+        exit()
+        
+    def active():
+        PluginHandler.current()
 
     def reconfigure():
         if not os.geteuid() == 0:
