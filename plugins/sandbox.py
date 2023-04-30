@@ -327,6 +327,7 @@ class PluginHandler:
 
         print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
 
+
     def config():
         if os.geteuid() == 0:
                 print(f"{Fore.YELLOW + BOLD}That shouldn't happen. Don't generate your config as root!{Fore.RESET + RESET}")
@@ -353,6 +354,7 @@ class PluginHandler:
         print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
         os.system(f"sudo rm -rf {bootstrap_location}")
         exit()
+
 
     def enter():
         if sandbox_handler == "chroot":
