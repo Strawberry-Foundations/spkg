@@ -18,10 +18,10 @@ body:
       render: bash
     validations:
       required: true
-  - type: input
+  - type: textarea
     id: error
     attributes:
-      label: The Error-Text/Stacktrace
+      label: The Error Text/Stacktrace
   - type: input
     id: version
     attributes:
