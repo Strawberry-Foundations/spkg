@@ -40,7 +40,7 @@ body:
     validations:
       required: true
   - type: dropdown
-    id: operating-systems
+    id: operating-system-secific
     attributes:
       label: Specific Operating System
       options:
