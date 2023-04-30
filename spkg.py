@@ -25,7 +25,8 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-version = "1.4.4"
+# version = "1.4.4"
+version = "1.5.0-git-20230430"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
@@ -805,10 +806,29 @@ elif len(sys.argv) > 1 and sys.argv[1] == "help":
     elif language == "de":
         help_de()
 
+# Plugin Executor WITHOUT using spkg plugin <...>
+elif len(sys.argv) > 2: 
+    plugin = sys.argv[1]
+
+    try: 
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(PluginNotEnabled)
+            exit()
+            
+    except KeyError:
+        print(NoArgument)
+        exit()
+
+    else: 
+        plugin_daemon.import_plugin(plugin)
+        plugin_management.exec(sys.argv[2])
+            
+
 elif len(sys.argv) > 1 and sys.argv[1] != "help":
     print(f"{UnknownOperation}{sys.argv[1]}")
     exit()
-
+    
+    
 else:
     if language == "en":
         help_en()
