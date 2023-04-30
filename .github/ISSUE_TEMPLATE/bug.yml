@@ -60,13 +60,6 @@ body:
     validations:
       required: true
 
-- type: input
-    id: operating-system-specific-version
-    attributes:
-      label: Operating System Version (only fill when selected "other")
-    validations:
-      required: false
-
   - type: input
     id: operating-system-specific-other
     attributes:
@@ -83,5 +76,5 @@ body:
             This bug wasn't already reported (I have searched bug reports on GitHub).
           required: true
         - label: |
-            This bug isn't fixed in the latest version of spkg (including git release)
+            This bug isn't fixed in the latest version of spkg (including git)
           required: true
