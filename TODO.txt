@@ -1,0 +1,8 @@
+- Working Update Function
+- Docker Plugin
+- Native Support for Fedora
+- Native Support for openSUSE
+- Sandbox Support for Alpine Linux
+- More optimizations
+- Remove Function (complete)
+- Wildcard Support

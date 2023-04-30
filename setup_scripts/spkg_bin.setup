@@ -51,6 +51,7 @@ if [ "$1" = "--upgrade" ]; then
     rm -f spkg-installer.py
     rm -f requirements.txt
     rm -f rmcache.sh
+    rm -f todo.txt
     chmod a+x /usr/share/spkg/spkg
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
@@ -66,6 +67,32 @@ if [ "$1" = "--upgrade" ]; then
     echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
 
     exit
+fi
+
+if [ "$1" = "--remove" ]; then
+    read -rep "Are you sure? This will remove spkg from your system. [Y/N] " ans_s
+    if [[ "${ans_s}" != "y" ]] && [[ "${ans_s}" != "Y" ]] && [[ "${ans_s}" != "j" ]] && [[ "${ans_s}" != "j" ]]; then
+            echo -e "${Yellow}${Bold}[!]${Reset} Aborting"
+            exit
+    fi
+
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -rf /usr/share/spkg
+    rm -f /usr/bin/spkg
+    rm -rf /etc/spkg/
+    read -rep "Remove dependencies? [Y/N] " ans
+
+    if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
+        echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+        exit
+    else 
+        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y build-essential gcc g++ make libncurses-dev && apt autoremove -y"
+        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove gcc g++ make ncurses-dev"
+        $cmd &> /dev/null
+    fi
+
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
 fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Base Dependencies ... "
@@ -102,6 +129,7 @@ rm -f package.db
 rm -f spkg-installer.py
 rm -f requirements.txt
 rm -f rmcache.sh
+rm -f todo.txt
 chmod a+x /usr/share/spkg/spkg
 
 ln -s /usr/share/spkg/spkg /usr/bin/spkg

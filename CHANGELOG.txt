@@ -1,0 +1,24 @@
+* -- spkg v1.5.0 Pre-Release 1 (May Build) -- *
+--> Things changed since v1.4.4
+
+- (Important) We moved spkg to our GitHub Organization
+- (New) Added remove Feature
+- (New) Added Plugin Executor without using spkg plugin <...>
+- (New) Remove Function in Setup Script
+- (New) New plugin "repomgr"
+- (New) Warning if you upgrade a package as root
+- (New) Warning if you reinstall a package as root
+- (New) Issue Templates and Pull Request Templates on GitHub
+- (New) Official spkg documentation
+- (Package-related) Added micro and nano build scripts
+- (Optimization) Code optimization
+- (Optimization) More comments
+- (Fix) Better formatting
+- (Fix) Bug fixes
+- (Fix) Fixed rebuilding world database when upgrading spkg
+- (Fix) Fixed wrong string in help function
+- (Fix) Bug fix for changing language
+- (Fix) Fixed an exit without an error message when unknown language
+- (Fix) Fixed not extracting archive when upgrading (spkg-bin) (why ???) 
+- (Backend) commented spkg plugin disable sandbox, plugin is already disabled because of the config in /data
+- (Backend) Small updates everywhere (plugins, ...)

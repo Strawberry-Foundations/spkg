@@ -39,6 +39,13 @@ if [ "$1" = "--upgrade" ]; then
     exit
 fi
 
+if [ "$1" = "--remove" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -f /usr/bin/neofetch
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+fi
+
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
 [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y bash"
 [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash"

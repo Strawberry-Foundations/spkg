@@ -61,8 +61,8 @@ if [ "$1" = "--remove" ]; then
         echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
         exit
     else 
-        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y build-essential gcc g++ make libncurses-dev tar && apt autoremove -y"
-        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove gcc g++ make ncurses-dev tar"
+        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y build-essential gcc g++ make libncurses-dev && apt autoremove -y"
+        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove gcc g++ make ncurses-dev"
         $cmd &> /dev/null
     fi
 

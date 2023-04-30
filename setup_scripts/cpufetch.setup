@@ -52,6 +52,24 @@ if [ "$1" = "--upgrade" ]; then
     exit
 fi
 
+if [ "$1" = "--remove" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -f /usr/bin/cpufetch
+    read -rep "Remove dependencies? [Y/N] " ans
+
+    if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
+        echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+        exit
+    else 
+        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y clang build-essential gcc g++ make libncurses-dev && apt autoremove -y"
+        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove gcc g++ make ncurses-dev"
+        $cmd &> /dev/null
+    fi
+
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+fi
+
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
 [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y clang build-essential gcc g++ make libncurses-dev tar"
 [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add clang gcc g++ make ncurses-dev tar"
