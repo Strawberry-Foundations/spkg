@@ -10,6 +10,7 @@ body:
         Describe the bug
     validations:
       required: true
+
   - type: textarea
     id: reproducing
     attributes:
@@ -18,16 +19,19 @@ body:
       render: bash
     validations:
       required: true
+
   - type: textarea
     id: error
     attributes:
       label: The Error Text/Stacktrace
+      
   - type: input
     id: version
     attributes:
       label: The version of spkg you used
     validations:
       required: true
+
   - type: dropdown
     id: operating-systems
     attributes:
@@ -39,6 +43,7 @@ body:
         - Android
     validations:
       required: true
+
   - type: dropdown
     id: operating-system-specific
     attributes:
@@ -53,7 +58,15 @@ body:
         - openSUSE
         - other
     validations:
-      required: true  
+      required: true
+
+  - type: input
+    id: operating-system-specific-other
+    attributes:
+      label: Specific Operating System (only fill when checked selected "other")
+    validations:
+      required: false
+
   - type: checkboxes
     id: prerequisites
     attributes:
