@@ -29,18 +29,18 @@ if [ "$1" = "--upgrade" ]; then
 
     echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
     cd /tmp/
-    mv micro*.zip /tmp/target.zip
+    mv micro-master.zip /tmp/target.zip
     mkdir /tmp/target
 
     echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
     unzip /tmp/target.zip -d /tmp/target/
-    cd /tmp/target/micro-master/micro*
+    cd /tmp/target/micro-master/
 
     echo -e "${Green}${Bold}[!]${Reset} Building ..."
     make
 
     echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
-    sudo mv /tmp/target/micro-master/micro /usr/local/bin/micro
+    sudo mv micro /usr/local/bin/micro
 
     echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
     rm -rf /tmp/target/
