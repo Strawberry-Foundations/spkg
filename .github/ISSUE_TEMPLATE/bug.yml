@@ -33,12 +33,27 @@ body:
     attributes:
       label: Operating System
       options:
+        - Linux
         - macOS
         - Windows
-        - Linux
         - Android
     validations:
       required: true
+  - type: dropdown
+    id: operating-systems
+    attributes:
+      label: Specific Operating System
+      options:
+        - Debian
+        - Ubuntu
+        - serverOS
+        - coreOS
+        - Fedora
+        - Alpine
+        - openSUSE
+        - other
+    validations:
+      required: true  
   - type: checkboxes
     id: prerequisites
     attributes:
