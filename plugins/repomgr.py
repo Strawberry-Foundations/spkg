@@ -72,6 +72,7 @@ class PluginHandler:
             print(f"{Fore.GREEN + BOLD}{key}:{Fore.CYAN} {value}")
         exit()
         
+        
     def current():
         with open(spkg_repositories, "r") as f:
             data = json.load(f)
@@ -80,8 +81,10 @@ class PluginHandler:
             print(f"{Fore.GREEN + BOLD}{key} -->{Fore.CYAN} {value}")
         exit()
         
+        
     def active():
         PluginHandler.current()
+
 
     def reconfigure():
         if not os.geteuid() == 0:

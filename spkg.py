@@ -16,6 +16,7 @@ from halo import Halo
 from sys import exit
 from plugin_daemon import *
 from src.pkg_install import * 
+from src.pkg_remove import * 
 from src.pkg_download import *
 
 
@@ -25,7 +26,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-version = "1.5.0-git-20230430"
+version = "1.5.0-git-20230501"
 world_database = "/etc/spkg/world.db"
 world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
 package_database = "/etc/spkg/package.db"
@@ -69,7 +70,7 @@ if not language == "de" and not language == "en":
 
 # Language Strings for German
 if language == "de":
-    NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
+    # NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information über das Paket"
     FinishedDownloading = f"Download abgeschlossen für"
@@ -92,10 +93,13 @@ if language == "de":
     WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET} auszuführen){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket wurde bereits installiert. Es gibt nichts zu tun.{Colors.RESET}"
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
+    PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu entfernen.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
+    MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
+    RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
     PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist nicht aktiviert.{Colors.RESET}"
     PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits aktiviert.{Colors.RESET}"
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits deaktiviert.{Colors.RESET}"
@@ -107,6 +111,7 @@ if language == "de":
     UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unbekannte Sprache.{Colors.RESET}"
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
     ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
+    SearchingWorldForPackage = f"{Colors.BOLD}Durchsuche lokale World Datenbak nach installierten Paket ...{Colors.RESET}"
 
 
 # Language Strings for English
@@ -134,10 +139,13 @@ elif language == "en" or language == "us" or language == "en_us":
     WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
     PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
+    PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to uninstall.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
     SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
+    MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly removed package could therefore not be removed (Is spkg run as root?).{Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
+    RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
     PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is not activated.{Colors.RESET}"
     PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
     PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
@@ -149,6 +157,7 @@ elif language == "en" or language == "us" or language == "en_us":
     UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
     ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
+    SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
     
 # Help Function for English Language
 def help_en():
@@ -161,6 +170,7 @@ def help_en():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Commands:{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installs the specified package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}reinstall:{Fore.RESET} Reinstalls the specified package{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}remove:{Fore.RESET} Removes the specified package{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Checks if an update is available for an installed package{Colors.RESET} (not available yet)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Updates all available package updates{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronizes the package database{Colors.RESET}")
@@ -193,6 +203,7 @@ def help_de():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Befehle:{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}install:{Fore.RESET} Installiert das angegebene Paket{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}reinstall:{Fore.RESET} Installiert das angegebene Paket neu{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}remove:{Fore.RESET} Entfernt das angegebene Paket neu{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
@@ -495,7 +506,32 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
             if len(sys.argv) > 3:
                 pkg_name = sys.argv[3]
+                
             sandbox_install(pkg_name)
+            
+            if os.geteuid() == 0:
+                None
+                
+            else:
+                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+                print(MissingPermissonsWorldDatabaseInsert)
+                exit()
+                
+            try:
+                c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
+                for row in c:
+                    name = row[0]
+                    version = row[1]
+                    branch = row[2]
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+                exit()
+    
+            world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
+            world_db.commit()
+            world_db.close()
+            exit()
             
         elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
             if len(sys.argv) > 3:
@@ -514,6 +550,109 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             exit()
     
         world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
+        world_db.commit()
+        world_db.close()
+        
+        exit()
+
+
+# * --- Remove Function --- *
+elif len(sys.argv) > 1 and sys.argv[1] == "remove":
+    # Check if you have runned spkg with sudo
+    if os.geteuid() == 0:
+        None
+    else:
+        print(RecommendedRunningAsRootRemove)
+        
+    # Check if a package was passed
+    if len(sys.argv) > 2:
+        pkg_name = sys.argv[2]
+
+    else:
+        print(NoArgument)
+        exit()
+    
+    spinner_world_search = Halo(text=f"{SearchingWorldForPackage}", spinner={
+                             'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    spinner_world_search.start()
+        
+        
+    # Check if package is already installed
+    try:
+        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
+        spinner_world_search.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[\] {Fore.RESET + Colors.RESET}{SearchingWorldForPackage}")
+
+    except OperationalError as e:
+        print(WorldDatabaseNotBuilded)
+        exit()
+
+    if not world_c.fetchall():
+        print(PackageNotInstalledRemove)
+        exit()
+        
+    else:
+        pass
+
+    
+        # Check if Package even exists
+        try:
+            c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
+            for row in c:
+                name = row[0]
+                version = row[1]
+                branch = row[2]
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+        
+        if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
+            if len(sys.argv) > 3:
+                pkg_name = sys.argv[3]
+            sandbox_remove(pkg_name)
+            
+            if os.geteuid() == 0:
+                None
+                
+            else:
+                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+                print(MissingPermissonsWorldDatabaseInsertRemove)
+                exit()
+                
+            try:
+                c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
+                for row in c:
+                    name = row[0]
+                    version = row[1]
+                    branch = row[2]
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+                exit()
+        
+            world_c.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
+            world_db.commit()
+            
+            exit()
+            
+        elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
+            if len(sys.argv) > 3:
+                pkg_name = sys.argv[3]
+            print("Currently not working ...")
+            exit()
+            
+        # Install the package
+        remove(pkg_name)
+        
+        if os.geteuid() == 0:
+                None
+        else:
+            print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+            print(MissingPermissonsWorldDatabaseInsertRemove)
+            exit()
+    
+        world_c.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
         world_db.commit()
         world_db.close()
         
@@ -807,6 +946,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "help":
         help_en()
     elif language == "de":
         help_de()
+
 
 # Plugin Executor WITHOUT using spkg plugin <...>
 elif len(sys.argv) > 2: 
