@@ -27,3 +27,9 @@ body:
         - label: |
             This package was not already suggested
           required: true
+        - label: |
+            This package is safe, does not contain viruses, does not destroy the system, does not commit data collection and does not do evil things. 
+          required: true
+        - label: |
+            I give permission to customize my setup script according to your needs. 
+          required: true
