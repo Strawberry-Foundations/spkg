@@ -37,18 +37,6 @@ body:
     attributes:
       label: Operating System
       options:
-        - Linux
-        - macOS
-        - Windows
-        - Android
-    validations:
-      required: true
-
-  - type: dropdown
-    id: operating-system-specific
-    attributes:
-      label: Specific Operating System
-      options:
         - Debian
         - Ubuntu
         - serverOS
@@ -56,6 +44,9 @@ body:
         - Fedora
         - Alpine
         - openSUSE
+        - macOS
+        - Windows
+        - Android
         - other
     validations:
       required: true
@@ -70,7 +61,7 @@ body:
   - type: input
     id: operating-system-specific-other
     attributes:
-      label: Specific Operating System (only fill when selected "other")
+      label: Used Operating System (only fill when selected "other")
     validations:
       required: false
 
