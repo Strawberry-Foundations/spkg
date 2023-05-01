@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: other-informations
     attributes:
-      label: Question
+      label: Other Informations
       description: |
         Other Informations about your question, e.g. spkg version, operating system
     validations:
