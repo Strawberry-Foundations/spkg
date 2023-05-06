@@ -397,6 +397,27 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         print(NoArgument)
         exit()
         
+    # Check if the passed package is all or --all
+    if len(sys.argv) > 2 and sys.argv[2] == 'all' or  len(sys.argv) > 2 and sys.argv[2] == '--all':
+        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        download_time_start = time.time()
+        
+        try:
+            c.execute("SELECT name from packages")
+        
+        except OperationalError as e:
+            print(PackageDatabaseNotSynced)
+            exit()
+            
+        for row in c:
+            pkg_name = row[0]
+            download_compact(pkg_name)
+        
+        packages = pkg_name
+        download_time_end = time.time()
+        print(f"{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        exit()
+        
     if len(sys.argv) > 3:
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
         download_time_start = time.time()
@@ -701,12 +722,28 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
     if os.geteuid() == 0:
         print(UpgradeNotAsRoot)
         time.sleep(3)
-        
+    
+    # Check if a package was passed
     if len(sys.argv) > 2:
         pkg_name = sys.argv[2]
 
     else:
         print(NoArgument)
+        exit()
+        
+    # Check if the passed package is all or --all
+    if len(sys.argv) > 2 and sys.argv[2] == 'all' or  len(sys.argv) > 2 and sys.argv[2] == '--all':
+        try:
+            world_c.execute("SELECT name from world")
+        
+        except OperationalError as e:
+            print(WorldDatabaseNotBuilded)
+            exit()
+            
+        for row in world_c:
+            pkg_name = row[0]
+            upgrade(pkg_name)
+        
         exit()
     
     try:
