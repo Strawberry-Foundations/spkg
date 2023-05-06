@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo rm -r __pycache__/; sudo rm -r plugins/__pycache__; sudo rm -r src/__pycache__
+sudo rm -rf __pycache__/; sudo rm -rf plugins/__pycache__; sudo rm -rf src/__pycache__

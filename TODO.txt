@@ -2,12 +2,9 @@
 - Working Update Function
 - Docker Plugin
 - Native Support for Fedora
-- Native Support for openSUSE
-- Sandbox Support for Alpine Linux
-- More optimizations
+- Native Support for openSUSEs
 - Local Package Installation
 - Package Categories, e.g. drivers/somedrivers
-- Force not using sandbox when installing e.g. drivers
 
 *- Todo for Remove-Function in Packages: 
 - Python

@@ -635,7 +635,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "remove":
         
     else:
         pass
-
     
         # Check if Package even exists
         try:

@@ -204,9 +204,6 @@ def remove(name):
     except KeyboardInterrupt as e:
         print(f"\n{Canceled}")
         exit()
-        
-
-
 
 # Sandbox Remove
 def sandbox_remove(name):        
