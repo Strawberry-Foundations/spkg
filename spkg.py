@@ -403,7 +403,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         download_time_start = time.time()
         
         try:
-            c.execute("SELECT name from packages")
+            c.execute("SELECT name from packages where arch = ?", (arch, ))
         
         except OperationalError as e:
             print(PackageDatabaseNotSynced)
@@ -411,7 +411,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
             
         for row in c:
             pkg_name = row[0]
-            download_compact(pkg_name)
+            download_compact_noarch(pkg_name)
         
         packages = pkg_name
         download_time_end = time.time()
