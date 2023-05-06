@@ -239,16 +239,7 @@ def download_compact(name):
         exit()
         
         
-def download_compact_noarch(name):
-    c.execute("SELECT arch FROM packages where name = ?", (name,))
-    
-    try:
-        result = c.fetchone()[0]
-        
-    except TypeError:
-        print(PackageNotFound)
-        exit()
-    
+def download_compact_noarch(name): 
     try:
         c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (name,))
     
