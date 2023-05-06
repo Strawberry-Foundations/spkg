@@ -32,7 +32,7 @@ if not language == "de" and not language == "en":
 
 # Basic Variables
 bootstrap_location = f"{home_dir}/.local/spkg/sandbox/"
-image = "ubuntu:latest"
+image = "juliandev02/spkg-debian:bookworm"
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -64,13 +64,52 @@ class Spec:
 # PluginHandler Main Class
 class PluginHandler:
     def setup():
-        debug = False
+        # debug = False
 
-        if len(argv) > 4 and argv[4] == "--debug" or len(argv) > 4 and argv[4] == "--verbose" or len(argv) > 4 and argv[4] == "-v" or len(argv) > 4 and argv[4] == "--v":
-            debug = True
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Enabling Verbose Mode")
+        # if len(argv) > 4 and argv[4] == "--debug" or len(argv) > 4 and argv[4] == "--verbose" or len(argv) > 4 and argv[4] == "-v" or len(argv) > 4 and argv[4] == "--v":
+        #     debug = True
+        #     print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Enabling Verbose Mode")
+        
+        if not os.path.exists("/usr/bin/docker"):
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-docker cannot be executed on your system. Please install docker and try again  ")
+            exit()
+        
+        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Container Setup will now start")
 
+        try:
+            ans = input("Do you want to continue? [Y/N]? ")
 
+        except KeyboardInterrupt:
+            print("\nAborting ...")
+            exit()
+            
+        
+        if ans != "y" and ans != "Y" and ans != "j" and ans != "J":
+            print("Aborting ...")
+            exit()
+            
+        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Checking system architecture")
+        arch = platform.machine()
+
+        if arch == "x86_64":
+            arch = "amd64"
+
+        # elif arch == "x86":
+        #     arch = "i386"
+
+        # elif arch == "aarch64":
+        #     arch = "arm64"
+
+        else:
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-docker cannot be executed on your system. Your architecture is currently not supported.")
+            exit()
+        
+        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Pulling Docker Image... This could take some time depending on your internet speed")
+        os.system(f"docker pull {image}")
+        
+            
+         
+            
     def config():
         print("config")
 
