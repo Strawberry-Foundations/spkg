@@ -417,7 +417,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         
         packages = pkg_name
         download_time_end = time.time()
-        print(f"{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{FinishedDownloadingCompact} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     if len(sys.argv) > 3:
