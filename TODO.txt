@@ -4,6 +4,20 @@
 - Native Support for openSUSE
 - Sandbox Support for Alpine Linux
 - More optimizations
-- Remove Function (complete)
-- Wildcard Support
 - Local Package Installation
+- Package Categories, e.g. drivers/somedrivers
+
+# Added Remove Function to Packages:
+- spkg* 
+- htop
+- cpufetch
+- htop
+- neofetch
+- micro
+- nano
+- recontrolled
+- ideaC
+
+# Todo: 
+- Python
+- maybe @tools
