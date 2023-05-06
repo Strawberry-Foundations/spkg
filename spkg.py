@@ -308,6 +308,7 @@ except OperationalError:
     exit()
 
 
+
 # * --- Package Info Function --- *
 if len(sys.argv) > 1 and sys.argv[1] == "info":
     if len(sys.argv) > 2:
@@ -316,12 +317,30 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     else:
         print(NoArgument)
         exit()
+        
+    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    
     try:
-        c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
-
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
         exit()
+    
+    if result == "all":
+        try:
+            c.execute("SELECT name FROM packages where name = ? AND arch = all ", (pkg_name,))
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+    else:
+        try:
+            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
 
     if c.fetchall():
         c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (pkg_name, arch))
@@ -344,6 +363,49 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     exit()
 
 
+
+elif len(sys.argv) > 1 and sys.argv[1] == "force":
+    if len(sys.argv) > 2:
+        pkg_name = sys.argv[2]
+        
+    else:
+        print("NoArgument")
+        exit()
+        
+    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    
+    try:
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
+        exit()
+    
+    if result == "all":
+        try:
+            c.execute("SELECT ForceNoSandbox FROM packages where name = ?", (pkg_name,))
+            for row in c:
+                print(row[0])
+                exit()
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+        
+    else:
+        try:
+            c.execute("SELECT ForceNoSandbox FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+            for row in c:
+                print(row[0])
+                exit()
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+    
+    exit()
+    
+        
 # * --- List Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "list":
     # List installed programms
@@ -806,10 +868,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
 #         for row in result2:
 #             if row not in result1:
 #                 print(row)
-        
 
+
+    
 # * --- Plugin Managment --- *
-if len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
+elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
     if len(sys.argv) > 2 and sys.argv[2] == "list":
         plugin_management.list_plugins()
 
@@ -988,21 +1051,21 @@ elif len(sys.argv) > 1 and sys.argv[1] == "help":
 
 
 # Plugin Executor WITHOUT using spkg plugin <...>
-elif len(sys.argv) > 2: 
-    plugin = sys.argv[1]
+# elif len(sys.argv) > 2: 
+#     plugin = sys.argv[1]
 
-    try: 
-        if check_plugin_enabled_silent(plugin) == False: 
-            print(PluginNotEnabled)
-            exit()
+#     try: 
+#         if check_plugin_enabled_silent(plugin) == False: 
+#             print(PluginNotEnabled)
+#             exit()
             
-    except KeyError:
-        print(NoArgument)
-        exit()
+#     except KeyError:
+#         print(NoArgument)
+#         exit()
 
-    else: 
-        plugin_daemon.import_plugin(plugin)
-        plugin_management.exec(sys.argv[2])
+#     else: 
+#         plugin_daemon.import_plugin(plugin)
+#         plugin_management.exec(sys.argv[2])
             
 
 elif len(sys.argv) > 1 and sys.argv[1] != "help":
