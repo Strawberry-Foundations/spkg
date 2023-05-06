@@ -403,7 +403,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         download_time_start = time.time()
         
         try:
-            c.execute("SELECT name from packages where arch = ?", (arch, ))
+            c.execute("SELECT name from packages")
         
         except OperationalError as e:
             print(PackageDatabaseNotSynced)
