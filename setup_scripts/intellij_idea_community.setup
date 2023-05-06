@@ -44,6 +44,13 @@ if [ "$1" = "--upgrade" ]; then
     exit
 fi
 
+if [ "$1" = "--remove" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -r /opt/idea*
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+fi
+
 echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
 cd /tmp/
 mv idea*.tar.gz /tmp/target.tar.gz
