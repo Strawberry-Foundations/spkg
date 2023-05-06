@@ -274,7 +274,7 @@ def upgrade(name):
         result = c.fetchone()[0]
 
     except TypeError:
-        print(PackageNotFound)
+        print(f"\n{PackageNotFound}")
         exit()
 
     if result == "all":
