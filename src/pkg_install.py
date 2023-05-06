@@ -423,15 +423,15 @@ def upgrade(name):
 
         if force_no_sandbox(name) == 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--upgrade'])
             
         else:
             if check_plugin_enabled_silent("sandbox") == True:
-                os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
+                os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup --upgrade")
 
             else:
                 subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
-                subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+                subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--upgrade'])
 
     except HTTPError as e:
         print(UnknownError)
