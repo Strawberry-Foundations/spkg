@@ -1,3 +1,4 @@
+*- Todo:
 - Working Update Function
 - Docker Plugin
 - Native Support for Fedora
@@ -6,18 +7,8 @@
 - More optimizations
 - Local Package Installation
 - Package Categories, e.g. drivers/somedrivers
+- Force not using sandbox when installing e.g. drivers
 
-# Added Remove Function to Packages:
-- spkg* 
-- htop
-- cpufetch
-- htop
-- neofetch
-- micro
-- nano
-- recontrolled
-- ideaC
-
-# Todo: 
+*- Todo for Remove-Function in Packages: 
 - Python
 - maybe @tools

@@ -10,7 +10,9 @@
 - (New) Warning if you reinstall a package as root
 - (New) Issue Templates and Pull Request Templates on GitHub
 - (New) Official spkg documentation
+- (New) Added Wildcard Support for upgrade and download of packages
 - (Package-related) Added micro and nano build scripts
+- (Package-related) Script Update for more remove-scripts
 - (Optimization) Code optimization
 - (Optimization) More comments
 - (Fix) Better formatting
@@ -19,6 +21,10 @@
 - (Fix) Fixed wrong string in help function
 - (Fix) Bug fix for changing language
 - (Fix) Fixed an exit without an error message when unknown language
-- (Fix) Fixed not extracting archive when upgrading (spkg-bin) (why ???) 
+- (Fix) Fixed not extracting archive when upgrading (spkg-bin)
+- (Fix) Fixed bug when architecture is not all, info command wont work
+- (Fix) Fixed download only on same arch
+- (Fix) Fixed not printing a new line when upgrading, and package is not available
 - (Backend) commented spkg plugin disable sandbox, plugin is already disabled because of the config in /data
 - (Backend) Small updates everywhere (plugins, ...)
+- (Backend) Added download_compact_noarch function
