@@ -237,3 +237,62 @@ def download_compact(name):
     except NameError as e:
         print(PackageNotFound)
         exit()
+        
+        
+def download_compact_noarch(name):
+    c.execute("SELECT arch FROM packages where name = ?", (name,))
+    
+    try:
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
+        exit()
+    
+    try:
+        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (name,))
+    
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
+    
+    download_time_start = time.time()
+    
+    for row in c:
+        url = row[1]
+        filename = row[2]
+        
+        response = requests.head(url)
+        file_size_bytes = int(response.headers.get('Content-Length', 0))
+        file_size_mb = file_size_bytes / (1024 * 1024)
+
+    try:
+        req = urllib.request.Request(
+            url,
+            data=None,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        )
+
+        f = urllib.request.urlopen(req)
+
+        spinner = Halo(text=f"{StrGet}: {url} ({round(file_size_mb, 2)} MB)", spinner={'interval': 150, 'frames': [
+                       '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner.start()
+
+        with open(filename, 'wb') as file:
+            file.write(f.read())
+
+        print()
+        
+        spinner.stop()
+
+    except HTTPError as e:
+        print(UnknownError)
+        print(e)
+        exit()
+
+    except NameError as e:
+        print(PackageNotFound)
+        exit()
