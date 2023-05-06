@@ -35,8 +35,6 @@ if [ "$1" = "--upgrade" ]; then
     rm -rf /tmp/neofetch
     
     echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
-
-    exit
 fi
 
 if [ "$1" = "--remove" ]; then
@@ -44,6 +42,7 @@ if [ "$1" = "--remove" ]; then
     rm -f /usr/bin/neofetch
     rm -f /tmp/*.setup
     echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+    exit
 fi
 
 echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "

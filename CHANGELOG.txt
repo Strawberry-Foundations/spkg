@@ -28,3 +28,4 @@
 - (Backend) commented spkg plugin disable sandbox, plugin is already disabled because of the config in /data
 - (Backend) Small updates everywhere (plugins, ...)
 - (Backend) Added download_compact_noarch function
+- (Backend) Added a new row "ForceNoSandbox" to the package database
