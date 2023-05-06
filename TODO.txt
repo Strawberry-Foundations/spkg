@@ -6,3 +6,4 @@
 - More optimizations
 - Remove Function (complete)
 - Wildcard Support
+- Local Package Installation
