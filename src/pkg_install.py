@@ -15,7 +15,7 @@ from colorama import Fore
 from halo import Halo
 from sys import exit
 from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
-
+from .force_no_sandbox import *
 
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
@@ -44,6 +44,7 @@ if language == "de":
     Abort = "Abbruch ... "
     ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
     InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Paket wird in der Sandbox installiert."
+    ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warnung: Paket kann nicht in der Sandbox installiert werden: Es ist Host-only.{Colors.RESET}"
 
 
 elif language == "en":
@@ -60,6 +61,7 @@ elif language == "en":
     Abort = "Aborting ..."
     ExecutingSetup = f"Executing Setup Script... Please wait"
     InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Package will be installed to the sandbox."
+    ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warning: Package cannot be installed in the sandbox: It is host-only.{Colors.RESET}"
 
 
 try:
@@ -203,14 +205,26 @@ def install(name):
         spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
-
+        
         if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
-                file.write(f.read())
-
+            if force_no_sandbox(name) == 1:
+                print()
+                print(ForceNoSandbox)
+                time.sleep(5)
+                with open(f"/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
+                    
+            else:
+                with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
         else:
-            with open(f"/tmp/{filename}", 'wb') as file:
-                file.write(f.read())
+            if check_plugin_enabled_silent("sandbox") == True:
+                with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
+
+            else:
+                with open(f"/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
 
         download_time_end = time.time()
         print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
@@ -229,25 +243,35 @@ def install(name):
 
         f_setup = urllib.request.urlopen(setup_req)
 
-        if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
-
+        if force_no_sandbox(name) == 1:
+                with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
+                    
         else:
-            with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
+            if check_plugin_enabled_silent("sandbox") == True:
+                with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
+
+            else:
+                with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
 
         spinner_setup.stop()
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
 
         spinner.stop()
 
-        if check_plugin_enabled_silent("sandbox") == True:
-            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
-
-        else:
+        if force_no_sandbox(name) == 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
             subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+            
+        else:
+            if check_plugin_enabled_silent("sandbox") == True:
+                os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
+
+            else:
+                subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
+                subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
 
     except HTTPError as e:
         print(UnknownError)
@@ -341,14 +365,26 @@ def upgrade(name):
         spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
-
+        
         if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
-                file.write(f.read())
-
+            if force_no_sandbox(name) == 1:
+                print()
+                print(ForceNoSandbox)
+                time.sleep(5)
+                with open(f"/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
+                    
+            else:
+                with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
         else:
-            with open(f"/tmp/{filename}", 'wb') as file:
-                file.write(f.read())
+            if check_plugin_enabled_silent("sandbox") == True:
+                with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
+
+            else:
+                with open(f"/tmp/{filename}", 'wb') as file:
+                    file.write(f.read())
 
         download_time_end = time.time()
         print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
@@ -366,26 +402,36 @@ def upgrade(name):
         )
 
         f_setup = urllib.request.urlopen(setup_req)
-
-        if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
-
+        
+        if force_no_sandbox(name) == 1:
+                with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
+                    
         else:
-            with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
+            if check_plugin_enabled_silent("sandbox") == True:
+                with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
+
+            else:
+                with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
+                    file_setup.write(f_setup.read())
 
         spinner_setup.stop()
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
 
         spinner.stop()
 
-        if check_plugin_enabled_silent("sandbox") == True:
-            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup --upgrade")
-
-        else:
+        if force_no_sandbox(name) == 1:
             subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--upgrade'])
+            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
+            
+        else:
+            if check_plugin_enabled_silent("sandbox") == True:
+                os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
+
+            else:
+                subprocess.run(['sudo', 'chmod', '+x', f'/tmp/{row[0]}.setup'])
+                subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup'])
 
     except HTTPError as e:
         print(UnknownError)
@@ -402,6 +448,11 @@ def upgrade(name):
 
 # Sandbox Install
 def sandbox_install(name):
+    if force_no_sandbox(name) == 1:
+            print(ForceNoSandbox)
+            print(Abort)
+            exit()
+            
     print(InstallingToSandboxEnv)
     spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
                              'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
@@ -479,7 +530,7 @@ def sandbox_install(name):
         spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
-
+        
         with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
             file.write(f.read())
             

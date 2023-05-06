@@ -18,7 +18,7 @@ from plugin_daemon import *
 from src.pkg_install import * 
 from src.pkg_remove import * 
 from src.pkg_download import *
-
+from src.force_no_sandbox import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
@@ -363,49 +363,6 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     exit()
 
 
-
-elif len(sys.argv) > 1 and sys.argv[1] == "force":
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-        
-    else:
-        print("NoArgument")
-        exit()
-        
-    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
-    
-    try:
-        result = c.fetchone()[0]
-        
-    except TypeError:
-        print(PackageNotFound)
-        exit()
-    
-    if result == "all":
-        try:
-            c.execute("SELECT ForceNoSandbox FROM packages where name = ?", (pkg_name,))
-            for row in c:
-                print(row[0])
-                exit()
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-        
-    else:
-        try:
-            c.execute("SELECT ForceNoSandbox FROM packages where name = ? AND arch = ?", (pkg_name, arch))
-            for row in c:
-                print(row[0])
-                exit()
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-    
-    exit()
-    
-        
 # * --- List Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "list":
     # List installed programms
@@ -833,43 +790,86 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
 
 
 # * --- Update Function --- *
-# elif len(sys.argv) > 1 and sys.argv[1] == "update":
-#     tableCompare = "SELECT name, version FROM world WHERE packages='table' order by name"
+elif len(sys.argv) > 1 and sys.argv[1] == "update":
+    # tableCompare = "SELECT name, version FROM world WHERE packages='table' order by name"
     
-#     result1 = world_c.execute(tableCompare)
-#     result2 = c.execute(tableCompare)
+    # result1 = world_c.execute(tableCompare)
+    # result2 = c.execute(tableCompare)
     
-#     print("....Comparing Tables")
-#     for row1 in result1:
-#         row2 = result2.fetchone()
-#         print(row1)
-#         print(row2)
-#         if row1 is not None and row2 is not None and (row1[0] == row2[0]):
-#             print("........Tables Match:"+ row1[0])
-#         else:
-#             if (row1 is not None and row1[0] is not None):
-#                 print("!!!!!!!!PROBLEM "+world_database+" is missing Table:" + row1[0])	
-#             else:		
-#                 print("!!!!!!!!PROBLEM "+db+" is missing Table:" + row2[0])	
-#             print("........Fix the problem and restart this comparator")
-#             exit()
+    # print("....Comparing Tables")
+    # for row1 in result1:
+    #     row2 = result2.fetchone()
+    #     print(row1)
+    #     print(row2)
+    #     if row1 is not None and row2 is not None and (row1[0] == row2[0]):
+    #         print("........Tables Match:"+ row1[0])
+    #     else:
+    #         if (row1 is not None and row1[0] is not None):
+    #             print("!!!!!!!!PROBLEM "+world_database+" is missing Table:" + row1[0])	
+    #         else:		
+    #             print("!!!!!!!!PROBLEM "+db+" is missing Table:" + row2[0])	
+    #         print("........Fix the problem and restart this comparator")
+    #         exit()
 
-#     print("....Done comparing table presence")
+    # print("....Done comparing table presence")
 
 
     
-#     result1 = world_c.fetchall()
-#     result2 = c.fetchall()
+    # result1 = world_c.fetchall()
+    # result2 = c.fetchall()
     
-#     for row in result1:
-#         if row not in result2:
-#             print(row)
+    # for row in result1:
+    #     if row not in result2:
+    #         print(row)
 
-#         for row in result2:
-#             if row not in result1:
-#                 print(row)
+    #     for row in result2:
+    #         if row not in result1:
+    #             print(row)
+    print("Currently not available")
+    exit()
 
 
+# Check ForceNoSandbox Integer Value (ONLY FOR DEBUGGING)
+elif len(sys.argv) > 1 and sys.argv[1] == "force":
+    if len(sys.argv) > 2:
+        pkg_name = sys.argv[2]
+        
+    else:
+        print("NoArgument")
+        exit()
+        
+    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    
+    try:
+        result = c.fetchone()[0]
+        
+    except TypeError:
+        print(PackageNotFound)
+        exit()
+    
+    if result == "all":
+        try:
+            c.execute("SELECT ForceNoSandbox FROM packages where name = ?", (pkg_name,))
+            for row in c:
+                print(row[0])
+                exit()
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+        
+    else:
+        try:
+            c.execute("SELECT ForceNoSandbox FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+            for row in c:
+                print(row[0])
+                exit()
+
+        except OperationalError:
+            print(PackageDatabaseNotSynced)
+            exit()
+    
+    exit()
     
 # * --- Plugin Managment --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
@@ -1051,21 +1051,21 @@ elif len(sys.argv) > 1 and sys.argv[1] == "help":
 
 
 # Plugin Executor WITHOUT using spkg plugin <...>
-# elif len(sys.argv) > 2: 
-#     plugin = sys.argv[1]
+elif len(sys.argv) > 2: 
+    plugin = sys.argv[1]
 
-#     try: 
-#         if check_plugin_enabled_silent(plugin) == False: 
-#             print(PluginNotEnabled)
-#             exit()
+    try: 
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(PluginNotEnabled)
+            exit()
             
-#     except KeyError:
-#         print(NoArgument)
-#         exit()
+    except KeyError:
+        print(NoArgument)
+        exit()
 
-#     else: 
-#         plugin_daemon.import_plugin(plugin)
-#         plugin_management.exec(sys.argv[2])
+    else: 
+        plugin_daemon.import_plugin(plugin)
+        plugin_management.exec(sys.argv[2])
             
 
 elif len(sys.argv) > 1 and sys.argv[1] != "help":
