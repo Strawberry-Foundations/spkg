@@ -74,6 +74,7 @@ if language == "de":
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information über das Paket"
     FinishedDownloading = f"Download abgeschlossen für"
+    FinishedDownloadingCompact = f"Download abgeschlossen"
     StrGet = "Holen"
     UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
     StrArchitecture = "Architektur"
@@ -120,6 +121,7 @@ elif language == "en" or language == "us" or language == "en_us":
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
     FinishedDownloading = f"Finished downloading"
+    FinishedDownloadingCompact = f"Finished downloading"
     StrGet = "Get"
     UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
     StrArchitecture = "Architecture"
@@ -415,7 +417,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         
         packages = pkg_name
         download_time_end = time.time()
-        print(f"{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     if len(sys.argv) > 3:
