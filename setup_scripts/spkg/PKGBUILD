@@ -1,0 +1,114 @@
+#!/bin/bash
+
+name=neofetch
+ver=7.1.0
+arch=all
+dep_apt="python3 python3-dev python3-pip python3-sql python3-urllib3 python3-colorama python3-requests sudo"
+dep_apk="python3 py3-pip py3-colorama py3-requests sudo zstd"
+dep_pip="colorama halo requests"
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "This package script is official not supported for your system."
+    echo "Make sure, you have installed the following dependencies: python3 python3-dev python3-pip python3-sql python3-urllib3 sudo"
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
+
+if (( $(id -u) != 0 )); then
+    echo "This package script can only be run with root (permisson denied)"
+    exit
+fi
+
+get_dependencies() {
+    [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
+    [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash $dep_apk"
+
+    $cmd &> /dev/null
+    sudo -H pip install "$dep_pip" --break-system-packages
+}
+
+extract() {
+    cd /tmp || exit
+    mv spkg*.tar target.tar
+    mkdir /tmp/target/
+    tar xf /tmp/target.tar --directory /tmp/target/
+    cd /tmp/target || exit
+}
+
+install() {
+    get_dependencies
+    extract
+
+    rm -f /usr/bin/spkg
+    rm -rf /usr/share/spkg/
+    cp -r /tmp/target/ /usr/share/spkg/
+    cp -r /tmp/target/data/etc/ /
+
+    cd /usr/share/spkg/ || exit
+    mv spkg.py spkg
+
+    rm -rf build
+    rm -rf data
+    rm -rf resources
+    rm -rf setup_scripts
+    rm -f package.db
+    rm -f spkg-installer.py
+    rm -f requirements.txt
+    rm -f rmcache.sh
+    rm -f todo.txt
+
+    chmod a+x /usr/share/spkg/spkg
+    ln -s /usr/share/spkg/spkg /usr/bin/spkg
+
+    spkg build world
+    spkg sync
+
+    rm -rf /tmp/target/
+    rm -f /tmp/*.setup
+    rm -f /tmp/target.tar
+}
+
+upgrade() {
+    extract
+        rm -f /usr/bin/spkg
+    rm -rf /usr/share/spkg/
+    cp -r /tmp/target/ /usr/share/spkg/
+    cp -r /tmp/target/data/etc/ /
+
+    cd /usr/share/spkg/ || exit
+    mv spkg.py spkg
+
+    rm -rf build
+    rm -rf data
+    rm -rf resources
+    rm -rf setup_scripts
+    rm -f package.db
+    rm -f spkg-installer.py
+    rm -f requirements.txt
+    rm -f rmcache.sh
+    rm -f todo.txt
+
+    chmod a+x /usr/share/spkg/spkg
+    ln -s /usr/share/spkg/spkg /usr/bin/spkg
+
+    spkg sync
+
+    rm -rf /tmp/target/
+    rm -f /tmp/*.setup
+    rm -f /tmp/target.tar
+}
+
+
+remove() {
+    read -rep "Are you sure? This will remove spkg from your system. [Y/N] " ans_s
+    if [[ "${ans_s}" != "y" ]] && [[ "${ans_s}" != "Y" ]] && [[ "${ans_s}" != "j" ]] && [[ "${ans_s}" != "j" ]]; then
+            echo -e "Aborting"
+            exit
+    fi
+
+    rm -rf /usr/share/spkg
+    rm -f /usr/bin/spkg
+    rm -rf /etc/spkg/
+    rm -f /tmp/PKGBUILD
+}
