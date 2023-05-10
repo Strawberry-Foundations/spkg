@@ -1,4 +1,4 @@
-*- Todo:
+*- Todo -*
 - Working Update Function
 - Docker Plugin
 - Native Support for Fedora
@@ -9,3 +9,10 @@
 *- Todo for Remove-Function in Packages: 
 - Python
 - maybe @tools
+
+*- Todo for spkg 1.6.0 -*
+- New PKGBUILD System
+- git clone instead of downloading archive (?)
+- more self-hosted packages, for an correct metadata header
+- better installation procedure
+- better structure of package repository
