@@ -1,0 +1,35 @@
+#!/bin/bash
+
+name=neofetch
+ver=7.1.0
+arch=all
+dep_apt="bash"
+dep_apk="bash"
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "Make sure, you have installed the following dependencies: bash"
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
+
+if (( $(id -u) != 0 )); then
+    echo "This installation script can only be run with root (permisson denied)"
+    exit
+fi
+
+get_dependencies() {
+    [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
+    [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash $dep_apk"
+
+    $cmd &> /dev/null
+}
+
+install() {
+    get_dependencies
+    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch 
+}
+
+remove() {
+    rm -f /usr/bin/neofetch
+}
