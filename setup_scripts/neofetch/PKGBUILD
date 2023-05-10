@@ -7,14 +7,15 @@ dep_apt="bash"
 dep_apk="bash"
 
 if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
-    echo "Make sure, you have installed the following dependencies: bash"
+    echo "This package script is official not supported for your system."
+    echo "Make sure, you have installed the following dependency: bash"
 fi
 
 [[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
 [[ -f "/sbin/apk" ]] && pkg_mgr="apk"
 
 if (( $(id -u) != 0 )); then
-    echo "This installation script can only be run with root (permisson denied)"
+    echo "This package script can only be run with root (permisson denied)"
     exit
 fi
 
@@ -25,10 +26,22 @@ get_dependencies() {
     $cmd &> /dev/null
 }
 
+extract() {
+    cd /tmp || exit
+    mv neofetch* target.tar.gz
+    mkdir /tmp/target/
+    tar xf target.tar.gz
+}
+
 install() {
     get_dependencies
-    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch 
+    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
 }
+
+upgrade() {
+    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
+}
+
 
 remove() {
     rm -f /usr/bin/neofetch
