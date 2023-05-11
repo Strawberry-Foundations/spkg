@@ -27,11 +27,6 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-if os.environ.get('SUDO_USER'):
-    home_dir = os.path.expanduser(f"~{os.environ['SUDO_USER']}")
-else:
-    home_dir = os.path.expanduser("~")
-
 if arch == "x86_64":
     arch = "amd64"
     
@@ -180,7 +175,7 @@ def help_en():
 
 # Help Function for English German
 def help_de():
-    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}\n")
+    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}{a_info_msg}")
     print(f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg {Fore.GREEN}[Befehl]{Fore.RED} <Argument>\n")
     print(f"spkg ist ein Paketmanager, der den Quellcode von den \noffiziellen Quellen herunterlädt, und diesen dann spezifisch für dein Gerät kompiliert.")
     print(f"Das Ziel von spkg ist, einfach und auch ohne viel Erfahrungen die neusten Versionen \nvon Programmen zu erhalten, auch unter Distrobutionen die nicht die neuste Version anbieten.")
@@ -566,7 +561,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             exit()
             
         # Install the package
-        install(pkg_name)
+        Package.install(pkg_name)
         
         if os.geteuid() == 0:
                 None
@@ -705,7 +700,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
         print(WorldDatabaseNotBuilded)
         exit()
     
-    install(pkg_name)
+    Package.install(pkg_name)
         
     try:
         c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
@@ -897,7 +892,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             None
             
         else:
-            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_cfg}{Fore.RESET}{MissingPermissons}")
+            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_config}{Fore.RESET}{MissingPermissons}")
             print(MissingPermissonsPluginConfig)
             exit()
         
@@ -907,12 +902,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             exit()
 
         else: 
-            with open(enabled_plugins_cfg, 'r') as f:
+            with open(enabled_plugins_config, 'r') as f:
                 data = json.load(f)
                 
             data[plugin] = True
             
-            with open(enabled_plugins_cfg, 'w') as f:
+            with open(enabled_plugins_config, 'w') as f:
                 json.dump(data, f)
 
 
@@ -924,7 +919,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             None
             
         else:
-            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_cfg}{Fore.RESET}{MissingPermissons}")
+            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_config}{Fore.RESET}{MissingPermissons}")
             print(MissingPermissonsPluginConfig)
             exit()
         
@@ -934,12 +929,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             exit()
 
         else: 
-            with open(enabled_plugins_cfg, 'r') as f:
+            with open(enabled_plugins_config, 'r') as f:
                 data = json.load(f)
                 
             data[plugin] = False
             
-            with open(enabled_plugins_cfg, 'w') as f:
+            with open(enabled_plugins_config, 'w') as f:
                 json.dump(data, f)
                 
         

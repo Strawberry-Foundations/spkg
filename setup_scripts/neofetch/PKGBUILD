@@ -30,15 +30,17 @@ extract() {
     cd /tmp || exit
     mv neofetch* target.tar.gz
     mkdir /tmp/target/
-    tar xf target.tar.gz
+    tar xf /tmp/target.tar.gz --directory /tmp/target/
 }
 
 install() {
     get_dependencies
+    extract
     command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
 }
 
 upgrade() {
+    extract
     command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
 }
 
