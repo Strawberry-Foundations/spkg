@@ -140,6 +140,7 @@ elif language == "en" or language == "us" or language == "en_us":
     ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
     SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
     
+    
 # Help Function for English Language
 def help_en():
     print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}\n")
@@ -260,8 +261,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             exit()
 
         except HTTPError as e:
-            print(UnknownError)
-            print(e)
+            print()
+            print(HttpError)
+            exit()
 
         except NameError as e:
             print(PackageNotFound)
@@ -308,11 +310,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     
     if result == "all":
         try:
-            c.execute("SELECT name FROM packages where name = ? AND arch = all ", (pkg_name,))
+            arch = "all"
+            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
 
         except OperationalError:
             print(PackageDatabaseNotSynced)
             exit()
+            
     else:
         try:
             c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
@@ -320,7 +324,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         except OperationalError:
             print(PackageDatabaseNotSynced)
             exit()
-
+        
+        c.execute("SELECT name FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+    
     if c.fetchall():
         c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (pkg_name, arch))
         
@@ -331,8 +337,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
             print("Version:", row[1])
             print("Branch:", row[2])
             print(f"{StrArchitecture}:", row[3])
-            print("Download URL:", row[4])
-            print("Setup URL:", row[5])
+            print("Package URL:", row[4])
+            print("PKGBUILD URL:", row[5])
             exit()
 
     else:
@@ -466,9 +472,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         f = urllib.request.urlopen(req)
 
         download_time_start = time.time()
-
         
-
         with open(filename, 'wb') as file:
             file.write(f.read())
 
@@ -477,8 +481,9 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         exit()
 
     except HTTPError as e:
-        print(UnknownError)
-        print(e)
+        print("")
+        print(HttpError)
+        exit()
 
 
 # * --- Install Function --- *
@@ -528,7 +533,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             if len(sys.argv) > 3:
                 pkg_name = sys.argv[3]
                 
-            sandbox_install(pkg_name)
+            Package.sandbox_install(pkg_name)
             
             if os.geteuid() == 0:
                 None
