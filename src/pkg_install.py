@@ -18,6 +18,11 @@ from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plug
 from .force_no_sandbox import *
 from defs import *
 
+if check_plugin_enabled_ret("sandbox") == True:
+    plugin_daemon.import_plugin("sandbox")
+else:
+    pass
+
 language = spkg_cfg_data['language']
 
 if not language == "de" and not language == "en":
@@ -39,7 +44,6 @@ if language == "de":
     InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Paket wird in der Sandbox installiert."
     ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warnung: Paket kann nicht in der Sandbox installiert werden: Es ist Host-only.{Colors.RESET}"
 
-
 elif language == "en":
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
     FinishedDownloading = f"Finished downloading"
@@ -55,11 +59,6 @@ elif language == "en":
     ExecutingSetup = f"Executing Setup Script... Please wait"
     InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Package will be installed to the sandbox."
     ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warning: Package cannot be installed in the sandbox: It is host-only.{Colors.RESET}"
-
-if check_plugin_enabled_ret("sandbox") == True:
-    plugin_daemon.import_plugin("sandbox")
-else:
-    pass
 
 
 # Check if user config path exists
@@ -93,7 +92,10 @@ elif arch == "aarch64":
 
 
 class Package:
-    # Install
+    """ 
+        **** INSTALL FUNCTION ****
+        This function installs packages, depending on various plugins, e.g. if the sandbox is enabled or not. 
+    """
     def install(name):
         # Create and start the spinner for searching the database
         spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
@@ -293,6 +295,173 @@ class Package:
         except KeyboardInterrupt as e:
             print(f"\n{Canceled}")
             exit()
+            
+            
+        """ 
+            **** SANDBOX INSTALL FUNCTION ****
+            This function installs the package to the sandbox environment, without checking if the sandbox is enabled or not. 
+            INFO: You need to have the sandbox INSTALLED.
+        """
+    def sandbox_install(name):
+        # Check if package needs to be installed natively, if true, cancel the installation
+        if force_no_sandbox(name) == 1:
+                print(ForceNoSandbox)
+                print(Abort)
+                exit()
+        
+        # Print an information that the package will be installed to the sandbox environment
+        print(InstallingToSandboxEnv)
+        
+        # Start the spinner for the package database search
+        spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
+                                'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner_db_search.start()
+
+        # Select architecture of package where package name
+        c.execute("SELECT arch FROM packages where name = ?", (name,))
+
+        # fetch the results
+        try:
+            result = c.fetchone()[0]
+
+        except TypeError:
+            print(PackageNotFound)
+            exit()
+        
+        # If the package_architecture is all, try to find the corresponding package
+        if result == "all":
+            try:
+                c.execute(
+                    "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+                exit()
+                
+        # If not, try to find the corresponding package depending on the available architecture
+        else:
+            try:
+                c.execute(
+                    "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (name, arch))
+
+            except OperationalError:
+                print(PackageDatabaseNotSynced)
+                exit()
+
+        # For-loop the results
+        for row in c:
+            package_url = row[1]
+            filename = row[2]
+            pkgbuild_url = row[3]
+
+            # get the response of the package header
+            response = requests.head(package_url)
+            
+            # fetch the size of the package and convert it to mbytes 
+            file_size_bytes = int(response.headers.get('Content-Length', 0))
+            file_size_mb = file_size_bytes / (1024 * 1024)
+
+            # stop the spinner
+            spinner_db_search.stop()
+            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            
+            # ask if you want to continue the installation
+            try:
+                continue_pkg_installation = input(
+                    f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+                
+            # If you press ^C, it prints out a error message
+            except KeyboardInterrupt as e:
+                print(f"\n{Canceled}")
+                exit()
+
+            # Check if you want to continue the installation
+            if continue_pkg_installation.lower() == "j":
+                continue
+
+            elif continue_pkg_installation.lower() == "y":
+                continue
+                
+            elif continue_pkg_installation.lower() == "":
+                continue
+            
+            # If you press any other key, it prints out an error message
+            else:
+                print(Abort)
+                exit()
+                
+        # Try to request the package url 
+        try:
+            package_request = urllib.request.Request(
+                package_url,
+                data=None,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                }
+            )
+
+            package_file = urllib.request.urlopen(package_request)
+
+            # Start the download timer
+            download_time_start = time.time()
+
+             # Start download spinner
+            spinner_package = Halo(text=f"{StrGet}: {package_url}", spinner={'interval': 150, 'frames': [
+                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            spinner_package.start()
+            
+            # Write the package archive to the sandbox environment
+            with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
+                file.write(package_file.read())
+            
+            # Stop the download timer
+            download_time_end = time.time()
+            
+            # Stop download spinner
+            spinner_package.stop()
+            
+            # Print download finished message
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+
+            # Start the setup spinner
+            spinner_setup = Halo(text=f"{ExecutingSetup}: {package_url}", spinner={'interval': 150, 'frames': [
+                '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            spinner_setup.start()
+
+            # request the setup url 
+            setup_request = urllib.request.Request(
+                pkgbuild_url,
+                data=None,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                }
+            )
+
+            pkgbuild_file = urllib.request.urlopen(setup_request)
+
+            # Write the PKBUILD File to the sandbox environment
+            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
+                file_setup.write(pkgbuild_file.read())
+                
+             # Stop the Setup Spinner
+            spinner_setup.stop()
+            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
+
+            # Execute the PKGBUILD File in the sandbox environment
+            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
+
+        # Catch HTTPError, NameError and KeyboardInterrupt errors
+        except HTTPError as e:
+            print(UnknownError)
+            print(e)
+
+        except NameError as e:
+            print(f"\n{PackageNotFound}")
+            exit()
+
+        except KeyboardInterrupt as e:
+            print(f"\n{Canceled}")
+            exit()
 
 
 # Upgrade
@@ -454,130 +623,3 @@ def upgrade(name):
         print(f"\n{Canceled}")
         exit()
         
-
-# Sandbox Install
-def sandbox_install(name):
-    if force_no_sandbox(name) == 1:
-            print(ForceNoSandbox)
-            print(Abort)
-            exit()
-            
-    print(InstallingToSandboxEnv)
-    spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
-                             'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-    spinner_db_search.start()
-
-    c.execute("SELECT arch FROM packages where name = ?", (name,))
-
-    try:
-        result = c.fetchone()[0]
-
-    except TypeError:
-        print(PackageNotFound)
-        exit()
-
-    if result == "all":
-        try:
-            c.execute(
-                "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-
-    else:
-        try:
-            c.execute(
-                "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (name, arch))
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-
-    for row in c:
-        url = row[1]
-        filename = row[2]
-        setup_script = row[3]
-
-        response = requests.head(url)
-        file_size_bytes = int(response.headers.get('Content-Length', 0))
-        file_size_mb = file_size_bytes / (1024 * 1024)
-
-        spinner_db_search.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
-        try:
-            continue_pkg_installation = input(
-                f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
-
-        except KeyboardInterrupt as e:
-            print(f"\n{Canceled}")
-            exit()
-
-        if continue_pkg_installation.lower() == "j":
-            continue
-
-        elif continue_pkg_installation.lower() == "y":
-            continue
-
-        else:
-            print(Abort)
-            exit()
-
-    try:
-        req = urllib.request.Request(
-            url,
-            data=None,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            }
-        )
-
-        f = urllib.request.urlopen(req)
-
-        download_time_start = time.time()
-
-        spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
-                       '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-        spinner.start()
-        
-        with open(f"{bootstrap_location}/tmp/{filename}", 'wb') as file:
-            file.write(f.read())
-            
-        download_time_end = time.time()
-        print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
-
-        spinner_setup = Halo(text=f"{ExecutingSetup}: {url}", spinner={'interval': 150, 'frames': [
-            '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-        spinner_setup.start()
-
-        setup_req = urllib.request.Request(
-            setup_script,
-            data=None,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            }
-        )
-
-        f_setup = urllib.request.urlopen(setup_req)
-
-        with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
-            file_setup.write(f_setup.read())
-
-        spinner_setup.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
-
-        spinner.stop()
-
-        os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup")
-
-    except HTTPError as e:
-        print(UnknownError)
-        print(e)
-
-    except NameError as e:
-        print(f"\n{PackageNotFound}")
-        exit()
-
-    except KeyboardInterrupt as e:
-        print(f"\n{Canceled}")
-        exit()
