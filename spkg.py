@@ -19,22 +19,13 @@ from src.pkg_install import *
 from src.pkg_remove import * 
 from src.pkg_download import *
 from src.force_no_sandbox import *
+from defs import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
     plugin_daemon.import_plugin("sandbox")
 else:
     pass
-
-version = "1.5.0"
-world_database = "/etc/spkg/world.db"
-world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
-package_database = "/etc/spkg/package.db"
-spkg_repositories = "/etc/spkg/repositories.json"
-enabled_plugins_cfg = "/etc/spkg/enabled_plugins.json"
-
-home_dir = os.getenv("HOME")
-arch = platform.machine()
 
 if os.environ.get('SUDO_USER'):
     home_dir = os.path.expanduser(f"~{os.environ['SUDO_USER']}")
@@ -43,21 +34,14 @@ else:
 
 if arch == "x86_64":
     arch = "amd64"
+    
 elif arch == "x86":
     arch = "i386"
+    
 elif arch == "aarch64":
     arch = "arm64"
-
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-
-# Open spkg config file
-with open("/etc/spkg/config.json", "r") as f:
-    data = json.load(f)
-
-language = data['language']
+    
+language = spkg_cfg_data['language']
 
 # Check if user config path exists
 if not os.path.exists(f"{home_dir}/.config/spkg"):

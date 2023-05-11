@@ -11,26 +11,13 @@ from halo import Halo
 import urllib
 from urllib.error import HTTPError
 import time
+from defs import *
 
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
+language = spkg_cfg_data['language']
 
-enabled_plugins_cfg = "/etc/spkg/enabled_plugins.json"
-package_database = "/etc/spkg/package.db"
-spkg_config = "/etc/spkg/config.json"
-
-with open(enabled_plugins_cfg, "r") as f:
-    data = json.load(f)
-
-with open(spkg_config, "r") as f:
-    spkg_cfg = json.load(f)
-
-language = spkg_cfg['language']
-
-
+# If language is either "de" and "en", print Error Message
 if not language == "de" and not language == "en":
+    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
     exit()
 
 if language == "de":
@@ -105,7 +92,7 @@ class plugin_daemon:
 
 
 def check_plugin_enabled_silent(plugin):
-    plugin_data = data[plugin]
+    plugin_data = enabled_plugins_cfg_data[plugin]
     if plugin_data == True:
         return True
     else:
@@ -113,7 +100,7 @@ def check_plugin_enabled_silent(plugin):
 
 
 def check_plugin_enabled_ret(plugin):
-    plugin_data = data[plugin]
+    plugin_data = enabled_plugins_cfg_data[plugin]
     if plugin_data == True:
         return Enabled
     else:
@@ -124,7 +111,7 @@ class plugin_management:
     def list_plugins():
         print(f"{Colors.BOLD + Colors.UNDERLINE}{PluginManagement} -> {InstalledPlugins}\n")
         try:
-            for entry in data:
+            for entry in enabled_plugins_cfg_data:
                 plugin_daemon.import_plugin(entry)
                 
                 print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{module.Spec.Name} ({entry}){Fore.RESET + Colors.RESET}")
