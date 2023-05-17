@@ -34,7 +34,7 @@ spkg-sandbox installs packages in a separate environment from the system to prov
 ![docker-methods](https://img.shields.io/badge/Methods-docker%2C%20podman%20(%3F)-important)
 ![docker-architetures](https://img.shields.io/badge/Architectures-depending%20on%20docker%20image-success)
 
-spkg-docker installs packages in a Docker container. This provides more security, and is more convenient. Therefore, spkg works on any system that supports docker. The Docker image used is an Ubuntu 22.04 or 20.04 image.
+spkg-docker installs packages in a Docker container. This provides more security, and is more convenient. Therefore, spkg works on any system that supports docker. The Docker image used is an (custom) Ubuntu 22.04 or 20.04 image.
 <br><br>
 
 ## **Supported Platforms**
