@@ -19,6 +19,16 @@ if (( $(id -u) != 0 )); then
     exit
 fi
 
+if [ "$1" = "--install" ]; then
+    install
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+
+elif [ "$1" = "--remove" ]; then
+    remove
+fi
+
 get_dependencies() {
     [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
     [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash $dep_apk"
@@ -43,7 +53,6 @@ upgrade() {
     extract
     command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
 }
-
 
 remove() {
     rm -f /usr/bin/neofetch
