@@ -13,17 +13,12 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
+from defs import *
 
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
 
 language = data['language']
-
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-
 
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
@@ -56,16 +51,6 @@ elif language == "en":
     Abort = "Aborting ..."
 
 
-try:
-    db = sql.connect("/etc/spkg/package.db")
-    c = db.cursor()
-
-except OperationalError:
-    print(PackageDatabaseNotSynced)
-    exit()
-
-arch = platform.machine()
-
 if arch == "x86_64":
     arch = "amd64"
 
@@ -74,13 +59,7 @@ elif arch == "x86":
 
 elif arch == "aarch64":
     arch = "arm64"
-
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-
-
+    
 def download(name):
     c.execute("SELECT arch FROM packages where name = ?", (name,))
     
@@ -161,8 +140,7 @@ def download(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(UnknownError)
-        print(e)
+        print(HttpError)
         exit()
 
     except NameError as e:
@@ -230,8 +208,7 @@ def download_compact(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(UnknownError)
-        print(e)
+        print(HttpError)
         exit()
 
     except NameError as e:
@@ -280,8 +257,7 @@ def download_compact_noarch(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(UnknownError)
-        print(e)
+        print(HttpError)
         exit()
 
     except NameError as e:

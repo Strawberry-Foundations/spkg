@@ -117,7 +117,7 @@ class Package:
         if result == "all":
             try:
                 c.execute(
-                    "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
+                    "SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
 
             except OperationalError:
                 print(PackageDatabaseNotSynced)
@@ -127,7 +127,7 @@ class Package:
         else:
             try:
                 c.execute(
-                    "SELECT name, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (name, arch))
+                    "SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (name, arch))
 
             except OperationalError:
                 print(PackageDatabaseNotSynced)
@@ -135,9 +135,11 @@ class Package:
 
         # For-loop the results
         for row in c:
-            package_url = row[1]
-            filename = row[2]
-            pkgbuild_url = row[3]
+            package_name = row[0]
+            package_version = row[1]
+            package_url = row[2]
+            filename = row[3]
+            pkgbuild_url = row[4]    
 
             # get the response of the package header
             response = requests.head(package_url)
@@ -153,7 +155,7 @@ class Package:
             # ask if you want to continue the installation
             try:
                 continue_pkg_installation = input(
-                    f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
+                    f"{ContinePackageInstallation1}{package_name} ({package_version}){Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")
 
             # If you press ^C, it prints out a error message
             except KeyboardInterrupt as e:
@@ -191,7 +193,7 @@ class Package:
             download_time_start = time.time()
 
             # Start download spinner
-            spinner_package = Halo(text=f"{StrGet}: {package_url}", spinner={'interval': 150, 'frames': [
+            spinner_package = Halo(text=f"{StrGet}: {Fore.CYAN + Colors.BOLD + package_name + Fore.RESET} ({package_url})", spinner={'interval': 150, 'frames': [
                         '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner_package.start()
             
@@ -226,17 +228,19 @@ class Package:
             # Stop the download timer
             download_time_end = time.time()
             
+            # Print download finished message
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{package_name}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            
             # Stop download spinner
             spinner_package.stop()
-            
-            # Print download finished message
-            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            spinner_package.stop()
+            spinner_package.stop()
 
             # Start the setup spinner
-            spinner_setup = Halo(text=f"{ExecutingSetup}: {package_url}", spinner={'interval': 150, 'frames': [
+            spinner_setup = Halo(text=f"{ExecutingSetup}...", spinner={'interval': 150, 'frames': [
                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner_setup.start()
-            
+        
             # request the setup url 
             setup_request = urllib.request.Request(
                 pkgbuild_url,
@@ -285,8 +289,9 @@ class Package:
 
         # Catch HTTPError, NameError and KeyboardInterrupt errors
         except HTTPError as e:
-            print(UnknownError)
-            print(e)
+            print()
+            print(HttpError)
+            exit()
 
         except NameError as e:
             print(f"\n{PackageNotFound}")
@@ -452,8 +457,9 @@ class Package:
 
         # Catch HTTPError, NameError and KeyboardInterrupt errors
         except HTTPError as e:
-            print(UnknownError)
-            print(e)
+            print()
+            print(HttpError)
+            exit()
 
         except NameError as e:
             print(f"\n{PackageNotFound}")
@@ -612,8 +618,9 @@ def upgrade(name):
                 subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--upgrade'])
 
     except HTTPError as e:
-        print(UnknownError)
-        print(e)
+            print()
+            print(HttpError)
+            exit()
 
     except NameError as e:
         print(f"\n{PackageNotFound}")
