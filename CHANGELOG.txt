@@ -1,15 +1,16 @@
 * -- spkg v1.6.0 -- *
 - (Important) We're changing our package build system to our new PKGBUILD-System (spkg-pbs)
 - (New) New release variables
-- (New) Complete new modular-system for spkg
-- (Package-related) - 
+- (New) Complete new modular-system for spkg (defs-system)
+- (New) Completly new package build scripts
+- (Package-related) Ported almost all package to the new build system
 - (Optimization) much more code comments and documentation 
 - (Optimization) much more modular code 
 - (Optimization) Python Object Classes for many functions
 - (Optimization) New Text-Displaying for the install function
 - (Fix) Better formatting
-- (Fix) -
-- (Backend) - 
+- (Fix) Fixed bug not showing package information when arch = all
+- (Backend) Many many fixes and better handling for almost everything
 
 * -- Known Issues -- *
 - (Issue) -

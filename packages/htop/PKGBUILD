@@ -70,8 +70,7 @@ upgrade() {
 
 remove() {
     echo -e "${Green}>>>${Reset}${Bold} Removing htop ... "
-    rm -f /usr/local/bin/htop
-    rm -f /usr/bin/htop
+    rm -f /usr/bin/recontrolled
     read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
 
     if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
