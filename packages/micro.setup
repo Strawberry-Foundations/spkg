@@ -1,0 +1,97 @@
+#!/bin/bash
+
+Reset='\033[0m'
+Bold="\e[1m"
+Black='\033[0;30m'
+Red='\033[0;31m'
+Green='\033[0;32m'
+Yellow='\033[0;33m'
+Blue='\033[0;34m'
+Purple='\033[0;35m'
+Cyan='\033[0;36m'
+White='\033[0;37m'
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "This build script cannot be executed on your system. Sorry"
+    exit
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
+
+if (( $(id -u) != 0 )); then
+    echo "This installation script can only be run with root (permisson denied)"
+    exit
+fi
+
+if [ "$1" = "--upgrade" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Starting Upgrade for Package ... "
+
+    echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
+    cd /tmp/
+    mv micro-master.zip /tmp/target.zip
+    mkdir /tmp/target
+
+    echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
+    unzip /tmp/target.zip -d /tmp/target/
+    cd /tmp/target/micro-master/
+
+    echo -e "${Green}${Bold}[!]${Reset} Building ..."
+    make
+
+    echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+    sudo mv micro /usr/local/bin/micro
+
+    echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
+    rm -rf /tmp/target/
+    rm -f /tmp/*.setup
+    rm -f /tmp/target.zip
+    echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
+
+    exit
+fi
+
+if [ "$1" = "--remove" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -f /usr/local/bin/micro
+    read -rep "Remove dependencies? [Y/N] " ans
+
+    if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
+        echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+        exit
+    else 
+        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y golang && apt autoremove -y"
+        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove go"
+        $cmd &> /dev/null
+    fi
+
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+fi
+
+echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
+[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y make golang unzip"
+[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add make go unzip"
+$cmd &> /dev/null
+
+echo -e "${Yellow}${Bold}[!]${Reset} Creating base directory"
+cd /tmp/
+mv micro*.zip /tmp/target.zip
+mkdir /tmp/target
+
+echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
+unzip /tmp/target.zip -d /tmp/target/
+cd /tmp/target/micro*
+
+echo -e "${Green}${Bold}[!]${Reset} Building ..."
+make
+
+echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+sudo mv /tmp/target/micro-master/micro /usr/local/bin/micro
+
+echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
+rm -rf /tmp/target/
+rm -f /tmp/*.setup
+rm -f /tmp/target.zip
+
+echo -e "${Green}${Bold}:) ${Reset} Finished"

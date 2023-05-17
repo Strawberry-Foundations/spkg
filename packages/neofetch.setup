@@ -1,0 +1,61 @@
+#!/bin/bash
+
+Reset='\033[0m'
+Bold="\e[1m"
+Black='\033[0;30m'
+Red='\033[0;31m'
+Green='\033[0;32m'
+Yellow='\033[0;33m'
+Blue='\033[0;34m'
+Purple='\033[0;35m'
+Cyan='\033[0;36m'
+White='\033[0;37m'
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "Make sure, you have installed the following dependencies: bash"
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
+
+if (( $(id -u) != 0 )); then
+    echo "This installation script can only be run with root (permisson denied)"
+    exit
+fi
+
+if [ "$1" = "--upgrade" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Starting Upgrade for Package ... "
+
+    echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+    cd /tmp/
+    cp /tmp/neofetch /usr/bin/neofetch
+    chmod a+x /usr/bin/neofetch
+
+    echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
+    rm -rf /tmp/neofetch
+    
+    echo -e "${Green}${Bold}:) ${Reset} Finished upgrade"
+fi
+
+if [ "$1" = "--remove" ]; then
+    echo -e "${Green}${Bold}[!]${Reset} Removing package ... "
+    rm -f /usr/bin/neofetch
+    rm -f /tmp/*.setup
+    echo -e "${Green}${Bold}[!]${Reset} Finished uninstall"
+    exit
+fi
+
+echo -e "${Yellow}${Bold}[!]${Reset} Installing Dependencies ... "
+[[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y bash"
+[[ "${pkg_mgr}" == "apk" ]] && cmd="apk add bash"
+$cmd &> /dev/null
+
+echo -e "${Green}${Bold}[!]${Reset} Installing to the system"
+cd /tmp/
+cp /tmp/neofetch /usr/bin/neofetch
+chmod a+x /usr/bin/neofetch
+
+echo -e "${Green}${Bold}[!]${Reset} Removing temporary files"
+rm -rf /tmp/neofetch
+
+echo -e "${Green}${Bold}:) ${Reset} Finished"
