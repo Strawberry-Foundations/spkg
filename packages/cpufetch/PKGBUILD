@@ -9,7 +9,6 @@ dep_apk="clang gcc g++ make ncurses-dev tar"
 Reset='\033[0m'
 Bold="\e[1m"
 Green='\033[0;32m'
-Yellow='\033[0;33m'
 
 if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
     echo "This build script cannot be executed on your system. Sorry"
@@ -36,7 +35,6 @@ extract() {
     mv cpufetch*.tar.gz /tmp/target.tar.gz
     mkdir /tmp/target
 
-    echo -e "${Green}${Bold}[!]${Reset} Extracting sources"
     tar xf /tmp/target.tar.gz --directory /tmp/target/
     cd /tmp/target/cpufetch* || exit
 }
@@ -73,7 +71,7 @@ upgrade() {
 remove() {
     echo -e "${Green}>>>${Reset}${Bold} Removing cpufetch ... "
     rm -f /usr/bin/cpufetch
-    read -rep "${Yellow}>>>${Reset}${Bold} Remove dependencies? [Y/N] " ans
+    read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
 
     if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
         exit

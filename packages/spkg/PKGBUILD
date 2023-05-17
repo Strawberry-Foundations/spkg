@@ -105,7 +105,7 @@ upgrade() {
 
 remove() {
     echo -e "${Green}>>>${Reset}${Bold} Removing neofetch ... "
-    read -rep "Are you sure? This will remove spkg from your system. [Y/N] " ans_s
+    read -rep $'\033[0;33m>>>\033[0m\e[1m Are you sure? This will remove spkg from your system. [Y/N] ' ans_s
     if [[ "${ans_s}" != "y" ]] && [[ "${ans_s}" != "Y" ]] && [[ "${ans_s}" != "j" ]] && [[ "${ans_s}" != "j" ]]; then
             echo -e "Aborting"
             exit
