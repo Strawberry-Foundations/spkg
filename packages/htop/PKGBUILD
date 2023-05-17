@@ -53,7 +53,7 @@ inst() {
     echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
     compile
 
-    echo -e "${Green}>>>${Reset}${Bold} Installing cpufetch ... "
+    echo -e "${Green}>>>${Reset}${Bold} Installing htop ... "
     make install
 }
 
@@ -64,12 +64,12 @@ upgrade() {
     echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
     compile
 
-    echo -e "${Green}>>>${Reset}${Bold} Installing cpufetch ... "
+    echo -e "${Green}>>>${Reset}${Bold} Installing htop ... "
     make install
 }
 
 remove() {
-    echo -e "${Green}>>>${Reset}${Bold} Removing cpufetch ... "
+    echo -e "${Green}>>>${Reset}${Bold} Removing htop ... "
     rm -f /usr/local/bin/htop
     rm -f /usr/bin/htop
     read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
