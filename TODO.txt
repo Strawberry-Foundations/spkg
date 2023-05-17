@@ -1,18 +1,22 @@
 *- Todo -*
-- Working Update Function
 - Docker Plugin
+- Repomanager Plugin
+- Working Update Function
 - Native Support for Fedora
-- Native Support for openSUSEs
-- Local Package Installation
 - Package Categories, e.g. drivers/somedrivers
 
-*- Todo for Remove-Function in Packages: 
-- Python
-- maybe @tools
 
-*- Todo for spkg 1.6.0 -*
-- New PKGBUILD System
-- git clone instead of downloading archive (?)
-- more self-hosted packages, for an correct metadata header
-- better installation procedure
-- better structure of package repository
+*- Todo for Remove-Function in Packages -*
+- Python
+- @tools
+
+
+*- Ideas -*
+- GPG Repository Signing? 
+- git clone instead of downloading archive?
+- Local Package Installation
+- Native Support for openSUSE
+
+
+*- Must-Todo for spkg 1.6.0 -*
+- More self-hosted packages, for an correct metadata header
