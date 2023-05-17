@@ -1,5 +1,5 @@
 # **Advanced Source Package Managment (spkg)**
-![spkg - v1.5.0](https://img.shields.io/badge/spkg-1.5.0-success) 
+![spkg - v1.6.0-rc1](https://img.shields.io/badge/spkg-1.6.0--rc1-success) 
 ![Code Size](https://img.shields.io/github/languages/code-size/Juliandev02/spkg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/Juliandev02/spkg)
 ![License](https://img.shields.io/github/license/Juliandev02/spkg)
@@ -19,7 +19,7 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 
 ## **Sandbox  ![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-important)**
 
-![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.2.0-informational)
+![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.2.1-informational)
 ![sandbox-release](https://img.shields.io/badge/Release-stable-success)
 ![sandbox-methods](https://img.shields.io/badge/Methods-bwrap%2C%20chroot-important)
 ![sandbox-architetures](https://img.shields.io/badge/Architectures-x86__64%2C%20x86%2C%20aarch64-success)
@@ -46,6 +46,7 @@ spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or hi
 | Python 3.9    | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.10   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.11   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
+| Python 3.12   | ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
 
 ## **Linux Support**
 Distrobutions and versions that are not listed are not supported by us. 
