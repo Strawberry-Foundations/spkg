@@ -24,7 +24,7 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 ![sandbox-methods](https://img.shields.io/badge/Methods-bwrap%2C%20chroot-important)
 ![sandbox-architetures](https://img.shields.io/badge/Architectures-x86__64%2C%20x86%2C%20aarch64-success)
 
-spkg-sandbox installs packages in a separate environment from the system to provide more security and compatibility. spkg-sandbox works on any system, regardless of the package manager, while spkg without spkg-sandbox currently only works on deb-based systems. It uses Ubuntu 22.04 or 20.04 as base. 
+spkg-sandbox installs packages in a separate environment from the system to provide more security and compatibility. spkg-sandbox works on any system, regardless of the package manager, while spkg without spkg-sandbox currently only works on deb and apk-based systems. It uses Ubuntu 22.04 or 20.04 as base. 
 <br>
 
 ## **Docker Containers  ![spkg-docker](https://img.shields.io/badge/spkg--docker-important)**
@@ -46,7 +46,7 @@ spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or hi
 | Python 3.9    | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.10   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.11   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
-| Python 3.12   | ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
+| Python 3.12   ++| ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
 
 ## **Linux Support**
 Distrobutions and versions that are not listed are not supported by us. 
