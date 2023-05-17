@@ -424,12 +424,14 @@ class Package:
             # Stop the download timer
             download_time_end = time.time()
             
-            # Stop download spinner
-            spinner_package.stop()
-            
             # Print download finished message
             print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
-
+            
+            # Stop download spinner
+            spinner_package.stop()
+            spinner_package.stop()
+            spinner_package.stop()
+        
             # Start the setup spinner
             spinner_setup = Halo(text=f"{ExecutingSetup}: {package_url}", spinner={'interval': 150, 'frames': [
                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
