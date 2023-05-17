@@ -746,7 +746,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
             
         for row in world_c:
             pkg_name = row[0]
-            upgrade(pkg_name)
+            Package.upgrade(pkg_name)
         
         exit()
     
@@ -757,7 +757,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
         print(WorldDatabaseNotBuilded)
         exit()
     
-    upgrade(pkg_name)
+    Package.upgrade(pkg_name)
         
     try:
         c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))

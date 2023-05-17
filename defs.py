@@ -14,9 +14,9 @@ from halo import Halo
 from sys import exit
 
 # Base Variables
-version = "1.6.0-hdp-vc-20230517"
+version = "1.6.0-20230517"
 alpha = False
-hbp = True
+hbp = False
 
 # Database Variables
 world_database = "/etc/spkg/world.db"

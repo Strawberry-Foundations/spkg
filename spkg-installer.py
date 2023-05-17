@@ -167,7 +167,7 @@ while 1:
                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner2.start()
 
-            with open("/tmp/spkg_py.setup", 'wb') as file_setup:
+            with open("/tmp/PKGBUILD", 'wb') as file_setup:
                 file_setup.write(f_setup.read())
 
             spinner.stop()
@@ -181,8 +181,8 @@ while 1:
             spinner.stop()
             spinner2.stop()
             
-            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_py.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/spkg_py.setup'])
+            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/PKGBUILD'])
+            subprocess.run(['sudo', 'bash', f'/tmp/PKGBUILD', '--install'])
             
             if os.path.exists('/usr/bin/spkg'):
                 print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
@@ -249,7 +249,7 @@ while 1:
                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner2.start()
 
-            with open("/tmp/spkg_bin.setup", 'wb') as file_setup:
+            with open("/tmp/PKGBUILD", 'wb') as file_setup:
                 file_setup.write(f_setup.read())
 
             spinner.stop()
@@ -263,8 +263,8 @@ while 1:
             spinner.stop()
             spinner2.stop()
         
-            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_bin.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/spkg_bin.setup'])
+            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/PKGBUILD'])
+            subprocess.run(['sudo', 'bash', f'/tmp/PKGBUILD', '--install'])
             
             if os.path.exists('/usr/bin/spkg'):
                 print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
@@ -331,7 +331,7 @@ while 1:
                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner2.start()
 
-            with open("/tmp/spkg_git.setup", 'wb') as file_setup:
+            with open("/tmp/PKGBUILD", 'wb') as file_setup:
                 file_setup.write(f_setup.read())
 
             spinner.stop()
@@ -345,8 +345,8 @@ while 1:
             spinner.stop()
             spinner2.stop()
             
-            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/spkg_git.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/spkg_git.setup'])
+            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/PKGBUILD'])
+            subprocess.run(['sudo', 'bash', f'/tmp/PKGBUILD', '--install'])
             
             if os.path.exists('/usr/bin/spkg'):
                 print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
@@ -375,7 +375,7 @@ while 1:
         print(f"{Fore.RED + Colors.BOLD}Unknown Input")
 
 subprocess.run(['sudo', 'rm', '-r', '/tmp/target*'])
-subprocess.run(['sudo', 'rm', '-r' ,'/tmp/spkg_*'])
+subprocess.run(['sudo', 'rm', '-r' ,'/tmp/PKGBUILD'])
 
 exit()
 

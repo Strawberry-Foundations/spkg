@@ -15,17 +15,19 @@ from colorama import Fore
 from halo import Halo
 from sys import exit
 from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
+from defs import *
+from .force_no_sandbox import *
 
+if check_plugin_enabled_ret("sandbox") == True:
+    plugin_daemon.import_plugin("sandbox")
+else:
+    pass
 
 with open("/etc/spkg/config.json", "r") as f:
     data = json.load(f)
 
 language = data['language']
 
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
 
 if not language == "de" and not language == "en":
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
@@ -66,22 +68,6 @@ elif language == "en":
     SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
     
 
-
-if check_plugin_enabled_ret("sandbox") == True:
-    plugin_daemon.import_plugin("sandbox")
-else:
-    pass
-
-home_dir = os.getenv("HOME")
-
-if os.environ.get('SUDO_USER'):
-    home_dir = os.path.expanduser(f"~{os.environ['SUDO_USER']}")
-else:
-    home_dir = os.path.expanduser("~")
-
-user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
-world_database = "/etc/spkg/world.db"
-
 try:
     db = sql.connect("/etc/spkg/package.db")
     c = db.cursor()
@@ -89,7 +75,6 @@ try:
 except OperationalError:
     print(PackageDatabaseNotSynced)
     exit()
-
 
 try:
     db_world = sql.connect(world_database)
@@ -99,72 +84,71 @@ except OperationalError:
     print(WorldDatabaseNotBuilded)
     exit()
 
-
 with open(user_sandbox_config, "r") as f:
     user_sandbox_cfg = json.load(f)
     
 bootstrap_location = user_sandbox_cfg['bootstrap_location']
 sandbox_handler = user_sandbox_cfg['sandbox_handler']
 
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
-
-
-# Remove
-def remove(name):        
+""" 
+    **** REMOVE FUNCTION ****
+    This function removes packages, depending on various plugins, e.g. if the sandbox is enabled or not. 
+"""
+def remove(name):      
+    # Create and start the spinner for searching the database  
     spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={
                              'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
     spinner_db_search.start()
     
+    # Try selecting name, fetch_url, file_name, setup_script from the database
     try:
         c.execute("SELECT name, fetch_url, file_name, setup_script FROM packages where name = ?", (name,))
 
     except OperationalError:
                 print(PackageDatabaseNotSynced)
                 exit()
-                
+    
+    # For-loop the results           
     for row in c:
         setup_script = row[3]
-
+        
+        # stop the spinner
         spinner_db_search.stop()
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
         
         
+        # ask if you want to continue the package removing process
         try:
-            continue_pkg_installation = input(f"{ContinePackageInstallation1}{name}{Colors.RESET}{ContinePackageInstallation2} ")
+            continue_pkg_removing = input(f"{ContinePackageInstallation1}{name}{Colors.RESET}{ContinePackageInstallation2} ")
 
+        # If you press ^C, it prints out a error message
         except KeyboardInterrupt as e:
             print(f"\n{Canceled}")
             exit()
 
-        if continue_pkg_installation.lower() == "j":
+        # Check if you want to continue the installation
+        if continue_pkg_removing.lower() == "j":
             continue
 
-        elif continue_pkg_installation.lower() == "y":
+        elif continue_pkg_removing.lower() == "y":
             continue
-
+        
+        elif continue_pkg_removing.lower() == "":
+            continue
+        
+        # If you press any other key, it prints out an error message
         else:
             print(Abort)
             exit()
-        
+
     try:
-        req = urllib.request.Request(
-            setup_script,
-            data=None,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            }
-        )
-
-        f = urllib.request.urlopen(req)
-
+        # Start the setup spinner
         spinner_setup = Halo(text=f"{StrGet}: {setup_script}", spinner={'interval': 150, 'frames': [
                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner_setup.start()
 
-        setup_req = urllib.request.Request(
+        # request the setup url 
+        setup_request = urllib.request.Request(
             setup_script,
             data=None,
             headers={
@@ -172,27 +156,47 @@ def remove(name):
             }
         )
 
-        f_setup = urllib.request.urlopen(setup_req)
+        pkgbuild_file = urllib.request.urlopen(setup_request)
 
-        if check_plugin_enabled_silent("sandbox") == True:
-            with open(f"{bootstrap_location}/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
 
+        # If the package needs to be "installed" natively, continue the installation without the sandbox plugin
+        if force_no_sandbox(name) == 1:
+                with open("/tmp/PKGBUILD", 'wb') as file_setup:
+                    file_setup.write(pkgbuild_file.read())
+        
+        # Else check if the sandbox plugin is enabled
         else:
-            with open(f"/tmp/{row[0]}.setup", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
+            if check_plugin_enabled_silent("sandbox") == True:
+                with open(f"{bootstrap_location}/tmp/PKGBUILD", 'wb') as file_setup:
+                    file_setup.write(pkgbuild_file.read())
+                    
+            # If not, save the PKGBUILD file natively
+            else:
+                with open("/tmp/PKGBUILD", 'wb') as file_setup:
+                    file_setup.write(pkgbuild_file.read())
 
+        # Stop the Setup Spinner
         spinner_setup.stop()
         print(f"{Fore.GREEN + Colors.BOLD}[|] {Fore.RESET}{StrGet}: {setup_script}{Colors.RESET}")
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
-
-        if check_plugin_enabled_silent("sandbox") == True:
-            os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup --remove")
-
+        
+        
+        # Execute the PKGBUILD File natively if the package needs to be "installed" natively
+        if force_no_sandbox(name) == 1:
+            subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
+            subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--remove'])
+        
+        # Else check if the sandbox plugin is enabled
         else:
-            subprocess.run(['sudo', 'chmod', 'a+x', f'/tmp/{row[0]}.setup'])
-            subprocess.run(['sudo', 'bash', f'/tmp/{row[0]}.setup', '--remove'])
-
+            if check_plugin_enabled_silent("sandbox") == True:
+                os.system(f"sudo chroot {bootstrap_location} bash /tmp/PKGBUILD --remove")
+                
+            # If not, run the PKGBUILD file natively
+            else:
+                subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
+                subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--remove'])
+                
+    # Catch HTTPError, NameError and KeyboardInterrupt errors
     except HTTPError as e:
         print(UnknownError)
         print(e)
@@ -204,6 +208,7 @@ def remove(name):
     except KeyboardInterrupt as e:
         print(f"\n{Canceled}")
         exit()
+
 
 # Sandbox Remove
 def sandbox_remove(name):        

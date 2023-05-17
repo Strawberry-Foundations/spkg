@@ -6,6 +6,10 @@ arch=all
 dep_apt="bash"
 dep_apk="bash"
 
+Reset='\033[0m'
+Bold="\e[1m"
+Green='\033[0;32m'
+
 if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
     echo "This package script is official not supported for your system."
     echo "Make sure, you have installed the following dependency: bash"
@@ -17,16 +21,6 @@ fi
 if (( $(id -u) != 0 )); then
     echo "This package script can only be run with root (permisson denied)"
     exit
-fi
-
-if [ "$1" = "--install" ]; then
-    install
-
-elif [ "$1" = "--upgrade" ]; then
-    upgrade
-
-elif [ "$1" = "--remove" ]; then
-    remove
 fi
 
 get_dependencies() {
@@ -43,17 +37,45 @@ extract() {
     tar xf /tmp/target.tar.gz --directory /tmp/target/
 }
 
-install() {
+inst() {
+    echo -e "${Green}>>>${Reset}${Bold} Installing dependencies ... "
     get_dependencies
+
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
-    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing neofetch ... "
+    install -Dt /usr/bin/ -m 775 /tmp/target/hyfetch*/neofetch
 }
 
 upgrade() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
-    command install -Dt /usr/bin/ -m 775 /tmp/target/neofetch*/neofetch
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing neofetch ... "
+    install -Dt /usr/bin/ -m 775 /tmp/target/hyfetch*/neofetch
 }
 
 remove() {
+    echo -e "${Green}>>>${Reset}${Bold} Removing neofetch ... "
     rm -f /usr/bin/neofetch
 }
+
+clean_tmp() {
+    echo -e "${Green}>>>${Reset}${Bold} Cleaning temporary files ... "
+    rm -rf /tmp/target*
+    rm -f /tmp/PKGBUILD
+}
+
+if [ "$1" = "--install" ]; then
+    inst
+    clean_tmp
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+    clean_tmp
+
+elif [ "$1" = "--remove" ]; then
+    remove
+    clean_tmp
+fi

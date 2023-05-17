@@ -7,6 +7,10 @@ dep_apt="python3 python3-dev python3-pip python3-sql python3-urllib3 python3-col
 dep_apk="python3 py3-pip py3-colorama py3-requests sudo zstd"
 dep_pip="colorama halo requests"
 
+Reset='\033[0m'
+Bold="\e[1m"
+Green='\033[0;32m'
+
 if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
     echo "This package script is official not supported for your system."
     echo "Make sure, you have installed the following dependencies: python3 python3-dev python3-pip python3-sql python3-urllib3 sudo"
@@ -20,15 +24,6 @@ if (( $(id -u) != 0 )); then
     exit
 fi
 
-if [ "$1" = "--install" ]; then
-    install
-
-elif [ "$1" = "--upgrade" ]; then
-    upgrade
-
-elif [ "$1" = "--remove" ]; then
-    remove
-fi
 
 get_dependencies() {
     [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
@@ -46,10 +41,14 @@ extract() {
     cd /tmp/target || exit
 }
 
-install() {
+inst() {
+    echo -e "${Green}>>>${Reset}${Bold} Installing dependencies ... "
     get_dependencies
+
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
 
+    echo -e "${Green}>>>${Reset}${Bold} Installing spkg ... "
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/ /usr/share/spkg/
@@ -73,15 +72,14 @@ install() {
 
     spkg build world
     spkg sync
-
-    rm -rf /tmp/target/
-    rm -f /tmp/*.setup
-    rm -f /tmp/target.tar
 }
 
 upgrade() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
-        rm -f /usr/bin/spkg
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing spkg ... "
+    rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/ /usr/share/spkg/
     cp -r /tmp/target/data/etc/ /
@@ -103,13 +101,10 @@ upgrade() {
     ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
     spkg sync
-
-    rm -rf /tmp/target/
-    rm -f /tmp/*.setup
-    rm -f /tmp/target.tar
 }
 
 remove() {
+    echo -e "${Green}>>>${Reset}${Bold} Removing neofetch ... "
     read -rep "Are you sure? This will remove spkg from your system. [Y/N] " ans_s
     if [[ "${ans_s}" != "y" ]] && [[ "${ans_s}" != "Y" ]] && [[ "${ans_s}" != "j" ]] && [[ "${ans_s}" != "j" ]]; then
             echo -e "Aborting"
@@ -121,3 +116,22 @@ remove() {
     rm -rf /etc/spkg/
     rm -f /tmp/PKGBUILD
 }
+
+clean_tmp() {
+    echo -e "${Green}>>>${Reset}${Bold} Cleaning temporary files ... "
+    rm -rf /tmp/target*
+    rm -f /tmp/PKGBUILD
+}
+
+if [ "$1" = "--install" ]; then
+    inst
+    clean_tmp
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+    clean_tmp
+
+elif [ "$1" = "--remove" ]; then
+    remove
+    clean_tmp
+fi
