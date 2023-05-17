@@ -14,8 +14,8 @@ from halo import Halo
 from sys import exit
 
 # Base Variables
-version = "1.6.0a-hdp-vc-20230511"
-alpha = True
+version = "1.6.0-hdp-vc-20230517"
+alpha = False
 hbp = True
 
 # Database Variables
@@ -83,9 +83,11 @@ if not local_lang == "de" and not local_lang == "en":
 
 if local_lang == "de":
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
+    HttpError = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?){Colors.RESET}"
 
 elif local_lang == "en":
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
+    HttpError = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?){Colors.RESET}"
 
 # Connect to the Package Database
 try:
