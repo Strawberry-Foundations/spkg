@@ -7,7 +7,6 @@
 
 
 *- Todo for Remove-Function in Packages -*
-- Python
 - @tools
 
 

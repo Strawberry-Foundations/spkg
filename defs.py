@@ -14,7 +14,7 @@ from halo import Halo
 from sys import exit
 
 # Base Variables
-version = "1.6.0-rc1"
+version = "1.6.0-rc2"
 alpha = False
 hbp = False
 

@@ -354,7 +354,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
     if len(sys.argv) > 2 and sys.argv[2] == "--installed":
         # Select * from the world database
         try:
-            world_c.execute("SELECT * FROM world")
+            world_c.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
             
             # Print the entries 
             for row in world_c:
@@ -369,7 +369,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
         if len(sys.argv) > 2 and sys.argv[2] == "--arch":
             try:
                 arch_a = sys.argv[3]
-                c.execute("SELECT * FROM packages where arch = ?", (arch_a, ))
+                c.execute("SELECT * FROM packages where arch = ? ORDER BY name GLOB '[A-Za-z]*' DESC, name", (arch_a, ))
                 for row in c:
                     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
                 exit()
@@ -383,13 +383,19 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
         # If not, print just all packages
         else:
             try:
-                c.execute("SELECT * FROM packages")
+                c.execute("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
                 for row in c:
                     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
                 exit()
 
             except OperationalError:
                 print(PackageDatabaseNotSynced)
+              
+            # For debugging-purposes only  
+            # c.execute("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+            # for row in c:
+            #     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
+            # exit()
         exit()
     exit()
             
