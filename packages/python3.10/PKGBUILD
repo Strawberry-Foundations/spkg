@@ -1,0 +1,118 @@
+#!/bin/bash
+
+name=python
+ver=3.10
+arch=all
+dep_apt="wget build-essential libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev make tar"
+dep_apk="wget gcc g++ ncurses-dev libressl-dev openssl-dev sqlite-dev tk-dev gdbm-dev libc-dev libbz2 libffi-dev zlib-dev automake autoconf make tar"
+
+Reset='\033[0m'
+Bold="\e[1m"
+Green='\033[0;32m'
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "This build script cannot be executed on your system. Sorry"
+    exit
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/sbin/apk" ]] && pkg_mgr="apk"
+
+if (( $(id -u) != 0 )); then
+    echo "This package script can only be run with root (permisson denied)"
+    exit
+fi
+
+get_dependencies() {
+    [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
+    [[ "${pkg_mgr}" == "apk" ]] && cmd="apk add $dep_apk"
+
+    $cmd &> /dev/null
+}
+
+extract() {
+    cd /tmp/ || exit
+    mv Python*.tgz /tmp/target.tgz
+    mkdir /tmp/target
+
+    tar xf /tmp/target.tgz --directory /tmp/target/
+    cd /tmp/target/Python* || exit
+}
+
+configure() {
+    sleep 0.5
+    ./configure --enable-optimizations
+}
+
+compile() {
+    make -j $(nproc)
+}
+
+inst() {
+    echo -e "${Green}>>>${Reset}${Bold} Installing dependencies ... "
+    get_dependencies
+
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Configuring ... "
+    configure
+
+    echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
+    compile
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing python3.10 ... "
+    make altinstall
+    ln -s /usr/local/bin/python3.10 /usr/local/bin/python
+}
+
+upgrade() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Configuring ... "
+    configure
+
+    echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
+    compile
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing python3.10 ... "
+    make altinstall
+    ln -s /usr/local/bin/python3.10 /usr/local/bin/python
+}
+
+remove() {
+    echo -e "${Green}>>>${Reset}${Bold} Removing python3.10 ... "
+    rm -rf /usr/local/bin/python3.10
+    rm -rf /usr/local/lib/python3.10
+    rm -rf /usr/lib/python3.10/
+    read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
+
+    if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
+        exit
+    else 
+        [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y $dep_apt"
+        [[ "${pkg_mgr}" == "apk" ]] && cmd="apk remove $dep_apk"
+
+        $cmd &> /dev/null
+    fi
+}
+
+clean_tmp() {
+    echo -e "${Green}>>>${Reset}${Bold} Cleaning temporary files ... "
+    rm -rf /tmp/target*
+    rm -f /tmp/PKGBUILD
+}
+
+if [ "$1" = "--install" ]; then
+    inst
+    clean_tmp
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+    clean_tmp
+
+elif [ "$1" = "--remove" ]; then
+    remove
+    clean_tmp
+fi
