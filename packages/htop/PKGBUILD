@@ -1,7 +1,7 @@
 #!/bin/bash
 
-name=neofetch
-ver=7.1.0
+name=htop
+ver=git
 arch=all
 dep_apt="libncursesw5-dev autotools-dev autoconf automake build-essential tar"
 dep_apk="gcc g++ make ncurses-dev tar automake autoconf"
@@ -70,7 +70,8 @@ upgrade() {
 
 remove() {
     echo -e "${Green}>>>${Reset}${Bold} Removing htop ... "
-    rm -f /usr/bin/recontrolled
+    rm -f /usr/bin/htop
+    rm -f /usr/local/bin/htop
     read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
 
     if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then

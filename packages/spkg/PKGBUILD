@@ -31,6 +31,7 @@ get_dependencies() {
 
     $cmd &> /dev/null
     sudo -H pip install "$dep_pip" --break-system-packages
+    sudo -H pip install "$dep_pip"
 }
 
 extract() {
@@ -60,7 +61,7 @@ inst() {
     rm -rf build
     rm -rf data
     rm -rf resources
-    rm -rf setup_scripts
+    rm -rf packages
     rm -f package.db
     rm -f spkg-installer.py
     rm -f requirements.txt
@@ -82,7 +83,6 @@ upgrade() {
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/ /usr/share/spkg/
-    cp -r /tmp/target/data/etc/ /
 
     cd /usr/share/spkg/ || exit
     mv spkg.py spkg
@@ -90,7 +90,7 @@ upgrade() {
     rm -rf build
     rm -rf data
     rm -rf resources
-    rm -rf setup_scripts
+    rm -rf packages
     rm -f package.db
     rm -f spkg-installer.py
     rm -f requirements.txt

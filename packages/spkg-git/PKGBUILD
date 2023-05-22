@@ -49,7 +49,7 @@ inst() {
     echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
 
-    echo -e "${Green}>>>${Reset}${Bold} Installing spkg ... "
+    echo -e "${Green}>>>${Reset}${Bold} Installing spkg-git ... "
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/spkg-main/ /usr/share/spkg/
@@ -79,7 +79,7 @@ upgrade() {
     echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
     extract
 
-    echo -e "${Green}>>>${Reset}${Bold} Installing spkg ... "
+    echo -e "${Green}>>>${Reset}${Bold} Installing spkg-gitspkg-git ... "
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/spkg-main/ /usr/share/spkg/
@@ -110,7 +110,7 @@ remove() {
             exit
     fi
 
-    echo -e "${Green}>>>${Reset}${Bold} Removing spkg ... "
+    echo -e "${Green}>>>${Reset}${Bold} Removing spkg-git ... "
 
     rm -rf /usr/share/spkg
     rm -f /usr/bin/spkg
