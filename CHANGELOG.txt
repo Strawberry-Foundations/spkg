@@ -3,7 +3,9 @@
 - (New) New release variables
 - (New) Complete new modular-system for spkg (defs-system)
 - (New) Completly new package build scripts
+- (New) spkg lists now the packages in alphabetic order
 - (Package-related) Ported almost all package to the new build system
+- (Package-related) Remove function for the python*-packages (currently untested)
 - (Optimization) much more code comments and documentation 
 - (Optimization) much more modular code 
 - (Optimization) Python Object Classes for many functions
@@ -11,6 +13,7 @@
 - (Fix) Better formatting
 - (Fix) Fixed bug not showing package information when arch = all
 - (Backend) Many many fixes and better handling for almost everything
+
 
 * -- Known Issues -- *
 - (Issue) -
