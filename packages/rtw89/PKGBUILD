@@ -1,0 +1,112 @@
+#!/bin/bash
+
+name=rtw89
+ver=git
+arch=amd64
+dep_apt="make gcc linux-headers-$(uname -r) build-essential git"
+dep_dnf="kernel-headers kernel-devel"
+dep_zypper="make gcc kernel-devel kernel-default-devel git libopenssl-devel"
+
+Reset='\033[0m'
+Bold="\e[1m"
+Green='\033[0;32m'
+
+if ! [ -f "/usr/bin/apt" ] && ! [ -f "/sbin/apk" ]; then
+    echo "This build script cannot be executed on your system. Sorry"
+    exit
+fi
+
+[[ -f "/usr/bin/apt" ]] && pkg_mgr="apt"
+[[ -f "/usr/bin/dnf" ]] && pkg_mgr="dnf"
+[[ -f "/usr/bin/zypper" ]] && pkg_mgr="zypper"
+[[ -f "/usr/bin/pacman" ]] && pkg_mgr="pacman"
+
+if (( $(id -u) != 0 )); then
+    echo "This package script can only be run with root (permisson denied)"
+    exit
+fi
+
+get_dependencies() {
+    [[ "${pkg_mgr}" == "apt" ]] && cmd="apt install -y $dep_apt"
+    [[ "${pkg_mgr}" == "dnf" ]] && cmd="dnf install $dep_dnf && dnf group install 'C Development Tools and Libraries'"
+    [[ "${pkg_mgr}" == "apt" ]] && cmd="zypper install $dep_zypper"
+    [[ "${pkg_mgr}" == "pacman" ]] && cmd="git clone https://aur.archlinux.org/rtw89-dkms-git.git && cd rtw89-dkms-git && makepkg -sri"
+
+    $cmd
+}
+
+extract() {
+    cd /tmp/ || exit
+    mv rtw89*.tar.gz /tmp/target.tar.gz
+    mkdir /tmp/target
+
+    tar xf /tmp/target.tar.gz --directory /tmp/target/
+    cd /tmp/target/rtw89* || exit
+}
+
+compile() {
+    make
+}
+
+inst() {
+    echo -e "${Green}>>>${Reset}${Bold} Installing dependencies ... "
+    get_dependencies
+
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
+    compile
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing drivers/rtw89 ... "
+    make install
+
+}
+
+upgrade() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Compiling ... "
+    compile
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing drivers/rtw89 ... "
+    make install
+}
+
+remove() {
+    echo -e "${Green}>>>${Reset}${Bold} Removing drivers/rtw89 ... "
+    # read -rep $'\033[0;33m>>>\033[0m\e[1m Remove dependencies? [Y/N] ' ans
+
+    # if [[ "${ans}" != "y" ]] && [[ "${ans}" != "Y" ]] && [[ "${ans}" != "j" ]] && [[ "${ans}" != "j" ]]; then
+    #     exit
+    # else 
+    #     [[ "${pkg_mgr}" == "apt" ]] && cmd="apt remove -y $dep_apt"
+
+    #     $cmd &> /dev/null
+    # fi
+
+    curl --output '/tmp/rtw89.tar.gz' --url 'https://github.com/lwfinger/rtw89/archive/refs/heads/main.tar.gz'
+    extract
+    sudo make uninstall
+
+}
+
+clean_tmp() {
+    echo -e "${Green}>>>${Reset}${Bold} Cleaning temporary files ... "
+    rm -rf /tmp/target*
+    rm -f /tmp/PKGBUILD
+}
+
+if [ "$1" = "--install" ]; then
+    inst
+    clean_tmp
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+    clean_tmp
+
+elif [ "$1" = "--remove" ]; then
+    remove
+    clean_tmp
+fi
