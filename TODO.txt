@@ -3,7 +3,6 @@
 - Repomanager Plugin
 - Working Update Function
 - Native Support for Fedora
-- Package Categories, e.g. drivers/somedrivers
 
 
 *- Todo for Remove-Function in Packages -*
@@ -11,11 +10,6 @@
 
 
 *- Ideas -*
-- GPG Repository Signing? 
-- git clone instead of downloading archive?
-- Local Package Installation
+- (GPG) Repository Signing? 
+- Local Package Installation?
 - Native Support for openSUSE
-
-
-*- Must-Todo for spkg 1.6.0 -*
-- More self-hosted packages, for an correct metadata header

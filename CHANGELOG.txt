@@ -6,15 +6,22 @@
 - (New) Completly new package build scripts
 - (New) spkg lists now the packages in alphabetic order
 - (New) New Database Sync system with multiple repository support
+- (New) Check Mark when something passed (e.g. package db synced successfully)
+- (New) New Text-Displaying for the install function
+- (Package-related) Support for drivers added
+- (Package-related) Update for package groups
+- (Package-related) Package Subdirectories/Categories, e.g. drivers/rtw89
+- (Package-related) 5 main package branches, main, community, unstable and git 
 - (Package-related) Ported almost all package to the new build system
 - (Package-related) Remove function for the python*-packages (currently untested)
-- (Optimization) much more code comments and documentation 
-- (Optimization) much more modular code 
+- (Package-related) New package cdn (core-cdn)
+- (Optimization) Much more code comments and documentation 
+- (Optimization) Much more modular code 
 - (Optimization) Python Object Classes for many functions
-- (Optimization) New Text-Displaying for the install function
-- (Optimization) Check Mark when something passed (e.g. package db synced successfully)
+- (Optimization) CLI-Design update
 - (Fix) Better formatting
 - (Fix) Fixed bug not showing package information when arch = all
+- (Fix) Fixed a translation bug for the Missing Permissons String in the english language
 - (Backend) Many many fixes and better handling for almost everything
 - (Backend) Flag for selecting using the ./data as the data directory (Development only!)
 - (Backend) Moved plugin_daemon.py to the src Directory
