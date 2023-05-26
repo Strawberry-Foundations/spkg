@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
-from plugin_daemon import *
+from src.plugin_daemon import *
 from src.pkg_install import * 
 from src.pkg_remove import * 
 from src.pkg_download import *
@@ -58,7 +58,7 @@ if language == "de":
     UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
     StrArchitecture = "Architektur"
     SyncingPackageDatabase = f"Synchronisieren von"
-    SuccessSyncingPackageDatabase = f"{Colors.BOLD}Die Paketdatenbank wurde synchronisiert. Führe {Fore.CYAN}spkg update{Fore.RESET} aus, um nach Paketupdates zu suchen.{Colors.RESET}"
+    SuccessSyncingPackageDatabase = f"{Colors.BOLD}Die Paketdatenbank wurde in %s s synchronisiert. Führe {Fore.CYAN}spkg update{Fore.RESET} aus, um nach Paketupdates zu suchen.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
     SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
@@ -105,7 +105,7 @@ elif language == "en" or language == "us" or language == "en_us":
     UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
     StrArchitecture = "Architecture"
     SyncingPackageDatabase = f"Synchronize from"
-    SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
+    SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized in %s s. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
@@ -449,25 +449,26 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
-    with open(spkg_repositories, "r") as f:
-        data = json.load(f)
-        
-    repo = f"{data['main']}/package.db"
-    filename = package_database
-    
     if os.geteuid() == 0:
         None
     else:
-        print(f"{Fore.CYAN + Colors.BOLD}{filename}{Fore.RESET}{MissingPermissons}")
+        print(f"{Fore.CYAN + Colors.BOLD}{spkg_data_dir}: {Fore.RESET}{MissingPermissons}")
         print(MissingPermissonsPackageDatabaseUpdate)
         exit()
-        
-    spinner = Halo(text=f"{SyncingPackageDatabase} {data['main']} ...", spinner={
+    
+    start_time = time.time()
+    for name, url in spkg_repo_data.items():
+        repo = url + "/package.db"
+        filename = spkg_data_dir + name + ".db"
+        # print(f"Name: {name}, URL: {url}, Save: {filename}, DB-URL: {repo}")
+        spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
                     'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-    spinner.start()
-
-    try:
-        req = urllib.request.Request(
+        spinner.start()
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
+        
+        # print(f"Fetching the url {repo}")
+        request = urllib.request.Request(
             repo,
             data=None,
             headers={
@@ -475,21 +476,18 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
             }
         )
 
-        f = urllib.request.urlopen(req)
-
-        download_time_start = time.time()
+        repo_db = urllib.request.urlopen(request)
         
+        # print(f"Saving to {filename}")
         with open(filename, 'wb') as file:
-            file.write(f.read())
+            file.write(repo_db.read())
 
-        download_time_end = time.time()
-        print(f"\n{SuccessSyncingPackageDatabase}{Colors.RESET}")
-        exit()
+    end_time = time.time()
+    req_time = round(end_time - start_time, 2)
+    
+    print(f"{SuccessSyncingPackageDatabase % req_time}{Colors.RESET}")
+    exit()
 
-    except HTTPError as e:
-        print("")
-        print(HttpError)
-        exit()
 
 
 # * --- Install Function --- *
