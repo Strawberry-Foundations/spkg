@@ -1,16 +1,18 @@
 * -- spkg v1.6.0 -- *
 - (Important) We're changing our package build system to our new PKGBUILD-System (spkg-pbs)
+- (Important) New Codebase, Data Structure, Package- and Repository Structure. Older Versions of spkg are now discontinued and no longer work
 - (New) New release variables
 - (New) Complete new modular-system for spkg (defs-system)
 - (New) Completly new package build scripts
 - (New) spkg lists now the packages in alphabetic order
-- (New) New Database Sync system with multiple repositoriy support
+- (New) New Database Sync system with multiple repository support
 - (Package-related) Ported almost all package to the new build system
 - (Package-related) Remove function for the python*-packages (currently untested)
 - (Optimization) much more code comments and documentation 
 - (Optimization) much more modular code 
 - (Optimization) Python Object Classes for many functions
 - (Optimization) New Text-Displaying for the install function
+- (Optimization) Check Mark when something passed (e.g. package db synced successfully)
 - (Fix) Better formatting
 - (Fix) Fixed bug not showing package information when arch = all
 - (Backend) Many many fixes and better handling for almost everything

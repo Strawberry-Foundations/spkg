@@ -61,6 +61,10 @@ elif arch == "aarch64":
     arch = "arm64"
     
 def download(name):
+    spinner_db = Halo(text=f"{SearchingDatabaseForPackage}", spinner={'interval': 150, 'frames': [
+                       '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    spinner_db.start()
+    
     c.execute("SELECT arch FROM packages where name = ?", (name,))
     
     try:
@@ -106,8 +110,10 @@ def download(name):
 
         f = urllib.request.urlopen(req)
         
-        print(
-            f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        spinner_db.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        
+        
         try:
             continue_pkg_installation = input(
                 f"{ContinePackageInstallation1}{filename}{Colors.RESET}{ContinePackageInstallation2}{round(file_size_mb, 2)} MB{ContinePackageInstallation3} ")

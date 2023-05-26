@@ -150,7 +150,7 @@ class Package:
 
             # stop the spinner
             spinner_db_search.stop()
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
             
             # ask if you want to continue the installation
             try:
@@ -370,7 +370,7 @@ class Package:
 
             # stop the spinner
             spinner_db_search.stop()
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
             
             # ask if you want to continue the installation
             try:
@@ -533,7 +533,7 @@ class Package:
 
             # stop the spinner
             spinner_db_search.stop()
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
             
             # ask if you want to continue the installation
             try:

@@ -114,7 +114,7 @@ def remove(name):
         
         # stop the spinner
         spinner_db_search.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
         
         
         # ask if you want to continue the package removing process
@@ -276,7 +276,7 @@ def sandbox_remove(name):
             file_setup.write(f_setup.read())
 
         spinner_setup.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[|] {Fore.RESET}{StrGet}: {setup_script}{Colors.RESET}")
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET}{StrGet}: {setup_script}{Colors.RESET}")
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
 
         os.system(f"sudo chroot {bootstrap_location} bash /tmp/{row[0]}.setup --remove")
