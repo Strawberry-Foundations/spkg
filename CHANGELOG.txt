@@ -22,6 +22,7 @@
 - (Fix) Better formatting
 - (Fix) Fixed bug not showing package information when arch = all
 - (Fix) Fixed a translation bug for the Missing Permissons String in the english language
+- (Fix) Fixed a typo for "Synchronisiert" 
 - (Backend) Many many fixes and better handling for almost everything
 - (Backend) Flag for selecting using the ./data as the data directory (Development only!)
 - (Backend) Moved plugin_daemon.py to the src Directory

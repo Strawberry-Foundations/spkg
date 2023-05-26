@@ -49,7 +49,7 @@ else:
     user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
 
 # Url's
-world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
+world_database_url = "https://sources.juliandev02.ga/archive/world_base.db"
 
 
 # Color Variables

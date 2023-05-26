@@ -75,7 +75,7 @@ if language == "de":
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
     PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu entfernen.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
-    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
+    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
     MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
@@ -114,7 +114,7 @@ elif language == "en" or language == "us" or language == "en_us":
     ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
     Abort = "Aborting ..."
     ExecutingSetup = f"Executing Setup Script... Please wait"
-    MissingPermissons = f"{Fore.RESET + Colors.RESET}Missing Permissons"
+    MissingPermissons = f"{Fore.RESET + Colors.RESET}: Missing Permissons"
     MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
     SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
     WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
@@ -122,7 +122,7 @@ elif language == "en" or language == "us" or language == "en_us":
     PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
     PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to uninstall.{Colors.RESET}"
     BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
-    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[!]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
+    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
     MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly removed package could therefore not be removed (Is spkg run as root?).{Colors.RESET}"
     RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
@@ -188,7 +188,7 @@ def help_de():
     print(f"{Colors.BOLD} -> {Fore.BLUE}remove:{Fore.RESET} Entfernt das angegebene Paket neu{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}update:{Fore.RESET} Überprüft, ob ein Update für die installierten Pakete verfügbar ist{Colors.RESET} (Noch nicht verfügbar)")
     print(f"{Colors.BOLD} -> {Fore.BLUE}upgrade:{Fore.RESET} Aktualisiert alle verfügbaren Paketupdates{Colors.RESET}")
-    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Syncronisiert die Paketdatenbank{Colors.RESET}")
+    print(f"{Colors.BOLD} -> {Fore.BLUE}sync:{Fore.RESET} Synchronisiert die Paketdatenbank{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}info:{Fore.RESET} Gibt dir Informationen über ein bestimmtes Paket aus{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}list:{Fore.RESET} Zählt alle verfügbaren Pakete auf{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}download:{Fore.RESET} Lädt ein bestimmtes Paket herunter{Colors.RESET}")
@@ -255,7 +255,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             subprocess.run(['chmod', '777', f'{world_database}'])
 
             download_time_end = time.time()
-            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_database}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_database_url} {Colors.RESET}({world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
             print(SuccessBuildingWorldDatabase)
             
             exit()
