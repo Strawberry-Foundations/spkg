@@ -1,3 +1,4 @@
 {
-    "main": "https://sources.juliandev02.ga/packages"
+    "main": "https://sources.juliandev02.ga/packages",
+    "test": "https://sources.juliandev02.ga/tests"
 }
