@@ -19,7 +19,7 @@ class Colors:
     RESET = '\033[0m'
 
 
-version = "1.1.0"
+version = "1.2.0"
 
 db = sql.connect("/tmp/spkg_installer.db")
 c = db.cursor()
@@ -60,7 +60,6 @@ except HTTPError as e:
     print(e)
 
 spkg_py = "spkg"
-spkg_bin = "spkg-bin"
 spkg_git = "spkg-git"
 
 c.execute("SELECT name FROM packages where name = ?", (spkg_py,))
@@ -72,16 +71,6 @@ if c.fetchall():
         spkg_py_branch = row[2]
         spkg_py_url = row[3]
         spkg_py_setup = row[4]
-
-c.execute("SELECT name FROM packages where name = ?", (spkg_bin,))
-if c.fetchall():
-    c.execute(
-        "SELECT name, version, branch, fetch_url, setup_script FROM packages where name = ?", (spkg_bin,))
-    for row in c:
-        spkg_bin_ver = row[1]
-        spkg_bin_branch = row[2]
-        spkg_bin_url = row[3]
-        spkg_bin_setup = row[4]
 
 c.execute("SELECT name FROM packages where name = ?", (spkg_git,))
 if c.fetchall():
@@ -97,8 +86,7 @@ print(f"{Colors.BOLD + Colors.UNDERLINE}Please select the version of spkg you wa
 print(
     f"{Colors.BOLD + Fore.CYAN}[i]{Fore.RESET} You don't know which version is the right one for you? Get help with '?' or 'help'.\nType 'exit' or 'q' to exit")
 print(f"{Colors.BOLD} -> 1. {Fore.BLUE}spkg-py ({spkg_py_ver}) {Fore.CYAN}@ {spkg_py_branch}{Fore.RESET}{Colors.RESET}")
-print(f"{Colors.BOLD} -> 2. {Fore.BLUE}spkg-bin ({spkg_bin_ver}) {Fore.CYAN}@ {spkg_bin_branch}{Fore.RESET}{Colors.RESET}")
-print(f"{Colors.BOLD} -> 3. {Fore.BLUE}spkg-git ({spkg_git_ver}) {Fore.CYAN}@ {spkg_git_branch}{Fore.RESET}{Colors.RESET}")
+print(f"{Colors.BOLD} -> 2. {Fore.BLUE}spkg-git ({spkg_git_ver}) {Fore.CYAN}@ {spkg_git_branch}{Fore.RESET}{Colors.RESET}")
 
 spinner.stop()
 while 1:
@@ -115,7 +103,7 @@ while 1:
         print(f"The official version of spkg, which is extensively tested. Runs faster and more\nreliable than the spkg-bin version. Requires the Python interpreter")
 
         print(f"\n{Fore.BLUE + Colors.UNDERLINE + Colors.BOLD}spkg-bin")
-        print(f"A compiled version of spkg. Runs on any system, even without Python interpreter.\nRuns a bit slower, and more unreliable. ")
+        print(f"A compiled version of spkg. Runs on any system, even without Python interpreter.\nRuns a bit slower, and more unreliable. THIS PACKAGE IS NO LONGER AVAILABLE!!!!")
 
         print(f"\n{Fore.BLUE + Colors.UNDERLINE + Colors.BOLD}spkg-git")
         print(f"The Git version of spkg. This uses the codebase from GitHub (https://github.com/Juliandev02/spkg).\nUses the latest source code. May run unstable. Mostly untested. Requires the Python interpreter")
@@ -207,89 +195,8 @@ while 1:
             exit()
 
 
-    if install_version_input == "spkg-bin" or install_version_input == "2":
-        time.sleep(1)
-        print(f"{Colors.BOLD}Preparing installation of spkg-bin ...{Colors.RESET}")
 
-        try:
-            req = urllib.request.Request(
-                spkg_bin_url,
-                data=None,
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-                }
-            )
-
-            req_setup = urllib.request.Request(
-                spkg_bin_setup,
-                data=None,
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-                }
-            )
-
-            f = urllib.request.urlopen(req)
-
-            download_time_start = time.time()
-
-            spinner = Halo(text=f"Get: {spkg_bin_url}", spinner={'interval': 150, 'frames': [
-                '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-            spinner.start()
-
-            with open("/tmp/spkg_bin.tar", 'wb') as file:
-                file.write(f.read())
-
-            spinner.stop()
-            print(
-                f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.BOLD}Get: {spkg_bin_url}")
-
-            f_setup = urllib.request.urlopen(req_setup)
-
-            spinner2 = Halo(text=f"Get: {spkg_bin_setup}", spinner={'interval': 150, 'frames': [
-                '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-            spinner2.start()
-
-            with open("/tmp/PKGBUILD", 'wb') as file_setup:
-                file_setup.write(f_setup.read())
-
-            spinner.stop()
-            print(
-                f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.BOLD}Get: {spkg_bin_setup}")
-
-            download_time_end = time.time()
-            print(
-                f"Finished downloading sources for {Fore.LIGHTCYAN_EX + Colors.BOLD}spkg-bin{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
-            
-            spinner.stop()
-            spinner2.stop()
-        
-            subprocess.run(['sudo', 'chmod', '+x', f'/tmp/PKGBUILD'])
-            subprocess.run(['sudo', 'bash', f'/tmp/PKGBUILD', '--install'])
-            
-            if os.path.exists('/usr/bin/spkg'):
-                print(f"{Colors.BOLD + Fore.GREEN}Congratulations! The Advanced Source Package Management has been successfully installed on your system!{Colors.BOLD + Fore.GREEN}")
-            else: 
-                print(f"{Colors.BOLD + Fore.RED}Error occured while installing spkg. Try asking a developer.{Colors.RESET + Fore.RESET}")
-                exit()
-        
-            exit()
-
-        except HTTPError as e:
-            print(
-                f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}")
-            print(e)
-
-        except NameError as e:
-            print(
-                f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}")
-        
-        except KeyboardInterrupt as e:
-            print(
-                f"\n{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Canceled installation of spkg.{Colors.RESET}")
-            exit()
-
-
-    if install_version_input == "spkg-git" or install_version_input == "3":
+    if install_version_input == "spkg-git" or install_version_input == "2":
         time.sleep(1)
         print(f"{Colors.BOLD}Preparing installation of spkg-git ...{Colors.RESET}")
 
