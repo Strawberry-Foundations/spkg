@@ -64,6 +64,7 @@ Distrobutions and versions that are not listed are not supported by us.
 | Ubuntu    | 22.10         | Yes           | ![](https://img.shields.io/badge/-Old_Stable-green)       | native, sandbox, docker
 | Ubuntu    | 23.04         | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Alpine    | 3.16.x        | Untested      | ![](https://img.shields.io/badge/-Stable-green)           | native, sandbox, docker
-| Alpine    | 3.17.x        | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
+| Alpine    | 3.17.x        | Yes           | ![](https://img.shields.io/badge/-Stable-green)           | native, sandbox, docker
+| Alpine    | 3.18.x        | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Fedora    | 37 - 38       | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | (soon native), sandbox, docker
 | Arch      | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
