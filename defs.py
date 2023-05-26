@@ -17,13 +17,7 @@ from sys import exit
 version = "1.6.0-rc2"
 alpha = False
 hbp = False
-
-# Database Variables
-world_database = "/etc/spkg/world.db"
-package_database = "/etc/spkg/package.db"
-
-# Url's
-world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
+dev_local = False
 
 # Environ Variables
 home_dir = os.getenv("HOME")
@@ -35,11 +29,28 @@ if os.environ.get('SUDO_USER'):
 else:
     home_dir = os.path.expanduser("~")
 
-# Config File Variables
-spkg_repositories = "/etc/spkg/repositories.json"
-enabled_plugins_config = "/etc/spkg/enabled_plugins.json"
-spkg_config = "/etc/spkg/config.json"
-user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+# Database Variables and Config File Variabless
+if dev_local == False:
+    spkg_data_dir = "/etc/spkg/"
+    world_database = "/etc/spkg/world.db"
+    package_database = "/etc/spkg/main.db"
+    spkg_repositories = "/etc/spkg/repositories.json"
+    enabled_plugins_config = "/etc/spkg/enabled_plugins.json"
+    spkg_config = "/etc/spkg/config.json"
+    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+    
+else:
+    spkg_data_dir = "./data/etc/spkg/"
+    world_database = "./data/etc/spkg/world.db"
+    package_database = "./data/etc/spkg/main.db"
+    spkg_repositories = "./data/etc/spkg/repositories.json"
+    enabled_plugins_config = "./data/etc/spkg/enabled_plugins.json"
+    spkg_config = "./data/etc/spkg/config.json"
+    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
+
+# Url's
+world_database_url = "https://sources.juliandev02.ga/packages/world_base.db"
+
 
 # Color Variables
 class Colors:
@@ -61,6 +72,11 @@ with open(enabled_plugins_config, "r") as f:
 with open(user_sandbox_config, "r") as f:
     global user_sandbox_cfg_data
     user_sandbox_cfg_data = json.load(f)
+
+# Open spkg repo config file
+with open(spkg_repositories, "r") as f:
+    global spkg_repo_data
+    spkg_repo_data = json.load(f)
 
 # Check if alpha or hbp is enabled
 if alpha == True and hbp == True:
@@ -89,11 +105,20 @@ elif local_lang == "en":
     PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     HttpError = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?){Colors.RESET}"
 
-# Connect to the Package Database
-try:
-    db = sql.connect("/etc/spkg/package.db")
-    c = db.cursor()
+if dev_local == False:
+    # Connect to the Package Database
+    try:
+        db = sql.connect("/etc/spkg/main.db")
+        c = db.cursor()
 
-except OperationalError:
-    print(PackageDatabaseNotSynced)
-    exit()
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
+else:
+    try:
+        db = sql.connect("./data/etc/spkg/main.db")
+        c = db.cursor()
+
+    except OperationalError:
+        print(PackageDatabaseNotSynced)
+        exit()
