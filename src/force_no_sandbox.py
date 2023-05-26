@@ -3,12 +3,12 @@ import platform
 
 from sqlite3 import *
 from sys import exit
+from defs import *
+
 # from plugin_daemon import *
 # from src.pkg_install import * 
 # from src.pkg_remove import * 
 # from src.pkg_download import *
-
-package_database = "/etc/spkg/package.db"
 
 arch = platform.machine()
 

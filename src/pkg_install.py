@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
-from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
+from .plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 from .force_no_sandbox import *
 from defs import *
 

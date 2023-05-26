@@ -14,7 +14,7 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
-from plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
+from .plugin_daemon import plugin_daemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 from defs import *
 from .force_no_sandbox import *
 
@@ -69,7 +69,7 @@ elif language == "en":
     
 
 try:
-    db = sql.connect("/etc/spkg/package.db")
+    db = sql.connect(package_database)
     c = db.cursor()
 
 except OperationalError:
