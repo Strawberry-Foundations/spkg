@@ -1,5 +1,22 @@
 #!/usr/bin/env python3
 
+"""
+    Copyright (C) 2023 Juliandev02
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses>
+"""
+
 import os
 import sys
 import time
@@ -171,7 +188,7 @@ def help_en():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}get:{Fore.RESET} Installs a Plugin{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Configuration manager{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Configure the language of spkg{Colors.RESET}")
-    print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
+    print(f"\n{Colors.BOLD}Copyright (C) 2023 Juliandev02 - Made with <3")
 
 
 # Help Function for English German
@@ -204,7 +221,7 @@ def help_de():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}get:{Fore.RESET} Installiert ein Plugin{Colors.RESET}")
     print(f"{Colors.BOLD} -> {Fore.BLUE}config:{Fore.RESET} Konfigurationsverwaltung{Colors.RESET}")
     print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Konfiguriere die Sprache von spkg{Colors.RESET}")
-    print(f"\n{Colors.BOLD}Copyright Juliandev02 2023 (C) - Made with <3")
+    print(f"\n{Colors.BOLD}Copyright (C) 2023 Juliandev02 - Made with <3")
 
 
 # Try to connect to the locally saved package database
@@ -1037,6 +1054,16 @@ elif len(sys.argv) > 1 and sys.argv[1] == "help":
         help_de()
 
 
+# * --- License Function --- *
+elif len(sys.argv) > 1 and sys.argv[1] == "license":
+    print("""
+    Advanced Source Package Managment (spkg) Copyright (C) 2023  Juliandev02
+    This program comes with ABSOLUTELY NO WARRANTY.
+    This is free software, and you are welcome to redistribute it
+    under certain conditions
+          """)
+
+
 # Plugin Executor WITHOUT using spkg plugin <...>
 elif len(sys.argv) > 2: 
     plugin = sys.argv[1]
@@ -1053,13 +1080,13 @@ elif len(sys.argv) > 2:
     else: 
         plugin_daemon.import_plugin(plugin)
         plugin_management.exec(sys.argv[2])
-            
+
 
 elif len(sys.argv) > 1 and sys.argv[1] != "help":
     print(f"{UnknownOperation}{sys.argv[1]}")
     exit()
-    
-    
+
+
 else:
     if language == "en":
         help_en()

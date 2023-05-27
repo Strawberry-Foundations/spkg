@@ -3,13 +3,9 @@
 - Repomanager Plugin
 - Working Update Function
 - Native Support for Fedora
-
-
-*- Todo for Remove-Function in Packages -*
-- @tools
-
+- use /var as directory for the package database
 
 *- Ideas -*
 - (GPG) Repository Signing? 
 - Local Package Installation?
-- Native Support for openSUSE
+- Native Support for openSUSE?

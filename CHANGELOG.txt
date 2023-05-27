@@ -8,6 +8,7 @@
 - (New) New Database Sync system with multiple repository support
 - (New) Check Mark when something passed (e.g. package db synced successfully)
 - (New) New Text-Displaying for the install function
+- (New) Updated the spkg installer for use with the new package build system
 - (Package-related) Support for drivers added
 - (Package-related) Update for package groups
 - (Package-related) Package Subdirectories/Categories, e.g. drivers/rtw89
@@ -15,6 +16,7 @@
 - (Package-related) Ported almost all package to the new build system
 - (Package-related) Remove function for the python*-packages (currently untested)
 - (Package-related) New package cdn (core-cdn)
+- (Package-related) Removed the spkg-bin Package because it's slower and unstable
 - (Optimization) Much more code comments and documentation 
 - (Optimization) Much more modular code 
 - (Optimization) Python Object Classes for many functions
