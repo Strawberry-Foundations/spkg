@@ -1,0 +1,67 @@
+#!/bin/bash
+
+name=android-studio
+ver=2022.2.1-patch2
+arch=amd64 
+
+Reset='\033[0m'
+Bold="\e[1m"
+Green='\033[0;32m'
+
+if (( $(id -u) != 0 )); then
+    echo "This package script can only be run with root (permisson denied)"
+    exit
+fi
+
+extract() {
+    cd /tmp || exit
+    mv android*.tar.gz /tmp/target.tar.gz
+    mkdir /tmp/target
+    tar xf /tmp/target.tar.gz --directory /tmp/target/
+    cd /tmp/target/ || exit
+}
+
+inst() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing android-studio ... "
+    cp -r /tmp/target/android* /opt/
+    bash /opt/android*/bin/studio.sh
+}
+
+upgrade() {
+    echo -e "${Green}>>>${Reset}${Bold} Extracting sources ... "
+    extract
+
+    echo -e "${Green}>>>${Reset}${Bold} Removing old versions of android-studio ... "
+    rm -r /opt/android-studio*
+
+    echo -e "${Green}>>>${Reset}${Bold} Installing android-studio ... "
+    cp -r /tmp/target/android* /opt/
+    bash /opt/android*/bin/studio.sh
+}
+
+remove() {
+    echo -e "${Green}>>>${Reset}${Bold} Removing android-studio ... "
+    rm -r /opt/android*
+}
+
+clean_tmp() {
+    echo -e "${Green}>>>${Reset}${Bold} Cleaning temporary files ... "
+    rm -rf /tmp/target*
+    rm -f /tmp/PKGBUILD
+}
+
+if [ "$1" = "--install" ]; then
+    inst
+    clean_tmp
+
+elif [ "$1" = "--upgrade" ]; then
+    upgrade
+    clean_tmp
+
+elif [ "$1" = "--remove" ]; then
+    remove
+    clean_tmp
+fi
