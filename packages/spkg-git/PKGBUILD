@@ -54,6 +54,7 @@ inst() {
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/spkg-main/ /usr/share/spkg/
     cp -r /tmp/target/spkg-main/data/etc/ /
+    cp -r /tmp/target/spkg-main/data/var/ /
 
     cd /usr/share/spkg/ || exit
     mv spkg.py spkg
@@ -115,6 +116,7 @@ remove() {
     rm -rf /usr/share/spkg
     rm -f /usr/bin/spkg
     rm -rf /etc/spkg/
+    rm -rf /var/lib/spkg/
     rm -f /tmp/PKGBUILD
 }
 
