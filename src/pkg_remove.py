@@ -40,13 +40,10 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-with open("/etc/spkg/config.json", "r") as f:
-    data = json.load(f)
-
-language = data['language']
+language = spkg_cfg_data['language']
 
 
-if not language == "de" and not language == "en":
+if not language in ["de", "en"]:
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 if language == "de":

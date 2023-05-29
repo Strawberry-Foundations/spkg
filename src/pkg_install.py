@@ -42,7 +42,7 @@ else:
 
 language = spkg_cfg_data['language']
 
-if not language == "de" and not language == "en":
+if not language in ["de", "en"]:
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 if language == "de":

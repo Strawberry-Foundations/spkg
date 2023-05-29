@@ -33,7 +33,7 @@ from defs import *
 language = spkg_cfg_data['language']
 
 # If language is either "de" and "en", print Error Message
-if not language == "de" and not language == "en":
+if not language in ["de", "en"]:
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
     exit()
 
