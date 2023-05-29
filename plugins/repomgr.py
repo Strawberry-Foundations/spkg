@@ -40,7 +40,7 @@ if not language == "de" and not language == "en":
 
 # Basic Variables
 spkg_repositories = "/etc/spkg/repositories.json"
-repomgr_list = "/etc/spkg/available_repositories.json"
+repomgr_list = "/etc/spkg/repositories.json"
 
 BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
@@ -71,9 +71,11 @@ elif language == "en":
 class Spec:
     Name = "Repository Manager"
     Desc = Description
-    Version = "1.0.0"
+    Version = "1.0.1"
     Commands = f"""
     -> list
+    -> current
+    -> active (alias of current)
     -> reconfigure
     -> add
     -> delete

@@ -74,18 +74,22 @@ if not os.path.exists(f"{home_dir}/.config/spkg/sandbox.json"):
 spkg_config = "/etc/spkg/config.json"
 user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
 
+# Open spkg config file
 with open(spkg_config, "r") as f:
     spkg_cfg = json.load(f)
 
+# check if user sandbox config exists
 if os.path.exists(f"{home_dir}/.config/spkg/sandbox.json"):
     with open(user_sandbox_config, "r") as f:
         user_sandbox_cfg = json.load(f)
+        
 else:
     user_sandbox_cfg = "{}"
     
 language = spkg_cfg['language']
 
-if not language == "de" and not language == "en":
+# If language is not correct print error
+if not language in ["de", "en"]:
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 # Basic Variables
@@ -97,6 +101,7 @@ try:
 except TypeError or FileNotFoundError: 
     pass
 
+# Open the /etc/os-release file
 with open('/etc/os-release') as f:
     os_info = dict(line.strip().split('=') for line in f if '=' in line)
 
@@ -111,7 +116,7 @@ elif language == "en":
 class Spec:
     Name = "spkg-sandbox"
     Desc = Description
-    Version = "1.2.1"
+    Version = "1.3.0"
     Commands = f"""
     -> setup
     -> reconfigure
@@ -124,32 +129,39 @@ class Spec:
 class PluginHandler:
     def setup():
         debug = False
-           
+        
+        # Sandbox Handler checking
         if sandbox_handler == "chroot":
             sandbox_enter_cmd = f"sudo chroot {bootstrap_location}"
         
         elif sandbox_handler == "bwrap":
             sandbox_enter_cmd = f"sudo bwrap --bind {bootstrap_location} / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp"
         
+        # If the value is not valid, print error
         else:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} Unknown Config for sandbox_handler. Check your config")
 
+        # check if sandbox setup is executed in debug mode
         if len(argv) > 4 and argv[4] == "--debug" or len(argv) > 4 and argv[4] == "--verbose" or len(argv) > 4 and argv[4] == "-v" or len(argv) > 4 and argv[4] == "--v":
             debug = True
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Enabling Verbose Mode")
+            print(f"{Fore.BLUE + BOLD}[!]{Fore.RESET + RESET} Enabling Verbose Mode")
 
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Detecting Operating System")
-        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Distrobution {os_info['NAME']}")
-        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Detected Version {os_info['VERSION_ID']}")
+        # Check Operating System
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Detecting Operating System")
+        print(f"{Fore.GREEN + BOLD}[✓]{Fore.RESET + RESET} Detected Distrobution {os_info['NAME']}")
+        print(f"{Fore.GREEN + BOLD}[✓]{Fore.RESET + RESET} Detected Version {os_info['VERSION_ID']}")
 
+        # check dependency debootstrap
         if not os.path.exists("/usr/sbin/debootstrap"):
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'debootstrap'")
             exit()
         
+        # check dependency bubblewrap
         if not os.path.exists("/usr/bin/bwrap"):
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Missing dependency 'bwrap' (bubblewrap)")
             exit()
 
+        # Print Warnings if Operating system is not official supported
         if os_info['ID'] == "debian" and os_info['VERSION_ID'] == '"10"':
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your version of debootstrap is outdated and doesn't support to build Ubuntu 22.04 Jammy Jellyfish.")
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
@@ -170,15 +182,17 @@ class PluginHandler:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your version of ubuntu is outdated and the sandbox cannot continue to work with Ubuntu 22.04 Jammy Jellyfish")
             print(f"         Using Focal Fossa (Ubuntu 20.04) build script instead ...")
             dist = "focal"
-            
+        
+        # If your distrobution is not tested print warning message
         else:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Your Linux distrobution has not yet been tested by the spkg developers. It is possible that spkg-sandbox does not work. Please open a GitHub issue if something is not working. ")
             dist = "jammy"
 
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Sandbox Setup will now start")
-
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Sandbox Setup will now start")
+        
+        # ask to continue the setup
         try:
-            ans = input("Do you want to continue? [Y/N]? ")
+            ans = input("Do you want to continue? [Y/N] ")
 
         except KeyboardInterrupt:
             print("\nAborting ...")
@@ -188,7 +202,8 @@ class PluginHandler:
             print("Aborting ...")
             exit()
 
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Checking system architecture")
+        # check system architecture
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Checking system architecture")
         arch = platform.machine()
 
         if arch == "x86_64":
@@ -203,30 +218,51 @@ class PluginHandler:
             arch = "arm64"
             repo = "http://ports.ubuntu.com/ubuntu-ports"
 
+        # print error if arch is not supported
         else:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} spkg-sandbox cannot be executed on your system. Your architecture is currently not supported.")
             exit()
-            
+        
+        # check if user-local spkg directory exists
         if not os.path.exists(f"{home_dir}/.local/spkg"):
             os.mkdir(f"{home_dir}/.local/spkg")
 
+        # if the sandbox is already existend, ask to reinstall
         if os.path.exists(bootstrap_location):
-            print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} You have already a installation of spkg-sandbox. Reinstalling spkg-sandbox ...")
-            os.system(f"sudo rm -rf {bootstrap_location}")
-            
+            try:
+                cont_sandbox_setup = input(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} You have already a installation of spkg-sandbox. Do you want to continue? [Y/N] ")
 
+            # If you press ^C, it prints out a error message
+            except KeyboardInterrupt as e:
+                print(f"{Fore.RED + BOLD}[!!!]{Fore.RESET} Process canceled!{RESET}")
+                exit()
+
+            # Check if you want to continue the sandbox setup
+            if cont_sandbox_setup.lower() == "j":
+                os.system(f"sudo rm -rf {bootstrap_location}")
+
+            elif cont_sandbox_setup.lower() == "y":
+                os.system(f"sudo rm -rf {bootstrap_location}")
+            
+            # If you press any other key, it prints out an error message
+            else:
+                print("Aborting ...")
+                exit()
+            
         start_time = time.time()
 
-
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Bootstrapping your spkg-sandbox ... This could take some time depending on your drive speed and internet speed")
-        print(f"{Fore.CYAN + BOLD}[i]{Fore.RESET + RESET} Installing to {bootstrap_location}")
+        # boostrap the sandbox
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Bootstrapping your spkg-sandbox ... This could take some time depending on your drive speed and internet speed")
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Installing to {bootstrap_location}")
         
+        # try to create the sandbox location
         try:
             os.mkdir(bootstrap_location)
             
         except:
             print(f"{Fore.YELLOW + BOLD}Warning:{Fore.RESET + RESET} Couldn't create directory ...")
 
+        # bootstrap
         if debug == True:
             os.system(f"sudo debootstrap --arch={arch} --variant=minbase --include=wget,ca-certificates,busybox-static {dist} {bootstrap_location} {repo}")
 
@@ -234,8 +270,8 @@ class PluginHandler:
             subprocess.run(["sudo", "debootstrap", f"--arch={arch}", "--variant=minbase", "--include=wget,ca-certificates,busybox-static",
                            f"{dist}", f"{bootstrap_location}", f"{repo}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Updating your sandbox ...")
+        # Update the sandbox
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Updating your sandbox ...")
         if debug == True:
             os.system(f"{sandbox_enter_cmd} apt clean all")
             os.system(f"{sandbox_enter_cmd} apt autoclean")
@@ -257,8 +293,8 @@ class PluginHandler:
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "update"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Modifying /etc/apt/sources.list ({bootstrap_location}) for the best program compability")
+        # modify sandbox for the best program compability
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Modifying /etc/apt/sources.list ({bootstrap_location}) for the best program compability")
         os.system(f"sudo rm {bootstrap_location}/etc/apt/sources.list")
 
         if arch == "amd64" or arch == "i386":
@@ -289,52 +325,54 @@ class PluginHandler:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} That shouldn't happend. Please open an issue on GitHub.")
             exit()
 
-
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Installing some base packages ... ")
+        # install some base packages that are required 
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Installing some base packages ... ")
         if debug == True:
             os.system(f"{sandbox_enter_cmd} apt update")
             os.system(f"{sandbox_enter_cmd} apt install -y python3 python3-dev python3-pip")
             
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+            print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Upgrading your sandbox ... ")
             os.system(f"{sandbox_enter_cmd} apt upgrade -y")
             os.system(f"{sandbox_enter_cmd} apt clean all")
             
-            print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+            print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Cleaning your sandbox ... ")
             os.system(f"{sandbox_enter_cmd} apt autoclean")
             os.system(f"{sandbox_enter_cmd} apt autoremove -y")
             
         else:
             if sandbox_handler == "chroot":
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Installing some base packages ... ")
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "update"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 
-                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Upgrading your sandbox ... ")
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "upgrade", "-y"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "clean", "all"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 
-                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Cleaning your sandbox ... ")
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoclean"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "chroot", f"{bootstrap_location}", "apt", "autoremove", "-y"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
             elif sandbox_handler == "bwrap": 
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Installing some base packages ... ")
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "update"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "install", "-y", "python3", "python3-dev", "python3-pip"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 
-                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Upgrading your sandbox ... ")
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Upgrading your sandbox ... ")
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "upgrade", "-y"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "clean", "all"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 
-                print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Cleaning your sandbox ... ")
+                print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Cleaning your sandbox ... ")
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "autoclean"],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 subprocess.run(["sudo", "bwrap", "--bind", f"{bootstrap_location}", "/", "--bind", "/proc", "/proc", "apt", "autoremove", "-y"],
@@ -343,16 +381,18 @@ class PluginHandler:
 
         end_time = time.time()
 
-        print(f"{Fore.GREEN + BOLD}[!]{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
+        print(f"{Fore.GREEN + BOLD}>>>{Fore.RESET + RESET} Finished sandbox setup in {round(end_time - start_time, 2)} s")
 
 
     def reconfigure():
+        # Check if you're want to reconfigure as root
         if os.geteuid() == 0:
                 print(f"{Fore.YELLOW + BOLD}That shouldn't happen. Don't generate your config as root!{Fore.RESET + RESET}")
         else:
             pass
-            
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Regenerating config ...")
+        
+        # Regenerate spkg sandbox config
+        print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Regenerating config ...")
         os.system(f"rm -rf {home_dir}/.config/spkg")
         os.mkdir(f"{home_dir}/.config/spkg")
         user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
@@ -364,21 +404,47 @@ class PluginHandler:
         data["bootstrap_location"] = f"{home_dir}/.local/spkg/sandbox/"
         data["sandbox_handler"] = "chroot"
         
+        # dump new config
         with open(user_sandbox_config, 'w') as f:
             json.dump(data, f)
     
-
+    # Remove spkg sandbox
     def remove():
-        print(f"{Fore.YELLOW + BOLD}[!]{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
-        os.system(f"sudo rm -rf {bootstrap_location}")
-        exit()
+        try:
+            cont_sandbox_remove = input(f"{Fore.BLUE + BOLD}Info:{Fore.RESET + RESET} This will completly remove the spkg-sandbox. Note that this does not remove the packages from the world database.\nDo you want to continue? [Y/N] ")
+
+        # If you press ^C, it prints out a error message
+        except KeyboardInterrupt as e:
+            print(f"\n{Fore.RED + BOLD}[!!!]{Fore.RESET} Process canceled!{RESET}")
+            exit()
+
+        # Check if you want to continue the sandbox setup
+        if cont_sandbox_remove.lower() == "j":
+            print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
+            os.system(f"sudo rm -rf {bootstrap_location}")
+            exit()
+
+        elif cont_sandbox_remove.lower() == "y":
+            print(f"{Fore.YELLOW + BOLD}>>>{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
+            os.system(f"sudo rm -rf {bootstrap_location}")
+            exit()
+        
+        # If you press any other key, it prints out an error message
+        else:
+            print("Aborting ...")
+            exit()
+        
     
-    
+    # alias for remove
     def delete():
         PluginHandler.delete()
 
-
+    # Enter the sandbox depending on the configured sandbox handler
     def enter():
+        if not os.path.exists(bootstrap_location):
+            print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} Your sandbox has not been set up yet. Please set up the sandbox before you can enter the sandbox!")
+            exit()
+            
         if sandbox_handler == "chroot":
             sandbox_enter_cmd = f"sudo chroot {bootstrap_location}"
         
@@ -387,5 +453,5 @@ class PluginHandler:
         
         else:
             print(f"{Fore.RED + BOLD}Error:{Fore.RESET + RESET} Unknown Config for sandbox_handler. Check your config")
-            
+        
         os.system(f'{sandbox_enter_cmd}')

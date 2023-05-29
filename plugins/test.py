@@ -26,7 +26,8 @@ with open(spkg_config, "r") as f:
 
 language = spkg_cfg['language']
 
-if not language == "de" and not language == "en":
+# If language is not correct print error
+if not language in ["de", "en"]:
     exit()
 
 # Language Strings
