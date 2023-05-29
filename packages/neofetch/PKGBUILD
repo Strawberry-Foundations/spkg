@@ -32,9 +32,9 @@ get_dependencies() {
 
 extract() {
     cd /tmp || exit
-    mv neofetch* target.tar.gz
+    mv neofetch* target.tar
     mkdir /tmp/target/
-    tar xf /tmp/target.tar.gz --directory /tmp/target/
+    tar xf /tmp/target.tar --directory /tmp/target/
 }
 
 inst() {
