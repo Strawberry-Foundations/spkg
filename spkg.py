@@ -60,7 +60,7 @@ if not os.path.exists(f"{home_dir}/.config/spkg"):
     os.mkdir(f"{home_dir}/.config/spkg")
     
 # If language is either "de" and "en", print Error Message
-if not language == "de" and not language == "en":
+if not language in ["de", "en"]:
     print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
     exit()
 
@@ -224,7 +224,7 @@ def help_de():
     print(f"\n{Colors.BOLD}Copyright (C) 2023 Juliandev02 - Made with <3")
 
 
-# Try to connect to the locally saved package database
+# Try to connect to the locally saved main package database
 try:
     db = sql.connect(package_database)
     c = db.cursor()
@@ -469,14 +469,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     if os.geteuid() == 0:
         None
     else:
-        print(f"{Fore.CYAN + Colors.BOLD}{spkg_data_dir}: {Fore.RESET}{MissingPermissons}")
+        print(f"{Fore.CYAN + Colors.BOLD}{mirror_dir}: {Fore.RESET}{MissingPermissons}")
         print(MissingPermissonsPackageDatabaseUpdate)
         exit()
     
     start_time = time.time()
     for name, url in spkg_repo_data.items():
         repo = url + "/package.db"
-        filename = spkg_data_dir + name + ".db"
+        filename = mirror_dir + name + ".db"
         # print(f"Name: {name}, URL: {url}, Save: {filename}, DB-URL: {repo}")
         spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
                     'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
