@@ -1,5 +1,5 @@
 # **Advanced Source Package Managment (spkg)**
-![spkg - v1.6.0-rc4](https://img.shields.io/badge/spkg-1.6.0--rc4-success) 
+![spkg - v1.6.0-rc5](https://img.shields.io/badge/spkg-1.6.0--rc5-success) 
 ![Code Size](https://img.shields.io/github/languages/code-size/Juliandev02/spkg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/Juliandev02/spkg)
 ![License](https://img.shields.io/github/license/Juliandev02/spkg)
@@ -19,7 +19,7 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 
 ## **Sandbox  ![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-important)**
 
-![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.2.1-informational)
+![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.3.0-informational)
 ![sandbox-release](https://img.shields.io/badge/Release-stable-success)
 ![sandbox-methods](https://img.shields.io/badge/Methods-bwrap%2C%20chroot-important)
 ![sandbox-architetures](https://img.shields.io/badge/Architectures-x86__64%2C%20x86%2C%20aarch64-success)
