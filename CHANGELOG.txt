@@ -1,6 +1,7 @@
 * -- spkg v1.6.0 -- *
 - (Important) We're changing our package build system to our new PKGBUILD-System (spkg-pbs)
 - (Important) New Codebase, Data Structure, Package- and Repository Structure. Older Versions of spkg are now discontinued and no longer work
+- (Important) spkg uses now a new directory for the databases. (/var/lib/spkg/)
 - (New) New release variables
 - (New) Complete new modular-system for spkg (defs-system)
 - (New) Completly new package build scripts
@@ -9,26 +10,31 @@
 - (New) Check Mark when something passed (e.g. package db synced successfully)
 - (New) New Text-Displaying for the install function
 - (New) Updated the spkg installer for use with the new package build system
-- (Package-related) Support for drivers added
+- (Package-related) Support for drivers added (Beta)
 - (Package-related) Update for package groups
 - (Package-related) Package Subdirectories/Categories, e.g. drivers/rtw89
 - (Package-related) 5 main package branches, main, community, unstable and git 
 - (Package-related) Ported almost all package to the new build system
-- (Package-related) Remove function for the python*-packages (currently untested)
+- (Package-related) Remove function for the python*-packages (currently untested/beta)
 - (Package-related) New package cdn (core-cdn)
 - (Package-related) Removed the spkg-bin Package because it's slower and unstable
 - (Optimization) Much more code comments and documentation 
 - (Optimization) Much more modular code 
 - (Optimization) Python Object Classes for many functions
 - (Optimization) CLI-Design update
+- (Optimization) Added build date for *Release Types* "rc", "beta" and "alpha"
 - (Fix) Better formatting
-- (Fix) Fixed bug not showing package information when arch = all
+- (Fix) Fixed bug not showing package information when arch equals all
 - (Fix) Fixed a translation bug for the Missing Permissons String in the english language
 - (Fix) Fixed a typo for "Synchronisiert" 
-- (Backend) Many many fixes and better handling for almost everything
+- (Fix) Fixed now showing "Installing some base packages" in sandbox plugin when debug mode is not enabled
+- (Backend) Many fixes and better handling for almost everything
 - (Backend) Flag for selecting using the ./data as the data directory (Development only!)
 - (Backend) Moved plugin_daemon.py to the src Directory
-
+- (Backend) Optimization of the error in case of an incorrect language configuration
+- (Backend) Repomgr Update (1.0.1)
+- (Backend) Sandbox Update (1.3.0) (Fixes, New Design, Comments, etc)
+- (Code) Added License information header to every source files
 
 * -- Known Issues -- *
 - (Issue) -
