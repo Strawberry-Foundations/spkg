@@ -67,4 +67,5 @@ Distrobutions and versions that are not listed are not supported by us.
 | Alpine    | 3.17.x        | Yes           | ![](https://img.shields.io/badge/-Stable-green)           | native, sandbox, docker
 | Alpine    | 3.18.x        | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Fedora    | 37 - 38       | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | (soon native), sandbox, docker
-| Arch      | -             | Yes           | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
+| Arch      | -             | Yes           | ![](https://img.shields.io/badge/-Bleeding%20Edge-blueviolet) | sandbox, docker
+| Gentoo    | -             | Untested      | ![](https://img.shields.io/badge/-RR-informational)       | sandbox, docker
