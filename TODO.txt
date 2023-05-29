@@ -3,7 +3,6 @@
 - Repomanager Plugin
 - Working Update Function
 - Native Support for Fedora
-- use /var as directory for the package database
 
 *- Ideas -*
 - (GPG) Repository Signing? 
