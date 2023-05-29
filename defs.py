@@ -31,10 +31,18 @@ from halo import Halo
 from sys import exit
 
 # Base Variables
-version = "1.6.0-rc4"
+version = "1.6.0-rc5"
+date = "20230529"
+release_type = "rc"
 alpha = False
 hbp = False
 dev_local = False
+
+if release_type in ["rc", "beta", "alpha"]:
+    version = version + f" ({date})"
+    
+else: 
+    version = version
 
 # Environ Variables
 home_dir = os.getenv("HOME")
@@ -49,8 +57,11 @@ else:
 # Database Variables and Config File Variabless
 if dev_local == False:
     spkg_data_dir = "/etc/spkg/"
-    world_database = "/etc/spkg/world.db"
-    package_database = "/etc/spkg/main.db"
+    mirror_dir = "/var/lib/spkg/mirrors/"
+    
+    world_database = "/var/lib/spkg/world.db"
+    package_database = "/var/lib/spkg/mirrors/main.db"
+    
     spkg_repositories = "/etc/spkg/repositories.json"
     enabled_plugins_config = "/etc/spkg/enabled_plugins.json"
     spkg_config = "/etc/spkg/config.json"
@@ -58,8 +69,11 @@ if dev_local == False:
     
 else:
     spkg_data_dir = "./data/etc/spkg/"
-    world_database = "./data/etc/spkg/world.db"
-    package_database = "./data/etc/spkg/main.db"
+    mirror_dir = "./data/var/lib/spkg/mirrors/"
+    
+    world_database = "./data/var/lib/spkg/world.db"
+    package_database = "./data/var/lib/spkg/mirrors/main.db"
+    
     spkg_repositories = "./data/etc/spkg/repositories.json"
     enabled_plugins_config = "./data/etc/spkg/enabled_plugins.json"
     spkg_config = "./data/etc/spkg/config.json"
@@ -74,7 +88,7 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
-    
+
 # Open spkg config file
 with open(spkg_config, "r") as f:
     global spkg_cfg_data
@@ -125,7 +139,7 @@ elif local_lang == "en":
 if dev_local == False:
     # Connect to the Package Database
     try:
-        db = sql.connect("/etc/spkg/main.db")
+        db = sql.connect(package_database)
         c = db.cursor()
 
     except OperationalError:
@@ -133,7 +147,7 @@ if dev_local == False:
         exit()
 else:
     try:
-        db = sql.connect("./data/etc/spkg/main.db")
+        db = sql.connect(package_database)
         c = db.cursor()
 
     except OperationalError:
