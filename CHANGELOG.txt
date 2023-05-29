@@ -23,6 +23,7 @@
 - (Optimization) Python Object Classes for many functions
 - (Optimization) CLI-Design update
 - (Optimization) Added build date for *Release Types* "rc", "beta" and "alpha"
+- (Optimization) Print a warning if user configuration folder doesn't exist
 - (Fix) Better formatting
 - (Fix) Fixed bug not showing package information when arch equals all
 - (Fix) Fixed a translation bug for the Missing Permissons String in the english language

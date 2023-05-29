@@ -31,9 +31,9 @@ from halo import Halo
 from sys import exit
 
 # Base Variables
-version = "1.6.0-rc5"
+version = "1.6.0"
 date = "20230529"
-release_type = "rc"
+release_type = "stable"
 alpha = False
 hbp = False
 dev_local = False

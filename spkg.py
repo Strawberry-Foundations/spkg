@@ -55,9 +55,6 @@ elif arch == "aarch64":
     
 language = spkg_cfg_data['language']
 
-# Check if user config path exists
-if not os.path.exists(f"{home_dir}/.config/spkg"):
-    os.mkdir(f"{home_dir}/.config/spkg")
     
 # If language is either "de" and "en", print Error Message
 if not language in ["de", "en"]:
@@ -109,6 +106,7 @@ if language == "de":
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
     ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
     SearchingWorldForPackage = f"{Colors.BOLD}Durchsuche lokale World Datenbak nach installierten Paket ...{Colors.RESET}"
+    UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warnung:{Fore.RESET + Colors.RESET} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
 
 
 # Language Strings for English
@@ -156,6 +154,7 @@ elif language == "en" or language == "us" or language == "en_us":
     UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
     ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
     SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
+    UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warning:{Fore.RESET + Colors.RESET} Your user configuration does not exist. Try to create the configuration folder ..."
     
     
 # Help Function for English Language
@@ -233,6 +232,11 @@ try:
 except OperationalError:
     print(PackageDatabaseNotSynced)
     exit()
+
+# Check if user config path exists
+if not os.path.exists(f"{home_dir}/.config/spkg"):
+    print(UserConfigNotExists2)
+    os.mkdir(f"{home_dir}/.config/spkg")
 
 
 # * --- Build Function --- *
