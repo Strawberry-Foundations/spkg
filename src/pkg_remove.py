@@ -88,7 +88,6 @@ try:
 
 except OperationalError:
     print(PackageDatabaseNotSynced)
-    exit()
 
 try:
     db_world = sql.connect(world_database)

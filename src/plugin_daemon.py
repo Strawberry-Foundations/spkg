@@ -94,7 +94,6 @@ try:
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(PackageDatabaseNotSynced)
-    exit()
 
 class plugin_daemon:
     def import_plugin(plugin_name):

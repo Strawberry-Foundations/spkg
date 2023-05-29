@@ -231,7 +231,6 @@ try:
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(PackageDatabaseNotSynced)
-    exit()
 
 # Check if user config path exists
 if not os.path.exists(f"{home_dir}/.config/spkg"):
