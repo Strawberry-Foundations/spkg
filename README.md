@@ -1,8 +1,8 @@
 # **Advanced Source Package Managment (spkg)**
 ![spkg - v1.6.0](https://img.shields.io/badge/spkg-1.6.0-success) 
-![Code Size](https://img.shields.io/github/languages/code-size/Juliandev02/spkg)
-![Commit activity](https://img.shields.io/github/commit-activity/w/Juliandev02/spkg)
-![License](https://img.shields.io/github/license/Juliandev02/spkg)
+![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/spkg)
+![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/spkg)
+![License](https://img.shields.io/github/license/Strawberry-Foundations/spkg)
 
 spkg is a package manager that downloads the source code from the official sources, and then mostly compiles it specifically for your device. 
 
@@ -53,9 +53,9 @@ Distrobutions and versions that are not listed are not supported by us.
 | Platform  | Version       | Supported     | Branch                                                    | Package Method    |
 | --        | --            | --            | --                                                        | --                |   
 | Debian    | 9 and below   | No            | ![](https://img.shields.io/badge/-End_of_Life-red)        | -
-| Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldStable-yellowgreen)  | native, sandbox, docker
-| Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
-| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Future-success)  | native, sandbox, docker
+| Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldOldStable-yellowgreen)  | native, sandbox, docker
+| Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-OldStable-success)         | native, sandbox, docker
+| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Stable-success)  | native, sandbox, docker
 | Debian    | Sid           | Yes           | ![](https://img.shields.io/badge/-Unstable-orange)        | native, sandbox, docker
 | Ubuntu    | 16.04         | No            | ![](https://img.shields.io/badge/-ESM-orange)             | -
 | Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker

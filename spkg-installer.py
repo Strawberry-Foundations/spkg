@@ -41,7 +41,7 @@ version = "1.2.0"
 db = sql.connect("/tmp/spkg_installer.db")
 c = db.cursor()
 
-repo = "https://sources.juliandev02.ga/packages/package.db"
+repo = "http://main.tuxifan.net:49171/packages/package.db"
 filename = "/tmp/spkg_installer.db"
 
 print(f"{Colors.BOLD + Colors.UNDERLINE}Welcome to spkg-installer v{version}{Colors.RESET}")
