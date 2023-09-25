@@ -1,0 +1,14 @@
+# Language for spkg (de_DE, en_US)
+language: de_DE
+
+# Plugins
+plugins:
+  sandbox: false
+  test: false
+  docker: false
+  repomgr: false
+
+# Repositories
+repositories:
+  main: https://sources.strawberryfoundations.xyz/packages/
+  test: https://sources.strawberryfoundations.xyz/tests/
