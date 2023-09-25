@@ -38,7 +38,7 @@ if not language in ["de", "en"]:
     exit()
 
 if language == "de":
-    PluginManagement = "Plugin Verwaltung"
+    PluginManagementStr = "Plugin Verwaltung"
     InstalledPlugins = "Installierte Plugins"
     Enabled = "\033[32mAktiviert\033[0m"
     Disabled = "\033[31mDeaktiviert\033[0m"
@@ -62,7 +62,7 @@ if language == "de":
     PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} wurde installiert{Colors.RESET}"
 
 elif language == "en":
-    PluginManagement = "Plugin Management"
+    PluginManagementStr = "Plugin Management"
     InstalledPlugins = "Installed Plugins"
     Enabled = "\033[32mActivated\033[0m"
     Disabled = "\033[31mDeactivated\033[0m"
@@ -95,7 +95,7 @@ try:
 except OperationalError:
     print(PackageDatabaseNotSynced)
 
-class plugin_daemon:
+class PluginDaemon:
     def import_plugin(plugin_name):
         check_plugin_enabled_silent(plugin_name)
         global module
@@ -123,12 +123,12 @@ def check_plugin_enabled_ret(plugin):
         return Disabled
 
 
-class plugin_management:
+class PluginManagement:
     def list_plugins():
-        print(f"{Colors.BOLD + Colors.UNDERLINE}{PluginManagement} -> {InstalledPlugins}\n")
+        print(f"{Colors.BOLD + Colors.UNDERLINE}{PluginManagementStr} -> {InstalledPlugins}\n")
         try:
             for entry in enabled_plugins_cfg_data:
-                plugin_daemon.import_plugin(entry)
+                PluginDaemon.import_plugin(entry)
                 
                 print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{module.Spec.Name} ({entry}){Fore.RESET + Colors.RESET}")
                 print(f"{Fore.CYAN + Colors.BOLD}{Description}:{Fore.RESET + Colors.RESET} {module.Spec.Desc}")
