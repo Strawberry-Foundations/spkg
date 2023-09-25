@@ -61,7 +61,7 @@ if dev_local == False:
 else:
     class Directories:
         spkg_config         = "./data/etc/spkg/"
-        user_config         = f"{home_dir}/.config/spkg/"
+        user_config         = f"./data/userconfig/spkg/"
         data                = "./data/var/lib/spkg/"
         mirror              = data + "mirrors/"
         
@@ -103,7 +103,7 @@ else:
     
 # Variables
 lang            = config["language"]
-world_db_url    = url_config["urls"]["main_url"] + "archive/world_base.db"
+world_db_url    = url_config["main_url"] + "archive/world_base.db"
 
 
 # check if language is available
