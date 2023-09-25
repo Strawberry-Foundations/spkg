@@ -54,7 +54,7 @@ elif arch == "aarch64":
     arch = "arm64"
 
 # Language Strings for German
-if language == "de":
+if lang == "de_DE":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information über das Paket"
@@ -102,7 +102,7 @@ if language == "de":
 
 
 # Language Strings for English
-elif language == "en" or language == "us" or language == "en_us":
+elif lang == "en_US":
     NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
     PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
@@ -217,7 +217,7 @@ def help_de():
 
 # Try to connect to the locally saved main package database
 try:
-    db = sql.connect(package_database)
+    db = sql.connect(Files.package_database)
     c = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
@@ -249,7 +249,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             if os.geteuid() == 0:
                 None
             else:
-                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+                print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{MissingPermissons}")
                 print(MissingPermissonsPackageDatabaseUpdate)
                 exit()
 
@@ -261,20 +261,20 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                         '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner.start()
 
-            with open(world_database, 'wb') as file:
+            with open(Files.world_database, 'wb') as file:
                 file.write(f.read())
             
-            subprocess.run(['chmod', '777', f'{world_database}'])
+            subprocess.run(['chmod', '777', f'{Files.world_database}'])
 
             download_time_end = time.time()
-            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_db_url} {Colors.RESET}({world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_db_url} {Colors.RESET}({Files.world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
             print(SuccessBuildingWorldDatabase)
             
             exit()
 
         except HTTPError as e:
             print()
-            print(HttpError)
+            print(Str[lang]["HttpError"])
             exit()
 
         except NameError as e:
@@ -286,13 +286,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
 
 
 # If the world database doesn't exists, return a error
-if not os.path.exists(world_database):
+if not os.path.exists(Files.world_database):
     print(WorldDatabaseNotBuilded)
     exit()
 
 # Try to connect to the world database
 try:
-    world_db = sql.connect(world_database)
+    world_db = sql.connect(Files.world_database)
     world_c = world_db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
@@ -464,7 +464,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     if os.geteuid() == 0:
         None
     else:
-        print(f"{Fore.CYAN + Colors.BOLD}{mirror_dir}: {Fore.RESET}{MissingPermissons}")
+        print(f"{Fore.CYAN + Colors.BOLD}{Directories.mirror}: {Fore.RESET}{MissingPermissons}")
         print(MissingPermissonsPackageDatabaseUpdate)
         exit()
     
@@ -1083,9 +1083,9 @@ elif len(sys.argv) > 1 and sys.argv[1] != "help":
 
 
 else:
-    if language == "en":
+    if language == "en_US":
         help_en()
-    elif language == "de":
+    elif language == "de_DE":
         help_de()        
 
 db.close()
