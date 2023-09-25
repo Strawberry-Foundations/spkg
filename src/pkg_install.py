@@ -40,10 +40,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-language = spkg_cfg_data['language']
-
-if not language in ["de", "en"]:
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
+language = config['language']
 
 if language == "de":
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
@@ -95,8 +92,8 @@ if not os.path.exists(f"{home_dir}/.config/spkg"):
     with open(user_sandbox_config, 'w') as f:
         json.dump(data, f)
 
-bootstrap_location = user_sandbox_cfg_data['bootstrap_location']
-sandbox_handler = user_sandbox_cfg_data['sandbox_handler']
+bootstrap_location = user_sandbox_config['bootstrap_location']
+sandbox_handler = user_sandbox_config['sandbox_handler']
 
 if arch == "x86_64":
     arch = "amd64"
@@ -307,7 +304,7 @@ class Package:
         # Catch HTTPError, NameError and KeyboardInterrupt errors
         except HTTPError as e:
             print()
-            print(HttpError)
+            print(Str[lang]["HttpError"])
             exit()
 
         except NameError as e:
@@ -479,7 +476,7 @@ class Package:
         # Catch HTTPError, NameError and KeyboardInterrupt errors
         except HTTPError as e:
             print()
-            print(HttpError)
+            print(Str[lang]["HttpError"])
             exit()
 
         except NameError as e:
@@ -690,7 +687,7 @@ class Package:
         # Catch HTTPError, NameError and KeyboardInterrupt errors
         except HTTPError as e:
             print()
-            print(HttpError)
+            print(Str[lang]["HttpError"])
             exit()
 
         except NameError as e:

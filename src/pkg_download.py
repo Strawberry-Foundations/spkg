@@ -32,10 +32,8 @@ from halo import Halo
 from sys import exit
 from init import *
 
-language = spkg_cfg_data['language']
+language = config['language']
 
-if not language in ["de", "en"]:
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 if language == "de":
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"

@@ -40,11 +40,8 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-language = spkg_cfg_data['language']
+language = config['language']
 
-
-if not language in ["de", "en"]:
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
 
 if language == "de":
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
@@ -83,25 +80,23 @@ elif language == "en":
     
 
 try:
-    db = sql.connect(package_database)
+    db = sql.connect(Files.package_database)
     c = db.cursor()
 
 except OperationalError:
     print(PackageDatabaseNotSynced)
 
 try:
-    db_world = sql.connect(world_database)
+    db_world = sql.connect(Files.world_database)
     c_world = db_world.cursor()
 
 except OperationalError:
     print(WorldDatabaseNotBuilded)
     exit()
 
-with open(user_sandbox_config, "r") as f:
-    user_sandbox_cfg = json.load(f)
     
-bootstrap_location = user_sandbox_cfg['bootstrap_location']
-sandbox_handler = user_sandbox_cfg['sandbox_handler']
+bootstrap_location = user_sandbox_config['bootstrap_location']
+sandbox_handler = user_sandbox_config['sandbox_handler']
 
 """ 
     **** REMOVE FUNCTION ****
