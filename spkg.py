@@ -40,7 +40,7 @@ from defs import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
-    plugin_daemon.import_plugin("sandbox")
+    PluginDaemon.import_plugin("sandbox")
 else:
     pass
 
@@ -881,7 +881,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "force":
 # * --- Plugin Managment --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
     if len(sys.argv) > 2 and sys.argv[2] == "list":
-        plugin_management.list_plugins()
+        PluginManagement.list_plugins()
 
 
     # Plugin Command Execution
@@ -893,8 +893,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             exit()
 
         else: 
-            plugin_daemon.import_plugin(plugin)
-            plugin_management.exec(sys.argv[4])
+            PluginDaemon.import_plugin(plugin)
+            PluginManagement.exec(sys.argv[4])
             
     
         # Plugin Marketplace
@@ -909,7 +909,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             except OperationalError:
                 print(PackageDatabaseNotSynced)
         else:
-            plugin_management.marketplace()
+            PluginManagement.marketplace()
             exit()
             
             
@@ -979,7 +979,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             print(MissingPermissonsPluginInstallation)
             exit()
         
-        plugin_management.get(plugin)
+        PluginManagement.get(plugin)
             
     # Execution of a plugin-command without 'exec'
     elif len(sys.argv) > 3: 
@@ -995,8 +995,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             exit()
 
         else: 
-            plugin_daemon.import_plugin(plugin)
-            plugin_management.exec(sys.argv[3])
+            PluginDaemon.import_plugin(plugin)
+            PluginManagement.exec(sys.argv[3])
 
 
     # If no Argument was passed, print an error
@@ -1081,8 +1081,8 @@ elif len(sys.argv) > 2:
         exit()
 
     else: 
-        plugin_daemon.import_plugin(plugin)
-        plugin_management.exec(sys.argv[2])
+        PluginDaemon.import_plugin(plugin)
+        PluginManagement.exec(sys.argv[2])
 
 
 elif len(sys.argv) > 1 and sys.argv[1] != "help":
