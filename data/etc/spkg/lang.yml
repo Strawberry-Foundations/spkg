@@ -1,0 +1,9 @@
+# Language Strings for de_DE (German)
+de_DE:
+  PackageDatabaseNotSynced: "Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren"
+  HttpError: "Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+
+# Language Strings for en_US (English)
+en_US:
+  PackageDatabaseNotSynced: "The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database"
+  HttpError: "An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
