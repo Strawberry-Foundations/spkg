@@ -25,6 +25,7 @@ from colorama import Fore
 from sys import exit
 import yaml
 from yaml import SafeLoader
+from src.colors import *
 
 # Base Variables
 version         = "2.0a1+u1"
@@ -92,7 +93,7 @@ with open(Files.lang_strings, encoding="utf-8") as lang_strings:
     Str = yaml.load(lang_strings, Loader=SafeLoader)
 
 if alpha == True:
-    a_info_msg = f"\n{Fore.YELLOW + Colors.BOLD}WARNING:{Fore.RESET + Colors.RESET} This is an Alpha Release!\n"
+    a_info_msg = f"\n{YELLOW + Colors.BOLD}WARNING:{RESET + Colors.RESET} This is an Alpha Release!\n"
 else:
     a_info_msg = "\n"
     
@@ -103,15 +104,27 @@ world_db_url    = config["main_url"] + "archive/world_base.db"
 
 # check if language is available
 if lang not in langs:
-    print(f"{Fore.RED + Colors.BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
-    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n{Fore.RESET}")
+    print(f"{RED + Colors.BOLD}Error loading language: Selected language is not available.{RESET}")
+    print(f"{YELLOW + Colors.BOLD}Falling back to en_US\n{RESET}")
     time.sleep(1)
     lang = "en_US"
     
 
-def StringLoader(string):
+def StringLoader(string, argument=""):
     string = Str[lang][string]
-    string = string.replace("#red", Fore.RED)
+    string = string.replace("#red", RED)
+    string = string \
+            .replace("#red", RED) \
+            .replace("#green", GREEN) \
+            .replace("#yellow", YELLOW) \
+            .replace("#blue", BLUE) \
+            .replace("#magenta", MAGENTA) \
+            .replace("#cyan", CYAN) \
+            .replace("#white", WHITE) \
+            .replace("#reset", RESET) \
+            .replace("#bold", Colors.BOLD) \
+            .replace("#underline", Colors.UNDERLINE) \
+            .replace("%s", argument)
     return string
 
 try:
@@ -119,5 +132,5 @@ try:
     c = db.cursor()
 
 except OperationalError:
-    print(f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET}{Str[lang]['PackageDatabaseNotSynced']}{Fore.RESET}")
+    print(f"{RED + Colors.BOLD}[!]{RESET}{Str[lang]['PackageDatabaseNotSynced']}{RESET}")
     exit()  
