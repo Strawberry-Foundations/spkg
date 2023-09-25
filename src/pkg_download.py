@@ -30,7 +30,7 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
-from defs import *
+from init import *
 
 language = spkg_cfg_data['language']
 

@@ -20,7 +20,7 @@ import platform
 
 from sqlite3 import *
 from sys import exit
-from defs import *
+from init import *
 
 # from plugin_daemon import *
 # from src.pkg_install import * 

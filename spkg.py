@@ -36,7 +36,7 @@ from src.pkg_install import *
 from src.pkg_remove import * 
 from src.pkg_download import *
 from src.force_no_sandbox import *
-from defs import *
+from init import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:

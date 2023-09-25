@@ -28,7 +28,7 @@ from halo import Halo
 import urllib
 from urllib.error import HTTPError
 import time
-from defs import *
+from init import *
 
 language = spkg_cfg_data['language']
 

@@ -33,7 +33,7 @@ from halo import Halo
 from sys import exit
 from .plugin_daemon import PluginDaemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 from .force_no_sandbox import *
-from defs import *
+from init import *
 
 if check_plugin_enabled_ret("sandbox") == True:
     PluginDaemon.import_plugin("sandbox")
