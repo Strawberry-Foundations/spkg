@@ -27,10 +27,10 @@ import yaml
 from yaml import SafeLoader
 
 # Base Variables
-version         = "1.6.0"
-date            = "20230529"
-release_type    = "stable"
-alpha           = False
+version         = "2.0a1+u1"
+date            = "20230925"
+release_type    = "alpha"
+alpha           = True
 dev_local       = True
 langs           = ["de_DE", "en_US"]
 
