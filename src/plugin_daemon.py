@@ -30,14 +30,9 @@ from urllib.error import HTTPError
 import time
 from init import *
 
-language = spkg_cfg_data['language']
+language = lang
 
-# If language is either "de" and "en", print Error Message
-if not language in ["de", "en"]:
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
-    exit()
-
-if language == "de":
+if language == "de_DE":
     PluginManagementStr = "Plugin Verwaltung"
     InstalledPlugins = "Installierte Plugins"
     Enabled = "\033[32mAktiviert\033[0m"
@@ -61,7 +56,7 @@ if language == "de":
     Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
     PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} wurde installiert{Colors.RESET}"
 
-elif language == "en":
+elif language == "en_US":
     PluginManagementStr = "Plugin Management"
     InstalledPlugins = "Installed Plugins"
     Enabled = "\033[32mActivated\033[0m"
@@ -88,7 +83,7 @@ elif language == "en":
 
 # Try to connect to the locally saved package database
 try:
-    db = sql.connect(package_database)
+    db = sql.connect(Files.package_database)
     c = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
@@ -108,7 +103,7 @@ class PluginDaemon:
 
 
 def check_plugin_enabled_silent(plugin):
-    plugin_data = enabled_plugins_cfg_data[plugin]
+    plugin_data = config["plugins"][plugin]
     if plugin_data == True:
         return True
     else:
@@ -116,7 +111,7 @@ def check_plugin_enabled_silent(plugin):
 
 
 def check_plugin_enabled_ret(plugin):
-    plugin_data = enabled_plugins_cfg_data[plugin]
+    plugin_data = config["plugins"][plugin]
     if plugin_data == True:
         return Enabled
     else:
@@ -127,7 +122,7 @@ class PluginManagement:
     def list_plugins():
         print(f"{Colors.BOLD + Colors.UNDERLINE}{PluginManagementStr} -> {InstalledPlugins}\n")
         try:
-            for entry in enabled_plugins_cfg_data:
+            for entry in config["plugins"]:
                 PluginDaemon.import_plugin(entry)
                 
                 print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{module.Spec.Name} ({entry}){Fore.RESET + Colors.RESET}")
