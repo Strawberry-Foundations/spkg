@@ -17,6 +17,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses>
 """
 
+
+
 import os
 import sys
 import time
@@ -274,7 +276,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
 
         except HTTPError as e:
             print()
-            print(Str[lang]["HttpError"])
+            print(StringLoader("HttpError"))
             exit()
 
         except NameError as e:
@@ -469,33 +471,37 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         exit()
     
     start_time = time.time()
-    for name, url in spkg_repo_data.items():
+
+    for name, url in config["repositories"].items():
         repo = url + "/package.db"
-        filename = mirror_dir + name + ".db"
-        # print(f"Name: {name}, URL: {url}, Save: {filename}, DB-URL: {repo}")
+        filename = Directories.mirror + name + ".db"
         spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
                     'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner.start()
         spinner.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
         
-        # print(f"Fetching the url {repo}")
-        request = urllib.request.Request(
-            repo,
-            data=None,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-            }
-        )
-
-        repo_db = urllib.request.urlopen(request)
+        try:
+            request = urllib.request.Request(
+                repo,
+                data=None,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                }
+            )
         
-        # print(f"Saving to {filename}")
+            repo_db = urllib.request.urlopen(request)
+            print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
+            
+        except:
+            print(StringLoader("HttpError"))
+    
         with open(filename, 'wb') as file:
             file.write(repo_db.read())
 
     end_time = time.time()
     req_time = round(end_time - start_time, 2)
+    
+
     
     print(f"{SuccessSyncingPackageDatabase % req_time}{Colors.RESET}")
     exit()
