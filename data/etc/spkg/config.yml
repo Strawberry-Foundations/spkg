@@ -6,7 +6,7 @@ main_url: http://65.21.77.13:49171/
 # Plugins
 plugins:
   sandbox: false
-  test: false
+  test: true
   docker: false
   repomgr: false
 
