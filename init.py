@@ -71,7 +71,6 @@ class Files:
     
     spkg_config         = Directories.spkg_config + "config.yml"
     user_sandbox_config = Directories.user_config + "sandbox.yml"
-    url_config          = Directories.spkg_config + "urls.yml"
     lang_strings        = Directories.spkg_config + "lang.yml"
 
 # Color Variables
@@ -91,10 +90,6 @@ with open(Files.user_sandbox_config, "r") as file:
 # Open language strings
 with open(Files.lang_strings, encoding="utf-8") as lang_strings:
     Str = yaml.load(lang_strings, Loader=SafeLoader)
-    
-# Open user sandbox config file    
-with open(Files.url_config, "r") as file:
-    url_config = yaml.load(file, Loader=SafeLoader)
 
 if alpha == True:
     a_info_msg = f"\n{Fore.YELLOW + Colors.BOLD}WARNING:{Fore.RESET + Colors.RESET} This is an Alpha Release!\n"
@@ -103,7 +98,7 @@ else:
     
 # Variables
 lang            = config["language"]
-world_db_url    = url_config["main_url"] + "archive/world_base.db"
+world_db_url    = config["main_url"] + "archive/world_base.db"
 
 
 # check if language is available
@@ -112,6 +107,12 @@ if lang not in langs:
     print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n{Fore.RESET}")
     time.sleep(1)
     lang = "en_US"
+    
+
+def StringLoader(string):
+    string = Str[lang][string]
+    string = string.replace("#red", Fore.RED)
+    return string
 
 try:
     db = sql.connect(Files.package_database)
