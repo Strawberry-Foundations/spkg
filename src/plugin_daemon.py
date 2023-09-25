@@ -99,7 +99,7 @@ class PluginDaemon:
         return module
 
     def setup():
-        module.PluginHandler.setup()
+        module.Commands.setup()
 
 
 def check_plugin_enabled_silent(plugin):
@@ -136,7 +136,7 @@ class PluginManagement:
     
     def exec(cmd):
         try:
-            plugin_handler = module.PluginHandler
+            plugin_handler = module.Commands
             getattr(plugin_handler, cmd)()
             
         except AttributeError as Err:
