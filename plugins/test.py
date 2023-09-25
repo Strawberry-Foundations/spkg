@@ -15,27 +15,20 @@
     along with this program.  If not, see <https://www.gnu.org/licenses>
 """
 
-import json
 from colorama import Fore
 from sys import exit
+from init import lang, langs
 
-# Language Config
-spkg_config = "/etc/spkg/config.json"
-with open(spkg_config, "r") as f:
-    spkg_cfg = json.load(f)
-
-language = spkg_cfg['language']
-
-# If language is not correct print error
-if not language in ["de", "en"]:
+# If language is not correct exit
+if not lang in langs:
     exit()
 
 # Language Strings
-if language == "de":
-    Description = "Was? Was ist das!"
-
-elif language == "en":
-    Description = "What? What is this!"
+match lang:
+    case "de_DE":
+        Description = "Was? Was ist das!"
+    case "en_US":
+        Description = "What? What is this!"
 
 # Spec Class for more Details about the Plugin
 class Spec:
@@ -47,8 +40,8 @@ class Spec:
     -> hello
     """
 
-# PluginHandler Main Class
-class PluginHandler:
+# Plugin commands
+class Commands:
     def setup():
         print("This is a test plugin for spkg.")
     
