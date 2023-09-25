@@ -16,27 +16,23 @@
 """
 
 import os
-import sys
 import time
-import json
 import sqlite3 as sql
-import urllib.request
 import platform
-import subprocess
 
 from sqlite3 import *
-from urllib.error import HTTPError
 from colorama import Fore
-from halo import Halo
 from sys import exit
+import yaml
+from yaml import SafeLoader
 
 # Base Variables
-version = "1.6.0"
-date = "20230529"
-release_type = "stable"
-alpha = False
-hbp = False
-dev_local = False
+version         = "1.6.0"
+date            = "20230529"
+release_type    = "stable"
+alpha           = False
+dev_local       = True
+langs           = ["de_DE", "en_US"]
 
 if release_type in ["rc", "beta", "alpha"]:
     version = version + f" ({date})"
@@ -54,34 +50,29 @@ if os.environ.get('SUDO_USER'):
 else:
     home_dir = os.path.expanduser("~")
 
-# Database Variables and Config File Variabless
+
 if dev_local == False:
-    spkg_data_dir = "/etc/spkg/"
-    mirror_dir = "/var/lib/spkg/mirrors/"
-    
-    world_database = "/var/lib/spkg/world.db"
-    package_database = "/var/lib/spkg/mirrors/main.db"
-    
-    spkg_repositories = "/etc/spkg/repositories.json"
-    enabled_plugins_config = "/etc/spkg/enabled_plugins.json"
-    spkg_config = "/etc/spkg/config.json"
-    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
-    
+    class Directories:
+        spkg_config         = "/etc/spkg/"
+        user_config         = f"{home_dir}/.config/spkg/"
+        data                = "/var/lib/spkg/"
+        mirror              = data + "mirrors/"
+        
 else:
-    spkg_data_dir = "./data/etc/spkg/"
-    mirror_dir = "./data/var/lib/spkg/mirrors/"
+    class Directories:
+        spkg_config         = "./data/etc/spkg/"
+        user_config         = f"{home_dir}/.config/spkg/"
+        data                = "./data/var/lib/spkg/"
+        mirror              = data + "mirrors/"
+        
+class Files:        
+    world_database      = Directories.data + "world.db"
+    package_database    = Directories.mirror + "main.db"
     
-    world_database = "./data/var/lib/spkg/world.db"
-    package_database = "./data/var/lib/spkg/mirrors/main.db"
-    
-    spkg_repositories = "./data/etc/spkg/repositories.json"
-    enabled_plugins_config = "./data/etc/spkg/enabled_plugins.json"
-    spkg_config = "./data/etc/spkg/config.json"
-    user_sandbox_config = f"{home_dir}/.config/spkg/sandbox.json"
-
-# Url's
-world_database_url = "https://sources.juliandev02.ga/archive/world_base.db"
-
+    spkg_config         = Directories.spkg_config + "config.yml"
+    user_sandbox_config = Directories.user_config + "sandbox.yml"
+    url_config          = Directories.spkg_config + "urls.yml"
+    lang_strings        = Directories.spkg_config + "lang.yml"
 
 # Color Variables
 class Colors:
@@ -89,67 +80,43 @@ class Colors:
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
 
-# Open spkg config file
-with open(spkg_config, "r") as f:
-    global spkg_cfg_data
-    spkg_cfg_data = json.load(f)
+# Open Configuration
+with open(Files.spkg_config) as file:
+    config = yaml.load(file, Loader=SafeLoader)
     
-# Open plugin config file
-with open(enabled_plugins_config, "r") as f:
-    global enabled_plugins_cfg_data
-    enabled_plugins_cfg_data = json.load(f)
-
 # Open user sandbox config file    
-with open(user_sandbox_config, "r") as f:
-    global user_sandbox_cfg_data
-    user_sandbox_cfg_data = json.load(f)
-
-# Open spkg repo config file
-with open(spkg_repositories, "r") as f:
-    global spkg_repo_data
-    spkg_repo_data = json.load(f)
-
-# Check if alpha or hbp is enabled
-if alpha == True and hbp == True:
-    a_info_msg = f"\n{Fore.YELLOW + Colors.BOLD}WARNING:{Fore.RESET + Colors.RESET} This is an Alpha Release and this program is in a highly development state!\n"
+with open(Files.user_sandbox_config, "r") as file:
+    user_sandbox_config = yaml.load(file, Loader=SafeLoader)
     
-elif alpha == True:
+# Open language strings
+with open(Files.lang_strings, encoding="utf-8") as lang_strings:
+    Str = yaml.load(lang_strings, Loader=SafeLoader)
+    
+# Open user sandbox config file    
+with open(Files.url_config, "r") as file:
+    url_config = yaml.load(file, Loader=SafeLoader)
+
+if alpha == True:
     a_info_msg = f"\n{Fore.YELLOW + Colors.BOLD}WARNING:{Fore.RESET + Colors.RESET} This is an Alpha Release!\n"
-    
-elif hbp == True:
-    a_info_msg = f"\n{Fore.YELLOW + Colors.BOLD}WARNING:{Fore.RESET + Colors.RESET} This program is in a highly development state!\n"
-    
 else:
     a_info_msg = "\n"
     
-# Language-specific Variables
-local_lang = spkg_cfg_data['language']
-    
-if not local_lang == "de" and not local_lang == "en":
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
+# Variables
+lang            = config["language"]
+world_db_url    = url_config["urls"]["main_url"] + "archive/world_base.db"
 
-if local_lang == "de":
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
-    HttpError = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?){Colors.RESET}"
 
-elif local_lang == "en":
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
-    HttpError = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?){Colors.RESET}"
+# check if language is available
+if lang not in langs:
+    print(f"{Fore.RED + Colors.BOLD}Error loading language: Selected language is not available.{Fore.RESET}")
+    print(f"{Fore.YELLOW + Colors.BOLD}Falling back to en_US\n{Fore.RESET}")
+    time.sleep(1)
+    lang = "en_US"
 
-if dev_local == False:
-    # Connect to the Package Database
-    try:
-        db = sql.connect(package_database)
-        c = db.cursor()
+try:
+    db = sql.connect(Files.package_database)
+    c = db.cursor()
 
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
-        exit()
-else:
-    try:
-        db = sql.connect(package_database)
-        c = db.cursor()
-
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
-        exit()
+except OperationalError:
+    print(f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET}{Str[lang]['PackageDatabaseNotSynced']}{Fore.RESET}")
+    exit()  
