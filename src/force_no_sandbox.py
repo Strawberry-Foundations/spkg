@@ -39,7 +39,7 @@ elif arch == "aarch64":
 
 # Try to connect to the locally saved package database
 try:
-    db = sql.connect(package_database)
+    db = sql.connect(Files.package_database)
     c = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
