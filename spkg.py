@@ -52,14 +52,6 @@ elif arch == "x86":
     
 elif arch == "aarch64":
     arch = "arm64"
-    
-language = spkg_cfg_data['language']
-
-    
-# If language is either "de" and "en", print Error Message
-if not language in ["de", "en"]:
-    print(f"{Fore.RED}You have either a corrupted or unconfigured config file! Please check the language settings!")
-    exit()
 
 # Language Strings for German
 if language == "de":
@@ -242,7 +234,7 @@ if not os.path.exists(f"{home_dir}/.config/spkg"):
 if len(sys.argv) > 1 and sys.argv[1] == "build":
     # Check if second argument is world
     if len(sys.argv) > 2 and sys.argv[2] == "world":
-        url = world_database_url
+        url = world_db_url
         # fetch url
         try:
             req = urllib.request.Request(
@@ -275,7 +267,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             subprocess.run(['chmod', '777', f'{world_database}'])
 
             download_time_end = time.time()
-            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_database_url} {Colors.RESET}({world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_db_url} {Colors.RESET}({world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
             print(SuccessBuildingWorldDatabase)
             
             exit()
