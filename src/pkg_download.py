@@ -158,7 +158,7 @@ def download(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(HttpError)
+        print(Str[lang]["HttpError"])
         exit()
 
     except NameError as e:
@@ -226,7 +226,7 @@ def download_compact(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(HttpError)
+        print(Str[lang]["HttpError"])
         exit()
 
     except NameError as e:
@@ -275,7 +275,7 @@ def download_compact_noarch(name):
         spinner.stop()
 
     except HTTPError as e:
-        print(HttpError)
+        print(Str[lang]["HttpError"])
         exit()
 
     except NameError as e:

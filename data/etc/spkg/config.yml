@@ -1,5 +1,7 @@
 # Language for spkg (de_DE, en_US)
 language: de_DE
+# main_url: https://sources.strawberryfoundations.xyz/
+main_url: http://65.21.77.13:49171/
 
 # Plugins
 plugins:
@@ -10,5 +12,5 @@ plugins:
 
 # Repositories
 repositories:
-  main: https://sources.strawberryfoundations.xyz/packages/
+  main: http://65.21.77.13:49171/packages/
   test: https://sources.strawberryfoundations.xyz/tests/
