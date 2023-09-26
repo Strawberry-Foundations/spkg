@@ -18,6 +18,7 @@
 """
 
 
+from init import *
 
 import os
 import sys
@@ -38,22 +39,14 @@ from src.pkg_install import *
 from src.pkg_remove import * 
 from src.pkg_download import *
 from src.force_no_sandbox import *
-from init import *
+from src.arch import ARCH
+from src.db import * 
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
     PluginDaemon.import_plugin("sandbox")
 else:
     pass
-
-if arch == "x86_64":
-    arch = "amd64"
-    
-elif arch == "x86":
-    arch = "i386"
-    
-elif arch == "aarch64":
-    arch = "arm64"
 
 # Language Strings for German
 if lang == "de_DE":
@@ -225,68 +218,7 @@ try:
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(PackageDatabaseNotSynced)
-
-# Check if user config path exists
-if not os.path.exists(f"{home_dir}/.config/spkg"):
-    print(UserConfigNotExists2)
-    os.mkdir(f"{home_dir}/.config/spkg")
-
-
-# * --- Build Function --- *
-if len(sys.argv) > 1 and sys.argv[1] == "build":
-    # Check if second argument is world
-    if len(sys.argv) > 2 and sys.argv[2] == "world":
-        url = world_db_url
-        # fetch url
-        try:
-            req = urllib.request.Request(
-                url,
-                data=None,
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-                }
-            )
-            
-            # check if you are root
-            if os.geteuid() == 0:
-                None
-            else:
-                print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{MissingPermissons}")
-                print(MissingPermissonsPackageDatabaseUpdate)
-                exit()
-
-            f = urllib.request.urlopen(req)
-
-            download_time_start = time.time()
-
-            spinner = Halo(text=f"{BuildingWorldDatabase} ({url})", spinner={'interval': 150, 'frames': [
-                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-            spinner.start()
-
-            with open(Files.world_database, 'wb') as file:
-                file.write(f.read())
-            
-            subprocess.run(['chmod', '777', f'{Files.world_database}'])
-
-            download_time_end = time.time()
-            print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{world_db_url} {Colors.RESET}({Files.world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
-            print(SuccessBuildingWorldDatabase)
-            
-            exit()
-
-        except HTTPError as e:
-            print()
-            print(StringLoader("HttpError"))
-            exit()
-
-        except NameError as e:
-            print(PackageNotFound)
-
-    else:
-        print(NoArgument)
-        exit()
-
-
+    
 # If the world database doesn't exists, return a error
 if not os.path.exists(Files.world_database):
     print(WorldDatabaseNotBuilded)
@@ -302,6 +234,67 @@ except OperationalError:
     print(WorldDatabaseNotBuilded)
     exit()
 
+
+# Check if user config path exists
+if not os.path.exists(NativeDirectories.user_config):
+    print(UserConfigNotExists2)
+    os.mkdir(NativeDirectories.user_config)
+
+# * --- Build Function --- *
+if len(sys.argv) > 1 and sys.argv[1] == "build":
+    # Check if second argument is world
+    if len(sys.argv) > 2 and sys.argv[2] == "world":
+        ays_input = input(StringLoader("AskRegenWorld"))
+        match ays_input.lower():
+            case "yes" | "ja":
+                world_c.close()
+                world_db.close()
+                Tools.regen_world()
+                exit()
+            
+            case _:
+                print("Ok")
+                exit()
+            
+
+            # # check if you are root
+            # if os.geteuid() == 0:
+            #     None
+            # else:
+            #     print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{MissingPermissons}")
+            #     print(MissingPermissonsPackageDatabaseUpdate)
+            #     exit()
+
+        #     f = urllib.request.urlopen(req)
+
+        #     download_time_start = time.time()
+
+        #     spinner = Halo(text=f"{BuildingWorldDatabase} ({url})", spinner={'interval': 150, 'frames': [
+        #                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        #     spinner.start()
+
+        #     with open(Files.world_database, 'wb') as file:
+        #         file.write(f.read())
+            
+        #     subprocess.run(['chmod', '777', f'{Files.world_database}'])
+
+        #     download_time_end = time.time()
+        #     print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Urls.world_db} {Colors.RESET}({Files.world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        #     print(SuccessBuildingWorldDatabase)
+            
+        #     exit()
+
+        # except HTTPError as e:
+        #     print()
+        #     print(StringLoader("HttpError"))
+        #     exit()
+
+        # except NameError as e:
+        #     print(PackageNotFound)
+
+    else:
+        print(NoArgument)
+        exit()
 
 
 # * --- Package Info Function --- *
@@ -372,7 +365,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
             
             # Print the entries 
             for row in world_c:
-                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}")
+                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{RESET}/{row[3]}")
             exit()
 
         except OperationalError:
