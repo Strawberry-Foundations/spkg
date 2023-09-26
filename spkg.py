@@ -212,8 +212,7 @@ def help_de():
 
 # Try to connect to the locally saved main package database
 try:
-    db = sql.connect(Files.package_database)
-    c = db.cursor()
+    db = StbWrapper.DB(Files.package_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -226,8 +225,7 @@ if not os.path.exists(Files.world_database):
 
 # Try to connect to the world database
 try:
-    world_db = sql.connect(Files.world_database)
-    world_c = world_db.cursor()
+    wdb = StbWrapper.DB(Files.world_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -247,8 +245,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
         ays_input = input(StringLoader("AskRegenWorld"))
         match ays_input.lower():
             case "yes" | "ja":
-                world_c.close()
-                world_db.close()
+                wdb.close()
                 Tools.regen_world()
                 exit()
             
