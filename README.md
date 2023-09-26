@@ -14,9 +14,9 @@ So spkg offers you a high security, so you don't have to worry about viruses in 
 spkg also offers pre-build packages, so you don't have to build big packages like Java yourself. 
 <br>
 
-# Is this project dead?
-**No.** My personal domain is currently down, so I can't release packages and updates for spkg.
-As soon as I have my domain back (or bought a new domain), I will resume work on this project.
+# Is spkg being developed again?
+Yes. We are currently rewriting large parts of spkg's code so that spkg becomes more user friendly. 
+Including a new configuration file, better error handling and much more!  
 
 # **Plugins**
 spkg offers a convenient plugin system, allowing users to enable advanced features such as installing packages over a secure sandbox! 
