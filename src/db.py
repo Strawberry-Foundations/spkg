@@ -4,7 +4,7 @@ import sys
 from init import * 
 
 
-class StbWrapper():
+class StbWrapper:
     class DB:
         def __init__(self, file):
             self.db_connection = sql.connect(file, check_same_thread=False)
