@@ -26,8 +26,10 @@ from sys import exit
 import yaml
 from yaml import SafeLoader
 from src.colors import *
+from src.arch import ARCH
 
 # Base Variables
+base_version    = "2.0.0"
 version         = "2.0a1+u1"
 date            = "20230925"
 release_type    = "alpha"
@@ -44,6 +46,14 @@ else:
 # Environ Variables
 home_dir = os.getenv("HOME")
 arch = platform.machine()
+
+match arch:
+    case "x86_64":
+        arch = ARCH.X86_64
+    case "x86":
+        arch = ARCH.X86_64
+    case "aarch64":
+        arch = ARCH.AARCH64
 
 # environ SUDO_USER is set, get the home from the executed user
 if os.environ.get('SUDO_USER'):
@@ -74,6 +84,9 @@ class Files:
     user_sandbox_config = Directories.user_config + "sandbox.yml"
     lang_strings        = Directories.spkg_config + "lang.yml"
 
+class NativeDirectories:
+    user_config         = f"{home_dir}/.config/spkg/"
+
 # Color Variables
 class Colors:
     BOLD = '\033[1m'
@@ -99,8 +112,17 @@ else:
     
 # Variables
 lang            = config["language"]
-world_db_url    = config["main_url"] + "archive/world_base.db"
 
+class Urls:
+    world_db    = config["main_url"] + "archive/world_base.db"
+    
+class SQLDatabase:
+    class World:
+        query = """CREATE TABLE "world" (
+        "name"    TEXT,
+        "version"    INTEGER,
+        "branch"    TEXT,
+        "arch"    TEXT)"""
 
 # check if language is available
 if lang not in langs:
@@ -125,7 +147,7 @@ def StringLoader(string, argument=""):
             .replace("#bold", Colors.BOLD) \
             .replace("#underline", Colors.UNDERLINE) \
             .replace("%s", argument)
-    return string
+    return string + RESET + Colors.RESET
 
 try:
     db = sql.connect(Files.package_database)
