@@ -18,6 +18,7 @@ class StbWrapper():
         
         def close(self):
             self.db_connection.close()
+            self.cursor.close()
             
 
 class Tools:
