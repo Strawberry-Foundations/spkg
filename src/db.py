@@ -4,17 +4,27 @@ import sys
 from init import * 
 
 
-class DB:
-    def __init__(self):
-        pass
+class StbWrapper():
+    class DB:
+        def __init__(self, file):
+            self.db_connection = sql.connect(file, check_same_thread=False)
+            self.cursor = self.db_connection.cursor()
+
+        def execute(self, statement):
+            self.db_connection.execute(statement)
+        
+        def commit(self):
+            self.db_connection.commit()
+        
+        def close(self):
+            self.db_connection.close()
+            
 
 class Tools:
     def regen_world():
         os.remove(Files.world_database)
-        tmp_db  = sql.connect(Files.world_database, check_same_thread=False)
-        tmp_cur = tmp_db.cursor()
-        tmp_cur.execute(SQLDatabase.World.query)
-        tmp_db.commit()
-        tmp_cur.close()
-        tmp_db.close()
+        db = StbWrapper.DB(Files.world_database)
+        db.execute(SQLDatabase.World.query)
+        db.commit()
+        db.close()
         print(StringLoader("RebuiltWorldDatabase"))
