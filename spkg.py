@@ -464,7 +464,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     try:
         for name, url in config["repositories"].items():
             repo = url + "/package.db"
-            filename = Directories.mirror + name + ".db"
+            database = Directories.mirror + name + ".db"
             
             spinner = Halo(
                 text=f"{StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name})...{RESET}",
@@ -483,11 +483,13 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
                 
                 repo_db = urllib.request.urlopen(request)
                 
-                with open(filename, 'wb') as file:
+                with open(database, 'wb') as file:
                     file.write(repo_db.read())
                     
+                database_size = os.path.getsize(database) / 1024
+                    
                 spinner.stop()
-                print(f"{GREEN + Colors.BOLD}[✓]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name}){RESET}")
+                print(f"{GREEN + Colors.BOLD}[✓]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name}) ({database_size} kB){RESET}")
                 success_counter += 1
                 
             except PermissionError: 
