@@ -6,7 +6,7 @@ de_DE:
   Abort: "Abbruch ... "
 
   # Error messages
-  HttpError: "{red}{bold}Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   UnknownError: "{red}{bold}[?]{reset} Unbekannter Fehler"
   UnknownOperation: "{red}{bold}[E]{reset} Ungültige Operation: "
   UnknownLanguage: "{red} bold[!]{reset} Unbekannte Sprache."
@@ -30,8 +30,8 @@ de_DE:
   PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
-  SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
-  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
+  SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}{bold}spkg update{reset}{creset} aus, um nach Paketupdates zu suchen."
+  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
   UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
@@ -72,7 +72,7 @@ en_US:
   Abort: "Aborting ... "
 
   # Error messages
-  HttpError: "{red}{bold}Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   UnknownError: "{red}{bold}[?]{reset} Unbekannter Fehler"
   UnknownOperation: "{red}{bold}[E]{reset} Ungültige Operation: "
   UnknownLanguage: "{red} bold[!]{reset} Unbekannte Sprache."
@@ -96,8 +96,8 @@ en_US:
   PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
-  SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}spkg update{reset} to check for package updates."
-  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}At least one package database could not be synchronized."
+  SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}{bold}spkg update{reset}{creset} to check for package updates."
+  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: At least one package database could not be synchronized."
   UnsuccessSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
@@ -118,10 +118,10 @@ en_US:
 
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
-  PackageInformationTitle: "{bold}{underline}Information über das Paket"
-  FinishedDownloading: "Download abgeschlossen für"
-  FinishedDownloadingCompact: "Download abgeschlossen"
-  SyncingPackageDatabase: "Synchronisieren von"
+  PackageInformationTitle: "{bold}{underline}Information about the package"
+  FinishedDownloading: "Finished downloading"
+  FinishedDownloadingCompact: "Finished downloading"
+  SyncingPackageDatabase: "Synchronize from"
   ExecutingSetup: "Setup Script wird ausgeführt... Bitte warten"
   BuildingWorldDatabase: "{bold}Die World Datenbank wird heruntergeladen und aufgebaut ... "
   SuccessBuildingWorldDatabase: "{green}  {bold}[✓]{reset} Die World Datenbank wurde erfolgreich aufgebaut!"
