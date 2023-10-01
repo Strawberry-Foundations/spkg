@@ -212,11 +212,11 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 
                 spinner.stop()
                 
-                print(StringLoader("SuccessBuildingWorldDatabase"))
+                print(Colors.RESET + StringLoader("SuccessBuildingWorldDatabase"))
                 exit()
             
             case _:
-                print(f"{RESET}Ok")
+                print(Colors.RESET + StringLoader("Abort"))
                 exit()
             
 
