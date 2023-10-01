@@ -170,12 +170,10 @@ try:
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(StringLoader("PackageDatabaseNotSynced"))
-    print("hier error")
     
 # If the world database doesn't exists, return a error
 if not os.path.exists(Files.world_database):
     print(StringLoader("WorldDatabaseNotBuilded"))
-    exit()
 
 # Try to connect to the world database
 try:
@@ -184,7 +182,6 @@ try:
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(StringLoader("WorldDatabaseNotBuilded"))
-    exit()
 
 
 # Check if user config path exists
