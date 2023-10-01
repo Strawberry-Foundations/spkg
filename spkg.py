@@ -51,100 +51,50 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-# Language Strings for German
-if lang == "de_DE":
-    NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Kein Argument angegeben!{Colors.RESET}"
-    PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
-    PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information über das Paket"
-    FinishedDownloading = f"Download abgeschlossen für"
-    FinishedDownloadingCompact = f"Download abgeschlossen"
-    StrGet = "Holen"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
-    StrArchitecture = "Architektur"
-    SyncingPackageDatabase = f"Synchronisieren von"
-    SuccessSyncingPackageDatabase = f"{Colors.BOLD}Die Paketdatenbank wurde in %s s synchronisiert. Führe {Fore.CYAN}spkg update{Fore.RESET} aus, um nach Paketupdates zu suchen.{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
-    ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN + Colors.BOLD}"
-    ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
-    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
-    Abort = "Abbruch ... "
-    ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
-    MissingPermissons = f"{Fore.RESET + Colors.RESET}: Fehlende Berechtigung"
-    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET} auszuführen){Colors.RESET + Fore.RESET}"
-    PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket wurde bereits installiert. Es gibt nichts zu tun.{Colors.RESET}"
-    PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{Colors.RESET}"
-    PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Paket ist nicht installiert, es gibt nichts zu entfernen.{Colors.RESET}"
-    BuildingWorldDatabase = f"{Colors.BOLD}Die World Datenbank wird heruntergeladen und aufgebaut ... {Colors.RESET}"
-    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} Die World Datenbank wurde erfolgreich aufgebaut!{Colors.RESET}"
-    MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
-    RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen{Colors.RESET}"
-    PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist nicht aktiviert.{Colors.RESET}"
-    PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits aktiviert.{Colors.RESET}"
-    PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin ist bereits deaktiviert.{Colors.RESET}"
-    MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Ungültige Operation: {Colors.RESET}"
-    MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){Colors.RESET}"
-    ChangedLanguage = f"{Colors.BOLD}Sprache wurde zu {Fore.CYAN}%s{Fore.RESET} geändert{Colors.RESET}"
-    UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unbekannte Sprache.{Colors.RESET}"
-    UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
-    ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{Colors.RESET}"
-    SearchingWorldForPackage = f"{Colors.BOLD}Durchsuche lokale World Datenbak nach installierten Paket ...{Colors.RESET}"
-    UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warnung:{Fore.RESET + Colors.RESET} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
-
-
-# Language Strings for English
-elif lang == "en_US":
-    NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
-    PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
-    PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
-    FinishedDownloading = f"Finished downloading"
-    FinishedDownloadingCompact = f"Finished downloading"
-    StrGet = "Get"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
-    StrArchitecture = "Architecture"
-    SyncingPackageDatabase = f"Synchronize from"
-    SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized in %s s. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
-    ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
-    ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
-    ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
-    Abort = "Aborting ..."
-    ExecutingSetup = f"Executing Setup Script... Please wait"
-    MissingPermissons = f"{Fore.RESET + Colors.RESET}: Missing Permissons"
-    MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
-    SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-    WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
-    PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
-    PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
-    PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to uninstall.{Colors.RESET}"
-    BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
-    SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
-    MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
-    MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly removed package could therefore not be removed (Is spkg run as root?).{Colors.RESET}"
-    RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
-    RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
-    PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is not activated.{Colors.RESET}"
-    PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
-    PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
-    MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
-    MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}The plugin could not be installed. (Is spkg running as root?){Colors.RESET}"
-    UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
-    MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
-    ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
-    UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
-    UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
-    ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
-    SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
-    UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warning:{Fore.RESET + Colors.RESET} Your user configuration does not exist. Try to create the configuration folder ..."
+NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
+PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
+PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
+FinishedDownloading = f"Finished downloading"
+FinishedDownloadingCompact = f"Finished downloading"
+StrGet = "Get"
+UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
+StrArchitecture = "Architecture"
+SyncingPackageDatabase = f"Synchronize from"
+SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized in %s s. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
+Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
+PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
+SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
+ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
+ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
+ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
+Abort = "Aborting ..."
+ExecutingSetup = f"Executing Setup Script... Please wait"
+MissingPermissons = f"{Fore.RESET + Colors.RESET}: Missing Permissons"
+MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
+SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
+WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
+PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
+PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
+PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to uninstall.{Colors.RESET}"
+BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
+SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
+MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
+MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly removed package could therefore not be removed (Is spkg run as root?).{Colors.RESET}"
+RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
+RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
+PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is not activated.{Colors.RESET}"
+PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
+PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
+MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
+MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}The plugin could not be installed. (Is spkg running as root?){Colors.RESET}"
+UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
+MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
+ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
+UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
+UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
+ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
+SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
+UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warning:{Fore.RESET + Colors.RESET} Your user configuration does not exist. Try to create the configuration folder ..."
     
     
 # Help Function for English Language
@@ -246,11 +196,23 @@ if not os.path.exists(NativeDirectories.user_config):
 if len(sys.argv) > 1 and sys.argv[1] == "build":
     # Check if second argument is world
     if len(sys.argv) > 2 and sys.argv[2] == "world":
-        ays_input = input(StringLoader("AskRegenWorld") + GREEN)
+        ays_input = input(StringLoader("AskRegenWorld") + Colors.BOLD + GREEN)
         match ays_input.lower():
             case "yes" | "ja":
+                spinner = Halo(
+                    text=f"{StringLoader('BuildingWorldDatabase')}",
+                    spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                    text_color="white",
+                    color="green")
+                
+                spinner.start()
+                
                 wdb.close()
                 Tools.regen_world()
+                
+                spinner.stop()
+                
+                print(StringLoader("SuccessBuildingWorldDatabase"))
                 exit()
             
             case _:
