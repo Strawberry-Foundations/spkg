@@ -34,6 +34,7 @@ from sys import exit
 from .plugin_daemon import PluginDaemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 from init import *
 from .force_no_sandbox import *
+from src.db import Database
 
 if check_plugin_enabled_ret("sandbox") == True:
     PluginDaemon.import_plugin("sandbox")
@@ -79,20 +80,21 @@ elif language == "en":
     SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
     
 
+# Try to connect to the locally saved main package database
 try:
-    db = sql.connect(Files.package_database)
-    c = db.cursor()
+    db = Database(Files.package_database)
 
+# If the Database doesn't exists/no entries, return a error
 except OperationalError:
-    print(PackageDatabaseNotSynced)
-
+    pass
+    
+# Try to connect to the world database
 try:
-    db_world = sql.connect(Files.world_database)
-    c_world = db_world.cursor()
+    wdb = Database(Files.world_database)
 
+# If the Database doesn't exists/no entries, return a error
 except OperationalError:
-    print(WorldDatabaseNotBuilded)
-    exit()
+    pass
 
     
 bootstrap_location = user_sandbox_config['bootstrap_location']
