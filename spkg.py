@@ -467,7 +467,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
             database = Directories.mirror + name + ".db"
             
             spinner = Halo(
-                text=f"{StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name})...{RESET}",
+                text=f"{StringLoader('SyncingPackageDatabase', color_reset_end=False)} {CYAN}{url}{RESET} ({name})...{Colors.RESET}",
                 spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
                 text_color="white",
                 color="green")
@@ -489,7 +489,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
                 database_size = os.path.getsize(database) / 1024
                     
                 spinner.stop()
-                print(f"{GREEN + Colors.BOLD}[✓]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name}) ({database_size} kB){RESET}")
+                print(f"{GREEN + Colors.BOLD}[✓]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {CYAN}{url}{RESET} ({name}) ({database_size} kB){Colors.RESET}")
                 success_counter += 1
                 
             except PermissionError: 
@@ -500,7 +500,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
             except URLError:
                 print("")
                 delete_last_line()
-                print(f"{RED + Colors.BOLD}[×]{RESET} {SyncingPackageDatabase} {url} ({name})")
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name})")
                 print(StringLoader("HttpError"))
                 unsuccess_counter += 1
                 # exit()
