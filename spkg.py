@@ -509,8 +509,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         print(StringLoader("NoRepositories"))
         exit()
         
-    end_time = time.time()
-    req_time = round(end_time - start_time, 2)
+    required_time = round(time.time() - start_time, 2)
     
     if unsuccess_counter >= 1 and success_counter == 0: 
         print(f"{StringLoader('UnsuccessSyncingPackageDatabase')}{Colors.RESET}")
@@ -518,11 +517,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         
     elif unsuccess_counter >= 1 and success_counter >= 1: 
         print(f"{StringLoader('AtLeastOneUnsuccessSyncingPackageDatabase')}{Colors.RESET}")
-        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=required_time)}{Colors.RESET}")
         exit()
         
     else:
-        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=required_time)}{Colors.RESET}")
         exit()
 
 
