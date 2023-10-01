@@ -34,4 +34,3 @@ class Tools:
         db.execute(SQLDatabase.World.query)
         db.commit()
         db.close()
-        print(StringLoader("RebuiltWorldDatabase"))
