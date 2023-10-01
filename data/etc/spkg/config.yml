@@ -13,4 +13,4 @@ plugins:
 # Repositories
 repositories:
   main: http://65.21.77.13:49171/packages/
-  test: https://sources.strawberryfoundations.xyz/tests/
+  # test: https://sources.strawberryfoundations.xyz/tests/
