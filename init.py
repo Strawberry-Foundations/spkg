@@ -27,7 +27,7 @@ import yaml
 from yaml import SafeLoader
 from src.colors import *
 from src.arch import ARCH
-from src.vars import dev_local
+from src.vars import dev_local, alpha, langs
 
 # Environ Variables
 home_dir = os.getenv("HOME")
