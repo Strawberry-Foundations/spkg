@@ -29,6 +29,7 @@ import urllib
 from urllib.error import HTTPError
 import time
 from init import *
+from src.db import Database
 
 language = lang
 
@@ -83,12 +84,11 @@ elif language == "en_US":
 
 # Try to connect to the locally saved package database
 try:
-    db = sql.connect(Files.package_database)
-    c = db.cursor()
+    db = Database(Files.package_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
-    print(PackageDatabaseNotSynced)
+    pass
 
 class PluginDaemon:
     def import_plugin(plugin_name):
