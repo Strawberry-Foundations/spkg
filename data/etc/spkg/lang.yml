@@ -37,11 +37,11 @@ de_DE:
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
 
   # Permission-related messages
-  MissingPermissions: "{reset}{creset}: Fehlende Berechtigung"
+  MissingPermissions: "{reset}{creset}Fehlende Berechtigung"
   MissingPermissionsPluginConfig: "{red}{bold}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
   MissingPermissionsPluginInstallation: "{red}{bold}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?)"
   MissingPermissionsPackageDatabaseUpdate: "{red}{bold}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
-  MMissingPermissionsWorldDatabase: "{red}{bold}Die World Datenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabase: "{red}{bold}Die World Datenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
   MissingPermissionsWorldDatabaseInsert: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?)"
   MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?)"
   MissingPermissionsSpkgConfig: "{red}{bold}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
@@ -104,11 +104,11 @@ en_US:
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
 
   # Permission-related messages
-  MissingPermissions: "{reset}{creset}: Missing permissions"
+  MissingPermissions: "{reset}{creset}Missing permissions"
   MissingPermissionsPluginConfig: "{red}{bold}The plugin config could not be edited. (Is spkg run as root?)"
   MissingPermissionsPluginInstallation: "{red}{bold}The plugin could not be installed. (Is spkg run as root?)"
   MissingPermissionsPackageDatabaseUpdate: "{red}{bold}The package database could not be updated. (Is spkg run as root?)"
-  MMissingPermissionsWorldDatabase: "{red}{bold}The world database could not be updated. (Is spkg run as root?)"
+  MissingPermissionsWorldDatabase: "{red}{bold}The world database could not be updated. (Is spkg run as root?)"
   MissingPermissionsWorldDatabaseInsert: "{red}{bold}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?)."
   MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}The world database could not be written to. \nThe entry for the recently removed package could therefore not be removed (Is spkg run as root?)."
   MissingPermissionsSpkgConfig: "{red}{bold}The spkg config could not be edited. (Is spkg run as root?)"
