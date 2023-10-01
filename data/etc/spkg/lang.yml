@@ -61,6 +61,8 @@ de_DE:
   ChangedLanguage: "{bold}Sprache wurde zu {cyan}%sreset geändert"
   SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
   
+
+  
 # Language Strings for en_US (English)
 en_US:
   # Basic strings
