@@ -208,10 +208,18 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 spinner.start()
                 
                 wdb.close()
-                Tools.regen_world()
                 
-                spinner.stop()
-                
+                try:
+                    Tools.regen_world()
+                    spinner.stop()
+                    
+                except PermissionError:
+                    spinner.stop() 
+                    print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('BuildingWorldDatabase')}")
+                    print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                    print(StringLoader("MissingPermissionsWorldDatabase"))
+                    exit()
+
                 print(Colors.RESET + StringLoader("SuccessBuildingWorldDatabase"))
                 exit()
             
