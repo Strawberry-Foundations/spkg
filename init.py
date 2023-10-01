@@ -132,7 +132,7 @@ def StringLoader(string, argument="", color_reset_end=True):
             .replace("{creset}", Colors.RESET) \
             .replace("{bold}", Colors.BOLD) \
             .replace("{underline}", Colors.UNDERLINE) \
-            .replace("%s", argument)
+            .replace("%s", str(argument))
     
     if color_reset_end:
         return string + RESET + Colors.RESET
