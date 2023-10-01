@@ -465,31 +465,36 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     
     start_time = time.time()
 
-    for name, url in config["repositories"].items():
-        repo = url + "/package.db"
-        filename = Directories.mirror + name + ".db"
-        spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
-                    'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-        spinner.start()
-        spinner.stop()
-        
-        try:
-            request = urllib.request.Request(
-                repo,
-                data=None,
-                headers={
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-                }
-            )
+    try:
+        for name, url in config["repositories"].items():
+            repo = url + "/package.db"
+            filename = Directories.mirror + name + ".db"
+            spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
+                        'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            spinner.start()
+            spinner.stop()
             
-            repo_db = urllib.request.urlopen(request)
-            print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
-            
-            with open(filename, 'wb') as file:
-                file.write(repo_db.read())
-            
-        except:
-            print(StringLoader("HttpError"))
+            try:
+                request = urllib.request.Request(
+                    repo,
+                    data=None,
+                    headers={
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+                    }
+                )
+                
+                repo_db = urllib.request.urlopen(request)
+                print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
+                
+                with open(filename, 'wb') as file:
+                    file.write(repo_db.read())
+                
+            except:
+                print(StringLoader("HttpError"))
+                
+    except: 
+        print(StringLoader("NoRepositories"))
+        exit()
     
         
 
