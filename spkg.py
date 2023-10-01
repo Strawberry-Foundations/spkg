@@ -35,9 +35,9 @@ from colorama import Fore
 from halo import Halo
 from sys import exit
 from src.plugin_daemon import *
-from src.pkg_install import * 
-from src.pkg_remove import * 
-from src.pkg_download import *
+from install import * 
+from remove import * 
+from download import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
@@ -212,7 +212,7 @@ def help_de():
 
 # Try to connect to the locally saved main package database
 try:
-    db = StbWrapper.DB(Files.package_database)
+    db = Database(Files.package_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -223,9 +223,10 @@ if not os.path.exists(Files.world_database):
     print(WorldDatabaseNotBuilded)
     exit()
 
+
 # Try to connect to the world database
 try:
-    wdb = StbWrapper.DB(Files.world_database)
+    wdb = Database(Files.world_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
