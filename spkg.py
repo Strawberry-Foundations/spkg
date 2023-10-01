@@ -164,12 +164,12 @@ def help_de():
 
 
 # Try to connect to the locally saved main package database
-# try:
-#     db = Database(Files.package_database)
+try:
+    db = Database(Files.package_database)
 
-# # If the Database doesn't exists/no entries, return a error
-# except OperationalError:
-#     print(StringLoader("PackageDatabaseNotSynced"))
+# If the Database doesn't exists/no entries, return a error
+except OperationalError:
+    print(StringLoader("PackageDatabaseNotSynced"))
     
 # If the world database doesn't exists, return a error
 if not os.path.exists(Files.world_database):
