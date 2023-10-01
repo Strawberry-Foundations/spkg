@@ -221,7 +221,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 exit()
                 
     else:
-        print(StringLOader("NoArgument"))
+        print(StringLoader("NoArgument"))
         exit()
 
 
