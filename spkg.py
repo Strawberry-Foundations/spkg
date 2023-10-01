@@ -164,12 +164,12 @@ def help_de():
 
 
 # Try to connect to the locally saved main package database
-try:
-    db = Database(Files.package_database)
+# try:
+#     db = Database(Files.package_database)
 
-# If the Database doesn't exists/no entries, return a error
-except OperationalError:
-    print(StringLoader("PackageDatabaseNotSynced"))
+# # If the Database doesn't exists/no entries, return a error
+# except OperationalError:
+#     print(StringLoader("PackageDatabaseNotSynced"))
     
 # If the world database doesn't exists, return a error
 if not os.path.exists(Files.world_database):
@@ -226,45 +226,9 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
             case _:
                 print(Colors.RESET + StringLoader("Abort"))
                 exit()
-            
-
-            # # check if you are root
-            # if os.geteuid() == 0:
-            #     None
-            # else:
-            #     print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{MissingPermissons}")
-            #     print(MissingPermissonsPackageDatabaseUpdate)
-            #     exit()
-
-        #     f = urllib.request.urlopen(req)
-
-        #     download_time_start = time.time()
-
-        #     spinner = Halo(text=f"{BuildingWorldDatabase} ({url})", spinner={'interval': 150, 'frames': [
-        #                 '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-        #     spinner.start()
-
-        #     with open(Files.world_database, 'wb') as file:
-        #         file.write(f.read())
-            
-        #     subprocess.run(['chmod', '777', f'{Files.world_database}'])
-
-        #     download_time_end = time.time()
-        #     print(f"\n{FinishedDownloading} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Urls.world_db} {Colors.RESET}({Files.world_database}) in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
-        #     print(SuccessBuildingWorldDatabase)
-            
-        #     exit()
-
-        # except HTTPError as e:
-        #     print()
-        #     print(StringLoader("HttpError"))
-        #     exit()
-
-        # except NameError as e:
-        #     print(PackageNotFound)
-
+                
     else:
-        print(NoArgument)
+        print(StringLOader("NoArgument"))
         exit()
 
 
