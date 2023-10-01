@@ -61,3 +61,61 @@ de_DE:
   
 # Language Strings for en_US (English)
 en_US:
+  # Basic strings
+  Get: "Get"
+  Architecture: "Architecture"
+  Abort: "Aborting ... "
+
+  # Error messages
+  HttpError: "{red}{bold}Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  UnknownError: "{red}{bold}[?]{reset} Unbekannter Fehler"
+  UnknownOperation: "{red}{bold}[E]{reset} Ungültige Operation: "
+  UnknownLanguage: "{red} bold[!]{reset} Unbekannte Sprache."
+  NoArgument: "{red}{bold}[E]{reset} Kein Argument angegeben!"
+  Canceled: "{red}{bold}[!!!]{reset} Prozess wurde abgebrochen!"
+  WorldDatabaseNotBuilded: "{red}{bold}[!]{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build world{reset} auszuführen)"
+  
+  # Warning messages
+  UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
+  ReinstallNotAsRoot: "{red}{bold}[!]{reset} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
+  UserConfigNotExists2: "{yellow}{bold}Warnung:{reset}{creset} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? "
+  RecommendedRunningAsRoot: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen"
+  RecommendedRunningAsRootRemove: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen"
+
+  # Package-related messages
+  PackageNotFound: "{red}{bold}[E]{reset} Paket wurde nicht gefunden{creset}"
+  PackageDatabaseNotSynced: "{red}{bold}[!]{reset} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {cyan}spkg sync{reset} aus, um die Datenbank zu synchronisieren"
+  PackageAlreadyInstalled: "{yellow}{bold}[!]{reset} Paket wurde bereits installiert. Es gibt nichts zu tun."
+  PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
+  PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
+  ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
+  SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
+  SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
+
+  # Permission-related messages
+  MissingPermissions: "{reset}{creset}: Fehlende Berechtigung"
+  MissingPermissionsPluginConfig: "{red}{bold}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsPluginInstallation: "{red}{bold}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsPackageDatabaseUpdate: "{red}{bold}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabaseInsert: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsSpkgConfig: "{red}{bold}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  
+  # Plugin-related messages
+  PluginNotEnabled: "{red}  {bold}[!]{reset} Plugin ist nicht aktiviert."
+  PluginIsAlreadyEnabled: "{red}  {bold}[!]{reset} Plugin ist bereits aktiviert."
+  PluginIsAlreadyDisabled: "{red}  {bold}[!]{reset} Plugin ist bereits deaktiviert."
+
+  # Information messages
+  RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
+  PackageInformationTitle: "{bold}#underlineInformation über das Paket"
+  FinishedDownloading: "Download abgeschlossen für"
+  FinishedDownloadingCompact: "Download abgeschlossen"
+  SyncingPackageDatabase: "Synchronisieren von"
+  ExecutingSetup: "Setup Script wird ausgeführt... Bitte warten"
+  BuildingWorldDatabase: "{bold}Die World Datenbank wird heruntergeladen und aufgebaut ... "
+  SuccessBuildingWorldDatabase: "{green}  {bold}[✓]{reset} Die World Datenbank wurde erfolgreich aufgebaut!"
+  ChangedLanguage: "{bold}Sprache wurde zu {cyan}%sreset geändert"
+  SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
