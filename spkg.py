@@ -218,11 +218,11 @@ try:
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
-    print(PackageDatabaseNotSynced)
+    print(StringLoader("PackageDatabaseNotSynced"))
     
 # If the world database doesn't exists, return a error
 if not os.path.exists(Files.world_database):
-    print(WorldDatabaseNotBuilded)
+    print(StringLoader("WorldDatabaseNotBuilded"))
     exit()
 
 
@@ -232,13 +232,13 @@ try:
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
-    print(WorldDatabaseNotBuilded)
+    print(StringLoader("WorldDatabaseNotBuilded"))
     exit()
 
 
 # Check if user config path exists
 if not os.path.exists(NativeDirectories.user_config):
-    print(UserConfigNotExists2)
+    print(StringLoader("UserConfigNotExists2"))
     os.mkdir(NativeDirectories.user_config)
 
 # * --- Build Function --- *
@@ -303,7 +303,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         pkg_name = sys.argv[2]
 
     else:
-        print(NoArgument)
+        print(StringLoader("NoArgument"))
         exit()
         
     c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
@@ -312,7 +312,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         result = c.fetchone()[0]
         
     except TypeError:
-        print(PackageNotFound)
+        print(StringLoader("PackageNotFound"))
         exit()
     
     if result == "all":
@@ -321,7 +321,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
             c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
 
         except OperationalError:
-            print(PackageDatabaseNotSynced)
+            print(StringLoader("PackageDatabaseNotSynced"))
             exit()
             
     else:
@@ -329,7 +329,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
             c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
 
         except OperationalError:
-            print(PackageDatabaseNotSynced)
+            print(StringLoader("PackageDatabaseNotSynced"))
             exit()
         
         c.execute("SELECT name FROM packages where name = ? AND arch = ?", (pkg_name, arch))
@@ -339,17 +339,17 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         
         for row in c:
             print(
-                f"{Colors.BOLD + Colors.UNDERLINE}{PackageInformationTitle} {row[0]} ({row[1]})\n{Colors.RESET}")
+                f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]})\n{Colors.RESET}")
             print("Name:", row[0])
             print("Version:", row[1])
             print("Branch:", row[2])
-            print(f"{StrArchitecture}:", row[3])
+            print(f"{StringLoader('Architecture')}:", row[3])
             print("Package URL:", row[4])
             print("PKGBUILD URL:", row[5])
             exit()
 
     else:
-        print(PackageNotFound)
+        print(StringLoader("PackageNotFound"))
 
     db.close()
     exit()
@@ -481,15 +481,17 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
                 }
             )
-        
+            
             repo_db = urllib.request.urlopen(request)
             print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
+            
+            with open(filename, 'wb') as file:
+                file.write(repo_db.read())
             
         except:
             print(StringLoader("HttpError"))
     
-        with open(filename, 'wb') as file:
-            file.write(repo_db.read())
+        
 
     end_time = time.time()
     req_time = round(end_time - start_time, 2)
