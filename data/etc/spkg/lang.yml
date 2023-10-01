@@ -31,6 +31,7 @@ de_DE:
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
   SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden. (Ist der Repository-Server offline?)"
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
 
@@ -93,6 +94,7 @@ en_US:
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
   SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  UnsuccessSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
 
