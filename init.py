@@ -144,5 +144,4 @@ try:
     c = db.cursor()
 
 except OperationalError:
-    print(f"{RED + Colors.BOLD}[!]{RESET}{Str[lang]['PackageDatabaseNotSynced']}{RESET}")
-    exit()  
+    print(StringLoader("PackageDatabaseNotSynced"))
