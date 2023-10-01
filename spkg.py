@@ -171,10 +171,6 @@ try:
 except OperationalError:
     print(StringLoader("PackageDatabaseNotSynced"))
     
-# If the world database doesn't exists, return a error
-if not os.path.exists(Files.world_database):
-    print(StringLoader("WorldDatabaseNotBuilded"))
-
 # Try to connect to the world database
 try:
     wdb = Database(Files.world_database)
