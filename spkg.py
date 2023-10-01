@@ -36,8 +36,8 @@ from halo import Halo
 from sys import exit
 
 from src.plugin_daemon import *
-from src.install import * 
-from src.remove import * 
+# from src.install import * 
+# from src.remove import * 
 from src.download import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
