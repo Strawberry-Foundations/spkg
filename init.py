@@ -118,7 +118,7 @@ if lang not in langs:
     lang = "en_US"
     
 
-def StringLoader(string, argument=""):
+def StringLoader(string, argument="", color_reset_end=True):
     string = Str[lang][string]
     string = string \
             .replace("{red}", RED) \
@@ -133,7 +133,11 @@ def StringLoader(string, argument=""):
             .replace("{bold}", Colors.BOLD) \
             .replace("{underline}", Colors.UNDERLINE) \
             .replace("%s", argument)
-    return string + RESET + Colors.RESET
+    
+    if color_reset_end:
+        return string + RESET + Colors.RESET
+    else:
+        return string
 
 try:
     db = sql.connect(Files.package_database)
