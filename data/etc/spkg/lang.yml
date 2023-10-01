@@ -1,16 +1,63 @@
 # Language Strings for de_DE (German)
 de_DE:
-  PackageDatabaseNotSynced: "Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren"
-  HttpError: "#red#boldEin HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  # Basic strings
+  Get: "Holen"
+  Architecture: "Architektur"
+  Abort: "Abbruch ... "
 
-  AskRegenWorld: "#red#boldWarnung:#yellow Dies wird die lokale >> #cyanWorld-Datenbank#yellow << neu generieren! Bist du dir sicher? "
-  RebuiltWorldDatabase: "#green#boldDie World-Datenbank wurde neu aufgebaut"
+  # Error messages
+  HttpError: "{red}{bold}Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  UnknownError: "{red}{bold}[?]{reset} Unbekannter Fehler{creset}"
+  UnknownOperation: "{red}{bold}[E]{reset} Ungültige Operation: {creset}"
+  UnknownLanguage: "{red} bold[!]{reset} Unbekannte Sprache.{creset}"
+  NoArgument: "{red}{bold}[E]{reset} Kein Argument angegeben!{creset}"
+  Canceled: "{red}{bold}[!!!]{reset} Prozess wurde abgebrochen!{creset}"
+  WorldDatabaseNotBuilded: "{red}{bold}[!]{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build worldreset auszuführen){creset}{reset}"
   
+  # Warning messages
+  UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{creset}"
+  ReinstallNotAsRoot: "{red}{bold}[!]{reset} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!{creset}"
+  UserConfigNotExists2: "{yellow}{bold}Warnung:{reset}{creset} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? "
+  RecommendedRunningAsRoot: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen{creset}"
+  RecommendedRunningAsRootRemove: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen{creset}"
 
+  # Package-related messages
+  PackageNotFound: "{red}{bold}[E]{reset} Paket wurde nicht gefunden{creset}"
+  PackageDatabaseNotSynced: "{red}{bold}[!]{reset} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {cyan}spkg sync{reset} aus, um die Datenbank zu synchronisieren{creset}"
+  PackageAlreadyInstalled: "{yellow}{bold}[!]{reset} Paket wurde bereits installiert. Es gibt nichts zu tun.{creset}"
+  PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren.{creset}"
+  PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen.{creset}"
+  ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]{reset}{creset}"
+  SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg updatereset aus, um nach Paketupdates zu suchen.{creset}"
+  SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ...{creset}"
+  SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
+
+  # Permission-related messages
+  MissingPermissions: "{reset}{creset}: Fehlende Berechtigung"
+  MissingPermissionsPluginConfig: "{red}{bold}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){creset}"
+  MissingPermissionsPluginInstallation: "{red}{bold}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?){creset}"
+  MissingPermissionsPackageDatabaseUpdate: "{red}{bold}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?){creset}"
+  MissingPermissionsWorldDatabaseInsert: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?){creset}"
+  MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?){creset}"
+  MissingPermissionsSpkgConfig: "{red}{bold}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?){creset}"
+  
+  # Plugin-related messages
+  PluginNotEnabled: "{red}  {bold}[!]{reset} Plugin ist nicht aktiviert.{creset}"
+  PluginIsAlreadyEnabled: "{red}  {bold}[!]{reset} Plugin ist bereits aktiviert.{creset}"
+  PluginIsAlreadyDisabled: "{red}  {bold}[!]{reset} Plugin ist bereits deaktiviert.{creset}"
+
+  # Information messages
+  RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
+  PackageInformationTitle: "{bold}#underlineInformation über das Paket"
+  FinishedDownloading: "Download abgeschlossen für"
+  FinishedDownloadingCompact: "Download abgeschlossen"
+  SyncingPackageDatabase: "Synchronisieren von"
+  ExecutingSetup: "Setup Script wird ausgeführt... Bitte warten"
+  BuildingWorldDatabase: "{bold}Die World Datenbank wird heruntergeladen und aufgebaut ... {creset}"
+  SuccessBuildingWorldDatabase: "{green}  {bold}[✓]{reset} Die World Datenbank wurde erfolgreich aufgebaut!{creset}"
+  ChangedLanguage: "{bold}Sprache wurde zu {cyan}%sreset geändertcreset"
+  SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ...{creset}"
+  
 # Language Strings for en_US (English)
 en_US:
-  PackageDatabaseNotSynced: "The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database"
-  HttpError: "#redAn HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
-
-  AskRegenWorld: "#red#boldWarning:#yellow This will regenerate the local >> #cyanWorld database#yellow <<! Are you sure? "
-  RebuiltWorldDatabase: "#green#boldThe world database was rebuilt"
