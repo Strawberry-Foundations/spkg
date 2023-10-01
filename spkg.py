@@ -514,8 +514,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         print(f"{StringLoader('UnsuccessSyncingPackageDatabase')}{Colors.RESET}")
         exit()
         
-    print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
-    exit()
+    elif unsuccess_counter >= 1 and success_counter >= 1: 
+        print(f"{StringLoader('AtLeastOneUnsuccessSyncingPackageDatabase')}{Colors.RESET}")
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
+        exit()
+        
+    else:
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
+        exit()
 
 
 
