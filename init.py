@@ -120,18 +120,18 @@ if lang not in langs:
 
 def StringLoader(string, argument=""):
     string = Str[lang][string]
-    string = string.replace("#red", RED)
     string = string \
-            .replace("#red", RED) \
-            .replace("#green", GREEN) \
-            .replace("#yellow", YELLOW) \
-            .replace("#blue", BLUE) \
-            .replace("#magenta", MAGENTA) \
-            .replace("#cyan", CYAN) \
-            .replace("#white", WHITE) \
-            .replace("#reset", RESET) \
-            .replace("#bold", Colors.BOLD) \
-            .replace("#underline", Colors.UNDERLINE) \
+            .replace("{red}", RED) \
+            .replace("{green}", GREEN) \
+            .replace("{yellow}", YELLOW) \
+            .replace("{blue}", BLUE) \
+            .replace("{magenta}", MAGENTA) \
+            .replace("{cyan}", CYAN) \
+            .replace("{white}", WHITE) \
+            .replace("{reset}", RESET) \
+            .replace("{creset}", Colors.RESET) \
+            .replace("{bold}", Colors.BOLD) \
+            .replace("{underline}", Colors.UNDERLINE) \
             .replace("%s", argument)
     return string + RESET + Colors.RESET
 
