@@ -245,7 +245,7 @@ if not os.path.exists(NativeDirectories.user_config):
 if len(sys.argv) > 1 and sys.argv[1] == "build":
     # Check if second argument is world
     if len(sys.argv) > 2 and sys.argv[2] == "world":
-        ays_input = input(StringLoader("AskRegenWorld"))
+        ays_input = input(StringLoader("AskRegenWorld") + GREEN)
         match ays_input.lower():
             case "yes" | "ja":
                 wdb.close()
@@ -253,7 +253,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 exit()
             
             case _:
-                print("Ok")
+                print(f"{RESET}Ok")
                 exit()
             
 
