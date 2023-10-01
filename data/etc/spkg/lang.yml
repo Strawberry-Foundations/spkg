@@ -13,6 +13,7 @@ de_DE:
   NoArgument: "{red}{bold}[E]{reset} Kein Argument angegeben!"
   Canceled: "{red}{bold}[!!!]{reset} Prozess wurde abgebrochen!"
   WorldDatabaseNotBuilded: "{red}{bold}[!]{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build world{reset} auszuführen)"
+  NoRepositories: "{bold}{red}Es wurde kein Repository-Server angegeben. Überprüfe deine Konfigurationsdatei von spkg."
   
   # Warning messages
   UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
@@ -74,6 +75,7 @@ en_US:
   NoArgument: "{red}{bold}[E]{reset} Kein Argument angegeben!"
   Canceled: "{red}{bold}[!!!]{reset} Prozess wurde abgebrochen!"
   WorldDatabaseNotBuilded: "{red}{bold}[!]{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build world{reset} auszuführen)"
+  NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
   
   # Warning messages
   UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
