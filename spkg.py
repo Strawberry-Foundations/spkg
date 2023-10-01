@@ -34,13 +34,15 @@ from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
 from sys import exit
+
 from src.plugin_daemon import *
-from install import * 
-from remove import * 
-from download import *
+from src.install import * 
+from src.remove import * 
+from src.download import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
+from src.vars import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
