@@ -138,10 +138,3 @@ def StringLoader(string, argument="", color_reset_end=True):
         return string + RESET + Colors.RESET
     else:
         return string
-
-try:
-    db = sql.connect(Files.package_database)
-    c = db.cursor()
-
-except OperationalError:
-    print(StringLoader("PackageDatabaseNotSynced"))
