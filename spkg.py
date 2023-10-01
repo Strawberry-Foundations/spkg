@@ -30,7 +30,7 @@ import platform
 import subprocess
 
 from sqlite3 import *
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from colorama import Fore
 from halo import Halo
 from sys import exit
@@ -43,6 +43,7 @@ from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
 from src.vars import *
+from src.functions import *
 
 # import hardcoded plugin sandbox only if it's enabled
 if check_plugin_enabled_ret("sandbox") == True:
@@ -456,54 +457,64 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
 
 # * --- Sync Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
-    if os.geteuid() == 0:
-        None
-    else:
-        print(f"{Fore.CYAN + Colors.BOLD}{Directories.mirror}: {Fore.RESET}{MissingPermissons}")
-        print(MissingPermissonsPackageDatabaseUpdate)
-        exit()
-    
-    start_time = time.time()
+    start_time          = time.time()
+    success_counter     = 0 
+    unsuccess_counter   = 0 
 
     try:
         for name, url in config["repositories"].items():
             repo = url + "/package.db"
             filename = Directories.mirror + name + ".db"
-            spinner = Halo(text=f"{SyncingPackageDatabase} {url} ({name})...", spinner={
-                        'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+            
+            spinner = Halo(
+                text=f"{StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name})...{RESET}",
+                spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                text_color="white",
+                color="green")
+            
             spinner.start()
-            spinner.stop()
             
             try:
                 request = urllib.request.Request(
                     repo,
-                    data=None,
-                    headers={
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-                    }
+                    data = None,
+                    headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
                 )
                 
                 repo_db = urllib.request.urlopen(request)
-                print(f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} {SyncingPackageDatabase} {url} ({name})")
                 
                 with open(filename, 'wb') as file:
                     file.write(repo_db.read())
+                    
+                spinner.stop()
+                print(f"{GREEN + Colors.BOLD}[✓]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name}){RESET}")
+                success_counter += 1
                 
-            except:
+            except PermissionError: 
+                print(f"{Fore.CYAN + Colors.BOLD}{Directories.mirror}: {Fore.RESET}{StringLoader('MissingPermissons')}")
+                print(StringLoader("MissingPermissonsPackageDatabaseUpdate"))
+                exit()
+            
+            except URLError:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {SyncingPackageDatabase} {url} ({name})")
                 print(StringLoader("HttpError"))
+                unsuccess_counter += 1
+                # exit()
                 
-    except: 
+    except AttributeError: 
         print(StringLoader("NoRepositories"))
         exit()
-    
         
-
     end_time = time.time()
     req_time = round(end_time - start_time, 2)
     
-
-    
-    print(f"{SuccessSyncingPackageDatabase % req_time}{Colors.RESET}")
+    if unsuccess_counter >= 1 and success_counter == 0: 
+        print(f"{StringLoader('UnsuccessSyncingPackageDatabase')}{Colors.RESET}")
+        exit()
+        
+    print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=req_time)}{Colors.RESET}")
     exit()
 
 
