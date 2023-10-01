@@ -19,7 +19,7 @@ de_DE:
   UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
   ReinstallNotAsRoot: "{red}{bold}[!]{reset} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
   UserConfigNotExists2: "{yellow}{bold}Warnung:{reset}{creset} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
-  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? "
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? [Ja/Nein] "
   RecommendedRunningAsRoot: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen"
   RecommendedRunningAsRootRemove: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen"
 
@@ -85,7 +85,7 @@ en_US:
   UpgradeNotAsRoot: "{red}{bold}[!]{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
   ReinstallNotAsRoot: "{red}{bold}[!]{reset} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
   UserConfigNotExists2: "{yellow}{bold}Warnung:{reset}{creset} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
-  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? "
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? [Yes/No] "
   RecommendedRunningAsRoot: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen"
   RecommendedRunningAsRootRemove: "{yellow}{bold}[!]{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen"
 
