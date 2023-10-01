@@ -30,7 +30,8 @@ de_DE:
   PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
-  SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
   UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden. (Ist der Repository-Server offline?)"
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
@@ -62,7 +63,7 @@ de_DE:
   SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
   
 
-  
+
 # Language Strings for en_US (English)
 en_US:
   # Basic strings
@@ -95,7 +96,8 @@ en_US:
   PackageNotInstalled: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
   PackageNotInstalledRemove: "{yellow}{bold}[!]{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen heruntergeladen werden. Fortfahren? [J/N]"
-  SuccessSyncingPackageDatabase: "{bold}Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}spkg update{reset} aus, um nach Paketupdates zu suchen."
+  SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}spkg update{reset} to check for package updates."
+  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}At least one package database could not be synchronized."
   UnsuccessSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
