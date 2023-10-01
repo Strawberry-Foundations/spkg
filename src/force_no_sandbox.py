@@ -27,6 +27,8 @@ from init import *
 # from src.pkg_remove import * 
 # from src.pkg_download import *
 
+from src.db import Database
+
 arch = platform.machine()
 
 if arch == "x86_64":
@@ -39,13 +41,11 @@ elif arch == "aarch64":
 
 # Try to connect to the locally saved package database
 try:
-    db = sql.connect(Files.package_database)
-    c = db.cursor()
+    db = Database(Files.package_database)
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError as e:
-    print(e)
-    exit()
+    pass
 
 def force_no_sandbox(pkg_name):
     c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
@@ -54,8 +54,7 @@ def force_no_sandbox(pkg_name):
         result = c.fetchone()[0]
         
     except TypeError as e:
-        print(e)
-        exit()
+        pass
     
     if result == "all":
         try:
@@ -64,8 +63,7 @@ def force_no_sandbox(pkg_name):
                 return row[0]
 
         except OperationalError as e:
-            print(e)
-            exit()
+            pass
         
     else:
         try:
@@ -74,5 +72,4 @@ def force_no_sandbox(pkg_name):
                 return row[0]
 
         except OperationalError as e:
-            print(e)
-            exit()
+            pass
