@@ -297,7 +297,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
     if len(sys.argv) > 2 and sys.argv[2] == "--installed":
         # Select * from the world database
         try:
-            SearchingWorldForPackage.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+            wc.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
             
             # Print the entries 
             for row in wc:
