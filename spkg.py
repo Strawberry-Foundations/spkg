@@ -192,8 +192,12 @@ if not os.path.exists(NativeDirectories.user_config):
 if len(sys.argv) > 1 and sys.argv[1] == "build":
     # Check if second argument is world
     if len(sys.argv) > 2 and sys.argv[2] == "world":
+        # Ask if you really want to rebuilt the world database
         ays_input = input(StringLoader("AskRegenWorld") + Colors.BOLD + GREEN)
+        
+        # Case Statement for input
         match ays_input.lower():
+            # If yes, rebuilt the world database
             case "yes" | "ja":
                 spinner = Halo(
                     text=f"{StringLoader('BuildingWorldDatabase')}",
@@ -208,7 +212,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
                 try:
                     Tools.regen_world()
                     spinner.stop()
-                    
+                
+                # Error handling for permission errors 
                 except PermissionError:
                     spinner.stop() 
                     print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('BuildingWorldDatabase')}")
@@ -270,13 +275,13 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
         
         for row in c:
             print(
-                f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]})\n{Colors.RESET}")
-            print("Name:", row[0])
-            print("Version:", row[1])
-            print("Branch:", row[2])
+                f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]}){Colors.RESET}")
+            print(f"{StringLoader('Name')}:", row[0])
+            print(f"{StringLoader('Version')}:", row[1])
+            print(f"{StringLoader('Branch')}:", row[2])
             print(f"{StringLoader('Architecture')}:", row[3])
-            print("Package URL:", row[4])
-            print("PKGBUILD URL:", row[5])
+            print(f"{StringLoader('PackageUrl')}:", row[4])
+            print(f"{StringLoader('PkgbuildUrl')}:", row[5])
             exit()
 
     else:
