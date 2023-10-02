@@ -165,15 +165,18 @@ def help_de():
 
 # Try to connect to the locally saved main package database
 try:
-    db = Database(Files.package_database)
+    db = sql.connect(Files.package_database)
+    c  = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
     print(StringLoader("PackageDatabaseNotSynced"))
     
+
 # Try to connect to the world database
 try:
-    wdb = Database(Files.world_database)
+    wdb = sql.connect(Files.world_database)
+    wc  = wdb.cursor()
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -279,7 +282,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     else:
         print(StringLoader("PackageNotFound"))
 
-    db.close()
+    c.close()
     exit()
 
 
