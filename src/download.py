@@ -139,8 +139,12 @@ class DownloadManager:
 
                 download_time_start = time.time()
 
-                spinner = Halo(text=f"{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})", spinner={'interval': 200, 'frames': [
-                            '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+                spinner = Halo(
+                    text=f"{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})",
+                    spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                    text_color="white",
+                    color="green")
+                
                 spinner.start()
 
                 with open(filename, 'wb') as download_archive:
@@ -164,118 +168,125 @@ class DownloadManager:
                 exit()
         
         
-        
-# def download_compact(name):
-#     c.execute("SELECT arch FROM packages where name = ?", (name,))
-    
-#     try:
-#         result = c.fetchone()[0]
-        
-#     except TypeError:
-#         print(PackageNotFound)
-#         exit()
-    
-#     if result == "all":
-#         try:
-#             c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (name,))
-        
-#         except OperationalError:
-#             print(PackageDatabaseNotSynced)
-#             exit()
-        
-#     else:
-#         try:
-#             c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (name, arch))
+        def compact_download(self, noarch=False):            
+            c.execute("SELECT arch FROM packages where name = ?", (self.package_name,))
             
-#         except OperationalError:
-#             print(PackageDatabaseNotSynced)
-#             exit()
-    
-#         download_time_start = time.time()
-    
-#     for row in c:
-#         url = row[1]
-#         filename = row[2]
+            try:
+                result = c.fetchone()[0]
+                
+            except TypeError:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(StringLoader('PackageNotFound'))
+                exit()
+
+            if noarch == False:
+                if result == "all":
+                    try:
+                        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
+                    
+                    except OperationalError:
+                        print(StringLoader("PackageDatabaseNotSynced"))
+                        exit()
+
+                else:
+                    try:
+                        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                        
+                    except OperationalError:
+                        print(StringLoader("PackageDatabaseNotSynced"))
+                        exit()
+            else:
+                try:
+                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                        
+                except OperationalError:
+                    print(StringLoader("PackageDatabaseNotSynced"))
+                    exit()
+
+            try:
+                for row in c:
+                    url = row[1]
+                    filename = row[2]
+                    
+                    headers = requests.head(url)
+                    file_size = round(self.file_size(response=headers, type=FileSizes.Megabytes), 2)
+                    
+                file = self.fetch_url(url)
+
+                spinner = Halo(
+                    text=f"{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})",
+                    spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                    text_color="white",
+                    color="green")
+                
+                spinner.start()
+
+                with open(filename, 'wb') as download_archive:
+                    download_archive.write(file.read())
+
+                print()
+                spinner.stop()
+                delete_last_line()
+                print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})")
+
+            except NameError as e:
+                print(StringLoader('PackageNotFound'))
+                exit()
+                
+            except Exception as e:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(StringLoader("HttpError"))
+                exit()
+            
+            
+    # def download_compact_noarch(name): 
+    #     try:
+    #         c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (name,))
         
-#         response = requests.head(url)
-#         file_size_bytes = int(response.headers.get('Content-Length', 0))
-#         file_size_mb = file_size_bytes / (1024 * 1024)
-
-#     try:
-#         req = urllib.request.Request(
-#             url,
-#             data=None,
-#             headers={
-#                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-#             }
-#         )
-
-#         f = urllib.request.urlopen(req)
-
-#         spinner = Halo(text=f"{StrGet}: {url} ({round(file_size_mb, 2)} MB)", spinner={'interval': 200, 'frames': [
-#                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-#         spinner.start()
-
-#         with open(filename, 'wb') as file:
-#             file.write(f.read())
-
-#         print()
+    #     except OperationalError:
+    #         print(PackageDatabaseNotSynced)
+    #         exit()
         
-#         spinner.stop()
-
-#     except HTTPError as e:
-#         print(Str[lang]["HttpError"])
-#         exit()
-
-#     except NameError as e:
-#         print(PackageNotFound)
-#         exit()
+    #     download_time_start = time.time()
         
-        
-# def download_compact_noarch(name): 
-#     try:
-#         c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (name,))
-    
-#     except OperationalError:
-#         print(PackageDatabaseNotSynced)
-#         exit()
-    
-#     download_time_start = time.time()
-    
-#     for row in c:
-#         url = row[1]
-#         filename = row[2]
-        
-#         response = requests.head(url)
-#         file_size_bytes = int(response.headers.get('Content-Length', 0))
-#         file_size_mb = file_size_bytes / (1024 * 1024)
+    #     for row in c:
+    #         url = row[1]
+    #         filename = row[2]
+            
+    #         response = requests.head(url)
+    #         file_size_bytes = int(response.headers.get('Content-Length', 0))
+    #         file_size_mb = file_size_bytes / (1024 * 1024)
 
-#     try:
-#         req = urllib.request.Request(
-#             url,
-#             data=None,
-#             headers={
-#                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-#             }
-#         )
+    #     try:
+    #         req = urllib.request.Request(
+    #             url,
+    #             data=None,
+    #             headers={
+    #                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    #             }
+    #         )
 
-#         f = urllib.request.urlopen(req)
+    #         f = urllib.request.urlopen(req)
 
-#         spinner = Halo(text=f"{StrGet}: {url} ({round(file_size_mb, 2)} MB)", spinner={'interval': 200, 'frames': [
-#                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-#         spinner.start()
+    #         spinner = Halo(text=f"{StrGet}: {url} ({round(file_size_mb, 2)} MB)", spinner={'interval': 200, 'frames': [
+    #                        '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+    #         spinner.start()
 
-#         with open(filename, 'wb') as file:
-#             file.write(f.read())
+    #         with open(filename, 'wb') as file:
+    #             file.write(f.read())
 
-#         print()
-        
-#         spinner.stop()
+    #         print()
+            
+    #         spinner.stop()
 
-#     except HTTPError as e:
-#         print(Str[lang]["HttpError"])
-#         exit()
+    #     except HTTPError as e:
+    #         print(Str[lang]["HttpError"])
+    #         exit()
 
-#     except NameError as e:
-#         print(PackageNotFound)
-#         exit()
+    #     except NameError as e:
+    #         print(PackageNotFound)
+    #         exit()
