@@ -33,7 +33,7 @@ from sqlite3 import *
 from urllib.error import HTTPError, URLError
 from colorama import Fore
 from halo import Halo
-from sys import exit
+from sys import exit, argv
 
 from src.plugin_daemon import *
 # from src.install import * 
@@ -162,6 +162,7 @@ def help_de():
     print(f"{Colors.BOLD}    -> {Fore.BLUE}language:{Fore.RESET} Konfiguriere die Sprache von spkg{Colors.RESET}")
     print(f"\n{Colors.BOLD}Copyright (C) 2023 Juliandev02 - Made with <3")
 
+argv_len = len(sys.argv)
 
 # Try to connect to the locally saved main package database
 try:
@@ -189,9 +190,9 @@ if not os.path.exists(NativeDirectories.user_config):
     os.mkdir(NativeDirectories.user_config)
 
 # * --- Build Function --- *
-if len(sys.argv) > 1 and sys.argv[1] == "build":
+if argv_len > 1 and argv[1] == "build":
     # Check if second argument is world
-    if len(sys.argv) > 2 and sys.argv[2] == "world":
+    if argv_len > 2 and argv[2] == "world":
         # Ask if you really want to rebuilt the world database
         ays_input = input(StringLoader("AskRegenWorld") + Colors.BOLD + GREEN)
         
@@ -234,15 +235,14 @@ if len(sys.argv) > 1 and sys.argv[1] == "build":
 
 
 # * --- Package Info Function --- *
-if len(sys.argv) > 1 and sys.argv[1] == "info":
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-
-    else:
+elif argv_len > 1 and argv[1] == "info":
+    if not argv_len > 2:
         print(StringLoader("NoArgument"))
-        exit()
+        exit()  
         
-    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
+    package_name = argv[2]
+        
+    c.execute("SELECT arch FROM packages where name = ?", (package_name,))
     
     try:
         result = c.fetchone()[0]
@@ -254,7 +254,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     if result == "all":
         try:
             arch = "all"
-            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
+            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (package_name, arch))
 
         except OperationalError:
             print(StringLoader("PackageDatabaseNotSynced"))
@@ -262,20 +262,19 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
             
     else:
         try:
-            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (pkg_name, arch))
+            c.execute("SELECT name FROM packages where name = ? AND arch = ? ", (package_name, arch))
 
         except OperationalError:
             print(StringLoader("PackageDatabaseNotSynced"))
             exit()
         
-        c.execute("SELECT name FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+        c.execute("SELECT name FROM packages where name = ? AND arch = ?", (package_name, arch))
     
     if c.fetchall():
-        c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (pkg_name, arch))
+        c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (package_name, arch))
         
         for row in c:
-            print(
-                f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]}){Colors.RESET}")
+            print(f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]}){Colors.RESET}")
             print(f"{StringLoader('Name')}:", row[0])
             print(f"{StringLoader('Version')}:", row[1])
             print(f"{StringLoader('Branch')}:", row[2])
@@ -287,7 +286,6 @@ if len(sys.argv) > 1 and sys.argv[1] == "info":
     else:
         print(StringLoader("PackageNotFound"))
 
-    c.close()
     exit()
 
 
@@ -302,10 +300,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
             # Print the entries 
             for row in wc:
                 print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{RESET}/{row[3]}")
+                
             exit()
 
         except OperationalError:
-            print(WorldDatabaseNotBuilded)
+            print(StringLoader("WorldDatabaseNotBuilded"))
         
     # Check if second argument is --arch; List programms that match the architecture from the third argument [all, arm64, amd64, ...]
     else:
@@ -313,32 +312,31 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
             try:
                 arch_a = sys.argv[3]
                 c.execute("SELECT * FROM packages where arch = ? ORDER BY name GLOB '[A-Za-z]*' DESC, name", (arch_a, ))
+                
                 for row in c:
                     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
+                    
                 exit()
 
             except OperationalError:
-                print(PackageDatabaseNotSynced)
+                print(StringLoader("PackageDatabaseNotSynced"))
             
             except IndexError:
-                print(NoArgument)
+                print(StringLoader("NoArgument"))
                 
         # If not, print just all packages
         else:
             try:
                 c.execute("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+                
                 for row in c:
                     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
+                    
                 exit()
 
             except OperationalError:
-                print(PackageDatabaseNotSynced)
-              
-            # For debugging-purposes only  
-            # c.execute("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
-            # for row in c:
-            #     print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{Fore.RESET}/{row[3]}")
-            # exit()
+                print(StringLoader("PackageDatabaseNotSynced"))
+                
         exit()
     exit()
             
@@ -349,12 +347,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         pkg_name = sys.argv[2]
     
     else:
-        print(NoArgument)
+        print(StringLoader("NoArgument"))
         exit()
         
     # Check if the passed package is all or --all
     if len(sys.argv) > 2 and sys.argv[2] == 'all' or  len(sys.argv) > 2 and sys.argv[2] == '--all':
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
         download_time_start = time.time()
         
         try:
@@ -370,11 +368,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         
         packages = pkg_name
         download_time_end = time.time()
-        print(f"{FinishedDownloadingCompact} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     if len(sys.argv) > 3:
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
         download_time_start = time.time()
         
         for pkg_name in sys.argv[2:]:
@@ -383,7 +381,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
         
         packages = ', '.join(sys.argv[2:])
         download_time_end = time.time()
-        print(f"{FinishedDownloading}{Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{StringLoader('FinishedDownloading')}{Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
 
     download(pkg_name)
