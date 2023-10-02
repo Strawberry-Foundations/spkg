@@ -404,7 +404,7 @@ elif argv_len > 1 and argv[1] == "download":
         packages = ', '.join(sys.argv[2:])
         download_time_end = time.time()
         
-        print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{packages}{Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{packages} {Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     else:
@@ -475,11 +475,11 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
         
     elif unsuccess_counter >= 1 and success_counter >= 1: 
         print(f"{StringLoader('AtLeastOneUnsuccessSyncingPackageDatabase')}{Colors.RESET}")
-        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=required_time)}{Colors.RESET}")
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument_1=required_time)}{Colors.RESET}")
         exit()
         
     else:
-        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument=required_time)}{Colors.RESET}")
+        print(f"{StringLoader('SuccessSyncingPackageDatabase', argument_1=required_time)}{Colors.RESET}")
         exit()
 
 
