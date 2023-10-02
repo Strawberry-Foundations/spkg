@@ -377,6 +377,7 @@ elif argv_len > 1 and argv[1] == "download":
             package.compact_download(noarch=True)
         
         download_time_end = time.time()
+        print(DownloadManager.Downloader.get_package_download_list())
         DownloadManager.Downloader.success_unsuccess_counter()
         print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
