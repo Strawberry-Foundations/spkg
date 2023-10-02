@@ -259,8 +259,8 @@ class DownloadManager:
                             
                             spinner.start()
 
-                            # with open(filename, 'wb') as download_archive:
-                            #     download_archive.write(file.read())
+                            with open(filename, 'wb') as download_archive:
+                                download_archive.write(file.read())
 
                             print()
                             spinner.stop()
