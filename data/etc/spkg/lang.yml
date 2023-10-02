@@ -12,6 +12,7 @@ de_DE:
 
   # Error messages
   HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  HttpErrorOnePackage: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Mindestens ein Paket konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unbekannter Fehler"
   UnknownOperation: "{red}{bold}E:{reset} Ungültige Operation: "
   UnknownLanguage: "{red}{bold}E:{reset} Unbekannte Sprache."
@@ -40,7 +41,8 @@ de_DE:
   AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
   UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
-  SearchingForUpdates: "Suche nach verfügbaren Updates ..." 
+  SearchingForUpdates: "Suche nach verfügbaren Updates ..."
+  UnsuccessPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Fehlende Berechtigung"
@@ -85,6 +87,7 @@ en_US:
 
   # Error messages
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
+  HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unknown error"
   UnknownOperation: "{red}{bold}E{reset} Invalid Operation: "
   UnknownLanguage: "{red}{bold}E:{reset} Unknown language."
@@ -114,6 +117,7 @@ en_US:
   UnsuccessSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
   SearchingDatabaseForPackage: "{bold}Searching through the database for package ...."
   SearchingForUpdates: "Search for available updates ..." 
+  UnsuccessPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Missing permissions"
