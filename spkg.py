@@ -458,7 +458,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
             except URLError:
                 print("")
                 delete_last_line()
-                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {url} ({name})")
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SyncingPackageDatabase', color_reset_end=False)} {CYAN}{url}{RESET} ({name})")
                 print(StringLoader("HttpError"))
                 unsuccess_counter += 1
                 # exit()
