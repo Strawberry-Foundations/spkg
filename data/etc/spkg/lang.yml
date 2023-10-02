@@ -53,7 +53,7 @@ de_DE:
 
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
-  PackageInformationTitle: "{bold}{underline}Information über das Paket"
+  PackageInformationTitle: "{bold}{underline}{green}Information über das Paket"
   FinishedDownloading: "Download abgeschlossen für"
   FinishedDownloadingCompact: "Download abgeschlossen"
   SyncingPackageDatabase: "Synchronisieren von"
@@ -120,7 +120,7 @@ en_US:
 
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}The World database was rebuilt"
-  PackageInformationTitle: "{bold}{underline}Information about the package"
+  PackageInformationTitle: "{bold}{underline}{green}Information about the package"
   FinishedDownloading: "Finished downloading"
   FinishedDownloadingCompact: "Finished downloading"
   SyncingPackageDatabase: "Synchronize from"
