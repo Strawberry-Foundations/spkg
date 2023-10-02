@@ -1,6 +1,4 @@
-from enum import Enum
-
-class ARCH(Enum): 
-    X86_64  = 1
-    X86     = 2
-    AARCH64 = 3
+class ARCH: 
+    X86_64  = "amd64"
+    X86     = "i386"
+    AARCH64 = "arm64"
