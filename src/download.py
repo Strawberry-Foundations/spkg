@@ -43,13 +43,15 @@ except OperationalError:
 class FileSizes:
     Kilobytes = 0
     Megabytes = 1
-    
 
 class DownloadManager:
     class Downloader:
+        success_counter = 0
+        unsuccess_counter = 0
+        
         def __init__(self, package_name):
             self.package_name = package_name
-            
+
         
         def fetch_url(self, url):
             try:
@@ -167,9 +169,17 @@ class DownloadManager:
                 print(StringLoader("HttpError"))
                 exit()
         
+        def success_unsuccess_counter():
+            if DownloadManager.Downloader.unsuccess_counter >= 1 and DownloadManager.Downloader.success_counter == 0: 
+                print(f"{StringLoader('UnsuccessDownloadingPackages')}{Colors.RESET}")
+                        
+            elif DownloadManager.Downloader.unsuccess_counter >= 1 and DownloadManager.Downloader.success_counter >= 1: 
+                print(f"{StringLoader('AtLeastOneUnsuccessPackageDownload')}{Colors.RESET}")
         
-        def compact_download(self, noarch=False):            
+        def compact_download(self, noarch=False):
             c.execute("SELECT arch FROM packages where name = ?", (self.package_name,))
+            
+            self.multiple_arches = False
             
             try:
                 result = c.fetchone()[0]
@@ -210,9 +220,36 @@ class DownloadManager:
                 exit()
 
             try:
+                # print(c.fetchall())
                 for row in c:
-                    url = row[1]
+                    # c.execute("SELECT COUNT(*) FROM packages WHERE name = ?", (self.package_name,))
+                    # double_packages = c.fetchone()[0]
                     
+                    print()
+                    
+                    # if double_packages > 1:
+                    #     print(f"Der Name '{self.package_name}' kommt {double_packages} Mal in der Datenbank vor.")
+                    # else:
+                    #     print(f"Der Name '{self.package_name}' kommt nicht doppelt in der Datenbank vor.")
+                        
+                    sql_abfrage = "SELECT arch FROM packages WHERE name = ?"
+                    c.execute(sql_abfrage, (self.package_name,))
+                    architekturen = c.fetchall()
+                    
+                    if len(architekturen) > 1:
+                        print(f"Der Name '{self.package_name}' kommt doppelt vor und hat folgende Architekturen:")
+                        for architektur in architekturen:
+                            print(architektur[0])
+                            self.multiple_arches = True
+                    else:
+                        # print(f"Der Name '{self.package_name}' kommt nicht doppelt in der Datenbank vor.")
+                        self.multiple_arches = False
+
+
+                    
+                    # print()
+                    # print(row)
+                    url = row[1]
                     filename = row[2]
                     
                     try:
@@ -229,18 +266,20 @@ class DownloadManager:
                         
                         spinner.start()
 
-                        with open(filename, 'wb') as download_archive:
-                            download_archive.write(file.read())
+                        # with open(filename, 'wb') as download_archive:
+                        #     download_archive.write(file.read())
 
                         print()
                         spinner.stop()
                         delete_last_line()
                         print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})")
+                        DownloadManager.Downloader.success_counter += 1
                     
                     except:
                         print(f"{RED + Colors.BOLD}[×]{RESET} {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url}")
                         print(f"{RED + Colors.BOLD} ↳ {RESET} {StringLoader('UnsuccessPackageDownload', argument_1=self.package_name)}")
-
+                        DownloadManager.Downloader.unsuccess_counter += 1
+            
             except NameError as e:
                 print(e)
                 print(StringLoader('PackageNotFound'))
@@ -252,6 +291,7 @@ class DownloadManager:
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
                 print(StringLoader("HttpError"))
                 exit()
+        
             
             
     # def download_compact_noarch(name): 
