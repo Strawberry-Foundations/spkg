@@ -374,7 +374,7 @@ elif argv_len > 1 and argv[1] == "download":
         for row in c:
             packages = row[0]
             package = DownloadManager.Downloader(packages)
-            package.compact_download()
+            package.compact_download(noarch=True)
         
         download_time_end = time.time()
         print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
