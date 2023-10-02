@@ -200,7 +200,7 @@ class DownloadManager:
                         
             elif noarch == True:
                 try:
-                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name))
+                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
                         
                 except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
