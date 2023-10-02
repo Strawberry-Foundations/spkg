@@ -197,45 +197,55 @@ class DownloadManager:
                     except OperationalError:
                         print(StringLoader("PackageDatabaseNotSynced"))
                         exit()
-            else:
+            elif noarch == True:
                 try:
                     c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                         
                 except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
                     exit()
+                    
+            else:
+                exit()
 
             try:
                 for row in c:
                     url = row[1]
+                    
                     filename = row[2]
                     
-                    headers = requests.head(url)
-                    file_size = round(self.file_size(response=headers, type=FileSizes.Megabytes), 2)
+                    try:
+                        headers = requests.head(url)
+                        file_size = round(self.file_size(response=headers, type=FileSizes.Megabytes), 2)
+                        
+                        file = self.fetch_url(url)
                     
-                file = self.fetch_url(url)
+                        spinner = Halo(
+                            text=f"{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})",
+                            spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                            text_color="white",
+                            color="green")
+                        
+                        spinner.start()
 
-                spinner = Halo(
-                    text=f"{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})",
-                    spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
-                    text_color="white",
-                    color="green")
-                
-                spinner.start()
+                        with open(filename, 'wb') as download_archive:
+                            download_archive.write(file.read())
 
-                with open(filename, 'wb') as download_archive:
-                    download_archive.write(file.read())
-
-                print()
-                spinner.stop()
-                delete_last_line()
-                print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})")
+                        print()
+                        spinner.stop()
+                        delete_last_line()
+                        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})")
+                    
+                    except:
+                        print(f"{RED + Colors.BOLD}[×]{RESET} {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url}")
+                        print(f"{RED + Colors.BOLD} ↳ {RESET} {StringLoader('UnsuccessPackageDownload', argument_1=self.package_name)}")
 
             except NameError as e:
+                print(e)
                 print(StringLoader('PackageNotFound'))
                 exit()
                 
-            except Exception as e:
+            except HTTPError as e:
                 print("")
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
