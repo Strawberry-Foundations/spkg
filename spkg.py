@@ -202,7 +202,7 @@ if argv_len > 1 and argv[1] == "build":
             case "yes" | "ja":
                 spinner = Halo(
                     text=f"{StringLoader('BuildingWorldDatabase')}",
-                    spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                    spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
                     text_color="white",
                     color="green")
                 
@@ -290,9 +290,9 @@ elif argv_len > 1 and argv[1] == "info":
 
 
 # * --- List Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "list":
+elif argv_len > 1 and argv[1] == "list":
     # List installed programms
-    if len(sys.argv) > 2 and sys.argv[2] == "--installed":
+    if argv_len > 2 and argv[2] == "--installed":
         # Select * from the world database
         try:
             wc.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
@@ -308,9 +308,9 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
         
     # Check if second argument is --arch; List programms that match the architecture from the third argument [all, arm64, amd64, ...]
     else:
-        if len(sys.argv) > 2 and sys.argv[2] == "--arch":
+        if argv_len > 2 and argv[2] == "--arch":
             try:
-                arch_a = sys.argv[3]
+                arch_a = argv[3]
                 c.execute("SELECT * FROM packages where arch = ? ORDER BY name GLOB '[A-Za-z]*' DESC, name", (arch_a, ))
                 
                 for row in c:
@@ -342,16 +342,15 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
             
             
 # * --- Download Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "download":
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-    
-    else:
+elif argv_len > 1 and argv[1] == "download":
+    if not argv_len > 2:
         print(StringLoader("NoArgument"))
         exit()
         
+    package_name = argv[2]
+        
     # Check if the passed package is all or --all
-    if len(sys.argv) > 2 and sys.argv[2] == 'all' or  len(sys.argv) > 2 and sys.argv[2] == '--all':
+    if package_name in ["all", "--all"]:
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
         download_time_start = time.time()
         
@@ -364,28 +363,31 @@ elif len(sys.argv) > 1 and sys.argv[1] == "download":
             
         for row in c:
             pkg_name = row[0]
-            download_compact_noarch(pkg_name)
+            # download_compact_noarch(pkg_name)
         
         packages = pkg_name
         download_time_end = time.time()
         print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
-    if len(sys.argv) > 3:
+    elif argv_len > 3:
         print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
         download_time_start = time.time()
         
-        for pkg_name in sys.argv[2:]:
-            download_compact(pkg_name)
+        for package_name in sys.argv[2:]:
+            # download_compact(package_name)
+            pass
         
         
         packages = ', '.join(sys.argv[2:])
         download_time_end = time.time()
         print(f"{StringLoader('FinishedDownloading')}{Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
-
-    download(pkg_name)
-    exit()
+        
+    else:
+        package = DownloadManager.Downloader(package_name)
+        package.download()
+        exit()
 
 
 # * --- Sync Function --- *
@@ -401,7 +403,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
             
             spinner = Halo(
                 text=f"{StringLoader('SyncingPackageDatabase', color_reset_end=False)} {CYAN}{url}{RESET} ({name})...{Colors.RESET}",
-                spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
                 text_color="white",
                 color="green")
             
@@ -411,7 +413,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
                 request = urllib.request.Request(
                     repo,
                     data = None,
-                    headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+                    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
                 )
                 
                 repo_db = urllib.request.urlopen(request)
@@ -572,7 +574,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "remove":
         exit()
     
     spinner_world_search = Halo(text=f"{SearchingWorldForPackage}", spinner={
-                             'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+                             'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
     spinner_world_search.start()
         
         
