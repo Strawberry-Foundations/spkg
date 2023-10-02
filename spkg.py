@@ -372,9 +372,9 @@ elif argv_len > 1 and argv[1] == "download":
             exit()
             
         for row in c:
-            package_name = row[0]
-            package = DownloadManager.Downloader(package_name)
-            package.compact_download(noarch=True)
+            packages = row[0]
+            package = DownloadManager.Downloader(packages)
+            package.compact_download()
         
         download_time_end = time.time()
         print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
