@@ -377,7 +377,8 @@ elif argv_len > 1 and argv[1] == "download":
             package.compact_download(noarch=True)
         
         download_time_end = time.time()
-        print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        DownloadManager.Downloader.success_unsuccess_counter()
+        print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     elif argv_len > 3:
@@ -401,7 +402,8 @@ elif argv_len > 1 and argv[1] == "download":
         
         packages = ', '.join(sys.argv[2:])
         download_time_end = time.time()
-        print(f"{StringLoader('FinishedDownloading')}{Fore.CYAN + Colors.BOLD} {packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        
+        print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{packages}{Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     else:
@@ -414,7 +416,7 @@ elif argv_len > 1 and argv[1] == "download":
 elif len(sys.argv) > 1 and sys.argv[1] == "sync":
     start_time          = time.time()
     success_counter     = 0 
-    unsuccess_counter   = 0 
+    unsuccess_counter   = 0
 
     try:
         for name, url in config["repositories"].items():
