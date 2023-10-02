@@ -292,10 +292,10 @@ elif len(sys.argv) > 1 and sys.argv[1] == "list":
     if len(sys.argv) > 2 and sys.argv[2] == "--installed":
         # Select * from the world database
         try:
-            world_c.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+            SearchingWorldForPackage.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
             
             # Print the entries 
-            for row in world_c:
+            for row in wc:
                 print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{RESET}/{row[3]}")
             exit()
 
