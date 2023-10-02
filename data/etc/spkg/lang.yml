@@ -43,6 +43,8 @@ de_DE:
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..."
   UnsuccessPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
+  UnsuccessDownloadingPackages: "{yellow}Die Pakete konnte nicht heruntergeladen werden."
+  AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: Mindestens ein Paket konnte nicht heruntergeladen werden."
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Fehlende Berechtigung"
@@ -118,6 +120,8 @@ en_US:
   SearchingDatabaseForPackage: "{bold}Searching through the database for package ...."
   SearchingForUpdates: "Search for available updates ..." 
   UnsuccessPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
+  UnsuccessDownloadingPackages: "{yellow}The packages could not be downloaded."
+  AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: At least one package could not be downloaded."
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Missing permissions"
