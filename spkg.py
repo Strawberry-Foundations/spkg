@@ -351,8 +351,18 @@ elif argv_len > 1 and argv[1] == "download":
         
     # Check if the passed package is all or --all
     if package_name in ["all", "--all"]:
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
+        spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
+                       spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                       text_color="white",
+                       color="green")
+        
+        spinner.start()
+        time.sleep(.1)
+        
         download_time_start = time.time()
+        
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
         
         try:
             c.execute("SELECT name from packages")
@@ -362,26 +372,36 @@ elif argv_len > 1 and argv[1] == "download":
             exit()
             
         for row in c:
-            pkg_name = row[0]
-            # download_compact_noarch(pkg_name)
+            package_name = row[0]
+            package = DownloadManager.Downloader(package_name)
+            package.compact_download(noarch=True)
         
-        packages = pkg_name
         download_time_end = time.time()
         print(f"{StringLoader('FinishedDownloadingCompact')} {Fore.LIGHTCYAN_EX + Colors.BOLD}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     elif argv_len > 3:
-        print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
+        spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
+                       spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                       text_color="white",
+                       color="green")
+        
+        spinner.start()
+        time.sleep(.1)
+        
         download_time_start = time.time()
         
-        for package_name in sys.argv[2:]:
-            # download_compact(package_name)
-            pass
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
+        
+        for package_name in argv[2:]:
+            package = DownloadManager.Downloader(package_name)
+            package.compact_download()
         
         
         packages = ', '.join(sys.argv[2:])
         download_time_end = time.time()
-        print(f"{StringLoader('FinishedDownloading')}{Fore.LIGHTCYAN_EX + Colors.BOLD}{packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+        print(f"{StringLoader('FinishedDownloading')}{Fore.CYAN + Colors.BOLD} {packages}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
         exit()
         
     else:
