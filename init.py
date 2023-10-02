@@ -118,7 +118,7 @@ if lang not in langs:
     lang = "en_US"
     
 
-def StringLoader(string, argument="", color_reset_end=True):
+def StringLoader(string, argument_1="", argument_2="", color_reset_end=True):
     string = Str[lang][string]
     string = string \
             .replace("{red}", RED) \
@@ -132,7 +132,8 @@ def StringLoader(string, argument="", color_reset_end=True):
             .replace("{creset}", Colors.RESET) \
             .replace("{bold}", Colors.BOLD) \
             .replace("{underline}", Colors.UNDERLINE) \
-            .replace("%s", str(argument))
+            .replace("%s", str(argument_1)) \
+            .replace("%c", str(argument_2))
     
     if color_reset_end:
         return string + RESET + Colors.RESET
