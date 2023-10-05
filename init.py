@@ -67,7 +67,7 @@ class Files:
     package_database    = Directories.mirror + "main.db"
     
     spkg_config         = Directories.spkg_config + "config.yml"
-    user_sandbox_config = Directories.user_config + "sandbox.yml"
+    user_config         = Directories.user_config + "config.yml"
     lang_strings        = Directories.spkg_config + "lang.yml"
 
 class NativeDirectories:
@@ -84,8 +84,8 @@ with open(Files.spkg_config) as file:
     config = yaml.load(file, Loader=SafeLoader)
     
 # Open user sandbox config file    
-with open(Files.user_sandbox_config, "r") as file:
-    user_sandbox_config = yaml.load(file, Loader=SafeLoader)
+with open(Files.user_config, "r") as file:
+    user_config = yaml.load(file, Loader=SafeLoader)
     
 # Open language strings
 with open(Files.lang_strings, encoding="utf-8") as lang_strings:
