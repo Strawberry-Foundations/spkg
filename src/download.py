@@ -103,19 +103,14 @@ class DownloadManager:
                 print(StringLoader('PackageNotFound'))
                 exit()
 
-            if result == "all":
-                try:
+            try:
+                if result == "all":
                     c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
-                
-                except OperationalError:
-                    print(StringLoader("PackageDatabaseNotSynced"))
-                    exit()
 
-            else:
-                try:
+                else:
                     c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                     
-                except OperationalError:
+            except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
                     exit()
 
