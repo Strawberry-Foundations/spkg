@@ -43,7 +43,7 @@ Remove:
     rm -f /tmp/PKGBUILD
 
 Upgrade:
-  Command: |
+  Commands: |
     rm -f /usr/bin/spkg
     rm -rf /usr/share/spkg/
     cp -r /tmp/target/ /usr/share/spkg/
