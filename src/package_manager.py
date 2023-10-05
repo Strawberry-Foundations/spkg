@@ -68,7 +68,7 @@ def dnf_install(package, print_output=False):
 
 def pip_install(package, print_output=False):
     command = ["pip", "install"] + package
-    command_break_system_packages = ["pip", "install", package, "--break-system-packages"]
+    command_break_system_packages = ["pip", "install"] + package + ["--break-system-packages"]
     
     try:
         if print_output:
