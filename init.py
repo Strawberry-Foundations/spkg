@@ -78,6 +78,15 @@ class Colors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
     RESET = '\033[0m'
+    
+class FileSizes:
+    Kilobytes = 0
+    Megabytes = 1
+    
+class PackageManagers:
+    Apt = "apt"
+    Apk = "apk"
+    Dnf = "dnf"
 
 # Open Configuration
 with open(Files.spkg_config) as file:
