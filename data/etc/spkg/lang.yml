@@ -75,6 +75,10 @@ de_DE:
   ChangedLanguage: "{bold}Sprache wurde zu {cyan}%sreset geändert"
   SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
   InstallingToSandboxEnv: "{CYAN}Paket wird in der Sandbox installiert."
+
+  # Installation messages
+  ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
+  DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
   
 
 
@@ -155,3 +159,7 @@ en_US:
   ChangedLanguage: "{bold}Changed language to {cyan}%sreset geändert"
   SearchingWorldForPackage: "{bold}Searching through the local world database for the installed package ..."
   InstallingToSandboxEnv: "{CYAN}Package will be installed to the sandbox."
+
+  # Installation messages
+  ParsingSpecfile: "The package configuration is read in"
+  DeterminateDependencies: "Dependencies are determined and installed"
