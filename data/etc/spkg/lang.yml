@@ -46,6 +46,7 @@ de_DE:
   UnsuccessPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
   UnsuccessDownloadingPackages: "{yellow}Die Pakete konnte nicht heruntergeladen werden."
   AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: Mindestens ein Paket konnte nicht heruntergeladen werden."
+  GettingSpecfile: "Die Paketkonfigurationsdatei wird angefordert und heruntergeladen..."
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Fehlende Berechtigung"
@@ -125,6 +126,7 @@ en_US:
   UnsuccessPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
   UnsuccessDownloadingPackages: "{yellow}The packages could not be downloaded."
   AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: At least one package could not be downloaded."
+  GettingSpecfile: "The package configuration file is requested and downloaded..."
 
   # Permission-related messages
   MissingPermissions: "{reset}{creset}Missing permissions"
