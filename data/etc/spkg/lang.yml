@@ -80,6 +80,7 @@ de_DE:
   ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
   SuccessParsingSpecfile: "Die Paketkonfiguration wurde eingelesen"
   DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
+  SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert"
   
 
 
@@ -165,3 +166,4 @@ en_US:
   ParsingSpecfile: "The package configuration is read in"
   SuccessParsingSpecfile: "The package configuration was read in"
   DeterminateDependencies: "Dependencies are determined and installed"
+  SuccessDeterminateDependencies: "Dependencies were installed"
