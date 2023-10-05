@@ -18,82 +18,55 @@
 """
 
 import os
-import time
-import json
-import sqlite3 as sql
 import urllib.request
-import platform
 import requests
 import subprocess
+from sys import exit
 
-# from sqlite3 import *
-from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
-from sys import exit
-from .plugin_daemon import PluginDaemon, check_plugin_enabled_silent, check_plugin_enabled_ret
-from .force_no_sandbox import *
-from init import *
+import time
 
-if check_plugin_enabled_ret("sandbox") == True:
-    PluginDaemon.import_plugin("sandbox")
-else:
+import sqlite3 as sql
+from sqlite3 import *
+
+from urllib.error import HTTPError
+
+from init import *
+from src.functions import delete_last_line
+from src.plugin_daemon import PluginDaemon, is_plugin_enabled
+from src.force_no_sandbox import *
+
+import yaml
+from yaml import SafeLoader
+
+
+# Try to connect to the locally saved main package database
+try:
+    db = sql.connect(Files.package_database)
+    c  = db.cursor()
+
+# If the Database doesn't exists/no entries, return a error
+except OperationalError:
     pass
 
-language = config['language']
-
-if language == "de":
-    PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Paket wurde nicht gefunden{Colors.RESET}"
-    FinishedDownloading = f"Download abgeschlossen für"
-    StrGet = "Holen"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Paket ...{Colors.RESET}"
-    ContinePackageInstallation1 = f"{Colors.RESET}Das Paket {Fore.CYAN + Colors.BOLD}"
-    ContinePackageInstallation2 = f"{Colors.RESET} wird nun heruntergeladen. \nDafür müssen "
-    ContinePackageInstallation3 = f"{Colors.RESET} heruntergeladen werden. Fortfahren? [J/N]{Fore.RESET}{Colors.RESET}"
-    Abort = "Abbruch ... "
-    ExecutingSetup = f"Setup Script wird ausgeführt... Bitte warten"
-    InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Paket wird in der Sandbox installiert."
-    ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warnung: Paket kann nicht in der Sandbox installiert werden: Es ist Host-only.{Colors.RESET}"
-
-elif language == "en":
-    PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
-    FinishedDownloading = f"Finished downloading"
-    StrGet = "Get"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
-    ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
-    ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
-    ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
-    Abort = "Aborting ..."
-    ExecutingSetup = f"Executing Setup Script... Please wait"
-    InstallingToSandboxEnv = f"{Fore.CYAN + Colors.BOLD}[!]{Fore.RESET} Package will be installed to the sandbox."
-    ForceNoSandbox = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Warning: Package cannot be installed in the sandbox: It is host-only.{Colors.RESET}"
+if is_plugin_enabled("sandbox"):
+    PluginDaemon.import_plugin("sandbox")
 
 
 # Check if user config path exists
-if not os.path.exists(f"{home_dir}/.config/spkg"):
-    os.mkdir(f"{home_dir}/.config/spkg")
-    os.system(f"rm -rf {home_dir}/.config/spkg")
-    os.mkdir(f"{home_dir}/.config/spkg")
-    os.system(f"touch {user_sandbox_config}")
-    os.system("sh -c 'echo {} >> " + user_sandbox_config + "'")
+if not os.path.exists(Directories.user_config):
+    os.mkdir(Directories.user_config)
+    user_config = {
+        "bootstrap_location": f"{home_dir}/.local/share/spkg/sandbox/",
+        "sandbox_handler": "bwrap"
+    }
     
-    with open(user_sandbox_config, "r") as f:
-        data = json.load(f)
+    with open(Files.user_config, 'w') as file:
+        yaml.dump(user_config, file)
     
-    data["bootstrap_location"] = f"{home_dir}/.local/spkg/sandbox/"
-    data["sandbox_handler"] = "chroot"
-    
-    with open(user_sandbox_config, 'w') as f:
-        json.dump(data, f)
-
-bootstrap_location = user_sandbox_config['bootstrap_location']
-sandbox_handler = user_sandbox_config['sandbox_handler']
+bootstrap_location = user_config['bootstrap_location']
+sandbox_handler = user_config['sandbox_handler']
 
 if arch == "x86_64":
     arch = "amd64"
