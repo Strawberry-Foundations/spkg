@@ -81,6 +81,10 @@ de_DE:
   SuccessParsingSpecfile: "Die Paketkonfiguration wurde eingelesen"
   DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
   SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert"
+  DeterminatePipDependencies: "Es wird ermittelt, ob Pip-Abhängigkeiten benötigt werden"
+  NoNeedPipDependencies: "Keine Pip-Abhängigkeiten gefunden..."
+  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden. Folgende Pakete werden installiert: %s"
+  SuccessPipDeterminateDependencies: "Pip-Abhängigkeiten wurden installiert"
   
 
 
@@ -167,3 +171,7 @@ en_US:
   SuccessParsingSpecfile: "The package configuration was read in"
   DeterminateDependencies: "Dependencies are determined and installed"
   SuccessDeterminateDependencies: "Dependencies were installed"
+  DeterminatePipDependencies: "Determine if pip dependencies are needed"
+  NoNeedPipDependencies: "No pip dependencies found..."
+  NeedPipDependencies: "Pip dependencies were found. The following packages are installed: %s"
+  SuccessPipDeterminateDependencies: "Pip dependencies were installed"
