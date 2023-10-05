@@ -83,7 +83,7 @@ de_DE:
   SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert"
   DeterminatePipDependencies: "Es wird ermittelt, ob Pip-Abhängigkeiten benötigt werden"
   NoNeedPipDependencies: "Keine Pip-Abhängigkeiten gefunden..."
-  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden. Folgende Pakete werden installiert: %s"
+  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden. Folgende Pakete werden installiert: {creset}%s"
   SuccessPipDeterminateDependencies: "Pip-Abhängigkeiten wurden installiert"
   
 
@@ -173,5 +173,5 @@ en_US:
   SuccessDeterminateDependencies: "Dependencies were installed"
   DeterminatePipDependencies: "Determine if pip dependencies are needed"
   NoNeedPipDependencies: "No pip dependencies found..."
-  NeedPipDependencies: "Pip dependencies were found. The following packages are installed: %s"
+  NeedPipDependencies: "Pip dependencies were found. The following packages are installed: {creset}%s"
   SuccessPipDeterminateDependencies: "Pip dependencies were installed"
