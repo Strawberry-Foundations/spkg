@@ -72,19 +72,9 @@ def pip_install(package, print_output=False):
     
     try:
         if print_output:
-            subprocess.run(command, check=True)
+            subprocess.run(command_break_system_packages, check=True)
         else:
-            subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(command_break_system_packages, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
-
-        try:
-            if print_output:
-                subprocess.run(command_break_system_packages, check=True)
-            else:
-                subprocess.run(command_break_system_packages, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                
-        except subprocess.CalledProcessError as e:
-            print(f"Error while installing {package}: {e}")
-            pip_install(package)
