@@ -117,6 +117,13 @@ def check_plugin_enabled_ret(plugin):
     else:
         return Disabled
 
+def is_plugin_enabled(plugin):
+    plugin_data = config["plugins"][plugin]
+    if plugin_data:
+        return True
+    else:
+        return False
+
 
 class PluginManagement:
     def list_plugins():
