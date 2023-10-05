@@ -36,7 +36,7 @@ from halo import Halo
 from sys import exit, argv
 
 from src.plugin_daemon import *
-# from src.install import * 
+from src.install import * 
 # from src.remove import * 
 from src.download import *
 from src.force_no_sandbox import *
@@ -494,90 +494,92 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
         print(NoArgument)
         exit()
 
-    # Check if you have runned spkg with sudo
-    if os.geteuid() == 0:
-        None
-    else:
-        print(RecommendedRunningAsRoot)
+    # # Check if you have runned spkg with sudo
+    # if os.geteuid() == 0:
+    #     None
+    # else:
+    #     print(RecommendedRunningAsRoot)
     
-    # Check if package is already installed
-    try:
-        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
+    # # Check if package is already installed
+    # try:
+    #     world_c.execute("SELECT name from world where name = ?", (pkg_name,))
 
-    except OperationalError as e:
-        print(WorldDatabaseNotBuilded)
-        exit()
+    # except OperationalError as e:
+    #     print(WorldDatabaseNotBuilded)
+    #     exit()
 
-    if world_c.fetchall():
-        print(PackageAlreadyInstalled)
-        exit()
+    # if world_c.fetchall():
+    #     print(PackageAlreadyInstalled)
+    #     exit()
 
-    else:
-        pass
+    # else:
+    #     pass
         
-        # Check if Package even exists
-        try:
-            c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-            for row in c:
-                name = row[0]
-                version = row[1]
-                branch = row[2]
+    #     # Check if Package even exists
+    #     try:
+    #         c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
+    #         for row in c:
+    #             name = row[0]
+    #             version = row[1]
+    #             branch = row[2]
 
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
+    #     except OperationalError:
+    #         print(PackageDatabaseNotSynced)
+    #         exit()
         
-        if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
-            if len(sys.argv) > 3:
-                pkg_name = sys.argv[3]
+    #     if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
+    #         if len(sys.argv) > 3:
+    #             pkg_name = sys.argv[3]
                 
-            Package.sandbox_install(pkg_name)
+    #         Package.sandbox_install(pkg_name)
             
-            if os.geteuid() == 0:
-                None
+    #         if os.geteuid() == 0:
+    #             None
                 
-            else:
-                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-                print(MissingPermissonsWorldDatabaseInsert)
-                exit()
+    #         else:
+    #             print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+    #             print(MissingPermissonsWorldDatabaseInsert)
+    #             exit()
                 
-            try:
-                c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-                for row in c:
-                    name = row[0]
-                    version = row[1]
-                    branch = row[2]
+    #         try:
+    #             c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
+    #             for row in c:
+    #                 name = row[0]
+    #                 version = row[1]
+    #                 branch = row[2]
 
-            except OperationalError:
-                print(PackageDatabaseNotSynced)
-                exit()
+    #         except OperationalError:
+    #             print(PackageDatabaseNotSynced)
+    #             exit()
     
-            world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
-            world_db.commit()
-            world_db.close()
-            exit()
+    #         world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
+    #         world_db.commit()
+    #         world_db.close()
+    #         exit()
             
-        elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
-            if len(sys.argv) > 3:
-                pkg_name = sys.argv[3]
-            print("Currently not working ...")
-            exit()
+    #     elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
+    #         if len(sys.argv) > 3:
+    #             pkg_name = sys.argv[3]
+    #         print("Currently not working ...")
+    #         exit()
             
         # Install the package
-        Package.install(pkg_name)
+    package = InstallManager.Installer(pkg_name)
+    package.install()
+    exit()
         
-        if os.geteuid() == 0:
-                None
-        else:
-            print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-            print(MissingPermissonsWorldDatabaseInsert)
-            exit()
+        # if os.geteuid() == 0:
+        #         None
+        # else:
+        #     print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
+        #     print(MissingPermissonsWorldDatabaseInsert)
+        #     exit()
     
-        world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
-        world_db.commit()
-        world_db.close()
+        # world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
+        # world_db.commit()
+        # world_db.close()
         
-        exit()
+        # exit()
 
 
 # * --- Remove Function --- *
