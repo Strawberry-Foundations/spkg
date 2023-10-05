@@ -28,6 +28,7 @@ de_DE:
   AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? [Ja/Nein] "
   RecommendedRunningAsRoot: "{yellow}{bold}W:{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen"
   RecommendedRunningAsRootRemove: "{yellow}{bold}W:{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen"
+  ForceNoSandbox: "{yellow}{bold}W:{reset} Paket kann nicht in der Sandbox installiert werden: Es ist Host-only."
 
   # Package-related messages
   PackageNotFound: "{red}{bold}E:{reset} Paket wurde nicht gefunden{creset}"
@@ -72,6 +73,7 @@ de_DE:
   SuccessBuildingWorldDatabase: "{green}{bold}[✓]{reset} Die World Datenbank wurde erfolgreich aufgebaut!"
   ChangedLanguage: "{bold}Sprache wurde zu {cyan}%sreset geändert"
   SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
+  InstallingToSandboxEnv: "{CYAN}Paket wird in der Sandbox installiert."
   
 
 
@@ -105,6 +107,7 @@ en_US:
   AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} This will regenerate the local >> {cyan}{bold}World database{creset}{yellow} <<! Are you sure? [Yes/No] "
   RecommendedRunningAsRoot: "{yellow}{bold}W:{reset} It is recommended to install packages as root (sudo). Otherwise permission problems could occur"
   RecommendedRunningAsRootRemove: "{yellow}{bold}W:{reset} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur"
+  ForceNoSandbox: "{yellow}{bold}W:{reset} Package cannot be installed in the sandbox: It is host-only."
 
   # Package-related messages
   PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
@@ -149,3 +152,4 @@ en_US:
   SuccessBuildingWorldDatabase: "{green}{bold}[✓]{reset} The World database was successfully built!"
   ChangedLanguage: "{bold}Changed language to {cyan}%sreset geändert"
   SearchingWorldForPackage: "{bold}Searching through the local world database for the installed package ..."
+  InstallingToSandboxEnv: "{CYAN}Package will be installed to the sandbox."
