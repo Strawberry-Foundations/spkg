@@ -78,6 +78,7 @@ de_DE:
 
   # Installation messages
   ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
+  SuccessParsingSpecfile: "Die Paketkonfiguration wurde eingelesen"
   DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
   
 
@@ -162,4 +163,5 @@ en_US:
 
   # Installation messages
   ParsingSpecfile: "The package configuration is read in"
+  SuccessParsingSpecfile: "The package configuration was read in"
   DeterminateDependencies: "Dependencies are determined and installed"
