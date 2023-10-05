@@ -28,52 +28,62 @@ def get_package_manager():
     return False
 
 def apt_install(package, print_output=False):
+    command = ["apt", "install"] + package
+    command_update = ["apt", "update"]
+    
     try:
         if print_output:
-            subprocess.run(["sudo", "apt", "update"], check=True) 
-            subprocess.run(["sudo", "apt", "install", package], check=True)
+            subprocess.run(command_update, check=True) 
+            subprocess.run(command, check=True)
         else:
-            subprocess.run(["sudo", "apt", "update"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
-            subprocess.run(["sudo", "apt", "install", package], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(command_update, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
+            subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
 def apk_install(package, print_output=False):
+    command = ["apk", "install"] + package
+    
     try:
         if print_output:
-            subprocess.run(["sudo", "apk", "add", package], check=True)
+            subprocess.run(command, check=True)
         else:
-            subprocess.run(["sudo", "apk", "add", package], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
 def dnf_install(package, print_output=False):
+    command = ["dnf", "install"] + package
+    
     try:
         if print_output:
-            subprocess.run(["sudo", "dnf", "install", package], check=True)
+            subprocess.run(command, check=True)
         else:
-            subprocess.run(["sudo", "dnf", "install", package], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
 def pip_install(package, print_output=False):
+    command = ["pip", "install"] + package
+    command_break_system_packages = ["pip", "install", package, "--break-system-packages"]
+    
     try:
         if print_output:
-            subprocess.run(["pip", "install", package], check=True)
+            subprocess.run(command, check=True)
         else:
-            subprocess.run(["pip", "install", package], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
         try:
             if print_output:
-                subprocess.run(["pip", "install", package, "--break-system-packages"], check=True)
+                subprocess.run(command_break_system_packages, check=True)
             else:
-                subprocess.run(["pip", "install", package, "--break-system-packages"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                subprocess.run(command_break_system_packages, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 
         except subprocess.CalledProcessError as e:
             print(f"Error while installing {package}: {e}")
