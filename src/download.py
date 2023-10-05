@@ -17,16 +17,19 @@
     along with this program.  If not, see <https://www.gnu.org/licenses>
 """
 
-import time
-import sqlite3 as sql
 import urllib.request
 import requests
+from sys import exit
 
-from sqlite3 import *
-from urllib.error import HTTPError
 from colorama import Fore
 from halo import Halo
-from sys import exit
+import time
+
+import sqlite3 as sql
+from sqlite3 import *
+
+from urllib.error import HTTPError
+
 from init import *
 from src.functions import delete_last_line
 
