@@ -85,8 +85,12 @@ de_DE:
   SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert"
   DeterminatePipDependencies: "Es wird ermittelt, ob Pip-Abhängigkeiten benötigt werden"
   NoNeedPipDependencies: "Keine Pip-Abhängigkeiten gefunden..."
-  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden. Folgende Pakete werden installiert: {creset}%s"
+  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden."
   SuccessPipDeterminateDependencies: "Pip-Abhängigkeiten wurden installiert"
+  PrepareCompile: "Paketkompilierung wird vorbereitet..."
+  Compile: "Starte Kompilierung des Paketes"
+  NoCompileNeed: "Es wird keine Kompilierung des Paketes benötigt."
+  PrepareInstall: "Das Paket wird installiert..."
   
 
 
@@ -177,5 +181,9 @@ en_US:
   SuccessDeterminateDependencies: "Dependencies were installed"
   DeterminatePipDependencies: "Determine if pip dependencies are needed"
   NoNeedPipDependencies: "No pip dependencies found..."
-  NeedPipDependencies: "Pip dependencies were found. The following packages are installed: {creset}%s"
+  NeedPipDependencies: "Pip dependencies were found."
   SuccessPipDeterminateDependencies: "Pip dependencies were installed"
+  PrepareCompile: "Package compilation is prepared..."
+  Compile: "Starting compilation of the package"
+  NoCompileNeed: "No compilation of the package is needed."
+  PrepareInstall: "The package will now be installed..."
