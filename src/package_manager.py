@@ -27,7 +27,7 @@ def get_package_manager():
 
 # Apt (Deb-based) install function
 def apt_install(package, print_output=False):
-    command = ["apt", "install"] + package
+    command = ["apt", "install", "-y"] + package
     command_update = ["apt", "update"]
     
     try:
@@ -43,7 +43,7 @@ def apt_install(package, print_output=False):
 
 # Apk (alpine-based) install function
 def apk_install(package, print_output=False):
-    command = ["apk", "install"] + package
+    command = ["apk", "add"] + package
     
     try:
         if print_output:
@@ -56,7 +56,7 @@ def apk_install(package, print_output=False):
 
 # Dnf (Fedora-based) install function
 def dnf_install(package, print_output=False):
-    command = ["dnf", "install"] + package
+    command = ["dnf", "install", "-y"] + package
     
     try:
         if print_output:
