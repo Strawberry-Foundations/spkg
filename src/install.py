@@ -33,7 +33,7 @@ from sqlite3 import *
 from urllib.error import HTTPError
 
 from init import *
-from src.functions import delete_last_line
+from src.functions import delete_last_line, lock
 from src.plugin_daemon import PluginDaemon, is_plugin_enabled
 from src.force_no_sandbox import *
 from src.package_manager import *
@@ -176,12 +176,21 @@ class InstallManager:
             
             try:
                 result = c.fetchone()[0]
+                lock(type=Procedure.Install)
                 
             except TypeError:
                 print("")
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
                 print(StringLoader('PackageNotFound'))
+                exit()
+            
+            except PermissionError:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(f"{Fore.CYAN + Colors.BOLD}{Files.lockfile}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsLockfile'))
                 exit()
             
             try:
