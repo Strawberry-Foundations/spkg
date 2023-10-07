@@ -348,8 +348,8 @@ class InstallManager:
                         SpecDeps["Pip"].split(" ")
                         
                     except:
-                        spinner.stop()
-                        print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoNeedPipDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
+                            spinner.stop()
+                            print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoNeedPipDependencies')} {Colors.BOLD}{Colors.RESET}")
                     
                     spinner.stop()
                     
@@ -374,6 +374,13 @@ class InstallManager:
                     color="green")
                 
                     spinner.start()
+
+                    try:
+                        requires_compile = SpecFlags["RequiresCompile"]
+
+                    except:
+
+
 
                     time.sleep(2000)
 
