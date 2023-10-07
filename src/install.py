@@ -377,9 +377,26 @@ class InstallManager:
 
                     try:
                         requires_compile = SpecFlags["RequiresCompile"]
+                        if not requires_compile:
+                            spinner.stop()
+                            print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoCompileNeed')} {Colors.BOLD}{Colors.RESET}")
+
+                        else:
+                            print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Compile')} {Colors.BOLD}{Colors.RESET}")
 
                     except:
+                        spinner.stop()
+                        print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoCompileNeed')} {Colors.BOLD}{Colors.RESET}")
+                    
 
+                    spinner = Halo(
+                    text=f"{StringLoader('PrepareInstall')}",
+                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                    text_color="white",
+                    color="green")
+                
+                    spinner.start()
+                    
 
 
                     time.sleep(2000)
