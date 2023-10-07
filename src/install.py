@@ -354,7 +354,7 @@ class InstallManager:
                     spinner.stop()
                     
                     spinner = Halo(
-                    text=f"{StringLoader('NeedPipDependencies', argument_1=SpecDeps['Pip'])}",
+                    text=f"{StringLoader('NeedPipDependencies')}",
                     spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
                     text_color="white",
                     color="green")
@@ -367,6 +367,14 @@ class InstallManager:
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessPipDeterminateDependencies')}")
                     print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{SpecDeps['Pip']}{Colors.RESET}")
                     
+                    spinner = Halo(
+                    text=f"{StringLoader('PrepareCompile')}",
+                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                    text_color="white",
+                    color="green")
+                
+                    spinner.start()
+
                     time.sleep(2000)
 
                     install_time_end = time.time()
