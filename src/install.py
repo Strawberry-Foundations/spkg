@@ -379,7 +379,7 @@ class InstallManager:
                 print("")
                 delete_last_line()
                 # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
-                print(f"{Fore.CYAN + Colors.BOLD}/tmp/package.{package['Flags']['ArchiveType']}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(f"{Fore.CYAN + Colors.BOLD}/tmp/: {Fore.RESET}{StringLoader('MissingPermissions')}")
                 print(StringLoader('MissingPermissionsLockfile'))
                 exit()
                 
