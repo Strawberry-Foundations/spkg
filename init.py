@@ -91,10 +91,10 @@ class PackageManagers:
     Dnf = "dnf"
 
 class Procedure:
-    Install = 1
-    Remove = 2
-    Upgrade = 3
-    Unknown = -1
+    Install = "install"
+    Remove = "remove"
+    Upgrade = "upgrade"
+    Unknown = "unknown/none"
 
 # Open Configuration
 with open(Files.spkg_config) as file:
