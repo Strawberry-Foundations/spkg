@@ -268,7 +268,7 @@ class InstallManager:
 
                     download_time_end = time.time()
                     
-                    print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{Package.Filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}\n")
+                    print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{Package.Filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
                     
                     time.sleep(.8)
                     
@@ -374,13 +374,21 @@ class InstallManager:
             except NameError as e:
                 print(StringLoader('PackageNotFound'))
                 exit()
+
+            except PermissionError:
+                print("")
+                delete_last_line()
+                # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(f"{Fore.CYAN + Colors.BOLD}/tmp/package.{package['Flags']['ArchiveType']}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsLockfile'))
+                exit()
                 
-            # except Exception as e:
-            #     print("")
-            #     delete_last_line()
-            #     print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
-            #     print(StringLoader("HttpError"))
-            #    exit()
+            except Exception as e:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(StringLoader("HttpError"))
+                exit()
                     
                 
                     
