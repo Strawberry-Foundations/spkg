@@ -1,8 +1,6 @@
 import subprocess
 from init import PackageManagers
 
-
-
 def get_package_manager():
     try:
         output = subprocess.check_output(["which", "apt"]).decode("utf-8")
@@ -27,6 +25,7 @@ def get_package_manager():
     
     return False
 
+# Apt (Deb-based) install function
 def apt_install(package, print_output=False):
     command = ["apt", "install"] + package
     command_update = ["apt", "update"]
@@ -42,6 +41,7 @@ def apt_install(package, print_output=False):
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
+# Apk (alpine-based) install function
 def apk_install(package, print_output=False):
     command = ["apk", "install"] + package
     
@@ -54,6 +54,7 @@ def apk_install(package, print_output=False):
     except subprocess.CalledProcessError as e:
         print(f"Error while installing {package}: {e}")
 
+# Dnf (Fedora-based) install function
 def dnf_install(package, print_output=False):
     command = ["dnf", "install"] + package
     
