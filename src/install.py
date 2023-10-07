@@ -270,7 +270,7 @@ class InstallManager:
                     
                     print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{Package.Filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
                     
-                    time.sleep(.8)
+                    time.sleep(.4)
                     
                     install_time_start = time.time()
 
@@ -297,9 +297,9 @@ class InstallManager:
                     
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessParsingSpecfile')}")
                     
-                    time.sleep(.2)
+                    time.sleep(.1)
                     
-                    start_time = time.time()
+                    dep_start_time = time.time()
 
                     spinner = Halo(
                         text=f"{StringLoader('DeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}",
@@ -332,8 +332,10 @@ class InstallManager:
                             exit()
                 
                     spinner.stop() 
+
+                    dep_end_time = time.time()
                     
-                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessDeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessDeterminateDependencies', argument_1=round(dep_end_time - dep_start_time, 2))} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
                     print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{deps}{Colors.RESET}")
                     
                     spinner = Halo(
@@ -346,26 +348,30 @@ class InstallManager:
                     
                     try:
                         SpecDeps["Pip"].split(" ")
+                        spinner.stop()
+                    
+                        dep_start_time = time.time()
+
+                        spinner = Halo(
+                        text=f"{StringLoader('NeedPipDependencies')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                        spinner.start()
+                        
+                        pip_install(SpecDeps["Pip"].split(" "), print_output=False)
+                        
+                        spinner.stop()
+
+                        dep_end_time = time.time()
+
+                        print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessPipDeterminateDependencies', argument_1=round(dep_end_time - dep_start_time, 2))}")
+                        print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{SpecDeps['Pip']}{Colors.RESET}")
                         
                     except:
                             spinner.stop()
                             print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoNeedPipDependencies')} {Colors.BOLD}{Colors.RESET}")
-                    
-                    spinner.stop()
-                    
-                    spinner = Halo(
-                    text=f"{StringLoader('NeedPipDependencies')}",
-                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
-                    text_color="white",
-                    color="green")
-                
-                    spinner.start()
-                    
-                    pip_install(SpecDeps["Pip"].split(" "), print_output=False)
-                    
-                    spinner.stop()
-                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessPipDeterminateDependencies')}")
-                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{SpecDeps['Pip']}{Colors.RESET}")
                     
                     spinner = Halo(
                     text=f"{StringLoader('PrepareCompile')}",
