@@ -96,7 +96,8 @@ class InstallManager:
             except Exception as e:
                 print("")
                 delete_last_line()
-                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(f"{RED + Colors.BOLD}[×]{RESET} {Fore.RESET + Colors.RESET}{Colors.BOLD}{StringLoader('Get')}: {url}")
                 print(StringLoader("HttpError"))
                 exit()
                 
