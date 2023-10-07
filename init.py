@@ -90,6 +90,12 @@ class PackageManagers:
     Apk = "apk"
     Dnf = "dnf"
 
+class Procedure:
+    Install = 1
+    Remove = 2
+    Upgrade = 3
+    Unknown = -1
+
 # Open Configuration
 with open(Files.spkg_config) as file:
     config = yaml.load(file, Loader=SafeLoader)
