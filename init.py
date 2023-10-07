@@ -74,12 +74,6 @@ class Files:
 
 class NativeDirectories:
     user_config         = f"{home_dir}/.config/spkg/"
-
-# Color Variables
-class Colors:
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
     
 class FileSizes:
     Kilobytes = 0
