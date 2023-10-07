@@ -70,6 +70,8 @@ class Files:
     user_config         = Directories.user_config + "config.yml"
     lang_strings        = Directories.spkg_config + "lang.yml"
 
+    lockfile             = Directories.data + "lock"
+
 class NativeDirectories:
     user_config         = f"{home_dir}/.config/spkg/"
 
