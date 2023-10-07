@@ -110,6 +110,8 @@ class InstallManager:
             elif type == FileSizes.Kilobytes:
                 return file_size_bytes / 1024
             
+
+
         def file_saving(self, input, output, file_extension: str = "", warn_force_no_sandbox: bool = True):
             # Check if the sandbox plugin is enabled
             if is_plugin_enabled("sandbox"):
@@ -135,6 +137,7 @@ class InstallManager:
                 with open(f"{output}.{file_extension}", 'wb') as file:
                         file.write(input.read())
         
+
         def get_package_manager(self):
             try:
                 output = subprocess.check_output(["which", "apt"]).decode("utf-8")
@@ -296,7 +299,7 @@ class InstallManager:
                     
                     match package_manager:
                         case PackageManagers.Apt:
-                            apt_install(SpecDeps["Apt"].split(" "), print_output=False)
+                            apt_install(SpecDeps["Apt"].split(" "), print_output=True)
                             deps = SpecDeps["Apt"]
                             
                         case PackageManagers.Apk:
