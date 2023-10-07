@@ -271,6 +271,8 @@ class InstallManager:
                     
                     time.sleep(.8)
                     
+                    install_time_start = time.time()
+
                     spinner = Halo(
                         text=f"{StringLoader('ParsingSpecfile')}",
                         spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
@@ -296,6 +298,8 @@ class InstallManager:
                     
                     time.sleep(.2)
                     
+                    start_time = time.time()
+
                     spinner = Halo(
                         text=f"{StringLoader('DeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}",
                         spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
@@ -329,7 +333,7 @@ class InstallManager:
                     spinner.stop() 
                     
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessDeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
-                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{deps}")
+                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{deps}{Colors.RESET}")
                     
                     spinner = Halo(
                         text=f"{StringLoader('DeterminatePipDependencies')}",
@@ -360,20 +364,22 @@ class InstallManager:
                     
                     spinner.stop()
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessPipDeterminateDependencies')}")
-                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{SpecDeps['Pip']}")
+                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{SpecDeps['Pip']}{Colors.RESET}")
                     
                     time.sleep(2000)
+
+                    install_time_end = time.time()
                     
             except NameError as e:
                 print(StringLoader('PackageNotFound'))
                 exit()
                 
-            except Exception as e:
-                print("")
-                delete_last_line()
-                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
-                print(StringLoader("HttpError"))
-                exit()
+            # except Exception as e:
+            #     print("")
+            #     delete_last_line()
+            #     print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+            #     print(StringLoader("HttpError"))
+            #    exit()
                     
                 
                     
