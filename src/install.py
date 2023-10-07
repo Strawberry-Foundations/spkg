@@ -308,7 +308,7 @@ class InstallManager:
                     
                     match package_manager:
                         case PackageManagers.Apt:
-                            apt_install(SpecDeps["Apt"].split(" "), print_output=True)
+                            apt_install(SpecDeps["Apt"].split(" "), print_output=False)
                             deps = SpecDeps["Apt"]
                             
                         case PackageManagers.Apk:
