@@ -4,7 +4,7 @@ from yaml import SafeLoader
 import subprocess
 import os
 
-with open("./test.yml") as file:
+with open("./example.yml") as file:
     package = yaml.load(file, Loader=SafeLoader)
     
 print(f'''
@@ -20,4 +20,5 @@ SpecArch        = package["Architecture"]
 SpecDeps        = package["Dependencies"]
 SpecFlags       = package["Flags"]
 
-os.system(package["Install"]["Commands"])
+# os.system(package["Install"]["Commands"])
+print(package["Install"]["Commands"])
