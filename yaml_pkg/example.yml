@@ -10,6 +10,7 @@ Dependencies:
 Flags:
   ArchiveType: tar
   RequiresCompile: false
+  ForceNoSandbox: false
 
 Install:
   Commands: |

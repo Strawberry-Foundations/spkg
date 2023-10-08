@@ -86,7 +86,7 @@ class InstallManager:
         def __init__(self, package_name):
             self.package_name = package_name
             
-            
+        # Fetch url
         def fetch_url(self, url):
             try:
                 request = urllib.request.Request(
@@ -105,7 +105,8 @@ class InstallManager:
                 print(StringLoader("HttpError"))
                 exit()
                 
-                
+        
+        # Return file size from a given url response
         def file_size(self, response, type: FileSizes):
             file_size_bytes = int(response.headers.get('Content-Length', 0))
             
@@ -116,7 +117,7 @@ class InstallManager:
                 return file_size_bytes / 1024
             
 
-
+        # Save a file 
         def file_saving(self, input, output, file_extension: str = "", warn_force_no_sandbox: bool = True):
             # Check if the sandbox plugin is enabled
             if is_plugin_enabled("sandbox"):
@@ -141,6 +142,19 @@ class InstallManager:
             else:
                 with open(f"{output}.{file_extension}", 'wb') as file:
                         file.write(input.read())
+                        
+        # return a file location      
+        def file(self, input):
+            if is_plugin_enabled("sandbox"):
+                if force_no_sandbox(self.package_name):
+                    return input
+
+                else:
+                    return Sandbox.bootstrap_location + input
+            
+            else:
+                return input
+        
         
 
         def get_package_manager(self):
@@ -209,10 +223,10 @@ class InstallManager:
             
             try:
                 if result == "all":
-                    c.execute("SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ?", (self.package_name,))
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ?", (self.package_name,))
 
                 else:
-                    c.execute("SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                     
             except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
@@ -469,14 +483,13 @@ class InstallManager:
                         subprocess.run(install_command, check=True) 
                     
                     except: 
-                        # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('Install')}")
                         print(StringLoader('InstallationError'))
                         self.cleanup()
                         exit()
 
                     install_time_end = time.time()
                     
-                    if not ("--keep", "-k") in args:
+                    if not "-k" in args or "--keep" in args:
                         self.cleanup()
                         
                     print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
@@ -511,30 +524,7 @@ class InstallManager:
                 print(StringLoader("HttpError"))
                 self.cleanup()
                 exit()
-                    
-                
-                    
-        
-    def install(name):                
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
-
-            # Execute the PKGBUILD File natively if the package needs to be installed natively
-            if force_no_sandbox(name) == 1:
-                subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
-                subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--install'])
-            
-            # Else check if the sandbox plugin is enabled
-            else:
-                if check_plugin_enabled_silent("sandbox") == True:
-                    os.system(f"sudo chroot {bootstrap_location} bash /tmp/PKGBUILD --install")
-                    
-                # If not, run the PKGBUILD file natively
-                else:
-                    subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
-                    subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--install'])
-
-     
-            
+                               
             
 #     """ 
 #         **** SANDBOX INSTALL FUNCTION ****

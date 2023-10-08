@@ -105,10 +105,10 @@ class DownloadManager:
 
             try:
                 if result == "all":
-                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
+                    c.execute("SELECT name, url, filename FROM packages where name = ?", (self.package_name,))
 
                 else:
-                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                    c.execute("SELECT name, url, filename FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                     
             except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
@@ -196,7 +196,7 @@ class DownloadManager:
             if noarch == False:
                 if result == "all":
                     try:
-                        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
+                        c.execute("SELECT name, url, filename FROM packages where name = ?", (self.package_name,))
                     
                     except OperationalError:
                         print(StringLoader("PackageDatabaseNotSynced"))
@@ -204,7 +204,7 @@ class DownloadManager:
 
                 else:
                     try:
-                        c.execute("SELECT name, fetch_url, file_name FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                        c.execute("SELECT name, url, filename FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                         
                     except OperationalError:
                         print(StringLoader("PackageDatabaseNotSynced"))
@@ -212,7 +212,7 @@ class DownloadManager:
                         
             elif noarch == True:
                 try:
-                    c.execute("SELECT name, fetch_url, file_name FROM packages where name = ?", (self.package_name,))
+                    c.execute("SELECT name, url, filename FROM packages where name = ?", (self.package_name,))
                         
                 except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))

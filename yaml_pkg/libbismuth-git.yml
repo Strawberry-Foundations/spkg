@@ -1,0 +1,30 @@
+# https://github.com/tau-OS/libbismuth/archive/refs/heads/main.tar.gz
+
+Name: libbismuth-git
+Version: git
+Architecture: amd64
+
+Dependencies:
+  Apt: meson cmake valac libgtk-4-dev libfribidi-dev libglib2.0-dev gobject-introspection libgirepository1.0-dev
+  Dnf: meson cmake vala gtk4-devel fribidi-devel glib2-devel gobject-introspection-devel
+
+Flags:
+  ArchiveType: tar
+  RequiresCompile: true
+
+
+Install:
+  Commands: |
+    meson _build --prefix=/usr && cd _build
+    sudo ninja install
+
+Remove:
+  Commands: |
+    meson _build --prefix=/usr && cd _build
+    sudo ninja install
+    sudo ninja uninstall
+
+Upgrade:
+  Commands: |
+    meson _build --prefix=/usr && cd _build
+    sudo ninja install
