@@ -348,23 +348,35 @@ class InstallManager:
                         
                     match package_manager:
                         case PackageManagers.Apt:
-                            apt_install(SpecDeps["Apt"].split(" "), print_output=False, update=_apt_update)
-                            deps = SpecDeps["Apt"]
+                            try:
+                                apt_install(SpecDeps["Apt"].split(" "), print_output=False, update=_apt_update)
+                                deps = SpecDeps["Apt"]
+                            except: 
+                                _apt_support = False
                             
                         case PackageManagers.Apk:
-                            apk_install(SpecDeps["Apk"].split(" "), print_output=False)
-                            deps = SpecDeps["Apk"]
+                            try:
+                                apk_install(SpecDeps["Apk"].split(" "), print_output=False)
+                                deps = SpecDeps["Apk"]
+                            except: 
+                                _apk_support = False
                             
                         case PackageManagers.Dnf:
-                            dnf_install(SpecDeps["Dnf"].split(" "), print_output=False)
-                            deps = SpecDeps["Dnf"]
+                            try:
+                                dnf_install(SpecDeps["Dnf"].split(" "), print_output=False)
+                                deps = SpecDeps["Dnf"]
+                            except: 
+                                _dnf_support = False
                         
                         case PackageManagers.Pip:
-                            pip_install(SpecDeps["Pip"].split(" "), print_output=False)
-                            deps = SpecDeps["Pip"]
+                            try:
+                                pip_install(SpecDeps["Pip"].split(" "), print_output=False)
+                                deps = SpecDeps["Pip"]
+                            except: 
+                                _pip_support = False
                         
                         case _:
-                            exit()
+                            pass
                 
                     spinner.stop() 
 
