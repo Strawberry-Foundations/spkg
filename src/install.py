@@ -476,7 +476,7 @@ class InstallManager:
 
                     install_time_end = time.time()
                     
-                    if not "-k" or "--keep" in args:
+                    if not ("--keep", "-k") in args:
                         self.cleanup()
                         
                     print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
