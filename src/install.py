@@ -460,7 +460,7 @@ class InstallManager:
 
                         else:
                             print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Compile')} {Colors.BOLD}{Colors.RESET}")
-                            
+                            os.chdir(config["build_directory"])
                             compile_command = Commands.Compile
                             
                             try:
