@@ -498,7 +498,11 @@ class InstallManager:
                         except: 
                             pass
                         
-                        shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                        if "-o" in args or "--output" in args:
+                            shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                            
+                        else:
+                            shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                             
                         for command in install_command:
                             shell.stdin.write(command + '\n')
@@ -506,8 +510,8 @@ class InstallManager:
                             
                         output, errors = shell.communicate()
 
-                        if "-o" in args or "--output" in args:
-                            print(output)
+                        # if "-o" in args or "--output" in args:
+                        #     print(output)
 
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
