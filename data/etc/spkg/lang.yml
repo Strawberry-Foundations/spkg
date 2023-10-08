@@ -92,7 +92,8 @@ de_DE:
   PrepareCompile: "Paketkompilierung wird vorbereitet..."
   Compile: "Starte Kompilierung des Paketes"
   NoCompileNeed: "Es wird keine Kompilierung des Paketes benötigt."
-  PrepareInstall: "Das Paket wird installiert..."
+  PrepareInstall: "Paketinstallation wird vorbereitet..."
+  Install: "Paket wird installiert..."
   
 
 
@@ -190,4 +191,5 @@ en_US:
   PrepareCompile: "Package compilation is prepared..."
   Compile: "Starting compilation of the package"
   NoCompileNeed: "No compilation of the package is needed."
-  PrepareInstall: "The package will now be installed..."
+  PrepareInstall: "Package installation is being prepared..."
+  Install: "Package will be installed..."
