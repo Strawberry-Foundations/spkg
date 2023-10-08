@@ -2,3 +2,4 @@ colorama
 halo
 requests
 urllib3
+pyyaml
