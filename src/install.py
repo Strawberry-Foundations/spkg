@@ -343,9 +343,12 @@ class InstallManager:
                     
                     package_manager = get_package_manager()
                     
+                    if "-au" in  args or "--aptupdate" in args:
+                        _apt_update = True
+                        
                     match package_manager:
                         case PackageManagers.Apt:
-                            apt_install(SpecDeps["Apt"].split(" "), print_output=False)
+                            apt_install(SpecDeps["Apt"].split(" "), print_output=False, update=_apt_update)
                             deps = SpecDeps["Apt"]
                             
                         case PackageManagers.Apk:
@@ -505,6 +508,9 @@ class InstallManager:
                             shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                             
                         for command in install_command:
+                            if "-o" in args or "--output" in args:
+                                print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
+                                
                             shell.stdin.write(command + '\n')
                             shell.stdin.flush()
                             
