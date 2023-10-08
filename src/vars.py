@@ -1,9 +1,9 @@
 # Base Variables
 base_version            = "2.0"
-version                 = "2.0a1"
+version                 = "2.0a2"
 full_ver                = "v" + version
 update_channel          = "dev"
-date                    = "20231001"
+date                    = "20231008"
 ver                     = version + "-vacakes"
 codename                = "Vanilla Cake"
 authors                 = ["Juliandev02", "matteodev8", "Paddyk45"]
