@@ -1,0 +1,22 @@
+Name: neofetch
+Version: 7.3.10
+Architecture: all
+
+Dependencies:
+  Apt: bash
+  Apk: bash
+  Dnf: bash
+
+Flags:
+  ArchiveType: tar
+  RequiresCompile: false
+
+
+Install:
+  Commands: install -Dt /usr/bin/ -m 775 /tmp/target/hyfetch*/neofetch
+
+Remove:
+  Commands: rm -f /usr/bin/neofetch
+
+Upgrade:
+  Commands: install -Dt /usr/bin/ -m 775 /tmp/target/hyfetch
