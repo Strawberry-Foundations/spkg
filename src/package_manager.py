@@ -26,16 +26,18 @@ def get_package_manager():
     return False
 
 # Apt (Deb-based) install function
-def apt_install(package, print_output=False):
+def apt_install(package, print_output=False, update=False):
     command = ["apt", "install", "-y"] + package
     command_update = ["apt", "update"]
     
     try:
         if print_output:
-            subprocess.run(command_update, check=True) 
+            if update:
+                subprocess.run(command_update, check=True) 
             subprocess.run(command, check=True)
         else:
-            subprocess.run(command_update, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
+            if update:
+                subprocess.run(command_update, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) 
             subprocess.run(command, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
     except subprocess.CalledProcessError as e:
