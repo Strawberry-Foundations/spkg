@@ -15,17 +15,17 @@ Flags:
 Install:
   WorkDir: example_workdir
   Commands: |
-    echo "Hallo Welt"
-    echo "Hello World"
+    echo Hallo Welt
+    echo Hello World
 
 Remove:
-WorkDir: example_workdir
+  WorkDir: example_workdir
   Commands: |
-    echo "Hallo Welt"
-    echo "Hello World"
+    echo Hallo Welt
+    echo Hello World
 
 Upgrade:
-WorkDir: example_workdir
+  WorkDir: example_workdir
   Commands: |
-    echo "Hallo Welt"
-    echo "Hello World"
+    echo Hallo Welt
+    echo Hello World
