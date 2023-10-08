@@ -498,9 +498,9 @@ class InstallManager:
                         except: 
                             pass
                             
-                            
-                        for command in install_command:
-                            subprocess.run(command, shell=True, check=True, text=True)
+                        command = install_command
+                        # for command in install_command:
+                        subprocess.run(command, shell=True, check=True, text=True)
 
                     except Exception as e: 
                         print(StringLoader('InstallationError', argument_1=e))
