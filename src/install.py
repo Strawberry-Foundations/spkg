@@ -344,47 +344,54 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    
                     package_manager = get_package_manager()
+                    
+                    _apt_update = False
                     
                     if "-au" in  args or "--aptupdate" in args:
                         _apt_update = True
                         
-                    _apt_support = _apk_support = _dnf_support = _pip_support = True
+                    apt_support = apk_support = dnf_support = pip_support = True
                         
                     match package_manager:
                         case PackageManagers.Apt:
                             try:
                                 apt_install(SpecDeps["Apt"].split(" "), print_output=False, update=_apt_update)
                                 deps = SpecDeps["Apt"]
-                            except: 
-                                _apt_support = False
+                            except Exception as e: 
+                                print("APT UNSUPPORTED")
+                                apt_support = False
                             
                         case PackageManagers.Apk:
                             try:
                                 apk_install(SpecDeps["Apk"].split(" "), print_output=False)
                                 deps = SpecDeps["Apk"]
                             except: 
-                                _apk_support = False
+                                print("APK UNSUPPORTED")
+                                apk_support = False
                             
                         case PackageManagers.Dnf:
                             try:
                                 dnf_install(SpecDeps["Dnf"].split(" "), print_output=False)
                                 deps = SpecDeps["Dnf"]
                             except: 
-                                _dnf_support = False
+                                print("DNF UNSUPPORTED")
+                                dnf_support = False
                         
                         case PackageManagers.Pip:
                             try:
                                 pip_install(SpecDeps["Pip"].split(" "), print_output=False)
                                 deps = SpecDeps["Pip"]
                             except: 
-                                _pip_support = False
+                                print("PIP UNSUPPORTED")
+                                pip_support = False
                         
                         case _:
                             pass
                         
-                    if (_apt_update and _apk_support and _dnf_support and _pip_support) == False:
-                        exit()
+                    # if (apt_support and apk_support and dnf_support and pip_support) == False:
+                    #     exit()
                 
                     spinner.stop() 
 
