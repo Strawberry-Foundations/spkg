@@ -322,6 +322,8 @@ class InstallManager:
                         Install        = package["Install"]["Commands"]
                         Remove         = package["Remove"]["Commands"]
                         Upgrade        = package["Upgrade"]["Commands"]
+                        try: Compile   = package["Compile"]["Commands"]
+                        except: pass
                     
                     spinner.stop()
                     
@@ -458,6 +460,17 @@ class InstallManager:
 
                         else:
                             print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Compile')} {Colors.BOLD}{Colors.RESET}")
+                            
+                            compile_command = Commands.Compile
+                            
+                            try:
+                                for command in compile_command:
+                                    subprocess.run(command, shell=True, check=True, text=True)
+
+                            except Exception as e: 
+                                print(StringLoader('InstallationError', argument_1=e))
+                                self.cleanup()
+                                exit()
 
                     except:
                         spinner.stop()
