@@ -500,7 +500,7 @@ class InstallManager:
                             
                         command = install_command
                         # for command in install_command:
-                        subprocess.run(command, shell=True, check=True, text=True)
+                        subprocess.run(command, shell=True)
 
                     except Exception as e: 
                         print(StringLoader('InstallationError', argument_1=e))
