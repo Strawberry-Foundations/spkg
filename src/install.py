@@ -167,7 +167,7 @@ class InstallManager:
             return False
         
         
-        def install(self):
+        def install(self, args):
             # Create and start the spinner for searching the database
             spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
                             spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
@@ -223,16 +223,19 @@ class InstallManager:
                     spinner.stop()
                     print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
                     
-                    try:
-                        cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                    if not "-y" in args:
+                        try:
+                            cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
 
-                    except KeyboardInterrupt as e:
-                        print(f"\n{RESET}{StringLoader('Abort')}")
-                        exit()
+                        except KeyboardInterrupt as e:
+                            print(f"\n{RESET}{StringLoader('Abort')}")
+                            exit()
 
-                    if not cont_package_install.lower() in ["y", "j", "yes", "ja"]:
-                        print(RESET + StringLoader("Abort"))
-                        exit()
+                        if not cont_package_install.lower() in ["y", "j", "yes", "ja"]:
+                            print(RESET + StringLoader("Abort"))
+                            exit()
+                    else:
+                        print(f"{StringLoader('ContinuePackageInstallationCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
                         
                     download_time_start = time.time()
                     
@@ -406,7 +409,7 @@ class InstallManager:
                 
                     spinner.start()
                     
-
+                    print(Commands.Install)
 
                     time.sleep(2000)
 
