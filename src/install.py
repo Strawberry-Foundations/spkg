@@ -493,6 +493,7 @@ class InstallManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
+                        os.chdir(config["build_directory"])
                         for command in install_command:
                             subprocess.run(command, shell=True, check=True, text=True)
 
