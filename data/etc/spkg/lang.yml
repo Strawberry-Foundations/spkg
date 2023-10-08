@@ -21,7 +21,7 @@ de_DE:
   WorldDatabaseNotBuilded: "{red}{bold}E:{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build world{reset} auszuführen)"
   NoRepositories: "{bold}{red}Es wurde kein Repository-Server angegeben. Überprüfe deine Konfigurationsdatei von spkg."
   ParsingError: "{red}{bold}E:{reset} Fehler beim Parsen der Paketkonfigurationsdatei: Inkorrekte Syntax und/oder falsches Format."
-  InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden"
+  InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden (%s)"
   ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
   
   # Warning messages
@@ -125,7 +125,7 @@ en_US:
   WorldDatabaseNotBuilded: "{red}{bold}E:{reset} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
   NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
   ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
-  InstallationError: "{red}{bold}E:{reset} The package could not be installed"
+  InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
   ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
 
   # Warning messages
