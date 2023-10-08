@@ -497,11 +497,14 @@ class InstallManager:
                             os.chdir(f"{config['build_directory']}{package['Install']['WorkDir']}")
                         except: 
                             pass
-                            
+                        
+                        shell = subprocess.Popen(['/bin/bash'], text=True)
                             
                         for command in install_command:
                             # subprocess.run(command, shell=True, check=True, text=True)
-                            os.system(command)
+                            # os.system(command)
+                            shell.stdin.write(command + '\n')
+                            shell.stdin.flush()
 
                     except Exception as e: 
                         print(StringLoader('InstallationError', argument_1=e))
