@@ -305,6 +305,22 @@ class InstallManager:
                     
                     time.sleep(.1)
                     
+                    spinner = Halo(
+                        text=f"{StringLoader('ExtractArchive')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    file_extension = SpecFlags["ArchiveType"]
+                    
+                    time.sleep(4)
+                    
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
+                    
                     dep_start_time = time.time()
 
                     spinner = Halo(
@@ -409,9 +425,20 @@ class InstallManager:
                 
                     spinner.start()
                     
-                    print(Commands.Install)
+                    install_command = Commands.Install.split(" ")   
+                    
+                    spinner.stop()
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareInstall')} {Colors.BOLD}{Colors.RESET}")
+                    
+                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
-                    time.sleep(2000)
+                    try:
+                        subprocess.run(install_command, check=True) 
+                    
+                    except: 
+                        # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('Install')}")
+                        print(StringLoader('InstallationError'))
+                        exit()
 
                     install_time_end = time.time()
                     
@@ -420,7 +447,7 @@ class InstallManager:
                 exit()
 
             except PermissionError:
-                print("")
+                print("")   
                 delete_last_line()
                 print(f"{Fore.CYAN + Colors.BOLD}/tmp/: {Fore.RESET}{StringLoader('MissingPermissions')}")
                 print(StringLoader('MissingPermissionsLockfile'))
