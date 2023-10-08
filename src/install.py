@@ -86,7 +86,7 @@ class InstallManager:
         def __init__(self, package_name):
             self.package_name = package_name
             
-            
+        # Fetch url
         def fetch_url(self, url):
             try:
                 request = urllib.request.Request(
@@ -105,7 +105,8 @@ class InstallManager:
                 print(StringLoader("HttpError"))
                 exit()
                 
-                
+        
+        # Return file size from a given url response
         def file_size(self, response, type: FileSizes):
             file_size_bytes = int(response.headers.get('Content-Length', 0))
             
@@ -116,7 +117,7 @@ class InstallManager:
                 return file_size_bytes / 1024
             
 
-
+        # Save a file 
         def file_saving(self, input, output, file_extension: str = "", warn_force_no_sandbox: bool = True):
             # Check if the sandbox plugin is enabled
             if is_plugin_enabled("sandbox"):
@@ -141,6 +142,19 @@ class InstallManager:
             else:
                 with open(f"{output}.{file_extension}", 'wb') as file:
                         file.write(input.read())
+                        
+        # return a file location      
+        def file(self, input):
+            if is_plugin_enabled("sandbox"):
+                if force_no_sandbox(self.package_name):
+                    return input
+
+                else:
+                    return Sandbox.bootstrap_location + input
+            
+            else:
+                return input
+        
         
 
         def get_package_manager(self):
