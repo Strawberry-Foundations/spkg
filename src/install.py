@@ -223,10 +223,10 @@ class InstallManager:
             
             try:
                 if result == "all":
-                    c.execute("SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ?", (self.package_name,))
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ?", (self.package_name,))
 
                 else:
-                    c.execute("SELECT name, version, fetch_url, file_name, setup_script FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ? AND arch = ?", (self.package_name, arch))
                     
             except OperationalError:
                     print(StringLoader("PackageDatabaseNotSynced"))
