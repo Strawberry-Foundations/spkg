@@ -472,7 +472,7 @@ class InstallManager:
                 
                     spinner.start()
                     
-                    install_command = Commands.Install.split(" ")   
+                    install_command = Commands.Install
                     
                     spinner.stop()
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareInstall')} {Colors.BOLD}{Colors.RESET}")
@@ -480,9 +480,10 @@ class InstallManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
-                        subprocess.run(install_command, check=True) 
-                    
-                    except: 
+                        for command in install_command.splitlines():
+                            subprocess.run(command, shell=True, check=True, text=True)
+
+                    except Exception as e: 
                         print(StringLoader('InstallationError'))
                         self.cleanup()
                         exit()
