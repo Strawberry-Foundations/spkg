@@ -182,13 +182,16 @@ class InstallManager:
             return False
     
         def cleanup(self):
-            shutil.rmtree(config["build_directory"])
-            os.remove("/tmp/specfile.yml")
-            
-            for package_file in os.listdir("/tmp/"):
-                if package_file.startswith('package'):
-                    file = os.path.join("/tmp/", package_file)
-                    os.remove(file)
+            try:
+                shutil.rmtree(config["build_directory"])
+                os.remove("/tmp/specfile.yml")
+                
+                for package_file in os.listdir("/tmp/"):
+                    if package_file.startswith('package'):
+                        file = os.path.join("/tmp/", package_file)
+                        os.remove(file)
+            except:
+                pass
         
         
         def install(self, args):
