@@ -22,17 +22,15 @@ Install:
 
 Remove:
   WorkDir: libbismuth-main
-  Commands: |
-    cd /tmp/_spkg.build/libbismuth-main/
-    meson _build --prefix=/usr
-    cd _build
-    sudo ninja install
-    sudo ninja uninstall
+  Commands:
+    - meson _build --prefix=/usr
+    - cd /tmp/_spkg.build/libbismuth-main/_build
+    - sudo ninja install
+    - sudo ninja uninstall
 
 Upgrade:
   WorkDir: libbismuth-main
-  Commands: |
-    cd /tmp/_spkg.build/libbismuth-main/
-    meson _build --prefix=/usr
-    cd _build
-    sudo ninja install
+  Commands:
+    - meson _build --prefix=/usr
+    - cd /tmp/_spkg.build/libbismuth-main/_build
+    - sudo ninja install
