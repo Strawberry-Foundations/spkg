@@ -84,6 +84,8 @@ de_DE:
   # Installation messages
   ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
   SuccessParsingSpecfile: "Die Paketkonfiguration wurde eingelesen"
+  ExtractArchive: "Entpacke Paketarchiv..."
+  SuccessExtractArchive: "Paketarchiv wurde entpackt"
   DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
   SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert (in %s s)"
   DeterminatePipDependencies: "Es wird ermittelt, ob Pip-Abhängigkeiten benötigt werden"
@@ -184,6 +186,8 @@ en_US:
   # Installation messages
   ParsingSpecfile: "The package configuration is read in"
   SuccessParsingSpecfile: "The package configuration was read in"
+  ExtractArchive: "Unpack package archive..."
+  SuccessExtractArchive: "Package archive has been unpacked"
   DeterminateDependencies: "Dependencies are determined and installed"
   SuccessDeterminateDependencies: "Dependencies were installed (in %s s)"
   DeterminatePipDependencies: "Determine if pip dependencies are needed"
