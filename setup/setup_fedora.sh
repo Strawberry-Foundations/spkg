@@ -11,3 +11,6 @@ python3-colorama \
 # Not the best method
 sudo pip install \
 halo
+
+chmod +x ../spkg.py
+chmod +x ../spkg-installer.py

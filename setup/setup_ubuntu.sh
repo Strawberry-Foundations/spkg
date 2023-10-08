@@ -8,3 +8,6 @@ python3-requests \
 python3-yaml \
 python3-colorama \
 python3-halo \
+
+chmod +x ../spkg.py
+chmod +x ../spkg-installer.py
