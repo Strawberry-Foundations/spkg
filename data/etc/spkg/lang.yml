@@ -98,6 +98,7 @@ de_DE:
   NoCompileNeed: "Es wird keine Kompilierung des Paketes benötigt."
   PrepareInstall: "Paketinstallation wird vorbereitet..."
   Install: "Paket wird installiert..."
+  SuccessInstall: "{green}{bold}%s wurde in %c s installiert."
   
 
 
@@ -201,3 +202,4 @@ en_US:
   NoCompileNeed: "No compilation of the package is needed."
   PrepareInstall: "Package installation is being prepared..."
   Install: "Package will be installed..."
+  SuccessInstall: "{green}{bold}%s has been installed in %c s."
