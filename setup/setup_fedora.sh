@@ -5,6 +5,7 @@ sudo dnf install \
 python3 \
 python3-pip \
 python3-requests \
+Ãpyhon3-yaml \
 python3-colorama \
 
 # Not the best method
