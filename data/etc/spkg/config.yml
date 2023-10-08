@@ -3,6 +3,9 @@ language: de_DE
 # main_url: https://sources.strawberryfoundations.xyz/
 main_url: http://sources.strawberryfoundations.xyz:49171/
 
+# You shouldn't change this unless you know what you're doing!!!
+build_directory: /tmp/_spkg.build/
+
 # Plugins
 plugins:
   sandbox: false
