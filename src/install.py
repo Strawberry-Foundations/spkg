@@ -493,7 +493,13 @@ class InstallManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
-                        os.chdir(config["build_directory"])
+                        os.chdir()
+                        try:
+                            os.chdir(f"{config['build_directory']}{package['Install']['WorkDir']}")
+                        except: 
+                            pass
+                            
+                            
                         for command in install_command:
                             subprocess.run(command, shell=True, check=True, text=True)
 
