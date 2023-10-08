@@ -10,19 +10,22 @@ Dependencies:
 
 Flags:
   ArchiveType: tar
-  RequiresCompile: true
-
-
-Compile:
-  Commands:
-    - meson _build --prefix=/usr
-    - cd _build
+  RequiresCompile: false
 
 Install:
+  WorkDir: libbismuth-main
   Commands:
+    - ls 
+    - sleep 2
+    - cd libbismuth-main
+    - ls 
+    - echo test
+    - meson _build --prefix=/usr
+    - cd _build
     - sudo ninja install
 
 Remove:
+  WorkDir: libbismuth-main
   Commands: |
     cd /tmp/_spkg.build/libbismuth-main/
     meson _build --prefix=/usr
@@ -31,6 +34,7 @@ Remove:
     sudo ninja uninstall
 
 Upgrade:
+  WorkDir: libbismuth-main
   Commands: |
     cd /tmp/_spkg.build/libbismuth-main/
     meson _build --prefix=/usr
