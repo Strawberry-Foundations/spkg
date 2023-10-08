@@ -15,16 +15,19 @@ Flags:
 
 Install:
   Commands: |
-    meson _build --prefix=/usr && cd _build
-    sudo ninja install
+    "meson _build --prefix=/usr"
+    "cd _build"
+    "sudo ninja install"
 
 Remove:
   Commands: |
-    meson _build --prefix=/usr && cd _build
+    meson _build --prefix=/usr
+    cd _build
     sudo ninja install
     sudo ninja uninstall
 
 Upgrade:
   Commands: |
-    meson _build --prefix=/usr && cd _build
+    meson _build --prefix=/usr
+    cd _build
     sudo ninja install
