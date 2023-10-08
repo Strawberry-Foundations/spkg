@@ -23,6 +23,7 @@ de_DE:
   ParsingError: "{red}{bold}E:{reset} Fehler beim Parsen der Paketkonfigurationsdatei: Inkorrekte Syntax und/oder falsches Format."
   InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden (%s)"
   ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
+  EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
   
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
@@ -127,6 +128,7 @@ en_US:
   ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
   InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
   ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
+  EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
 
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Do not perform upgrades with root. This could manipulate the installation of the package!"
