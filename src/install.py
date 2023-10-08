@@ -480,7 +480,7 @@ class InstallManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
-                        for command in install_command.splitlines():
+                        for command in install_command:
                             subprocess.run(command, shell=True, check=True, text=True)
 
                     except Exception as e: 
