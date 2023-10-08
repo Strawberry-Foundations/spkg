@@ -565,7 +565,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
             
         # Install the package
     package = InstallManager.Installer(pkg_name)
-    package.install()
+    package.install(args=argv)
     exit()
         
         # if os.geteuid() == 0:
