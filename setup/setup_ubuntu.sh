@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup script for spkg
+# Setup script for spkg: Ubuntu
 
 sudo apt install \
 python3 \
