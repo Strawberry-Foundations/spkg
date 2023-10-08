@@ -143,6 +143,7 @@ class InstallManager:
                 with open(f"{output}.{file_extension}", 'wb') as file:
                         file.write(input.read())
                         
+                        
         # return a file location      
         def file(self, input):
             if is_plugin_enabled("sandbox"):
@@ -156,7 +157,7 @@ class InstallManager:
                 return input
         
         
-
+        # get package manager
         def get_package_manager(self):
             try:
                 output = subprocess.check_output(["which", "apt"]).decode("utf-8")
@@ -180,7 +181,9 @@ class InstallManager:
                 pass
             
             return False
-    
+
+        
+        # Clean temporary files
         def cleanup(self):
             try:
                 shutil.rmtree(config["build_directory"])
@@ -193,7 +196,9 @@ class InstallManager:
             except:
                 pass
         
-        
+            """
+                MAIN INSTALL FUNCTION
+            """
         def install(self, args):
             # Create and start the spinner for searching the database
             spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
@@ -203,12 +208,15 @@ class InstallManager:
                 
             spinner.start()
             
+            # Search for the architecture
             c.execute("SELECT arch FROM packages where name = ?", (self.package_name,))
             
+            # fetch the result and try to lock the lockfile
             try:
                 result = c.fetchone()[0]
                 lock(type=Procedure.Install)
-                
+            
+            # Error Handling for TypeError
             except TypeError:
                 print("")
                 delete_last_line()
@@ -216,6 +224,7 @@ class InstallManager:
                 print(StringLoader('PackageNotFound'))
                 exit()
             
+            # Error Handling for PermissionError
             except PermissionError:
                 print("")
                 delete_last_line()
@@ -224,6 +233,7 @@ class InstallManager:
                 print(StringLoader('MissingPermissionsLockfile'))
                 exit()
             
+            # fetch name, version, url from the package database
             try:
                 if result == "all":
                     c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ?", (self.package_name,))
@@ -235,6 +245,7 @@ class InstallManager:
                     print(StringLoader("PackageDatabaseNotSynced"))
                     exit()
             
+            # fetch the results
             try:     
                 for row in c:
                     class Package:
@@ -244,12 +255,14 @@ class InstallManager:
                         Filename    = row[3]
                         Specfile    = row[4]
                     
+                    # request the package headers and get the file size
                     headers = requests.head(Package.Url)
                     file_size = round(self.file_size(response=headers, type=FileSizes.Megabytes), 2)
                     
                     spinner.stop()
                     print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
                     
+                    # ask if you want to continue the package installation (only if you dont have passed -y flag)
                     if not "-y" in args:
                         try:
                             cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
@@ -274,6 +287,7 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    # fetch specfile and save it
                     specfile = self.fetch_url(Package.Specfile)
                     self.file_saving(input=specfile, output="/tmp/specfile", file_extension="yml", warn_force_no_sandbox=False)
                     
@@ -289,9 +303,11 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    # oprn specfile and get the file extension for saving the package archive
                     with open("/tmp/specfile.yml") as file:
                         package = yaml.load(file, Loader=SafeLoader)
                     
+                    # get package archive
                     file = self.fetch_url(Package.Url)
                     self.file_saving(input=file, output=f"/tmp/package", file_extension=package["Flags"]["ArchiveType"], warn_force_no_sandbox=True)
                     
@@ -315,6 +331,7 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    # Start parsing specfile
                     SpecName        = package["Name"]
                     SpecVersion     = package["Version"]
                     SpecArch        = package["Architecture"]
@@ -336,6 +353,7 @@ class InstallManager:
                     
                     dep_start_time = time.time()
 
+                    # determinate dependencies
                     spinner = Halo(
                         text=f"{StringLoader('DeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}",
                         spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
@@ -344,7 +362,7 @@ class InstallManager:
                     
                     spinner.start()
                     
-                    
+                    # get package manager
                     package_manager = get_package_manager()
                     
                     _apt_update = False
@@ -353,7 +371,8 @@ class InstallManager:
                         _apt_update = True
                         
                     apt_support = apk_support = dnf_support = pip_support = True
-                        
+                    
+                    # case-switch for package managers
                     match package_manager:
                         case PackageManagers.Apt:
                             try:
@@ -389,7 +408,8 @@ class InstallManager:
                         
                         case _:
                             pass
-                        
+                    
+                    # if no package manager is supported, (for whatever reason, shouldnt happen) exit
                     if (apt_support and apk_support and dnf_support and pip_support) == False:
                         exit()
                 
@@ -408,6 +428,7 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    # Search for pip dependencies
                     try:
                         SpecDeps["Pip"].split(" ")
                         spinner.stop()
@@ -422,6 +443,7 @@ class InstallManager:
                     
                         spinner.start()
                         
+                        # install pip dependencies
                         pip_install(SpecDeps["Pip"].split(" "), print_output=False)
                         
                         spinner.stop()
@@ -443,8 +465,10 @@ class InstallManager:
                     
                     spinner.start()
                     
+                    # get file extension of archive
                     file_extension = SpecFlags["ArchiveType"]
                     
+                    # case-switch for file extensions
                     match file_extension:
                         case "tar": 
                             import tarfile
@@ -457,7 +481,8 @@ class InstallManager:
                             
                             with tarfile.open(f"/tmp/package.{file_extension}", 'r:gz') as tar:
                                 tar.extractall(path=config["build_directory"])
-                                
+                            
+                        # if file extension is unsupported exit    
                         case _:
                             fe_unsupported = True
                             spinner.stop()
@@ -482,6 +507,7 @@ class InstallManager:
                 
                     spinner.start()
 
+                    # Check if package has to be compiled before installing
                     try:
                         requires_compile = SpecFlags["RequiresCompile"]
                         if not requires_compile:
@@ -493,18 +519,21 @@ class InstallManager:
                             os.chdir(config["build_directory"])
                             compile_command = Commands.Compile
                             
+                            # try to change to the (maybe) passed workdir
                             try:
                                 try:
                                     os.chdir(f"{config['build_directory']}{package['Compile']['WorkDir']}")
                                 except: 
                                     pass
                                 
+                                # if -o flag has passed, print output
                                 if "-o" in args or "--output" in args:
                                     shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                                     
                                 else:
                                     shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                                    
+                                
+                                # execute commands
                                 for command in compile_command:
                                     if "-o" in args or "--output" in args:
                                         print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
@@ -514,6 +543,7 @@ class InstallManager:
                                     
                                 output, errors = shell.communicate()
 
+                                # print errors, if occured
                                 if not errors.rstrip() == "":
                                     print(StringLoader("EncounteredErrors"))
                                     print(errors)
@@ -538,6 +568,7 @@ class InstallManager:
                 
                     spinner.start()
                     
+                    # prepare install
                     install_command = Commands.Install
                     
                     spinner.stop()
@@ -546,17 +577,20 @@ class InstallManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
+                        # try to change to the (maybe) passed workdir
                         try:
                             os.chdir(f"{config['build_directory']}{package['Install']['WorkDir']}")
                         except: 
                             pass
                         
+                        # if -o flag has passed, print output
                         if "-o" in args or "--output" in args:
                             shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                             
                         else:
                             shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                            
+                        
+                        # execute commands
                         for command in install_command:
                             if "-o" in args or "--output" in args:
                                 print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
@@ -566,6 +600,7 @@ class InstallManager:
                             
                         output, errors = shell.communicate()
 
+                        # print errors, if occured
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
                             print(errors)
@@ -579,16 +614,19 @@ class InstallManager:
 
                     install_time_end = time.time()
                     
+                    # if -k flag hasnt passed, clean temporary files
                     if not "-k" in args or "--keep" in args:
                         self.cleanup()
                         
                     print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
-                    
+            
+            # Error Handling for NameError
             except NameError as e:
                 print(StringLoader('PackageNotFound'))
                 self.cleanup()
                 exit()
-
+            
+            # Error Handling for PermissionError
             except PermissionError:
                 print("")   
                 delete_last_line()
@@ -597,6 +635,7 @@ class InstallManager:
                 self.cleanup()
                 exit()
             
+            # Error Handling for ScannerError
             except ScannerError:
                 spinner.stop()
                 delete_last_line()
@@ -606,7 +645,8 @@ class InstallManager:
                 print(StringLoader("ParsingError"))
                 self.cleanup()
                 exit()
-                
+            
+            # Error Handling for some internet errors 
             except (HTTPError, ConnectionError, NewConnectionError, MaxRetryError) as e:
                 print("")
                 delete_last_line()
