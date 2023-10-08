@@ -482,8 +482,31 @@ class InstallManager:
                             compile_command = Commands.Compile
                             
                             try:
+                                try:
+                                    os.chdir(f"{config['build_directory']}{package['Compile']['WorkDir']}")
+                                except: 
+                                    pass
+                                
+                                if "-o" in args or "--output" in args:
+                                    shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                                    
+                                else:
+                                    shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                                    
                                 for command in compile_command:
-                                    subprocess.run(command, shell=True, check=True, text=True)
+                                    if "-o" in args or "--output" in args:
+                                        print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
+                                        
+                                    shell.stdin.write(command + '\n')
+                                    shell.stdin.flush()
+                                    
+                                output, errors = shell.communicate()
+
+                                if not errors.rstrip() == "":
+                                    print(StringLoader("EncounteredErrors"))
+                                    print(errors)
+
+                                shell.terminate()
 
                             except Exception as e: 
                                 print(StringLoader('InstallationError', argument_1=e))
