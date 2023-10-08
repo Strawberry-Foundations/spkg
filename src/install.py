@@ -506,7 +506,8 @@ class InstallManager:
                             
                         output, errors = shell.communicate()
 
-                        # print(output)
+                        if "-o" in args or "--output" in args:
+                            print(output)
 
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
