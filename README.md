@@ -26,13 +26,13 @@ chmod +x ./scripts/setup_ubuntu.sh
 ### For Fedora
 ```
 chmod +x ./scripts/setup_fedora.sh
-`./scripts/setup_fedora.sh
+./scripts/setup_fedora.sh
 ```
 
 ### For other distros
 (First install Python 3 & pip)
 ```
-`pip install -r ./requirements.txt`
+pip install -r ./requirements.txt
 ```
 
 # Is spkg being developed again?
