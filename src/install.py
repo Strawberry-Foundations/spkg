@@ -31,6 +31,7 @@ import sqlite3 as sql
 from sqlite3 import *
 
 from urllib.error import HTTPError
+from yaml.scanner import ScannerError
 
 from init import *
 from src.functions import delete_last_line, lock
@@ -419,6 +420,15 @@ class InstallManager:
                 # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
                 print(f"{Fore.CYAN + Colors.BOLD}/tmp/: {Fore.RESET}{StringLoader('MissingPermissions')}")
                 print(StringLoader('MissingPermissionsLockfile'))
+                exit()
+            
+            except ScannerError:
+                spinner.stop()
+                delete_last_line()
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('GettingSpecfile')}")
+                print(StringLoader("ParsingError"))
                 exit()
                 
             except Exception as e:
