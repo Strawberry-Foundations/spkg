@@ -15,12 +15,14 @@ Flags:
 
 Install:
   Commands: |
-    "meson _build --prefix=/usr"
-    "cd _build"
-    "sudo ninja install"
+    cd /tmp/_spkg.build/libbismuth-main/
+    meson _build --prefix=/usr
+    cd _build
+    sudo ninja install
 
 Remove:
   Commands: |
+    cd /tmp/_spkg.build/libbismuth-main/
     meson _build --prefix=/usr
     cd _build
     sudo ninja install
@@ -28,6 +30,7 @@ Remove:
 
 Upgrade:
   Commands: |
+    cd /tmp/_spkg.build/libbismuth-main/
     meson _build --prefix=/usr
     cd _build
     sudo ninja install
