@@ -22,6 +22,7 @@ import urllib.request
 import requests
 import subprocess
 from sys import exit
+import shutil
 
 from colorama import Fore
 from halo import Halo
@@ -165,6 +166,15 @@ class InstallManager:
                 pass
             
             return False
+    
+        def cleanup(self):
+            shutil.rmtree(config["build_directory"])
+            os.remove("/tmp/specfile.yml")
+            
+            for package_file in os.listdir("/tmp/"):
+                if package_file.startswith('package'):
+                    file = os.path.join("/tmp/", package_file)
+                    os.remove(file)
         
         
         def install(self, args):
@@ -305,22 +315,6 @@ class InstallManager:
                     
                     time.sleep(.1)
                     
-                    spinner = Halo(
-                        text=f"{StringLoader('ExtractArchive')}",
-                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
-                        text_color="white",
-                        color="green")
-                    
-                    spinner.start()
-                    
-                    file_extension = SpecFlags["ArchiveType"]
-                    
-                    time.sleep(4)
-                    
-                    spinner.stop()
-                    
-                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
-                    
                     dep_start_time = time.time()
 
                     spinner = Halo(
@@ -359,7 +353,7 @@ class InstallManager:
                     
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessDeterminateDependencies', argument_1=round(dep_end_time - dep_start_time, 2))} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
                     print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{deps}{Colors.RESET}")
-                    
+                                        
                     spinner = Halo(
                         text=f"{StringLoader('DeterminatePipDependencies')}",
                         spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
@@ -394,6 +388,45 @@ class InstallManager:
                     except:
                             spinner.stop()
                             print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoNeedPipDependencies')} {Colors.BOLD}{Colors.RESET}")
+                    
+                    spinner = Halo(
+                        text=f"{StringLoader('ExtractArchive')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    file_extension = SpecFlags["ArchiveType"]
+                    
+                    match file_extension:
+                        case "tar": 
+                            import tarfile
+                            
+                            with tarfile.open(f"/tmp/package.{file_extension}", 'r') as tar:
+                                tar.extractall(path=config["build_directory"])
+                                
+                        case "tar.gz" | "gz": 
+                            import tarfile
+                            
+                            with tarfile.open(f"/tmp/package.{file_extension}", 'r:gz') as tar:
+                                tar.extractall(path=config["build_directory"])
+                                
+                        case _:
+                            fe_unsupported = True
+                            spinner.stop()
+                            print("")
+                            delete_last_line()
+                            print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('ExtractArchive')}")
+                            print(StringLoader('ExtractError'))
+                            self.cleanup()
+                            exit()
+                    
+                    time.sleep(4)               
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
+                    
                     
                     spinner = Halo(
                     text=f"{StringLoader('PrepareCompile')}",
@@ -438,12 +471,19 @@ class InstallManager:
                     except: 
                         # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('Install')}")
                         print(StringLoader('InstallationError'))
+                        self.cleanup()
                         exit()
 
                     install_time_end = time.time()
                     
+                    if not "-k" or "--keep" in args:
+                        self.cleanup()
+                        
+                    print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
+                    
             except NameError as e:
                 print(StringLoader('PackageNotFound'))
+                self.cleanup()
                 exit()
 
             except PermissionError:
@@ -451,6 +491,7 @@ class InstallManager:
                 delete_last_line()
                 print(f"{Fore.CYAN + Colors.BOLD}/tmp/: {Fore.RESET}{StringLoader('MissingPermissions')}")
                 print(StringLoader('MissingPermissionsLockfile'))
+                self.cleanup()
                 exit()
             
             except ScannerError:
@@ -460,6 +501,7 @@ class InstallManager:
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('GettingSpecfile')}")
                 print(StringLoader("ParsingError"))
+                self.cleanup()
                 exit()
                 
             except (HTTPError, ConnectionError, NewConnectionError, MaxRetryError) as e:
@@ -467,6 +509,7 @@ class InstallManager:
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
                 print(StringLoader("HttpError"))
+                self.cleanup()
                 exit()
                     
                 
