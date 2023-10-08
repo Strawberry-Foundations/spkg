@@ -498,13 +498,27 @@ class InstallManager:
                         except: 
                             pass
                         
-                        shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, text=True)
+                        shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                             
                         for command in install_command:
                             # subprocess.run(command, shell=True, check=True, text=True)
                             # os.system(command)
                             shell.stdin.write(command + '\n')
                             shell.stdin.flush()
+                        
+                        # Lies die Ausgabe der Shell (könnte stdout und stderr sein)
+                        output, errors = shell.communicate()
+
+                        # Gib die Ausgabe aus
+                        print("Ausgabe:")
+                        print(output)
+
+                        # Gib Fehler aus, falls vorhanden
+                        print("Fehler:")
+                        print(errors)
+
+                        # Beende die Shell
+                        shell.terminate()
 
                     except Exception as e: 
                         print(StringLoader('InstallationError', argument_1=e))
