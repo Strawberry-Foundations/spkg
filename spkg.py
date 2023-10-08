@@ -271,7 +271,7 @@ elif argv_len > 1 and argv[1] == "info":
         c.execute("SELECT name FROM packages where name = ? AND arch = ?", (package_name, arch))
     
     if c.fetchall():
-        c.execute("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?", (package_name, arch))
+        c.execute("SELECT name, version, branch, arch, url, specfile FROM packages where name = ? AND arch = ?", (package_name, arch))
         
         for row in c:
             print(f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PackageInformationTitle', color_reset_end=False)} {row[0]} ({row[1]}){Colors.RESET}")
