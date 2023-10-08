@@ -349,7 +349,7 @@ class InstallManager:
                     if "-au" in  args or "--aptupdate" in args:
                         _apt_update = True
                         
-                    _apt_support, _apk_support, _dnf_support, _pip_support = True
+                    _apt_support = _apk_support = _dnf_support = _pip_support = True
                         
                     match package_manager:
                         case PackageManagers.Apt:
