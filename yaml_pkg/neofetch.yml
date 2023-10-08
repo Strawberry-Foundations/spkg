@@ -13,7 +13,7 @@ Flags:
 
 
 Install:
-  Commands: install -Dt /usr/bin/ -m 775 /tmp/target/hyfetch*/neofetch
+  Commands: install -Dt /usr/bin/ -m 775 /tmp/_spkg.build/hyfetch-master/neofetch
 
 Remove:
   Commands: rm -f /usr/bin/neofetch
