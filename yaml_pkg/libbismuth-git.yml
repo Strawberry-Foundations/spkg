@@ -13,11 +13,14 @@ Flags:
   RequiresCompile: true
 
 
+Compile:
+  Commands:
+    - meson _build --prefix=/usr
+    - cd _build
+
 Install:
   Commands:
-    meson _build --prefix=/usr
-    cd _build
-    sudo ninja install
+    - sudo ninja install
 
 Remove:
   Commands: |
