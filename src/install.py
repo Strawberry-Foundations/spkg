@@ -484,7 +484,7 @@ class InstallManager:
                             subprocess.run(command, shell=True, check=True, text=True)
 
                     except Exception as e: 
-                        print(StringLoader('InstallationError'))
+                        print(StringLoader('InstallationError', argument_1=e))
                         self.cleanup()
                         exit()
 
