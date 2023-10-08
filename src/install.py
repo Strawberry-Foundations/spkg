@@ -513,9 +513,10 @@ class InstallManager:
                         print("Ausgabe:")
                         print(output)
 
-                        # Gib Fehler aus, falls vorhanden
-                        print("Fehler:")
-                        print(errors)
+
+                        if not errors.rstrip() == "":
+                            print(StringLoader("EncounteredErrors"))
+                            print(errors)
 
                         # Beende die Shell
                         shell.terminate()
