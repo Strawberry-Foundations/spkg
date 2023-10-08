@@ -498,7 +498,7 @@ class InstallManager:
                         except: 
                             pass
                         
-                        shell = subprocess.Popen(['/bin/bash'], text=True)
+                        shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, text=True)
                             
                         for command in install_command:
                             # subprocess.run(command, shell=True, check=True, text=True)
