@@ -390,8 +390,8 @@ class InstallManager:
                         case _:
                             pass
                         
-                    # if (apt_support and apk_support and dnf_support and pip_support) == False:
-                    #     exit()
+                    if (apt_support and apk_support and dnf_support and pip_support) == False:
+                        exit()
                 
                     spinner.stop() 
 
