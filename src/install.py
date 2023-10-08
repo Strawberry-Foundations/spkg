@@ -524,30 +524,7 @@ class InstallManager:
                 print(StringLoader("HttpError"))
                 self.cleanup()
                 exit()
-                    
-                
-                    
-        
-    def install(name):                
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{ExecutingSetup}")
-
-            # Execute the PKGBUILD File natively if the package needs to be installed natively
-            if force_no_sandbox(name) == 1:
-                subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
-                subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--install'])
-            
-            # Else check if the sandbox plugin is enabled
-            else:
-                if check_plugin_enabled_silent("sandbox") == True:
-                    os.system(f"sudo chroot {bootstrap_location} bash /tmp/PKGBUILD --install")
-                    
-                # If not, run the PKGBUILD file natively
-                else:
-                    subprocess.run(['sudo', 'chmod', '+x', '/tmp/PKGBUILD'])
-                    subprocess.run(['sudo', 'bash', '/tmp/PKGBUILD', '--install'])
-
-     
-            
+                               
             
 #     """ 
 #         **** SANDBOX INSTALL FUNCTION ****
