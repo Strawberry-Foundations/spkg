@@ -17,7 +17,7 @@ Install:
   Commands:
     - ls
     - meson _build --prefix=/usr
-    - cd _build
+    - cd /tmp/_spkg.build/libbismuth-main/_build
     - sudo ninja install
 
 Remove:
