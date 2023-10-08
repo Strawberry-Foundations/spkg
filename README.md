@@ -17,18 +17,17 @@ spkg also offers pre-build packages, so you don't have to build big packages lik
 # Setting up
 In order to set up spkg for personal use and for development, simply run one of the setup scripts for your system.
 
-For Ubuntu:
-`chmod +x ./scripts/setup_ubuntu.sh`
-`./scripts/setup_ubuntu.sh`
+For Ubuntu: \
+`chmod +x ./scripts/setup_ubuntu.sh` \
+`./scripts/setup_ubuntu.sh` \
 
-For Fedora:
-`chmod +x ./scripts/setup_fedora.sh`
-`./scripts/setup_fedora.sh`
+For Fedora: \
+`chmod +x ./scripts/setup_fedora.sh` \
+`./scripts/setup_fedora.sh` \
 
-For other distros:
-
-(First install Python 3 & Pip)
-`pip install -r ./requirements.txt`
+For other distros: \
+(First install Python 3 & Pip) \
+`pip install -r ./requirements.txt` \
 
 # Is spkg being developed again?
 Yes. We are currently rewriting large parts of spkg's code so that spkg becomes more user friendly. 
