@@ -500,7 +500,7 @@ class InstallManager:
                         
                         shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, text=True)
                             
-                        for command in install_command:
+                        for command in install_command.split('\n'):
                             # subprocess.run(command, shell=True, check=True, text=True)
                             # os.system(command)
                             shell.stdin.write(command + '\n')
