@@ -15,7 +15,6 @@ Flags:
 Install:
   WorkDir: libbismuth-main
   Commands:
-    - ls
     - meson _build --prefix=/usr
     - cd /tmp/_spkg.build/libbismuth-main/_build
     - sudo ninja install
