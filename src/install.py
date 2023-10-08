@@ -31,6 +31,8 @@ import sqlite3 as sql
 from sqlite3 import *
 
 from urllib.error import HTTPError
+from urllib3.exceptions import NewConnectionError, MaxRetryError
+from requests.exceptions import ConnectionError
 from yaml.scanner import ScannerError
 
 from init import *
@@ -431,7 +433,7 @@ class InstallManager:
                 print(StringLoader("ParsingError"))
                 exit()
                 
-            except Exception as e:
+            except (HTTPError, ConnectionError, NewConnectionError, MaxRetryError) as e:
                 print("")
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
