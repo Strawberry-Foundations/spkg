@@ -7,5 +7,6 @@ python3-pip \
 python3-requests \
 python3-colorama \
 
-sudo pip install \ # Not the best method
+# Not the best method
+sudo pip install \
 halo
