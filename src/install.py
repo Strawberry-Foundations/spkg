@@ -469,7 +469,6 @@ class InstallManager:
                         subprocess.run(install_command, check=True) 
                     
                     except: 
-                        # print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('Install')}")
                         print(StringLoader('InstallationError'))
                         self.cleanup()
                         exit()
