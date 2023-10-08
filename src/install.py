@@ -377,6 +377,9 @@ class InstallManager:
                         
                         case _:
                             pass
+                        
+                    if (_apt_update and _apk_support and _dnf_support and _pip_support) == False:
+                        exit()
                 
                     spinner.stop() 
 
