@@ -139,7 +139,10 @@ def StringLoader(string, argument_1="", argument_2="", color_reset_end=True):
             .replace("{bold}", Colors.BOLD) \
             .replace("{underline}", Colors.UNDERLINE) \
             .replace("%s", str(argument_1)) \
-            .replace("%c", str(argument_2))
+            .replace("%c", str(argument_2)) \
+            .replace("{version}", str(version)) \
+            .replace("{arch}", str(platform.machine()))
+                
     
     if color_reset_end:
         return string + RESET + Colors.RESET
