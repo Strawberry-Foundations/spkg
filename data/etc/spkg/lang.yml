@@ -8,7 +8,7 @@ de_DE:
     Paketes (meist) von den offiziellen Quellen herunterlädt,
     und diesen dann für dein Gerät kompiliert.
     Das Ziel von spkg ist, einfach und auch ohne viel Erfahrung die
-    neusten offiziellen Versionen  von Programmen zu erhalten, auch
+    neusten offiziellen Versionen von Programmen zu erhalten, auch
     unter Distrobutionen die nicht die neuste Version anbieten.
     Durch das kompilieren des Paketes ist das Programm für dein Gerät
     optimiert und läuft dementsprechend optimierter.
