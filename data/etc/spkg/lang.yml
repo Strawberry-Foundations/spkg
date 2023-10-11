@@ -1,5 +1,43 @@
 # Language Strings for de_DE (German)
 de_DE:
+  Help: |-
+    {underline}{bold}Advanced Source Package Managment (spkg) {version} {arch}{creset}%s
+    {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
+
+    spkg ist ein Paketmanager, der den Quellcode des gewünschten
+    Paketes (meist) von den offiziellen Quellen herunterlädt,
+    und diesen dann für dein Gerät kompiliert.
+    Das Ziel von spkg ist, einfach und auch ohne viel Erfahrung die
+    neusten offiziellen Versionen  von Programmen zu erhalten, auch
+    unter Distrobutionen die nicht die neuste Version anbieten.
+    Durch das kompilieren des Paketes ist das Programm für dein Gerät
+    optimiert und läuft dementsprechend optimierter.
+
+    {underline}{bold}Befehle:{creset}
+    {bold} -> {blue}install:{reset} Installiert ein Pakete{creset}
+    {bold} -> {blue}remove:{reset} Entfernt ein Pakete{creset}
+    {bold} -> {blue}reinstall:{reset} Installiert ein Pakete neu{creset}
+    {bold} -> {blue}update:{reset} Überprüft auf Paketaktualisierungen{creset}
+    {bold} -> {blue}upgrade:{reset} Aktualisiert ein Paket{creset}
+    {bold} -> {blue}sync:{reset} Synchronisiert die Paketdatenbanken{creset}
+    {bold} -> {blue}info:{reset} Gibt dir Informationen über ein Paket aus{creset}
+    {bold} -> {blue}list:{reset} Zählt verfügbare Pakete auf{creset}
+    {bold} -> {blue}download:{reset} Lädt ein Paket herunter{creset}
+    {bold} -> {blue}build:{reset} Baut verschiedene Dinge *^____^*{creset}
+    {bold}    -> {blue}world:{reset} Baut die lokale World-Datenbank von neu auf{creset}
+    {bold} -> {blue}plugins:{reset} Plugin Verwaltung{creset}
+    {bold}    -> {blue}list:{reset} Zählt alle installierten Plugins auf{creset}
+    {bold}    -> {blue}exec:{reset} Führt einen Befehl eines Plugins aus{creset}
+    {bold}    -> {blue}enable:{reset} Aktiviert ein Plugin{creset}
+    {bold}    -> {blue}disable:{reset} Deaktiviert ein Plugin{creset}
+    {bold}    -> {blue}market:{reset} Plugin Marketplace{creset}
+    {bold}       -> {blue}list:{reset} Zählt verfügbare Plugins auf{creset}
+    {bold}    -> {blue}get:{reset} Installiert ein Plugin{creset}
+    {bold} -> {blue}config:{reset} Konfigurationsverwaltung{creset}
+    {bold}    -> {blue}language:{reset} Sprachkonfigurierung{creset}
+
+    Copyright (C) 2023 Juliandev02 - Made with <3
+
   # Basic strings
   Get: "Holen"
   Architecture: "Architektur"
@@ -106,6 +144,44 @@ de_DE:
 
 # Language Strings for en_US (English)  
 en_US:
+  Help: |-
+    {underline}{bold}Advanced Source Package Managment (spkg) {version} {arch}{creset}%s
+    {cyan}{bold}call:{reset} spkg {green}[command]{red} <argument>{creset}
+
+    spkg is a package manager that downloads the source code of the desired
+    package (usually) from the official sources,
+    and then compiles it for your device.
+    The goal of spkg is to easily and without much experience get the latest
+    the latest official versions of programs, even under distro
+    even on distros that do not offer the latest version.
+    By compiling the package, the program is optimized for your device and runs
+    and runs accordingly optimized.
+
+    {underline}{bold}Commands:{creset}
+    {bold} -> {blue}install:{reset} Installs a package{creset}
+    {bold} -> {blue}remove:{reset} Removes a package{creset}
+    {bold} -> {blue}reinstall:{reset} Reinstalls a package{creset}
+    {bold} -> {blue}update:{reset} Checks for package updates{creset}
+    {bold} -> {blue}upgrade:{reset} Updates a package{creset}
+    {bold} -> {blue}sync:{reset} Synchronizes the package databases{creset}
+    {bold} -> {blue}info:{reset} Gives you information about a package{creset}
+    {bold} -> {blue}list:{reset} Lists available packages{creset}
+    {bold} -> {blue}download:{reset} Downloads a package{creset}
+    {bold} -> {blue}build:{reset} Builds various things *^____^*{creset}
+    {bold} -> {blue}world:{reset} Builds the local world database from scratch{creset}
+    {bold} -> {blue}plugins:{reset} Plugin management{creset}
+    {bold} -> {blue}list:{reset} Lists all installed plugins{creset}
+    {bold} -> {blue}exec:{reset} Executes a command of a plugin{creset}
+    {bold} -> {blue}enable:{reset} Enables a plugin{creset}
+    {bold} -> {blue}disable:{reset} Disables a plugin{creset}
+    {bold} -> {blue}market:{reset} Plugin Marketplace{creset}
+    {bold} -> {blue}list:{reset} Lists available plugins{creset}
+    {bold} -> {blue}get:{reset} Installs a plugin{creset}
+    {bold} -> {blue}config:{reset} Configuration management{creset}
+    {bold} -> {blue}language:{reset} Language configuration{creset}
+
+    Copyright (C) 2023 Juliandev02 - Made with <3
+
   # Basic strings
   Get: "Get"
   Architecture: "Architecture"
