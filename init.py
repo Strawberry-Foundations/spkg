@@ -147,6 +147,6 @@ def StringLoader(string, argument_1="", argument_2="", color_reset_end=True):
         return string
     
 if update_channel in ["dev", "beta", "alpha"]:
-    a_info_msg = f"\n{StringLoader('DevelopmentRelease')},\n"
+    a_info_msg = f"\n{StringLoader('DevelopmentRelease')}\n"
 else:
     a_info_msg = "\n"
