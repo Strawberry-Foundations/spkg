@@ -20,14 +20,13 @@ import time
 import sqlite3 as sql
 import platform
 
-from sqlite3 import *
 from colorama import Fore
 from sys import exit
 import yaml
 from yaml import SafeLoader
 from src.colors import *
 from src.arch import ARCH
-from src.vars import dev_local, langs, update_channel
+from src.vars import dev_local, langs, update_channel, version
 
 # Environ Variables
 home_dir = os.getenv("HOME")
