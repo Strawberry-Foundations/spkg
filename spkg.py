@@ -1067,9 +1067,10 @@ elif len(sys.argv) > 1 and sys.argv[1] != "help":
 
 
 else:
-    if language == "en_US":
-        help_en()
-    elif language == "de_DE":
-        help_de()        
+    # if language == "en_US":
+    #     help_en()
+    # elif language == "de_DE":
+    #     help_de()        
+    print(StringLoader("Help", argument_1=a_info_msg))
 
 db.close()
