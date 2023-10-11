@@ -101,11 +101,6 @@ with open(Files.user_config, "r") as file:
 # Open language strings
 with open(Files.lang_strings, encoding="utf-8") as lang_strings:
     Str = yaml.load(lang_strings, Loader=SafeLoader)
-
-if update_channel in ["dev", "beta", "alpha"]:
-    a_info_msg = f"\n{YELLOW + Colors.BOLD}WARNING:{RESET + Colors.RESET} This is an Development Release!\n"
-else:
-    a_info_msg = "\n"
     
 # Variables
 lang            = config["language"]
@@ -150,3 +145,8 @@ def StringLoader(string, argument_1="", argument_2="", color_reset_end=True):
         return string + RESET + Colors.RESET
     else:
         return string
+    
+if update_channel in ["dev", "beta", "alpha"]:
+    a_info_msg = f"\n{StringLoader('DevelopmentRelease')},\n"
+else:
+    a_info_msg = "\n"
