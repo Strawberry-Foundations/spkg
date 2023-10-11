@@ -99,7 +99,7 @@ UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warning:{Fore.RESET + Colors
     
 # Help Function for English Language
 def help_en():
-    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}\n")
+    print(f"{Colors.UNDERLINE + Colors.BOLD}Advanced Source Package Managment (spkg) {version} {platform.machine()}{Colors.RESET}{a_info_msg}")
     print(f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg {Fore.GREEN}[command]{Fore.RED} <argument>\n")
     print(f"spkg is a package manager that downloads the source code from the \nofficial sources, and then compiles it specifically for your device.")
     print(f"The goal of spkg is to get the latest versions of programs easily and \nwithout much experience, even under distros that do not offer the latest version.")
