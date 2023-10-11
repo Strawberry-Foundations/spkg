@@ -51,51 +51,6 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-NoArgument = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} No Argument passed!{Colors.RESET}"
-PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Package not found{Colors.RESET}"
-PackageInformationTitle = f"{Colors.BOLD + Colors.UNDERLINE}Information about the package"
-FinishedDownloading = f"Finished downloading"
-FinishedDownloadingCompact = f"Finished downloading"
-StrGet = "Get"
-UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
-StrArchitecture = "Architecture"
-SyncingPackageDatabase = f"Synchronize from"
-SuccessSyncingPackageDatabase = f"{Colors.BOLD}The package database has been synchronized in %s s. Run {Fore.CYAN}spkg update{Fore.RESET} to check for package updates.{Colors.RESET}"
-Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
-PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
-SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
-ContinePackageInstallation1 = f"{Colors.RESET}The package {Fore.CYAN + Colors.BOLD}"
-ContinePackageInstallation2 = f"{Colors.RESET} will now be downloaded. \nThis requires "
-ContinePackageInstallation3 = f"{Colors.RESET} to be downloaded. Continue? [Y/N]{Fore.RESET}{Colors.RESET}"
-Abort = "Aborting ..."
-ExecutingSetup = f"Executing Setup Script... Please wait"
-MissingPermissons = f"{Fore.RESET + Colors.RESET}: Missing Permissons"
-MissingPermissonsPackageDatabaseUpdate = f"{Fore.RED + Colors.BOLD}The package database could not be updated. (Is spkg running as root?){Colors.RESET}"
-SearchingForUpdates = f"Suche nach verfügbaren Updates ..."
-WorldDatabaseNotBuilded = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {Fore.CYAN + Colors.BOLD}spkg build world{Fore.RESET}){Colors.RESET + Fore.RESET}"
-PackageAlreadyInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package has already been installed. There is nothing to do.{Colors.RESET}"
-PackageNotInstalled = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to upgrade.{Colors.RESET}"
-PackageNotInstalledRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} Package is not installed, there is nothing to uninstall.{Colors.RESET}"
-BuildingWorldDatabase = f"{Colors.BOLD}The World database is downloaded and built ... {Colors.RESET}"
-SuccessBuildingWorldDatabase = f"{Fore.GREEN + Colors.BOLD}[✓]{Fore.RESET} The World database was successfully built!{Colors.RESET}"
-MissingPermissonsWorldDatabaseInsert = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?).{Colors.RESET}"
-MissingPermissonsWorldDatabaseInsertRemove = f"{Fore.RED + Colors.BOLD}The world database could not be written to. \nThe entry for the newly removed package could therefore not be removed (Is spkg run as root?).{Colors.RESET}"
-RecommendedRunningAsRoot = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to install packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
-RecommendedRunningAsRootRemove = f"{Fore.YELLOW + Colors.BOLD}[!]{Fore.RESET} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur{Colors.RESET}"
-PluginNotEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is not activated.{Colors.RESET}"
-PluginIsAlreadyEnabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already enabled.{Colors.RESET}"
-PluginIsAlreadyDisabled = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Plugin is already disabled.{Colors.RESET}"
-MissingPermissonsPluginConfig = f"{Fore.RED + Colors.BOLD}The plugin config could not be edited. (Is spkg running as root?){Colors.RESET}"
-MissingPermissonsPluginInstallation = f"{Fore.RED + Colors.BOLD}The plugin could not be installed. (Is spkg running as root?){Colors.RESET}"
-UnknownOperation = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Invalid Operation: {Colors.RESET}"
-MissingPermissonsSpkgConfig = f"{Fore.RED + Colors.BOLD}The spkg config could not be edited. (Is spkg running as root?){Colors.RESET}"
-ChangedLanguage = f"{Colors.BOLD}Changed language to {Fore.CYAN}%s{Fore.RESET}{Colors.RESET}"
-UnknownLanguage = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Unknown Language.{Colors.RESET}"
-UpgradeNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform upgrades with root. This could manipulate the installation of the package!{Colors.RESET}"
-ReinstallNotAsRoot = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Do not perform reinstallations with root. This could manipulate the installation of the package!{Colors.RESET}"
-SearchingWorldForPackage = f"{Colors.BOLD}Searching through the local world database for the installed package ...{Colors.RESET}"
-UserConfigNotExists2 = f"{Fore.YELLOW + Colors.BOLD}Warning:{Fore.RESET + Colors.RESET} Your user configuration does not exist. Try to create the configuration folder ..."
-
 argv_len = len(sys.argv)
 
 # Try to connect to the locally saved main package database
@@ -125,47 +80,49 @@ if not os.path.exists(NativeDirectories.user_config):
 
 # * --- Build Function --- *
 if argv_len > 1 and argv[1] == "build":
-    # Check if second argument is world
-    if argv_len > 2 and argv[2] == "world":
-        # Ask if you really want to rebuilt the world database
-        ays_input = input(StringLoader("AskRegenWorld") + Colors.BOLD + GREEN)
-        
-        # Case Statement for input
-        match ays_input.lower():
-            # If yes, rebuilt the world database
-            case "yes" | "ja":
-                spinner = Halo(
-                    text=f"{StringLoader('BuildingWorldDatabase')}",
-                    spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
-                    text_color="white",
-                    color="green")
-                
-                spinner.start()
-                
-                wdb.close()
-                
-                try:
-                    Tools.regen_world()
-                    spinner.stop()
-                
-                # Error handling for permission errors 
-                except PermissionError:
-                    spinner.stop() 
-                    print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('BuildingWorldDatabase')}")
-                    print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}: {Fore.RESET}{StringLoader('MissingPermissions')}")
-                    print(StringLoader("MissingPermissionsWorldDatabase"))
-                    exit()
-
-                print(Colors.RESET + StringLoader("SuccessBuildingWorldDatabase"))
-                exit()
+    # case switch
+    match argv_len > 2 and argv[2]:
+        case "world":
+            pass
+            # Ask if you really want to rebuilt the world database
+            ays_input = input(StringLoader("AskRegenWorld") + Colors.BOLD + GREEN)
             
-            case _:
-                print(Colors.RESET + StringLoader("Abort"))
-                exit()
+            # Case Statement for input
+            match ays_input.lower():
+                # If yes, rebuilt the world database
+                case "yes" | "ja":
+                    spinner = Halo(
+                        text=f"{StringLoader('BuildingWorldDatabase')}",
+                        spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    wdb.close()
+                    
+                    try:
+                        Tools.regen_world()
+                        spinner.stop()
+                    
+                    # Error handling for permission errors 
+                    except PermissionError:
+                        spinner.stop() 
+                        print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('BuildingWorldDatabase')}")
+                        print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                        print(StringLoader("MissingPermissionsWorldDatabase"))
+                        exit()
+
+                    print(Colors.RESET + StringLoader("SuccessBuildingWorldDatabase"))
+                    exit()
                 
-    else:
-        print(StringLoader("NoArgument"))
-        exit()
+                case _:
+                    print(Colors.RESET + StringLoader("Abort"))
+                    exit()
+                    
+        case _:
+            print(StringLoader("NoArgument"))
+            exit()
 
 
 # * --- Package Info Function --- *
