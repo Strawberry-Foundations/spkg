@@ -17,4 +17,4 @@ plugins:
 repositories:
   main: http://sources.strawberryfoundations.xyz:49171/packages/
   test: http://sources.strawberryfoundations.xyz:49171/tests/
-  test: https://sources.strawberryfoundations.xyz/tests/
+  # test: https://sources.strawberryfoundations.xyz/tests/
