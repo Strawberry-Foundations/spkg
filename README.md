@@ -2,7 +2,7 @@
 ![version](https://img.shields.io/badge/spkg-2.0.0a3-success) 
 ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/spkg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/spkg)
-![License](https://img.shields.io/github/license/Strawberry-Foundationsv/spkg)
+![License](https://img.shields.io/github/license/Strawberry-Foundations/spkg)
 
 spkg is a package manager that downloads the source code from the official sources, and then mostly compiles it specifically for your device.
 
