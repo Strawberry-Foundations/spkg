@@ -35,10 +35,11 @@ from colorama import Fore
 from halo import Halo
 from sys import exit, argv
 
-from src.plugin_daemon import *
 from src.install import * 
 from src.remove import * 
+from src.upgrade import * 
 from src.download import *
+from src.plugin_daemon import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
@@ -625,55 +626,55 @@ elif argv_len > 1 and argv[1] == "reinstall":
 
 
 # * --- Upgrade Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "upgrade":
-    # Check if you have runned spkg with sudo
-    if os.geteuid() == 0:
-        print(UpgradeNotAsRoot)
-        time.sleep(3)
-    
-    # Check if a package was passed
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-
-    else:
-        print(NoArgument)
+elif argv_len > 1 and argv[1] == "upgrade":
+    if not argv_len > 2:
+        print(StringLoader("NoArgument"))
         exit()
+    
+    package_name = argv[2]
         
     # Check if the passed package is all or --all
-    if len(sys.argv) > 2 and sys.argv[2] == 'all' or  len(sys.argv) > 2 and sys.argv[2] == '--all':
+    if argv_len > 2 and argv[2] == 'all' or argv_len > 2 and argv[2] == '--all':
         try:
-            world_c.execute("SELECT name from world")
+            wc.execute("SELECT name from world")
         
         except OperationalError as e:
-            print(WorldDatabaseNotBuilded)
+            print(StringLoader("WorldDatabaseNotBuilded"))
             exit()
             
-        for row in world_c:
-            pkg_name = row[0]
-            Package.upgrade(pkg_name)
+        for row in wc:
+            package_name = row[0]
+            package = UpgradeManager.Upgrade(package_name)
+            package.upgrade(args=argv)
+            package.remove_world()
+            package.insert_world()
         
         exit()
-    
-    try:
-        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
-    
-    except OperationalError as e:
-        print(WorldDatabaseNotBuilded)
-        exit()
-    
-    Package.upgrade(pkg_name)
         
-    try:
-        c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
-        for row in c:
-            name = row[0]
-            version = row[1]
+    else:
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
+        
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+        
+        package = UpgradeManager.Upgrade(package_name)
+        package.upgrade(args=argv)
+        package.remove_world()
+        package.insert_world()
+            
+        try:
+            c.execute("SELECT name, version FROM packages where name = ?", (package_name,))
+            for row in c:
+                name = row[0]
+                version = row[1]
 
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
+        except OperationalError:
+            print(StringLoader("PackageDatabaseNotSynced"))
+            exit()
+        
         exit()
-    
-    exit()
 
 
 # * --- Update Function --- *
@@ -713,49 +714,6 @@ elif len(sys.argv) > 1 and sys.argv[1] == "update":
     #         if row not in result1:
     #             print(row)
     print("Currently not available")
-    exit()
-
-
-# Check ForceNoSandbox Integer Value (ONLY FOR DEBUGGING)
-elif len(sys.argv) > 1 and sys.argv[1] == "force":
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-        
-    else:
-        print("NoArgument")
-        exit()
-        
-    c.execute("SELECT arch FROM packages where name = ?", (pkg_name,))
-    
-    try:
-        result = c.fetchone()[0]
-        
-    except TypeError:
-        print(PackageNotFound)
-        exit()
-    
-    if result == "all":
-        try:
-            c.execute("SELECT ForceNoSandbox FROM packages where name = ?", (pkg_name,))
-            for row in c:
-                print(row[0])
-                exit()
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-        
-    else:
-        try:
-            c.execute("SELECT ForceNoSandbox FROM packages where name = ? AND arch = ?", (pkg_name, arch))
-            for row in c:
-                print(row[0])
-                exit()
-
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
-            exit()
-    
     exit()
     
 # * --- Plugin Managment --- *
