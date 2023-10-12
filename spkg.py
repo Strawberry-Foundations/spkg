@@ -39,7 +39,7 @@ from src.install import *
 from src.remove import * 
 from src.upgrade import * 
 from src.download import *
-from src.plugin_daemon import *
+from plugin import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
@@ -47,7 +47,7 @@ from src.vars import *
 from src.functions import *
 
 # import hardcoded plugin sandbox only if it's enabled
-if check_plugin_enabled_ret("sandbox") == True:
+if is_plugin_enabled("sandbox"):
     PluginDaemon.import_plugin("sandbox")
 else:
     pass
