@@ -39,7 +39,7 @@ from src.install import *
 from src.remove import * 
 from src.upgrade import * 
 from src.download import *
-from plugin import *
+from src.plugin import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
 from src.db import * 
