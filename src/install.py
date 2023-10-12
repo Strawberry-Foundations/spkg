@@ -654,6 +654,466 @@ class InstallManager:
                 print(StringLoader("HttpError"))
                 self.cleanup()
                 exit()
+        
+        
+            """
+                MAIN INSTALL-SANDBOX FUNCTION
+            """
+        def install_sandbox(self, args):
+            # Create and start the spinner for searching the database
+            spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
+                            spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                            text_color="white",
+                            color="green")
+                
+            spinner.start()
+            
+            # Search for the architecture
+            c.execute("SELECT arch FROM packages where name = ?", (self.package_name,))
+            
+            # fetch the result and try to lock the lockfile
+            try:
+                result = c.fetchone()[0]
+                lock(type=Procedure.Install)
+            
+            # Error Handling for TypeError
+            except TypeError:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(StringLoader('PackageNotFound'))
+                exit()
+            
+            # Error Handling for PermissionError
+            except PermissionError:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(f"{Fore.CYAN + Colors.BOLD}{Files.lockfile}: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsLockfile'))
+                exit()
+            
+            # fetch name, version, url from the package database
+            try:
+                if result == "all":
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ?", (self.package_name,))
+
+                else:
+                    c.execute("SELECT name, version, url, filename, specfile FROM packages where name = ? AND arch = ?", (self.package_name, arch))
+                    
+            except OperationalError:
+                    print(StringLoader("PackageDatabaseNotSynced"))
+                    exit()
+            
+            # fetch the results
+            try:     
+                for row in c:
+                    class Package:
+                        Name        = row[0]
+                        Version     = row[1]
+                        Url         = row[2]
+                        Filename    = row[3]
+                        Specfile    = row[4]
+                    
+                    # request the package headers and get the file size
+                    headers = requests.head(Package.Url)
+                    file_size = round(self.file_size(response=headers, type=FileSizes.Megabytes), 2)
+                    
+                    spinner.stop()
+                    print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPackage')}")
+                    
+                    # ask if you want to continue the package installation (only if you dont have passed -y flag)
+                    if not "-y" in args:
+                        try:
+                            cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+
+                        except KeyboardInterrupt as e:
+                            print(f"\n{RESET}{StringLoader('Abort')}")
+                            exit()
+
+                        if not cont_package_install.lower() in ["y", "j", "yes", "ja"]:
+                            print(RESET + StringLoader("Abort"))
+                            exit()
+                    else:
+                        print(f"{StringLoader('ContinuePackageInstallationCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                        
+                    download_time_start = time.time()
+                    
+                    spinner = Halo(
+                        text=f"{StringLoader('GettingSpecfile')}",
+                        spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # fetch specfile and save it
+                    specfile = self.fetch_url(Package.Specfile)
+                    self.file_saving(input=specfile, output="/tmp/specfile", file_extension="yml", warn_force_no_sandbox=False)
+                    
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET}{StringLoader('GettingSpecfile')}")
+
+                    spinner = Halo(
+                        text=f"{StringLoader('Get')}: {Package.Url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})",
+                        spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # oprn specfile and get the file extension for saving the package archive
+                    with open("/tmp/specfile.yml") as file:
+                        package = yaml.load(file, Loader=SafeLoader)
+                    
+                    # get package archive
+                    file = self.fetch_url(Package.Url)
+                    self.file_saving(input=file, output=f"/tmp/package", file_extension=package["Flags"]["ArchiveType"], warn_force_no_sandbox=True)
+                    
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET}{StringLoader('Get')}: {Package.Url} ({GREEN + Colors.BOLD}{file_size} MB{Colors.RESET})")
+
+                    download_time_end = time.time()
+                    
+                    print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{Package.Filename}{Colors.RESET} in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
+                    
+                    time.sleep(.4)
+                    
+                    install_time_start = time.time()
+
+                    spinner = Halo(
+                        text=f"{StringLoader('ParsingSpecfile')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # Start parsing specfile
+                    SpecName        = package["Name"]
+                    SpecVersion     = package["Version"]
+                    SpecArch        = package["Architecture"]
+                    SpecDeps        = package["Dependencies"]
+                    SpecFlags       = package["Flags"]
+                    
+                    class Commands:
+                        Install        = package["Install"]["Commands"]
+                        Remove         = package["Remove"]["Commands"]
+                        Upgrade        = package["Upgrade"]["Commands"]
+                        try: Compile   = package["Compile"]["Commands"]
+                        except: pass
+                    
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessParsingSpecfile')}")
+                    
+                    time.sleep(.1)
+                    
+                    dep_start_time = time.time()
+
+                    # determinate dependencies
+                    spinner = Halo(
+                        text=f"{StringLoader('DeterminateDependencies')} {Colors.BOLD}({get_package_manager()}){Colors.RESET}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # get package manager
+                    package_manager = get_package_manager()
+                    
+                    _apt_update = False
+                    
+                    if "-au" in  args or "--aptupdate" in args:
+                        _apt_update = True
+                        
+                    apt_support = apk_support = dnf_support = pip_support = True
+                    
+                    # case-switch for package managers
+                    match package_manager:
+                        case PackageManagers.Apt:
+                            try:
+                                apt_install(SpecDeps["Apt"].split(" "), print_output=False, update=_apt_update)
+                                deps = SpecDeps["Apt"]
+                            except Exception as e: 
+                                print("APT UNSUPPORTED")
+                                apt_support = False
+                            
+                        case PackageManagers.Apk:
+                            try:
+                                apk_install(SpecDeps["Apk"].split(" "), print_output=False)
+                                deps = SpecDeps["Apk"]
+                            except: 
+                                print("APK UNSUPPORTED")
+                                apk_support = False
+                            
+                        case PackageManagers.Dnf:
+                            try:
+                                dnf_install(SpecDeps["Dnf"].split(" "), print_output=False)
+                                deps = SpecDeps["Dnf"]
+                            except: 
+                                print("DNF UNSUPPORTED")
+                                dnf_support = False
+                        
+                        case PackageManagers.Pip:
+                            try:
+                                pip_install(SpecDeps["Pip"].split(" "), print_output=False)
+                                deps = SpecDeps["Pip"]
+                            except: 
+                                print("PIP UNSUPPORTED")
+                                pip_support = False
+                        
+                        case _:
+                            pass
+                    
+                    # if no package manager is supported, (for whatever reason, shouldnt happen) exit
+                    if (apt_support and apk_support and dnf_support and pip_support) == False:
+                        exit()
+                
+                    spinner.stop() 
+
+                    dep_end_time = time.time()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessDeterminateDependencies', argument_1=round(dep_end_time - dep_start_time, 2))} {Colors.BOLD}({get_package_manager()}){Colors.RESET}")
+                    print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{deps}{Colors.RESET}")
+                                        
+                    spinner = Halo(
+                        text=f"{StringLoader('DeterminatePipDependencies')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # Search for pip dependencies
+                    try:
+                        SpecDeps["Pip"].split(" ")
+                        spinner.stop()
+                    
+                        dep_start_time = time.time()
+
+                        spinner = Halo(
+                        text=f"{StringLoader('NeedPipDependencies')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                        spinner.start()
+                        
+                        # install pip dependencies
+                        pip_install(SpecDeps["Pip"].split(" "), print_output=False)
+                        
+                        spinner.stop()
+
+                        dep_end_time = time.time()
+
+                        print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessPipDeterminateDependencies', argument_1=round(dep_end_time - dep_start_time, 2))}")
+                        print(f"{Fore.GREEN + Colors.BOLD}↳   {Fore.RESET + Colors.RESET}{Colors.ITALIC}{SpecDeps['Pip']}{Colors.RESET}")
+                        
+                    except:
+                            spinner.stop()
+                            print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoNeedPipDependencies')} {Colors.BOLD}{Colors.RESET}")
+                    
+                    spinner = Halo(
+                        text=f"{StringLoader('ExtractArchive')}",
+                        spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                        text_color="white",
+                        color="green")
+                    
+                    spinner.start()
+                    
+                    # get file extension of archive
+                    file_extension = SpecFlags["ArchiveType"]
+                    
+                    # case-switch for file extensions
+                    match file_extension:
+                        case "tar": 
+                            import tarfile
+                            
+                            with tarfile.open(f"/tmp/package.{file_extension}", 'r') as tar:
+                                tar.extractall(path=config["build_directory"])
+                                
+                        case "tar.gz" | "gz": 
+                            import tarfile
+                            
+                            with tarfile.open(f"/tmp/package.{file_extension}", 'r:gz') as tar:
+                                tar.extractall(path=config["build_directory"])
+                            
+                        # if file extension is unsupported exit    
+                        case _:
+                            fe_unsupported = True
+                            spinner.stop()
+                            print("")
+                            delete_last_line()
+                            print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('ExtractArchive')}")
+                            print(StringLoader('ExtractError'))
+                            self.cleanup()
+                            exit()
+                    
+                    time.sleep(4)               
+                    spinner.stop()
+                    
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
+                    
+                    
+                    spinner = Halo(
+                    text=f"{StringLoader('PrepareCompile')}",
+                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                    text_color="white",
+                    color="green")
+                
+                    spinner.start()
+
+                    # Check if package has to be compiled before installing
+                    try:
+                        requires_compile = SpecFlags["RequiresCompile"]
+                        if not requires_compile:
+                            spinner.stop()
+                            print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoCompileNeed')} {Colors.BOLD}{Colors.RESET}")
+
+                        else:
+                            print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Compile')} {Colors.BOLD}{Colors.RESET}")
+                            os.chdir(config["build_directory"])
+                            compile_command = Commands.Compile
+                            
+                            # try to change to the (maybe) passed workdir
+                            try:
+                                try:
+                                    os.chdir(f"{config['build_directory']}{package['Compile']['WorkDir']}")
+                                except: 
+                                    pass
+                                
+                                # if -o flag has passed, print output
+                                if "-o" in args or "--output" in args:
+                                    shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                                    
+                                else:
+                                    shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                                
+                                # execute commands
+                                for command in compile_command:
+                                    if "-o" in args or "--output" in args:
+                                        print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
+                                        
+                                    shell.stdin.write(command + '\n')
+                                    shell.stdin.flush()
+                                    
+                                output, errors = shell.communicate()
+
+                                # print errors, if occured
+                                if not errors.rstrip() == "":
+                                    print(StringLoader("EncounteredErrors"))
+                                    print(errors)
+
+                                shell.terminate()
+
+                            except Exception as e: 
+                                print(StringLoader('InstallationError', argument_1=e))
+                                self.cleanup()
+                                exit()
+
+                    except:
+                        spinner.stop()
+                        print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('NoCompileNeed')} {Colors.BOLD}{Colors.RESET}")
+                    
+
+                    spinner = Halo(
+                    text=f"{StringLoader('PrepareInstall')}",
+                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
+                    text_color="white",
+                    color="green")
+                
+                    spinner.start()
+                    
+                    # prepare install
+                    install_command = Commands.Install
+                    
+                    spinner.stop()
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareInstall')} {Colors.BOLD}{Colors.RESET}")
+                    
+                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
+
+                    try:
+                        # try to change to the (maybe) passed workdir
+                        try:
+                            os.chdir(f"{config['build_directory']}{package['Install']['WorkDir']}")
+                        except: 
+                            pass
+                        
+                        # if -o flag has passed, print output
+                        if "-o" in args or "--output" in args:
+                            shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                            
+                        else:
+                            shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                        
+                        # execute commands
+                        for command in install_command:
+                            if "-o" in args or "--output" in args:
+                                print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
+                                
+                            shell.stdin.write(command + '\n')
+                            shell.stdin.flush()
+                            
+                        output, errors = shell.communicate()
+
+                        # print errors, if occured
+                        if not errors.rstrip() == "":
+                            print(StringLoader("EncounteredErrors"))
+                            print(errors)
+
+                        shell.terminate()
+
+                    except Exception as e: 
+                        print(StringLoader('InstallationError', argument_1=e))
+                        self.cleanup()
+                        exit()
+
+                    install_time_end = time.time()
+                    
+                    # if -k flag hasnt passed, clean temporary files
+                    if not "-k" in args or "--keep" in args:
+                        self.cleanup()
+                        
+                    print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
+            
+            # Error Handling for NameError
+            except NameError as e:
+                print(StringLoader('PackageNotFound'))
+                self.cleanup()
+                exit()
+            
+            # Error Handling for PermissionError
+            except PermissionError:
+                print("")   
+                delete_last_line()
+                print(f"{Fore.CYAN + Colors.BOLD}/tmp/: {Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsLockfile'))
+                self.cleanup()
+                exit()
+            
+            # Error Handling for ScannerError
+            except ScannerError:
+                spinner.stop()
+                delete_last_line()
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('GettingSpecfile')}")
+                print(StringLoader("ParsingError"))
+                self.cleanup()
+                exit()
+            
+            # Error Handling for some internet errors 
+            except (HTTPError, ConnectionError, NewConnectionError, MaxRetryError) as e:
+                print("")
+                delete_last_line()
+                print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
+                print(StringLoader("HttpError"))
+                self.cleanup()
+                exit()
                                
             
 #     """ 
