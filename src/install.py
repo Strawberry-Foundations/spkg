@@ -233,6 +233,33 @@ class InstallManager:
                 print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{StringLoader('MissingPermissions')}")
                 print(StringLoader('MissingPermissionsWorldDatabaseInsert'))
                 exit()
+
+        # World database insertion
+        def remove_world(self):
+            try:
+                c.execute("SELECT name, version, branch FROM packages where name = ?", (self.package_name,))
+                for row in c:
+                    name = row[0]
+                    version = row[1]
+                    branch = row[2]
+
+            except OperationalError:
+                print(StringLoader("PackageDatabaseNotSynced"))
+                exit()
+                
+            try:
+                wc.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
+                wdb.commit()
+                wdb.close()
+                
+            except OperationalError:
+                print(StringLoader("WorldDatabaseNotBuilded"))
+                exit()
+            
+            except PermissionError:
+                print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsWorldDatabaseInsert'))
+                exit()
         
         """
             MAIN INSTALL FUNCTION
