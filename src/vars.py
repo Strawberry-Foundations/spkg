@@ -1,6 +1,6 @@
 # Base Variables
 base_version            = "2.0.0"
-version                 = "2.0.0a3"
+version                 = "2.0.0beta1"
 full_ver                = "v" + version
 update_channel          = "dev"
 date                    = "20231012"
