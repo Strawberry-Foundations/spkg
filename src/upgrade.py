@@ -330,7 +330,7 @@ class UpgradeManager:
                     # ask if you want to continue the package installation (only if you dont have passed -y flag)
                     if not "-y" in args:
                         try:
-                            cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                            cont_package_install = input(f"{StringLoader('ContinuePackageUpdate', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
 
                         except KeyboardInterrupt as e:
                             print(f"\n{RESET}{StringLoader('Abort')}")
@@ -340,7 +340,7 @@ class UpgradeManager:
                             print(RESET + StringLoader("Abort"))
                             exit()
                     else:
-                        print(f"{StringLoader('ContinuePackageInstallationCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                        print(f"{StringLoader('ContinuePackageUpdateCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
                         
                     download_time_start = time.time()
                     
@@ -626,7 +626,7 @@ class UpgradeManager:
                     
 
                     spinner = Halo(
-                    text=f"{StringLoader('PrepareInstall')}",
+                    text=f"{StringLoader('PrepareUpdate')}",
                     spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
                     text_color="white",
                     color="green")
@@ -634,12 +634,12 @@ class UpgradeManager:
                     spinner.start()
                     
                     # prepare install
-                    install_command = Commands.Install
+                    update_command = Commands.Upgrade
                     
                     spinner.stop()
-                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareInstall')} {Colors.BOLD}{Colors.RESET}")
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareUpdate')} {Colors.BOLD}{Colors.RESET}")
                     
-                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
+                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Update')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
                         # try to change to the (maybe) passed workdir
@@ -656,7 +656,7 @@ class UpgradeManager:
                             shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                         
                         # execute commands
-                        for command in install_command:
+                        for command in update_command:
                             if "-o" in args or "--output" in args:
                                 print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
                                 
@@ -669,14 +669,14 @@ class UpgradeManager:
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
                             print(errors)
-                            print(StringLoader('InstallationError', argument_1=e))
+                            print(StringLoader('UpdateError', argument_1=e))
                             self.cleanup()
                             exit()
 
                         shell.terminate()
 
                     except Exception as e: 
-                        print(StringLoader('InstallationError', argument_1=e))
+                        print(StringLoader('UpdateError', argument_1=e))
                         self.cleanup()
                         exit()
 
@@ -686,7 +686,7 @@ class UpgradeManager:
                     if not "-k" in args or "--keep" in args:
                         self.cleanup()
                         
-                    print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
+                    print(StringLoader('SuccessUpdate', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
             
             # Error Handling for NameError
             except NameError as e:
@@ -746,7 +746,7 @@ class UpgradeManager:
             # fetch the result and try to lock the lockfile
             try:
                 result = c.fetchone()[0]
-                lock(type=Procedure.Install)
+                lock(type=Procedure.Upgrade)
             
             # Error Handling for TypeError
             except TypeError:
@@ -797,7 +797,7 @@ class UpgradeManager:
                     # ask if you want to continue the package installation (only if you dont have passed -y flag)
                     if not "-y" in args:
                         try:
-                            cont_package_install = input(f"{StringLoader('ContinuePackageInstallation', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                            cont_package_install = input(f"{StringLoader('ContinuePackageUpdate', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
 
                         except KeyboardInterrupt as e:
                             print(f"\n{RESET}{StringLoader('Abort')}")
@@ -807,7 +807,7 @@ class UpgradeManager:
                             print(RESET + StringLoader("Abort"))
                             exit()
                     else:
-                        print(f"{StringLoader('ContinuePackageInstallationCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
+                        print(f"{StringLoader('ContinuePackageUpdateCompact', argument_1=Package.Filename, argument_2=file_size)}{Colors.RESET}{GREEN}")
                         
                     download_time_start = time.time()
                     
@@ -1093,7 +1093,7 @@ class UpgradeManager:
                     
 
                     spinner = Halo(
-                    text=f"{StringLoader('PrepareInstall')}",
+                    text=f"{StringLoader('PrepareUpdate')}",
                     spinner={'interval': 500, 'frames': ['.  ', '.. ', '...']},
                     text_color="white",
                     color="green")
@@ -1101,12 +1101,12 @@ class UpgradeManager:
                     spinner.start()
                     
                     # prepare install
-                    install_command = Commands.Install
+                    update_command = Commands.Upgrade
                     
                     spinner.stop()
-                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareInstall')} {Colors.BOLD}{Colors.RESET}")
+                    print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('PrepareUpdate')} {Colors.BOLD}{Colors.RESET}")
                     
-                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Install')} {Colors.BOLD}{Colors.RESET}")
+                    print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Update')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
                         # try to change to the (maybe) passed workdir
@@ -1123,7 +1123,7 @@ class UpgradeManager:
                             shell = subprocess.Popen(['/bin/bash'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                         
                         # execute commands
-                        for command in install_command:
+                        for command in update_command:
                             if "-o" in args or "--output" in args:
                                 print(f"{MAGENTA + Colors.BOLD}@{Colors.RESET + CYAN}{command}{RESET}")
                                 
@@ -1136,11 +1136,14 @@ class UpgradeManager:
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
                             print(errors)
+                            print(StringLoader('UpdateError', argument_1=e))
+                            self.cleanup()
+                            exit()
 
                         shell.terminate()
 
                     except Exception as e: 
-                        print(StringLoader('InstallationError', argument_1=e))
+                        print(StringLoader('UpdateError', argument_1=e))
                         self.cleanup()
                         exit()
 
@@ -1150,7 +1153,7 @@ class UpgradeManager:
                     if not "-k" in args or "--keep" in args:
                         self.cleanup()
                         
-                    print(StringLoader('SuccessInstall', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
+                    print(StringLoader('SuccessUpdate', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
             
             # Error Handling for NameError
             except NameError as e:
