@@ -37,7 +37,7 @@ from sys import exit, argv
 
 from src.plugin_daemon import *
 from src.install import * 
-# from src.remove import * 
+from src.remove import * 
 from src.download import *
 from src.force_no_sandbox import *
 from src.arch import ARCH
@@ -380,7 +380,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
 
 
 # * --- Install Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "install":
+elif argv_len > 1 and argv[1] == "install":
     if not argv_len > 2:
         print(StringLoader("NoArgument"))
         exit()
@@ -458,141 +458,170 @@ elif len(sys.argv) > 1 and sys.argv[1] == "install":
 
 
 # * --- Remove Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "remove":
-    # Check if you have runned spkg with sudo
-    if os.geteuid() == 0:
-        None
-    else:
-        print(RecommendedRunningAsRootRemove)
-        
-    # Check if a package was passed
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-
-    else:
-        print(NoArgument)
+elif argv_len > 1 and argv[1] == "remove":
+    if not argv_len > 2:
+        print(StringLoader("NoArgument"))
         exit()
     
-    spinner_world_search = Halo(text=f"{SearchingWorldForPackage}", spinner={
-                             'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
-    spinner_world_search.start()
-        
-        
-    # Check if package is already installed
+    package_name = argv[2]
+    
+    spinner = Halo(text=f"{StringLoader('SearchingWorldForPackage')}",
+                   spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                   text_color="white",
+                   color="green")
+    
+    spinner.start()
+    
+    # Fetch world database and check if package is already installed
     try:
-        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
-        spinner_world_search.stop()
-        print(f"{Fore.GREEN + Colors.BOLD}[\] {Fore.RESET + Colors.RESET}{SearchingWorldForPackage}")
+        wc.execute("SELECT name from world where name = ?", (package_name,))
 
     except OperationalError as e:
-        print(WorldDatabaseNotBuilded)
+        print(StringLoader("WorldDatabaseNotBuilded"))
         exit()
 
-    if not world_c.fetchall():
-        print(PackageNotInstalledRemove)
+    if not wc.fetchall():
+        spinner.stop()
+        print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingWorldForPackage')}")
+        print(StringLoader("PackageNotInstalledRemove"))
         exit()
         
-    else:
-        pass
-    
-        # Check if Package even exists
+    if argv_len > 2 and "--sandbox" in argv or "-s" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--sandbox", "").replace("-s", "").replace("install", "").replace(" ", "")
+        
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
         try:
-            c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-            for row in c:
-                name = row[0]
-                version = row[1]
-                branch = row[2]
+            wc.execute("SELECT name from world where name = ?", (package_name,))
 
-        except OperationalError:
-            print(PackageDatabaseNotSynced)
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
             exit()
-        
-        if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
-            if len(sys.argv) > 3:
-                pkg_name = sys.argv[3]
-            sandbox_remove(pkg_name)
-            
-            if os.geteuid() == 0:
-                None
-                
-            else:
-                print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-                print(MissingPermissonsWorldDatabaseInsertRemove)
-                exit()
-                
-            try:
-                c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-                for row in c:
-                    name = row[0]
-                    version = row[1]
-                    branch = row[2]
 
-            except OperationalError:
-                print(PackageDatabaseNotSynced)
-                exit()
+        if not wc.fetchall():
+            spinner.stop()
+            print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingWorldForPackage')}")
+            print(StringLoader("PackageNotInstalledRemove"))
+            exit()
         
-            world_c.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
-            world_db.commit()
-            
-            exit()
-            
-        elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
-            if len(sys.argv) > 3:
-                pkg_name = sys.argv[3]
-            print("Currently not working ...")
-            exit()
-            
-        # Install the package
-        remove(pkg_name)
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingWorldForPackage')}")
         
-        if os.geteuid() == 0:
-                None
-        else:
-            print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-            print(MissingPermissonsWorldDatabaseInsertRemove)
-            exit()
+        package = RemoveManager.Remove(package_name)
+        package.remove(args="argv")
+        package.remove_world()
+        exit()
     
-        world_c.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
-        world_db.commit()
-        world_db.close()
+    elif argv_len > 2 and "--docker" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--docker", "").replace("install", "").replace(" ", "")
         
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
+
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+
+        if not wc.fetchall():
+            spinner.stop()
+            print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingWorldForPackage')}")
+            print(StringLoader("PackageNotInstalledRemove"))
+            exit()
+        
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingWorldForPackage')}")
+        
+        package = RemoveManager.Remove(package_name)
+        package.remove(args="argv")
+        package.remove_world()
+        exit()
+        
+    else:        
+        spinner.stop()
+        print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingWorldForPackage')}")
+        
+        package = RemoveManager.Remove(package_name)
+        package.remove(args="")
+        package.remove_world()
         exit()
 
 
 # * --- Reinstall Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "reinstall":
-    # Check if you have runned spkg with sudo
-    if os.geteuid() == 0:
-        print(ReinstallNotAsRoot)
-        time.sleep(3)
-        
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
-
-    else:
-        print(NoArgument)
+elif argv_len > 1 and argv[1] == "reinstall":
+    if not argv_len > 2:
+        print(StringLoader("NoArgument"))
         exit()
     
-    try:
-        world_c.execute("SELECT name from world where name = ?", (pkg_name,))
+    package_name = argv[2]
     
+    # Fetch world database and check if package is already installed
+    try:
+        wc.execute("SELECT name from world where name = ?", (package_name,))
+
     except OperationalError as e:
-        print(WorldDatabaseNotBuilded)
+        print(StringLoader("WorldDatabaseNotBuilded"))
         exit()
-    
-    Package.install(pkg_name)
         
-    try:
-        c.execute("SELECT name, version FROM packages where name = ?", (pkg_name,))
-        for row in c:
-            name = row[0]
-            version = row[1]
+    if argv_len > 2 and "--sandbox" in argv or "-s" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--sandbox", "").replace("-s", "").replace("install", "").replace(" ", "")
+        
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
 
-    except OperationalError:
-        print(PackageDatabaseNotSynced)
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+        
+        package = InstallManager.Installer(package_name)
+        package.install_sandbox(args=argv)
+        package.remove_world()
+        package.insert_world()
         exit()
     
-    exit()
+    elif argv_len > 2 and "--docker" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--docker", "").replace("install", "").replace(" ", "")
+        
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
+
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+        
+        package = InstallManager.Installer(package_name)
+        package.install_sandbox(args=argv)
+        package.remove_world()
+        package.insert_world()
+        exit()
+        
+    else:
+        package = InstallManager.Installer(package_name)
+        package.install(args=argv)
+        package.remove_world()
+        package.insert_world()
+        exit()
 
 
 # * --- Upgrade Function --- *
