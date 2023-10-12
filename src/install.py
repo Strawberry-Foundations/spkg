@@ -1022,8 +1022,7 @@ class InstallManager:
                             print(StringLoader('ExtractError'))
                             self.cleanup()
                             exit()
-                    
-                    time.sleep(4)               
+                             
                     spinner.stop()
                     
                     print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
