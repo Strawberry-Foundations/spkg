@@ -74,26 +74,27 @@ class PluginDaemon:
 def is_plugin_enabled(plugin, return_as_string: bool = False):
     plugin_data = config["plugins"][plugin]
     if plugin_data:
-        if return_as_string: return StringLoader("Enabled")
+        if return_as_string: return GREEN + StringLoader("Enabled")
         else: return True
         
     else:
-        if return_as_string: return StringLoader("Disabled")
+        if return_as_string: return RED + StringLoader("Disabled")
         else: return False
 
 
 class PluginManagement:
     def list_plugins():
-        print(f"{Colors.BOLD + Colors.UNDERLINE}{PluginManagementStr} -> {InstalledPlugins}\n")
+        print(f"{Colors.BOLD + Colors.UNDERLINE}{StringLoader('PluginManagement')} -> {StringLoader('InstalledPlugins')}\n")
         try:
             for entry in config["plugins"]:
                 PluginDaemon.import_plugin(entry)
                 
                 print(f"{Fore.GREEN + Colors.BOLD + Colors.UNDERLINE}{module.Spec.Name} ({entry}){Fore.RESET + Colors.RESET}")
-                print(f"{Fore.CYAN + Colors.BOLD}{Description}:{Fore.RESET + Colors.RESET} {module.Spec.Desc}")
-                print(f"{Fore.CYAN + Colors.BOLD}{Condition}:{Fore.RESET + Colors.RESET} {check_plugin_enabled_ret(entry)}")
-                print(f"{Fore.CYAN + Colors.BOLD}{Version}:{Fore.RESET + Colors.RESET} {module.Spec.Version}")
-                print(f"{Fore.CYAN + Colors.BOLD}{Commands}:{Fore.RESET + Colors.RESET} {module.Spec.Commands}")
+                print(f"{Fore.CYAN + Colors.BOLD}{StringLoader('Description')}:{Fore.RESET + Colors.RESET} {module.Spec.Desc}")
+                print(f"{Fore.CYAN + Colors.BOLD}{StringLoader('Condition')}:{Fore.RESET + Colors.RESET} {is_plugin_enabled(entry, return_as_string=True)}")
+                print(f"{Fore.CYAN + Colors.BOLD}{StringLoader('Version')}:{Fore.RESET + Colors.RESET} {module.Spec.Version}")
+                print(f"{Fore.CYAN + Colors.BOLD}{StringLoader('Commands')}:{Fore.RESET + Colors.RESET} {module.Spec.Commands}")
+                
         except FileNotFoundError:
             print(UserConfigNotExists)
     
@@ -103,9 +104,8 @@ class PluginManagement:
             plugin_handler = module.Commands
             getattr(plugin_handler, cmd)()
             
-        except AttributeError as Err:
-            print(ErrorOccured)
-            print(f"{Fore.RED + Colors.BOLD}{ErrCode} 043:{Fore.RESET + Colors.BOLD} {Err}")
+        except AttributeError as e:
+            print(StringLoader("ErrorExecutingPluginCommand", argument_1=cmd, argument_2=e))
     
     
     def marketplace():
@@ -122,11 +122,11 @@ class PluginManagement:
                 exit()
 
         except OperationalError:
-            print(PackageDatabaseNotSynced)
+            print(StringLoader("PackageDatabaseNotSynced"))
     
     
     def get(name):
-        spinner_db_search = Halo(text=f"{SearchingDatabaseForPackage}", spinner={'interval': 150, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
+        spinner_db_search = Halo(text=f"{StringLoader('SearchingDatabaseForPlugin')}", spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
         spinner_db_search.start()
 
         
@@ -137,11 +137,11 @@ class PluginManagement:
             filename = row[2]
 
             spinner_db_search.stop()
-            print(f"{Fore.GREEN + Colors.BOLD}[/] {Fore.RESET + Colors.RESET}{SearchingDatabaseForPackage}")
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingDatabaseForPlugin')}")
             
             download_time_start = time.time()
             
-            spinner = Halo(text=f"{StrGet}: {url}", spinner={'interval': 150, 'frames': [
+            spinner = Halo(text=f"{StringLoader('Get')}: {url}", spinner={'interval': 200, 'frames': [
                             '[-]', '[\\]', '[|]', '[/]']}, text_color="white", color="green")
             spinner.start()
             
@@ -168,7 +168,7 @@ class PluginManagement:
             print(PluginInstalledSuccess % name)
 
         except HTTPError as e:
-            print(UnknownError)
+            print(StringLoader("UnknownError"))
             print(e)
 
         except NameError as e:
@@ -176,5 +176,5 @@ class PluginManagement:
             exit()
 
         except KeyboardInterrupt as e:
-            print(f"\n{Canceled}")
+            print(f"\n{StringLoader('Canceled')}")
             exit()
