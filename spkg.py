@@ -745,7 +745,7 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
                 exit()
 
             except OperationalError:
-                print(PackageDatabaseNotSynced)
+                print(StringLoader("PackageDatabaseNotSynced"))
         else:
             PluginManagement.marketplace()
             exit()
