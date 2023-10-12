@@ -638,6 +638,7 @@ class UpgradeManager:
                     print(f"{Fore.BLUE + Colors.BOLD}!   {Fore.RESET}{StringLoader('Update')} {Colors.BOLD}{Colors.RESET}")
 
                     try:
+                        os.chdir(config["build_directory"])
                         # try to change to the (maybe) passed workdir
                         try:
                             os.chdir(f"{config['build_directory']}{package['Install']['WorkDir']}")
