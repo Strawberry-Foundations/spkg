@@ -252,7 +252,7 @@ class RemoveManager:
             # fetch the result and try to lock the lockfile
             try:
                 result = c.fetchone()[0]
-                lock(type=Procedure.Install)
+                lock(type=Procedure.Remove)
             
             # Error Handling for TypeError
             except TypeError:
