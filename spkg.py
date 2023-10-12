@@ -264,7 +264,7 @@ elif argv_len > 1 and argv[1] == "download":
             c.execute("SELECT name from packages")
         
         except OperationalError as e:
-            print(PackageDatabaseNotSynced)
+            print(StringLoader("PackageDatabaseNotSynced"))
             exit()
             
         for row in c:
