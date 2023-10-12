@@ -1,8 +1,8 @@
 # **Advanced Source Package Managment (spkg)**
-![spkg - v1.6.0](https://img.shields.io/badge/spkg-1.6.0-success) 
-![Code Size](https://img.shields.io/github/languages/code-size/Juliandev02/spkg)
-![Commit activity](https://img.shields.io/github/commit-activity/w/Juliandev02/spkg)
-![License](https://img.shields.io/github/license/Juliandev02/spkg)
+![version](https://img.shields.io/badge/spkg-2.0.0a3-success) 
+![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/spkg)
+![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/spkg)
+![License](https://img.shields.io/github/license/Strawberry-Foundationsv/spkg)
 
 spkg is a package manager that downloads the source code from the official sources, and then mostly compiles it specifically for your device.
 
@@ -44,7 +44,7 @@ spkg offers a convenient plugin system, allowing users to enable advanced featur
 
 ## **Sandbox  ![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-important)**
 
-![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-1.3.0-informational)
+![spkg-sandbox](https://img.shields.io/badge/spkg--sandbox-2.0.0-informational)
 ![sandbox-release](https://img.shields.io/badge/Release-stable-success)
 ![sandbox-methods](https://img.shields.io/badge/Methods-bwrap%2C%20chroot-important)
 ![sandbox-architetures](https://img.shields.io/badge/Architectures-x86__64%2C%20x86%2C%20aarch64-success)
@@ -71,16 +71,17 @@ spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or hi
 | Python 3.9    | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.10   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.11   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
-| Python 3.12   | ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
+| Python 3.12   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 
 ## **Linux Support**
 Distrobutions and versions that are not listed are not supported by us. 
 | Platform  | Version       | Supported     | Branch                                                    | Package Method    |
 | --        | --            | --            | --                                                        | --                |   
+| coreOS    | 1.0           | Yes           | ![](https://img.shields.io/badge/-Future-orange)          | native, sandbox, docker, copt
 | Debian    | 9 and below   | No            | ![](https://img.shields.io/badge/-End_of_Life-red)        | -
-| Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldStable-yellowgreen)  | native, sandbox, docker
-| Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
-| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Future-success)  | native, sandbox, docker
+| Debian    | 10            | Yes           | ![](https://img.shields.io/badge/-OldOldStable-yellowgreen)| native, sandbox, docker
+| Debian    | 11            | Yes           | ![](https://img.shields.io/badge/-OldStable-success)      | native, sandbox, docker
+| Debian    | 12            | Yes           | ![](https://img.shields.io/badge/-Stable-success)         | native, sandbox, docker
 | Debian    | Sid           | Yes           | ![](https://img.shields.io/badge/-Unstable-orange)        | native, sandbox, docker
 | Ubuntu    | 16.04         | No            | ![](https://img.shields.io/badge/-ESM-orange)             | -
 | Ubuntu    | 18.04         | Not offical   | ![](https://img.shields.io/badge/-LTS-yellowgreen)        | sandbox, docker
