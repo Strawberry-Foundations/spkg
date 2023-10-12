@@ -17,11 +17,7 @@
 
 from colorama import Fore
 from sys import exit
-from init import lang, langs
-
-# If language is not correct exit
-if not lang in langs:
-    exit()
+from init import lang
 
 # Language Strings
 match lang:
