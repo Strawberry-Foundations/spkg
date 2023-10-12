@@ -160,6 +160,10 @@ de_DE:
   RemoveDependenciesForYourself: "Wenn du die folgenden Abhängigkeiten dieses Paketes nicht mehr benötigst, kannst du diese selber bei Bedarf entfernen.\n    Bitte beachte das manche der Abhängigkeiten wichtig für das System sein könnten!"
   Remove: "Paket wird entfernt..."
   SuccessRemove: "{green}{bold}%s wurde in %c s entfernt."
+
+  # Upgrade messages
+  ContinuePackageUpdate: "{creset}Zum Aktualisieren dieses Paketes muss das Paket {cyan}{bold}%s{creset} heruntergeladen werden. \nDafür werden {green}{bold}%c MB{creset} an Update-Daten benötigt. Fortfahren? [J/N] "
+  ContinuePackageUpdateCompact: "{creset}Das Paket {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} wird nun heruntergeladen und aktualisiert."
   
 
 
@@ -325,3 +329,7 @@ en_US:
   RemoveDependenciesForYourself: "If you don't need the following dependencies of this package anymore, you can remove them yourself if needed.\n    Please note that some of the dependencies might be important for the system!"
   Remove: "Package will be removed..."
   SuccessRemove: "{green}{bold}%s has been removed in %c s."
+
+  # Upgrade messages
+  ContinuePackageUpdate: "{creset}To update this package, the {cyan}{bold}%s{creset} package must be downloaded. \This requires {green}{bold}%c MB{creset} of update data. Continue? [Y/N]"
+  ContinuePackageUpdateCompact: "{creset}The package {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} will now be downloaded and updated."
