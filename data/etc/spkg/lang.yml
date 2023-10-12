@@ -62,6 +62,7 @@ de_DE:
   InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden (%s)"
   ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
   EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
+  UninstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht entfernt werden (%s)"
   
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
@@ -145,6 +146,7 @@ de_DE:
   # Uninstallation messages
   RequiresArchiveForUninstall: "Dieses Paket benötigt das Paketarchiv, um mit der Entfernung fortzufahren."
   RemoveDependenciesForYourself: "Wenn du die folgenden Abhängigkeiten dieses Paketes nicht mehr benötigst, kannst du diese selber bei Bedarf entfernen.\nBitte beachte das manche der Abhängigkeiten wichtig für das System sein könnten!"
+  Remove: "Paket wird entfernt..."
 
   
 
@@ -213,6 +215,7 @@ en_US:
   InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
   ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
   EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
+  UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
 
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Do not perform upgrades with root. This could manipulate the installation of the package!"
@@ -296,3 +299,4 @@ en_US:
   # Uninstallation messages
   RequiresArchiveForUninstall: "This package requires the package archive to proceed with removal."
   RemoveDependenciesForYourself: "If you don't need the following dependencies of this package anymore, you can remove them yourself if needed.\nPlease note that some of the dependencies might be important for the system!"
+  Remove: "Package will be removed..."
