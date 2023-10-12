@@ -52,7 +52,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-argv_len = len(sys.argv)
+argv_len = argv_len
 
 # Try to connect to the locally saved main package database
 try:
@@ -297,7 +297,7 @@ elif argv_len > 1 and argv[1] == "download":
             package.compact_download()
         
         
-        packages = ', '.join(sys.argv[2:])
+        packages = ', '.join(argv[2:])
         download_time_end = time.time()
         
         print(f"{StringLoader('FinishedDownloading')} {Fore.CYAN + Colors.BOLD}{packages} {Colors.RESET}in {round(download_time_end - download_time_start, 2)} s{Colors.RESET}")
@@ -310,7 +310,7 @@ elif argv_len > 1 and argv[1] == "download":
 
 
 # * --- Sync Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "sync":
+elif argv_len > 1 and argv[1] == "sync":
     start_time          = time.time()
     success_counter     = 0 
     unsuccess_counter   = 0
@@ -678,7 +678,7 @@ elif argv_len > 1 and argv[1] == "upgrade":
 
 
 # * --- Update Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "update":
+elif argv_len > 1 and argv[1] == "update":
     # tableCompare = "SELECT name, version FROM world WHERE packages='table' order by name"
     
     # result1 = world_c.execute(tableCompare)
@@ -717,14 +717,14 @@ elif len(sys.argv) > 1 and sys.argv[1] == "update":
     exit()
     
 # * --- Plugin Managment --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys.argv[1] == "plugin":
-    if len(sys.argv) > 2 and sys.argv[2] == "list":
+elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugin":
+    if argv_len > 2 and argv[2] == "list":
         PluginManagement.list_plugins()
 
 
     # Plugin Command Execution
-    elif len(sys.argv) > 4 and sys.argv[2] == "exec":
-        plugin = sys.argv[3]
+    elif argv_len > 4 and argv[2] == "exec":
+        plugin = argv[3]
 
         if check_plugin_enabled_silent(plugin) == False: 
             print(PluginNotEnabled)
@@ -732,12 +732,12 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
 
         else: 
             PluginDaemon.import_plugin(plugin)
-            PluginManagement.exec(sys.argv[4])
+            PluginManagement.exec(argv[4])
             
     
         # Plugin Marketplace
-    elif len(sys.argv) > 2 and sys.argv[2] == "market":
-        if len(sys.argv) > 3 and sys.argv[3] == "list":
+    elif argv_len > 2 and argv[2] == "market":
+        if argv_len > 3 and argv[3] == "list":
             try:
                 c.execute("SELECT * FROM plugins")
                 for row in c:
@@ -752,8 +752,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
             
             
     # Enable a plugin
-    elif len(sys.argv) > 3 and sys.argv[2] == "enable":
-        plugin = sys.argv[3]
+    elif argv_len > 3 and argv[2] == "enable":
+        plugin = argv[3]
         
         if os.geteuid() == 0:
             None
@@ -779,8 +779,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
 
 
     # Disable a plugin
-    elif len(sys.argv) > 3 and sys.argv[2] == "disable":
-        plugin = sys.argv[3]
+    elif argv_len > 3 and argv[2] == "disable":
+        plugin = argv[3]
         
         if os.geteuid() == 0:
             None
@@ -806,8 +806,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
                 
         
     # Installs a plugin
-    elif len(sys.argv) > 3 and sys.argv[2] == "get":
-        plugin = sys.argv[3]
+    elif argv_len > 3 and argv[2] == "get":
+        plugin = argv[3]
         
         if os.geteuid() == 0:
             None
@@ -820,8 +820,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
         PluginManagement.get(plugin)
             
     # Execution of a plugin-command without 'exec'
-    elif len(sys.argv) > 3: 
-        plugin = sys.argv[2]
+    elif argv_len > 3: 
+        plugin = argv[2]
 
         try: 
             if check_plugin_enabled_silent(plugin) == False: 
@@ -834,7 +834,7 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
 
         else: 
             PluginDaemon.import_plugin(plugin)
-            PluginManagement.exec(sys.argv[3])
+            PluginManagement.exec(argv[3])
 
 
     # If no Argument was passed, print an error
@@ -846,8 +846,8 @@ elif len(sys.argv) > 1 and sys.argv[1] == "plugins" or len(sys.argv) > 1 and sys
     
     
 # * --- Config Function --- *
-if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
-    if len(sys.argv) > 3 and (sys.argv[2] == "language" or sys.argv[2] == "lang"):
+if argv_len > 1 and (argv[1] == "config" or argv[1] == "conf"):
+    if argv_len > 3 and (argv[2] == "language" or argv[2] == "lang"):
         try:
             if os.geteuid() == 0:
                 None
@@ -856,7 +856,7 @@ if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
                 print(MissingPermissonsSpkgConfig)
                 exit()
                 
-            lang = sys.argv[3]
+            lang = argv[3]
             
             # if not lang == "de" or not lang == "en": 
             #     print(UnknownLanguage)
@@ -886,53 +886,42 @@ if len(sys.argv) > 1 and (sys.argv[1] == "config" or sys.argv[1] == "conf"):
         print(NoArgument)
         exit()
         
-        
-# * --- Help Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "help":
-    if language == "en":
-        help_en()
-    elif language == "de":
-        help_de()
+# Plugin Executor WITHOUT using spkg plugin <...>
+elif argv_len > 2: 
+    plugin = argv[1]
 
+    try: 
+        if check_plugin_enabled_silent(plugin) == False: 
+            print(StringLoader("PluginNotEnabled"))
+            exit()
+            
+    except KeyError:
+        print(StringLoader("NoArgument"))
+        exit()
+
+    else: 
+        PluginDaemon.import_plugin(plugin)
+        PluginManagement.exec(argv[2])
+
+
+elif argv_len > 1 and argv[1] != "help":
+    print(StringLoader("UnknownOperation"), argv[1])
+    exit()
 
 # * --- License Function --- *
-elif len(sys.argv) > 1 and sys.argv[1] == "license":
+elif argv_len > 1 and argv[1] == "license":
     print("""
     Advanced Source Package Managment (spkg) Copyright (C) 2023  Juliandev02
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions
           """)
+    
+# * --- Help Function --- *
+elif argv_len > 1 and argv[1] == "help":
+    print(StringLoader("Help", argument_1=a_info_msg))
 
-
-# Plugin Executor WITHOUT using spkg plugin <...>
-elif len(sys.argv) > 2: 
-    plugin = sys.argv[1]
-
-    try: 
-        if check_plugin_enabled_silent(plugin) == False: 
-            print(PluginNotEnabled)
-            exit()
-            
-    except KeyError:
-        print(NoArgument)
-        exit()
-
-    else: 
-        PluginDaemon.import_plugin(plugin)
-        PluginManagement.exec(sys.argv[2])
-
-
-elif len(sys.argv) > 1 and sys.argv[1] != "help":
-    print(f"{UnknownOperation}{sys.argv[1]}")
-    exit()
-
-
-else:
-    # if language == "en_US":
-    #     help_en()
-    # elif language == "de_DE":
-    #     help_de()        
+else:    
     print(StringLoader("Help", argument_1=a_info_msg))
 
 db.close()
