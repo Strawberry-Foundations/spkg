@@ -67,8 +67,8 @@ spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or hi
 
 | Version       | Supported | Status                                                    |
 | --            | --        | --                                                        | 
-| Python 3.8    | ?         | ![](https://img.shields.io/badge/-Untested-orange)        |
-| Python 3.9    | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
+| Python 3.8    | No        | ![](https://img.shields.io/badge/-Not_working-orange)     |
+| Python 3.9    | No        | ![](https://img.shields.io/badge/-Not_working-orange)     |
 | Python 3.10   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.11   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
 | Python 3.12   | Yes       | ![](https://img.shields.io/badge/-Tested,_Working-success)|
