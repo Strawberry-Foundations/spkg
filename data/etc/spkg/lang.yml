@@ -80,6 +80,7 @@ de_DE:
   PackageNotInstalled: "{yellow}{bold}W:{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
   PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
   ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen {green}{bold}%c MB{creset} heruntergeladen werden. Fortfahren? [J/N] "
+  ContinuePackageUninstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun entfernt. \nDafür muss die Paketkonfigurationsdatei heruntergeladen werden. Fortfahren? [J/N] "
   ContinuePackageInstallationCompact: "{creset}Das Paket {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} wird nun heruntergeladen und installiert."
   ContinuePackageDownload: "{creset}Das Archiv {cyan}{bold}%s{creset} wird nun heruntergeladen. Fortfahren? [J/N] "
   SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}{bold}spkg update{reset}{creset} aus, um nach Paketupdates zu suchen."
@@ -139,6 +140,9 @@ de_DE:
   PrepareInstall: "Paketinstallation wird vorbereitet..."
   Install: "Paket wird installiert..."
   SuccessInstall: "{green}{bold}%s wurde in %c s installiert."
+
+  # Uninstallation messages
+
   
 
 
@@ -224,6 +228,7 @@ en_US:
   PackageNotInstalled: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to upgrade."
   PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to uninstall."
   ContinuePackageInstallation: "{creset}The package {cyan}{bold}%s{creset} will now be downloaded. \nThis requires {green}{bold}%c MB{creset} to be downloaded. Continue? [Y/N] "
+  ContinuePackageUninstallation: "{creset}The {cyan}{bold}%s{creset} package will now be removed. \nFor this, the package configuration file must be downloaded. Continue? [Y/N] "
   ContinuePackageInstallationCompact: "{creset}The package {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} will now be downloaded and installed."
   ContinuePackageDownload: "{creset}The archiv {cyan}{bold}%s{creset} will now be downloaded. Continue? [Y/N] "
   SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}{bold}spkg update{reset}{creset} to check for package updates."
