@@ -38,7 +38,7 @@ from yaml.scanner import ScannerError
 
 from init import *
 from src.functions import delete_last_line, lock
-from plugin import PluginDaemon, is_plugin_enabled
+from src.plugin import PluginDaemon, is_plugin_enabled
 from src.force_no_sandbox import *
 from src.package_manager import *
 
