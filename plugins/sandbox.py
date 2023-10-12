@@ -309,6 +309,9 @@ class Commands:
             subprocess.run(clean_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             subprocess.run(autoclean_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             subprocess.run(update_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            spinner.stop()
+            print(f"{GREEN + Colors.BOLD} ✓ {RESET} Updated base sandbox")
 
         # Modify sandbox for the best program compability
         print(f"{Fore.CYAN + Colors.BOLD} ! {Fore.RESET + RESET} Modifying /etc/apt/sources.list for the best program compability")
@@ -433,33 +436,39 @@ class Commands:
     # Remove spkg sandbox
     def remove():
         try:
-            cont_sandbox_remove = input(f"{Fore.BLUE + Colors.BOLD}Info:{Fore.RESET + RESET} This will completly remove the spkg-sandbox. Note that this does not remove the packages from the world database.\nDo you want to continue? [Y/N] ")
+            cont_sandbox_remove = input(f"{Fore.YELLOW + Colors.BOLD} W: {Colors.RESET}This will completly remove the spkg-sandbox. Note that this does not remove the packages from the world database.\n    Do you want to continue? [Y/N] {GREEN}")
 
         # If you press ^C, it prints out a error message
         except KeyboardInterrupt as e:
-            print(f"\n{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{RESET}")
+            print(f"\n{Fore.RED + Colors.BOLD} × {Fore.RESET} Process canceled!{RESET}")
             exit()
-
-        # Check if you want to continue the sandbox setup
-        if cont_sandbox_remove.lower() == "j":
-            print(f"{Fore.YELLOW + Colors.BOLD}>>>{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
-            os.system(f"sudo rm -rf {bootstrap_location}")
-            exit()
-
-        elif cont_sandbox_remove.lower() == "y":
-            print(f"{Fore.YELLOW + Colors.BOLD}>>>{Fore.RESET + RESET} Removing sandbox ... This can take some time.")
-            os.system(f"sudo rm -rf {bootstrap_location}")
-            exit()
-        
-        # If you press any other key, it prints out an error message
-        else:
-            print("Aborting ...")
-            exit()
+        try:
+            if cont_sandbox_remove.lower() in ["j", "y"]:
+                spinner = Halo(text=f"Removing sandbox ... This can take some time.",
+                    spinner={'interval': 500, 'frames': ['.  ', '.. ', '...', ' ..', '  .', '   ']},
+                    text_color="white",
+                    color="green")
+                        
+                spinner.start()
+                os.system(f"sudo rm -rf {bootstrap_location}")
+                spinner.stop()
+                print(f"{GREEN + Colors.BOLD} ✓ {RESET} Sandbox has been removed")
+                exit()
+            
+            # If you press any other key, it prints out an error message
+            else:
+                print("Aborting ...")
+                exit()
+                
+        except PermissionError:
+            print(f"{Fore.CYAN + Colors.BOLD}{bootstrap_location}{Fore.RESET}{StringLoader('MissingPermissions')}")
+            print(StringLoader('MissingPermissionsSandbox'))
+             
         
     
     # alias for remove
     def delete():
-        PluginHandler.delete()
+        Commands.remove()
 
     # Enter the sandbox depending on the configured sandbox handler
     def enter():
