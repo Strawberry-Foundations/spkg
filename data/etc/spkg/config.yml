@@ -8,7 +8,7 @@ build_directory: /tmp/_spkg.build/
 
 # Plugins
 plugins:
-  sandbox: true
+  sandbox: false
   test: true
   docker: false
   repomgr: false
