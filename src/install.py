@@ -228,6 +228,11 @@ class InstallManager:
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
                 exit()
+            
+            except PermissionError:
+                print(f"{Fore.CYAN + Colors.BOLD}{Files.world_database}{Fore.RESET}{StringLoader('MissingPermissions')}")
+                print(StringLoader('MissingPermissionsWorldDatabaseInsert'))
+                exit()
         
         """
             MAIN INSTALL FUNCTION
