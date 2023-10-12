@@ -481,7 +481,6 @@ class RemoveManager:
                                 self.cleanup()
                                 exit()
                         
-                        time.sleep(4)               
                         spinner.stop()
                         
                         print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
@@ -828,7 +827,6 @@ class RemoveManager:
                                 self.cleanup()
                                 exit()
                         
-                        time.sleep(4)               
                         spinner.stop()
                         
                         print(f"{Fore.GREEN + Colors.BOLD}✓   {Fore.RESET}{StringLoader('SuccessExtractArchive')}")
