@@ -11,6 +11,7 @@ Dependencies:
 Flags:
   ArchiveType: tar
   RequiresCompile: false
+  RequiresArchiveForUninstall: true
 
 Install:
   WorkDir: libbismuth-main
