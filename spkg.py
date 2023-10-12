@@ -727,7 +727,7 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
         plugin = argv[3]
 
         if check_plugin_enabled_silent(plugin) == False: 
-            print(PluginNotEnabled)
+            print(StringLoader("PluginNotEnabled"))
             exit()
 
         else: 
@@ -755,54 +755,48 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
     elif argv_len > 3 and argv[2] == "enable":
         plugin = argv[3]
         
-        if os.geteuid() == 0:
-            None
-            
-        else:
-            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_config}{Fore.RESET}{MissingPermissons}")
-            print(MissingPermissonsPluginConfig)
-            exit()
-        
-        
-        if check_plugin_enabled_silent(plugin) == True: 
-            print(PluginIsAlreadyEnabled)
-            exit()
+        try:    
+            if is_plugin_enabled(plugin): 
+                print(StringLoader("PluginIsAlreadyEnabled"))
+                exit()
 
-        else: 
-            with open(enabled_plugins_config, 'r') as f:
-                data = json.load(f)
-                
-            data[plugin] = True
+            else: 
+                with open(Files.spkg_config, 'r') as file:
+                    data = yaml.load(file, Loader=yaml.SafeLoader)
             
-            with open(enabled_plugins_config, 'w') as f:
-                json.dump(data, f)
+                data["plugins"][plugin] = True
+                    
+                with open(Files.spkg_config, 'w') as file:
+                    yaml.dump(data, file)
+                    
+        except PermissionError:
+            print(f"{Fore.CYAN + Colors.BOLD}{Files.spkg_config}{Fore.RESET}{StringLoader('MissingPermissions')}")
+            print(StringLoader("MissingPermissionsPluginConfig"))
+            exit()
 
 
     # Disable a plugin
     elif argv_len > 3 and argv[2] == "disable":
         plugin = argv[3]
         
-        if os.geteuid() == 0:
-            None
-            
-        else:
-            print(f"{Fore.CYAN + Colors.BOLD}{enabled_plugins_config}{Fore.RESET}{MissingPermissons}")
-            print(MissingPermissonsPluginConfig)
-            exit()
-        
-        
-        if check_plugin_enabled_silent(plugin) == False: 
-            print(PluginIsAlreadyDisabled)
-            exit()
+        try:    
+            if is_plugin_enabled(plugin): 
+                print(StringLoader("PluginIsAlreadyDisabled"))
+                exit()
 
-        else: 
-            with open(enabled_plugins_config, 'r') as f:
-                data = json.load(f)
-                
-            data[plugin] = False
+            else: 
+                with open(Files.spkg_config, 'r') as file:
+                    data = yaml.load(file, Loader=yaml.SafeLoader)
             
-            with open(enabled_plugins_config, 'w') as f:
-                json.dump(data, f)
+                data["plugins"][plugin] = False
+                    
+                with open(Files.spkg_config, 'w') as file:
+                    yaml.dump(data, file)
+                    
+        except PermissionError:
+            print(f"{Fore.CYAN + Colors.BOLD}{Files.spkg_config}{Fore.RESET}{StringLoader('MissingPermissions')}")
+            print(StringLoader("MissingPermissionsPluginConfig"))
+            exit()
                 
         
     # Installs a plugin
@@ -813,8 +807,8 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
             None
             
         else:
-            print(f"{Fore.CYAN + Colors.BOLD}/usr/share/spkg/plugins/{Fore.RESET}{MissingPermissons}")
-            print(MissingPermissonsPluginInstallation)
+            print(f"{Fore.CYAN + Colors.BOLD}/usr/share/spkg/plugins/{Fore.RESET}{StringLoader('MissingPermissions')}")
+            print(StringLoader("MissingPermissionsPluginInstallation"))
             exit()
         
         PluginManagement.get(plugin)
@@ -825,11 +819,11 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
 
         try: 
             if check_plugin_enabled_silent(plugin) == False: 
-                print(PluginNotEnabled)
+                print(StringLoader("PluginNotEnabled"))
                 exit()
                 
         except KeyError:
-            print(NoArgument)
+            print(StringLoader("NoArgument"))
             exit()
 
         else: 
@@ -839,7 +833,7 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
 
     # If no Argument was passed, print an error
     else:
-        print(NoArgument)
+        print(StringLoader("NoArgument"))
         exit()
         
     exit()
