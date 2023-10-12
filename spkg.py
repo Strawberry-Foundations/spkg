@@ -78,6 +78,7 @@ if not os.path.exists(NativeDirectories.user_config):
     print(StringLoader("UserConfigNotExists2"))
     os.mkdir(NativeDirectories.user_config)
 
+
 # * --- Build Function --- *
 if argv_len > 1 and argv[1] == "build":
     # case switch
@@ -121,7 +122,10 @@ if argv_len > 1 and argv[1] == "build":
                     exit()
                     
         case _:
-            print(StringLoader("NoArgument"))
+            if argv_len >= 3:
+                print(StringLoader("UnknownOperation"), argv[2])
+            else:
+                print(StringLoader("NoArgument"))
             exit()
 
 
