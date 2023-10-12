@@ -631,6 +631,13 @@ elif argv_len > 1 and argv[1] == "upgrade":
         print(StringLoader("NoArgument"))
         exit()
     
+    spinner = Halo(text=f"{StringLoader('SearchingWorldForPackage')}",
+                   spinner={'interval': 200, 'frames': ['[-]', '[\\]', '[|]', '[/]']},
+                   text_color="white",
+                   color="green")
+    
+    spinner.start()
+    
     package_name = argv[2]
         
     # Check if the passed package is all or --all
@@ -640,6 +647,11 @@ elif argv_len > 1 and argv[1] == "upgrade":
         
         except OperationalError as e:
             print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+        
+        if not wc.fetchall():
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET} {StringLoader('SearchingWorldForPackage')}")
+            print(StringLoader("PackageNotInstalled"))
             exit()
             
         for row in wc:
@@ -657,6 +669,12 @@ elif argv_len > 1 and argv[1] == "upgrade":
         
         except OperationalError as e:
             print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+            
+        if not wc.fetchall():
+            spinner.stop()
+            print(f"{Fore.GREEN + Colors.BOLD}[✓] {Fore.RESET + Colors.RESET}{StringLoader('SearchingWorldForPackage')}")
+            print(StringLoader("PackageNotInstalled"))
             exit()
         
         package = UpgradeManager.Upgrade(package_name)
