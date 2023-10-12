@@ -642,6 +642,9 @@ class InstallManager:
                         if not errors.rstrip() == "":
                             print(StringLoader("EncounteredErrors"))
                             print(errors)
+                            print(StringLoader('InstallationError', argument_1=e))
+                            self.cleanup()
+                            exit()
 
                         shell.terminate()
 
