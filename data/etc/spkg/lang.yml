@@ -113,6 +113,7 @@ de_DE:
   MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?)"
   MissingPermissionsSpkgConfig: "{red}{bold}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
   MissingPermissionsLockfile: "{red}{bold}Die Sperrdatei konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsSandbox: "{red}{bold}Es konnte keine Datei/Ordner im Sandbox-Ordner verändert werden (Wird spkg als Root ausgeführt?)"
   
   # Plugin-related messages
   PluginNotEnabled: "{yellow}{bold}W:{reset} Plugin ist nicht aktiviert."
@@ -277,6 +278,7 @@ en_US:
   MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}The world database could not be written to. \nThe entry for the recently removed package could therefore not be removed (Is spkg run as root?)."
   MissingPermissionsSpkgConfig: "{red}{bold}The spkg config could not be edited. (Is spkg run as root?)"
   MissingPermissionsLockfile: "{red}{bold}The lock file could not be edited. (Is spkg run as root?)"
+  MissingPermissionsSandbox: "{red}{bold}No file/folder could be modified in the sandbox folder. (Is spkg run as root?)"
   
   # Plugin-related messages
   PluginNotEnabled: "{yellow}{bold}W:{reset} Plugin is not activated."
