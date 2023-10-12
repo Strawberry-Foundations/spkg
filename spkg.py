@@ -726,7 +726,7 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
     elif argv_len > 4 and argv[2] == "exec":
         plugin = argv[3]
 
-        if check_plugin_enabled_silent(plugin) == False: 
+        if is_plugin_enabled(plugin) == False: 
             print(StringLoader("PluginNotEnabled"))
             exit()
 
@@ -818,7 +818,7 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
         plugin = argv[2]
 
         try: 
-            if check_plugin_enabled_silent(plugin) == False: 
+            if is_plugin_enabled(plugin) == False: 
                 print(StringLoader("PluginNotEnabled"))
                 exit()
                 
@@ -884,7 +884,7 @@ elif argv_len > 2:
     plugin = argv[1]
 
     try: 
-        if check_plugin_enabled_silent(plugin) == False: 
+        if is_plugin_enabled(plugin) == False: 
             print(StringLoader("PluginNotEnabled"))
             exit()
             
