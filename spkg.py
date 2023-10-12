@@ -186,24 +186,25 @@ elif argv_len > 1 and argv[1] == "info":
 
 # * --- List Function --- *
 elif argv_len > 1 and argv[1] == "list":
-    # List installed programms
-    if argv_len > 2 and argv[2] == "--installed":
-        # Select * from the world database
-        try:
-            wc.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
-            
-            # Print the entries 
-            for row in wc:
-                print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{RESET}/{row[3]}")
+    # case switch
+    match argv_len > 2 and argv[2]:
+        # if argument is --installed
+        case "--installed":
+            # Select * from the world database
+            try:
+                wc.execute("SELECT * FROM world ORDER BY name GLOB '[A-Za-z]*' DESC, name")
                 
-            exit()
+                # Print the entries 
+                for row in wc:
+                    print(f"{Fore.GREEN + Colors.BOLD}{row[0]} {Fore.RESET + Colors.RESET}({row[1]}) @ {Fore.CYAN}{row[2]}{RESET}/{row[3]}")
+                    
+                exit()
 
-        except OperationalError:
-            print(StringLoader("WorldDatabaseNotBuilded"))
+            except OperationalError:
+                print(StringLoader("WorldDatabaseNotBuilded"))
         
-    # Check if second argument is --arch; List programms that match the architecture from the third argument [all, arm64, amd64, ...]
-    else:
-        if argv_len > 2 and argv[2] == "--arch":
+        # if argument is --arch
+        case "--arch":
             try:
                 arch_a = argv[3]
                 c.execute("SELECT * FROM packages where arch = ? ORDER BY name GLOB '[A-Za-z]*' DESC, name", (arch_a, ))
@@ -218,9 +219,10 @@ elif argv_len > 1 and argv[1] == "list":
             
             except IndexError:
                 print(StringLoader("NoArgument"))
+                exit()
                 
         # If not, print just all packages
-        else:
+        case _:
             try:
                 c.execute("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
                 
@@ -232,8 +234,6 @@ elif argv_len > 1 and argv[1] == "list":
             except OperationalError:
                 print(StringLoader("PackageDatabaseNotSynced"))
                 
-        exit()
-    exit()
             
             
 # * --- Download Function --- *
@@ -381,100 +381,80 @@ elif len(sys.argv) > 1 and sys.argv[1] == "sync":
 
 # * --- Install Function --- *
 elif len(sys.argv) > 1 and sys.argv[1] == "install":
-    # Check if a package was passed
-    if len(sys.argv) > 2:
-        pkg_name = sys.argv[2]
+    if not argv_len > 2:
+        print(StringLoader("NoArgument"))
+        exit()
+    
+    package_name = argv[2]
+    
+    # Fetch world database and check if package is already installed
+    try:
+        wc.execute("SELECT name from world where name = ?", (package_name,))
 
-    else:
-        print(NoArgument)
+    except OperationalError as e:
+        print(StringLoader("WorldDatabaseNotBuilded"))
         exit()
 
-    # # Check if you have runned spkg with sudo
-    # if os.geteuid() == 0:
-    #     None
-    # else:
-    #     print(RecommendedRunningAsRoot)
+    if wc.fetchall():
+        print(StringLoader("PackageAlreadyInstalled"))
+        exit()
+        
+    if argv_len > 2 and "--sandbox" in argv or "-s" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--sandbox", "").replace("-s", "").replace("install", "").replace(" ", "")
+        
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
+
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
+
+        if wc.fetchall():
+            print(StringLoader("PackageAlreadyInstalled"))
+            exit()
+        
+        package = InstallManager.Installer(package_name)
+        package.install_sandbox(args=argv)
+        package.insert_world()
+        exit()
     
-    # # Check if package is already installed
-    # try:
-    #     world_c.execute("SELECT name from world where name = ?", (pkg_name,))
-
-    # except OperationalError as e:
-    #     print(WorldDatabaseNotBuilded)
-    #     exit()
-
-    # if world_c.fetchall():
-    #     print(PackageAlreadyInstalled)
-    #     exit()
-
-    # else:
-    #     pass
+    elif argv_len > 2 and "--docker" in argv:
+        package_name = " ".join(argv[1:])
+        package_name = package_name.replace("--docker", "").replace("install", "").replace(" ", "")
         
-    #     # Check if Package even exists
-    #     try:
-    #         c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-    #         for row in c:
-    #             name = row[0]
-    #             version = row[1]
-    #             branch = row[2]
+        if package_name == "":
+            print(StringLoader("NoArgument"))
+            exit()
+        
+        # Fetch world database and check if package is already installed
+        try:
+            wc.execute("SELECT name from world where name = ?", (package_name,))
 
-    #     except OperationalError:
-    #         print(PackageDatabaseNotSynced)
-    #         exit()
-        
-    #     if len(sys.argv) > 2 and sys.argv[2] == "--sandbox" or sys.argv[2] == "--user":
-    #         if len(sys.argv) > 3:
-    #             pkg_name = sys.argv[3]
-                
-    #         Package.sandbox_install(pkg_name)
-            
-    #         if os.geteuid() == 0:
-    #             None
-                
-    #         else:
-    #             print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-    #             print(MissingPermissonsWorldDatabaseInsert)
-    #             exit()
-                
-    #         try:
-    #             c.execute("SELECT name, version, branch FROM packages where name = ?", (pkg_name,))
-    #             for row in c:
-    #                 name = row[0]
-    #                 version = row[1]
-    #                 branch = row[2]
+        except OperationalError as e:
+            print(StringLoader("WorldDatabaseNotBuilded"))
+            exit()
 
-    #         except OperationalError:
-    #             print(PackageDatabaseNotSynced)
-    #             exit()
-    
-    #         world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
-    #         world_db.commit()
-    #         world_db.close()
-    #         exit()
-            
-    #     elif len(sys.argv) > 2 and sys.argv[2] == "--docker" :
-    #         if len(sys.argv) > 3:
-    #             pkg_name = sys.argv[3]
-    #         print("Currently not working ...")
-    #         exit()
-            
-        # Install the package
-    package = InstallManager.Installer(pkg_name)
-    package.install(args=argv)
-    exit()
+        if wc.fetchall():
+            print(StringLoader("PackageAlreadyInstalled"))
+            exit()
         
-        # if os.geteuid() == 0:
-        #         None
-        # else:
-        #     print(f"{Fore.CYAN + Colors.BOLD}{world_database}{Fore.RESET}{MissingPermissons}")
-        #     print(MissingPermissonsWorldDatabaseInsert)
-        #     exit()
-    
-        # world_c.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
-        # world_db.commit()
-        # world_db.close()
+        package = InstallManager.Installer(package_name)
+        package.install_sandbox(args=argv)
+        package.insert_world()
+        exit()
         
-        # exit()
+    else:
+        package = InstallManager.Installer(package_name)
+        package.install(args=argv)
+        package.insert_world()
+        exit()
+
 
 
 # * --- Remove Function --- *
