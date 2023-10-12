@@ -49,7 +49,7 @@ from yaml import SafeLoader
 # Try to connect to the locally saved main package database
 try:
     db = sql.connect(Files.package_database)
-    c  = db.cursor()
+    c = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -222,9 +222,7 @@ class UpgradeManager:
                 
             try:
                 wc.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
-                wdb.commit()
-                wdb.close()
-                
+                wdb.commit()                
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
                 exit()
@@ -250,7 +248,6 @@ class UpgradeManager:
             try:
                 wc.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
                 wdb.commit()
-                wdb.close()
                 
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
@@ -282,7 +279,7 @@ class UpgradeManager:
                 lock(type=Procedure.Upgrade)
             
             # Error Handling for TypeError
-            except TypeError:
+            except TypeError as e:
                 print("")
                 delete_last_line()
                 print(f"{RED + Colors.BOLD}[×]{RESET} {StringLoader('SearchingDatabaseForPackage')}")
@@ -689,10 +686,11 @@ class UpgradeManager:
                     print(StringLoader('SuccessUpdate', argument_1=self.package_name, argument_2=round(install_time_end - install_time_start, 2)))
             
             # Error Handling for NameError
-            except NameError as e:
-                print(StringLoader('PackageNotFound'))
-                self.cleanup()
-                exit()
+            # except NameError as e:
+            #     print(e)
+            #     print(StringLoader('PackageNotFound'))
+            #     self.cleanup()
+            #     exit()
             
             # Error Handling for PermissionError
             except PermissionError:
