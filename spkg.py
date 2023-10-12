@@ -52,7 +52,7 @@ if check_plugin_enabled_ret("sandbox") == True:
 else:
     pass
 
-argv_len = argv_len
+argv_len = len(argv)
 
 # Try to connect to the locally saved main package database
 try:
@@ -848,42 +848,41 @@ elif argv_len > 1 and argv[1] == "plugins" or argv_len > 1 and argv[1] == "plugi
 # * --- Config Function --- *
 if argv_len > 1 and (argv[1] == "config" or argv[1] == "conf"):
     if argv_len > 3 and (argv[2] == "language" or argv[2] == "lang"):
-        try:
-            if os.geteuid() == 0:
-                None
-            else:
-                print(f"{Fore.CYAN + Colors.BOLD}{spkg_config}{Fore.RESET}{MissingPermissons}")
-                print(MissingPermissonsSpkgConfig)
+        try:   
+            new_language = argv[3]
+            
+            if not new_language in langs: 
+                print(StringLoader("UnknownLanguage"))
                 exit()
                 
-            lang = argv[3]
+            with open(Files.spkg_config, 'r') as file:
+                data = yaml.load(file, Loader=yaml.SafeLoader)
+        
+            data["language"] = new_language
+                
+            with open(Files.spkg_config, 'w') as file:
+                yaml.dump(data, file)
             
-            # if not lang == "de" or not lang == "en": 
-            #     print(UnknownLanguage)
-            #     exit()
+            match new_language:
+                case "de_DE":
+                    lang = "Deutsch (German) [de_DE]"    
+                case "en_US":
+                    lang = "English [en_US]"
+                
+            print(StringLoader("ChangedLanguage", argument_1=lang))
             
-            with open(spkg_config, "r") as f:
-                data = json.load(f)
-
-                data["language"] = lang
-                
-            with open(spkg_config, 'w') as f:
-                json.dump(data, f)
-                
-            
-            if lang == "de": 
-                lang = "Deutsch (German)"
-            if lang == "en": 
-                lang = "English"
-                
-            print(ChangedLanguage % lang)
-                
         except IndexError: 
-            print(NoArgument)
+            print(StringLoader("NoArgument"))
+        
+        except PermissionError:
+            print(f"{Fore.CYAN + Colors.BOLD}{Files.spkg_config}{Fore.RESET}{StringLoader('MissingPermissions')}")
+            print(StringLoader("MissingPermissionsSpkgConfig"))
+            exit()
+            
         
     # If no Argument was passed, print an error
     else:
-        print(NoArgument)
+        print(StringLoader("NoArgument"))
         exit()
         
 # Plugin Executor WITHOUT using spkg plugin <...>
