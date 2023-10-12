@@ -143,6 +143,7 @@ de_DE:
   SuccessInstall: "{green}{bold}%s wurde in %c s installiert."
 
   # Uninstallation messages
+  RequiresArchiveForUninstall: "Dieses Paket benötigt das Paketarchiv, um mit der Entfernung fortzufahren."
 
   
 
@@ -290,3 +291,6 @@ en_US:
   PrepareInstall: "Package installation is being prepared..."
   Install: "Package will be installed..."
   SuccessInstall: "{green}{bold}%s has been installed in %c s."
+
+  # Uninstallation messages
+  RequiresArchiveForUninstall: "This package requires the package archive to proceed with removal."
