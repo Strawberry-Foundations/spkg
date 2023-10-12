@@ -13,56 +13,57 @@ Flags:
   RequiresCompile: false
 
 Install:
-  Commands: |
-    rm -f /usr/bin/spkg
-    rm -rf /usr/share/spkg/
-    cp -r /tmp/target/ /usr/share/spkg/
-    cp -r /tmp/target/data/etc/ /
-    cp -r /tmp/target/data/var/ /
-    cd /usr/share/spkg/ || exit
-    mv spkg.py spkg
-    rm -rf build
-    rm -rf data
-    rm -rf resources
-    rm -rf packages
-    rm -f package.db
-    rm -f spkg-installer.py
-    rm -f requirements.txt
-    rm -f rmcache.sh
-    rm -f todo.txt
-    chmod a+x /usr/share/spkg/spkg
-    ln -s /usr/share/spkg/spkg /usr/bin/spkg
-    spkg build world
-    spkg sync
+  Commands:
+    - rm -f /usr/bin/spkg
+    - rm -rf /usr/share/spkg/
+    - mkdir /usr/share/spkg
+    - cp -r * /usr/share/spkg/
+    - cp -r data/etc/ /
+    - cp -r /tmp/target/data/var/ /
+    - cd /usr/share/spkg/ || exit
+    - mv spkg.py spkg
+    - rm -rf build
+    - rm -rf data
+    - rm -rf resources
+    - rm -rf packages
+    - rm -f package.db
+    - rm -f spkg-installer.py
+    - rm -f requirements.txt
+    - rm -f rmcache.sh
+    - rm -f todo.txt
+    - - chmod a+x /usr/share/spkg/spkg
+    - ln -s /usr/share/spkg/spkg /usr/bin/spkg
+    - spkg build world
+    - spkg sync
 
 Remove:
-  Commands: |
-    rm -rf /usr/share/spkg
-    rm -f /usr/bin/spkg
-    rm -rf /etc/spkg/
-    rm -rf /var/lib/spkg/
-    rm -f /tmp/PKGBUILD
+  Commands:
+    - rm -rf /usr/share/spkg
+    - rm -f /usr/bin/spkg
+    - rm -rf /etc/spkg/
+    - rm -rf /var/lib/spkg/
+    - rm -f /tmp/PKGBUILD
 
 Upgrade:
-  Commands: |
-    rm -f /usr/bin/spkg
-    rm -rf /usr/share/spkg/
-    cp -r /tmp/target/ /usr/share/spkg/
+  Commands:
+    - rm -f /usr/bin/spkg
+    - rm -rf /usr/share/spkg/
+    - cp -r /tmp/target/ /usr/share/spkg/
 
-    cd /usr/share/spkg/ || exit
-    mv spkg.py spkg
+    - cd /usr/share/spkg/ || exit
+    - mv spkg.py spkg
 
-    rm -rf build
-    rm -rf data
-    rm -rf resources
-    rm -rf packages
-    rm -f package.db
-    rm -f spkg-installer.py
-    rm -f requirements.txt
-    rm -f rmcache.sh
-    rm -f todo.txt
+    - rm -rf build
+    - rm -rf data
+    - rm -rf resources
+    - rm -rf packages
+    - rm -f package.db
+    - rm -f spkg-installer.py
+    - rm -f requirements.txt
+    - rm -f rmcache.sh
+    - rm -f todo.txt
 
-    chmod a+x /usr/share/spkg/spkg
-    ln -s /usr/share/spkg/spkg /usr/bin/spkg
+    - chmod a+x /usr/share/spkg/spkg
+    - ln -s /usr/share/spkg/spkg /usr/bin/spkg
 
-    spkg sync
+    - spkg sync
