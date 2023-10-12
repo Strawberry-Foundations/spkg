@@ -62,7 +62,7 @@ spkg-sandbox installs packages in a separate environment from the system to prov
 spkg-docker installs packages in a Docker container. This provides more security, and is more convenient. Therefore, spkg works on any system that supports docker. The Docker image used is an (custom) Ubuntu 22.04 or 20.04 image.
 <br><br>
 
-## **Supported Platforms**
+## **Supported Python Versions**
 spkg was built on the basis of Python 3.11. We recommend to use Python 3.10 or higher. All Python versions below 3.9 are untested and therefore not recommended. We do not support Python 3.9 as we use features from a higher Python version. Therefore, please do not open an issue if spkg does not work under Python 3.10 or lower. 
 
 | Version       | Supported | Status                                                    |
