@@ -473,7 +473,7 @@ class Commands:
     # Enter the sandbox depending on the configured sandbox handler
     def enter():
         if not os.path.exists(bootstrap_location):
-            print(f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + RESET} Your sandbox has not been set up yet. Please set up the sandbox before you can enter the sandbox!")
+            print(f"{Fore.RED + Colors.BOLD} E:{Fore.RESET + RESET} Your sandbox has not been set up yet. Please set up the sandbox before you can enter the sandbox!")
             exit()
             
         if sandbox_handler == "chroot":
@@ -483,6 +483,6 @@ class Commands:
             sandbox_enter_cmd = f"sudo bwrap --bind {bootstrap_location} / --dev /dev --bind /sys /sys --bind /proc /proc --bind /tmp /tmp /bin/bash"
         
         else:
-            print(f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + RESET} Unknown Config for sandbox_handler. Check your config")
+            print(f"{Fore.RED + Colors.BOLD}E:{Colors.RESET} Unknown sandbox handler '{sandbox_handler}'. Check your config")
         
         os.system(f'{sandbox_enter_cmd}')
