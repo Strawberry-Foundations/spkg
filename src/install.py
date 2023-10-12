@@ -55,6 +55,16 @@ try:
 except OperationalError:
     pass
 
+
+# Try to connect to the world database
+try:
+    wdb = sql.connect(Files.world_database)
+    wc  = wdb.cursor()
+
+# If the Database doesn't exists/no entries, return a error
+except OperationalError:
+    pass
+
 if is_plugin_enabled("sandbox"):
     PluginDaemon.import_plugin("sandbox")
 
@@ -196,9 +206,32 @@ class InstallManager:
             except:
                 pass
         
-            """
-                MAIN INSTALL FUNCTION
-            """
+        
+        # World database insertion
+        def insert_world(self):
+            try:
+                c.execute("SELECT name, version, branch FROM packages where name = ?", (self.package_name,))
+                for row in c:
+                    name = row[0]
+                    version = row[1]
+                    branch = row[2]
+
+            except OperationalError:
+                print(StringLoader("PackageDatabaseNotSynced"))
+                exit()
+                
+            try:
+                wc.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
+                wdb.commit()
+                wdb.close()
+                
+            except OperationalError:
+                print(StringLoader("WorldDatabaseNotBuilded"))
+                exit()
+        
+        """
+            MAIN INSTALL FUNCTION
+        """
         def install(self, args):
             # Create and start the spinner for searching the database
             spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
@@ -656,9 +689,13 @@ class InstallManager:
                 exit()
         
         
-            """
-                MAIN INSTALL-SANDBOX FUNCTION
-            """
+        
+        
+        """ 
+            **** SANDBOX INSTALL FUNCTION ****
+            This function installs the package to the sandbox environment, without checking if the sandbox is enabled or not. 
+            INFO: You need to have the sandbox INSTALLED.
+        """
         def install_sandbox(self, args):
             # Create and start the spinner for searching the database
             spinner = Halo(text=f"{StringLoader('SearchingDatabaseForPackage')}",
