@@ -19,19 +19,11 @@ Install:
     - mkdir /usr/share/spkg
     - cp -r * /usr/share/spkg/
     - cp -r data/etc/ /
-    - cp -r /tmp/target/data/var/ /
-    - cd /usr/share/spkg/ || exit
+    - cp -r data/var/ /
+    - cd /usr/share/spkg/
     - mv spkg.py spkg
-    - rm -rf build
-    - rm -rf data
-    - rm -rf resources
-    - rm -rf packages
-    - rm -f package.db
-    - rm -f spkg-installer.py
-    - rm -f requirements.txt
-    - rm -f rmcache.sh
-    - rm -f todo.txt
-    - - chmod a+x /usr/share/spkg/spkg
+    - rm -rf build data resources packages package.db spkg-installer.py requirements.txt rmcache.sh TODO.md
+    - chmod a+x /usr/share/spkg/spkg
     - ln -s /usr/share/spkg/spkg /usr/bin/spkg
     - spkg build world
     - spkg sync
@@ -48,22 +40,11 @@ Upgrade:
   Commands:
     - rm -f /usr/bin/spkg
     - rm -rf /usr/share/spkg/
-    - cp -r /tmp/target/ /usr/share/spkg/
-
-    - cd /usr/share/spkg/ || exit
+    - mkdir /usr/share/spkg
+    - cp -r * /usr/share/spkg/
+    - cd /usr/share/spkg/
     - mv spkg.py spkg
-
-    - rm -rf build
-    - rm -rf data
-    - rm -rf resources
-    - rm -rf packages
-    - rm -f package.db
-    - rm -f spkg-installer.py
-    - rm -f requirements.txt
-    - rm -f rmcache.sh
-    - rm -f todo.txt
-
+    - rm -rf build data resources packages package.db spkg-installer.py requirements.txt rmcache.sh TODO.md
     - chmod a+x /usr/share/spkg/spkg
     - ln -s /usr/share/spkg/spkg /usr/bin/spkg
-
     - spkg sync
