@@ -31,60 +31,30 @@ import time
 from init import *
 from src.db import Database
 
-language = lang
 
-if language == "de_DE":
-    PluginManagementStr = "Plugin Verwaltung"
-    InstalledPlugins = "Installierte Plugins"
-    Enabled = "\033[32mAktiviert\033[0m"
-    Disabled = "\033[31mDeaktiviert\033[0m"
-    ErrorPlugin = "\033[38;5;52m\033[1mFehler\033[0m"
-    Condition = "Zustand"
-    Description = "Beschreibung"
-    Version = "Version"
-    Commands = "Befehle"
+if lang == "de_DE":
     ErrorOccured = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Ein Fehler ist aufgetreten. Überprüfe deine Eingabe. Wenn dies nicht weiterhilft, öffne ein Issue auf GitHub{Colors.RESET}"
-    ErrCode = "Fehlercode"
     UserConfigNotExists = f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + Colors.RESET} Deine Nutzerkonfiguration existiert nicht."
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {Fore.CYAN}spkg sync{Fore.RESET} aus, um die Datenbank zu synchronisieren{Colors.RESET}"
     PluginMarketplace = "Advanced Source Package Managment - Plugin Marketplace"
     UsageInstall = f"{Fore.CYAN + Colors.BOLD}Aufruf:{Fore.RESET} spkg plugin get{Fore.GREEN} [Plugin]\n"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Durchsuche Datenbank nach Plugin ...{Colors.RESET}"
-    StrGet = "Holen"
     FinishedDownloading = f"Download abgeschlossen für"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unbekannter Fehler{Colors.RESET}"
     PackageNotFound = f"{Fore.RED + Colors.BOLD}[E]{Fore.RESET} Plugin wurde nicht gefunden{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Prozess wurde abgebrochen!{Colors.RESET}"
     PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} wurde installiert{Colors.RESET}"
 
-elif language == "en_US":
-    PluginManagementStr = "Plugin Management"
-    InstalledPlugins = "Installed Plugins"
-    Enabled = "\033[32mActivated\033[0m"
-    Disabled = "\033[31mDeactivated\033[0m"
-    ErrorPlugin = "\033[38;5;52m\033[1mError\033[0m"
-    Condition = "Condition"
-    Description = "Description"
-    Version = "Version"
-    Commands = "Commands"
+elif lang == "en_US":
     ErrorOccured = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} An error has occurred. Check your input. If this does not help, open an issue on GitHub{Colors.RESET}"
-    ErrCode = "Errorcode"
     UserConfigNotExists = f"{Fore.RED + Colors.BOLD}Error:{Fore.RESET + Colors.RESET} Your user configuration doesn't exist."
-    PackageDatabaseNotSynced = f"{Fore.RED + Colors.BOLD}[!]{Fore.RESET} The package database has not been synchronized yet. Run {Fore.CYAN}spkg sync{Fore.RESET} to synchronize the database{Colors.RESET}"
     PluginMarketplace = "Advanced Source Package Managment - Plugin Marketplace"
     UsageInstall = f"{Fore.CYAN + Colors.BOLD}Usage:{Fore.RESET} spkg plugin get{Fore.GREEN} [plugin]\n"
-    SearchingDatabaseForPackage = f"{Colors.BOLD}Searching through the database ...{Colors.RESET}"
-    StrGet = "Get"
     FinishedDownloading = f"Finished downloading"
-    UnknownError = f"{Fore.RED + Colors.BOLD}[?]{Fore.RESET} Unknown Error{Colors.RESET}"
     PackageNotFound = f"{Fore.RED  + Colors.BOLD}[E]{Fore.RESET} Plugin not found{Colors.RESET}"
-    Canceled = f"{Fore.RED + Colors.BOLD}[!!!]{Fore.RESET} Process canceled!{Colors.RESET}"
     PluginInstalledSuccess = f"{Colors.BOLD}Plugin {Fore.CYAN}%s{Fore.RESET} has been installed{Colors.RESET}"
     
 
-# Try to connect to the locally saved package database
+# Try to connect to the locally saved main package database
 try:
-    db = Database(Files.package_database)
+    db = sql.connect(Files.package_database)
+    c  = db.cursor()
 
 # If the Database doesn't exists/no entries, return a error
 except OperationalError:
@@ -92,7 +62,7 @@ except OperationalError:
 
 class PluginDaemon:
     def import_plugin(plugin_name):
-        check_plugin_enabled_silent(plugin_name)
+        is_plugin_enabled(plugin_name)
         global module
         module_name = "plugins." + plugin_name
         module = importlib.import_module(module_name)
@@ -101,28 +71,15 @@ class PluginDaemon:
     def setup():
         module.Commands.setup()
 
-
-def check_plugin_enabled_silent(plugin):
-    plugin_data = config["plugins"][plugin]
-    if plugin_data == True:
-        return True
-    else:
-        return False
-
-
-def check_plugin_enabled_ret(plugin):
-    plugin_data = config["plugins"][plugin]
-    if plugin_data == True:
-        return Enabled
-    else:
-        return Disabled
-
-def is_plugin_enabled(plugin):
+def is_plugin_enabled(plugin, return_as_string: bool = False):
     plugin_data = config["plugins"][plugin]
     if plugin_data:
-        return True
+        if return_as_string: return StringLoader("Enabled")
+        else: return True
+        
     else:
-        return False
+        if return_as_string: return StringLoader("Disabled")
+        else: return False
 
 
 class PluginManagement:
