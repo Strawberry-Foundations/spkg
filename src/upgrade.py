@@ -279,7 +279,7 @@ class UpgradeManager:
             # fetch the result and try to lock the lockfile
             try:
                 result = c.fetchone()[0]
-                lock(type=Procedure.Install)
+                lock(type=Procedure.Upgrade)
             
             # Error Handling for TypeError
             except TypeError:
