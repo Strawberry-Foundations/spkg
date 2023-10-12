@@ -67,6 +67,7 @@ de_DE:
   NoRepositories: "{bold}{red}Es wurde kein Repository-Server angegeben. Überprüfe deine Konfigurationsdatei von spkg."
   ParsingError: "{red}{bold}E:{reset} Fehler beim Parsen der Paketkonfigurationsdatei: Inkorrekte Syntax und/oder falsches Format."
   InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden (%s)"
+  UpdateError: "{red}{bold}E:{reset} Das Paket konnte nicht aktualisiert werden (%s)"
   ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
   EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
   UninstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht entfernt werden (%s)"
@@ -164,6 +165,9 @@ de_DE:
   # Upgrade messages
   ContinuePackageUpdate: "{creset}Zum Aktualisieren dieses Paketes muss das Paket {cyan}{bold}%s{creset} heruntergeladen werden. \nDafür werden {green}{bold}%c MB{creset} an Update-Daten benötigt. Fortfahren? [J/N] "
   ContinuePackageUpdateCompact: "{creset}Das Paket {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} wird nun heruntergeladen und aktualisiert."
+  PrepareUpdate: "Paketaktualisierung wird vorbereitet..."
+  Update: "Paket wird aktualisiert..."
+  SuccessUpdate: "{green}{bold}%s wurde in %c s aktualisiert."
   
 
 
@@ -236,6 +240,7 @@ en_US:
   NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
   ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
   InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
+  UpdateError: "{red}{bold}E:{reset} The package could not be updated (%s)"
   ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
   EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
   UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
@@ -331,5 +336,8 @@ en_US:
   SuccessRemove: "{green}{bold}%s has been removed in %c s."
 
   # Upgrade messages
-  ContinuePackageUpdate: "{creset}To update this package, the {cyan}{bold}%s{creset} package must be downloaded. \This requires {green}{bold}%c MB{creset} of update data. Continue? [Y/N]"
+  ContinuePackageUpdate: "{creset}To update this package, the {cyan}{bold}%s{creset} package must be downloaded. \nThis requires {green}{bold}%c MB{creset} of update data. Continue? [Y/N] "
   ContinuePackageUpdateCompact: "{creset}The package {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} will now be downloaded and updated."
+  PrepareUpdate: "Package update is being prepared..."
+  Update: "Package will be updated..."
+  SuccessUpdate: "{green}{bold}%s has been updated in %c s."
