@@ -70,6 +70,7 @@ de_DE:
   ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
   EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
   UninstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht entfernt werden (%s)"
+  ErrorExecutingPluginCommand: "{red}{bold}E:{reset} Ein Fehler beim ausführen des Plugin-Commands %s ist aufgetreten: %c"
   
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
@@ -233,6 +234,7 @@ en_US:
   ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
   EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
   UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
+  ErrorExecutingPluginCommand: "{red}{bold}E:{reset} An error occurred while executing the plugin command %s: %c"
 
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Do not perform upgrades with root. This could manipulate the installation of the package!"
