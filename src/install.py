@@ -223,7 +223,6 @@ class InstallManager:
             try:
                 wc.execute("INSERT INTO world (name, version, branch) VALUES (?, ?, ?)", (name, version, branch))
                 wdb.commit()
-                wdb.close()
                 
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
@@ -250,7 +249,6 @@ class InstallManager:
             try:
                 wc.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
                 wdb.commit()
-                wdb.close()
                 
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
