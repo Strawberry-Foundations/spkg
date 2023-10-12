@@ -1,5 +1,5 @@
 # **Advanced Source Package Managment (spkg)**
-![version](https://img.shields.io/badge/spkg-2.0.0a3-success) 
+![version](https://img.shields.io/badge/spkg-2.0.0beta1-success) 
 ![Code Size](https://img.shields.io/github/languages/code-size/Strawberry-Foundations/spkg)
 ![Commit activity](https://img.shields.io/github/commit-activity/w/Strawberry-Foundations/spkg)
 ![License](https://img.shields.io/github/license/Strawberry-Foundations/spkg)
