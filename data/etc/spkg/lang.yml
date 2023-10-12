@@ -144,6 +144,7 @@ de_DE:
 
   # Uninstallation messages
   RequiresArchiveForUninstall: "Dieses Paket benötigt das Paketarchiv, um mit der Entfernung fortzufahren."
+  RemoveDependenciesForYourself: "Wenn du die folgenden Abhängigkeiten dieses Paketes nicht mehr benötigst, kannst du diese selber bei Bedarf entfernen.\nBitte beachte das manche der Abhängigkeiten wichtig für das System sein könnten!"
 
   
 
@@ -294,3 +295,4 @@ en_US:
 
   # Uninstallation messages
   RequiresArchiveForUninstall: "This package requires the package archive to proceed with removal."
+  RemoveDependenciesForYourself: "If you don't need the following dependencies of this package anymore, you can remove them yourself if needed.\nPlease note that some of the dependencies might be important for the system!"
