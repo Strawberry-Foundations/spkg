@@ -36,7 +36,7 @@ from init import *
 from src.functions import delete_last_line
 
 
-from .plugin_daemon import PluginDaemon, check_plugin_enabled_silent, check_plugin_enabled_ret
+from .plugin import PluginDaemon, check_plugin_enabled_silent, check_plugin_enabled_ret
 from .force_no_sandbox import *
 from init import *
 
