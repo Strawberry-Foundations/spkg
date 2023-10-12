@@ -63,7 +63,7 @@ spkg-docker installs packages in a Docker container. This provides more security
 <br><br>
 
 ## **Supported Platforms**
-spkg was built on the basis of Python 3.9. We recommend to use Python 3.10 or higher. All Python versions below 3.9 are untested and therefore not recommended. Therefore, please do not open an issue if spkg does not work under Python 3.8 or lower. 
+spkg was built on the basis of Python 3.11. We recommend to use Python 3.10 or higher. All Python versions below 3.9 are untested and therefore not recommended. We do not support Python 3.9 as we use features from a higher Python version. Therefore, please do not open an issue if spkg does not work under Python 3.10 or lower. 
 
 | Version       | Supported | Status                                                    |
 | --            | --        | --                                                        | 
