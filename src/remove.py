@@ -223,7 +223,6 @@ class RemoveManager:
             try:
                 wc.execute("DELETE FROM world WHERE name = ? AND version = ? AND branch = ?", (name, version, branch))
                 wdb.commit()
-                wdb.close()
                 
             except OperationalError:
                 print(StringLoader("WorldDatabaseNotBuilded"))
