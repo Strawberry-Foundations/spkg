@@ -8,4 +8,4 @@ build_directory: /tmp/_spkg.build/
 # Repositories
 repositories:
   main: https://sources.strawberryfoundations.xyz/packages
-  test: https://sources.strawberryfoundations.xyz/tests
+  test: https://sourcses.strawberryfoundations.xyz/test
