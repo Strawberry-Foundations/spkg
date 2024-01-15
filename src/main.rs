@@ -5,8 +5,5 @@ mod cli;
 mod global;
 
 fn main() {
-    let mut args = Args::new();
-    args.collect();
-
     println!("{}", SPKG_OPTIONS.sandbox);
 }
