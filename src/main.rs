@@ -11,6 +11,7 @@ mod commands;
 fn main() {
     match ARGS.command.as_str() {
         "install" => {}
+        "sync" => commands::sync::sync(),
         _ => println!("{}", STRING_LOADER.str_params("Help", &[&VERSION, &std::env::consts::ARCH])),
     }
 }
