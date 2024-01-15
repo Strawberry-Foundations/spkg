@@ -1,7 +1,7 @@
 # Language Strings for en_US (English)
 en_US:
   Help: |-
-    {underline}{bold}Advanced Source Package Management (spkg) {version} {arch}{creset}%s
+    {underline}{bold}Advanced Source Package Management (spkg) %s %s{creset}
     {cyan}{bold}call:{reset} spkg {green}[command]{red} <argument>{creset}
 
     spkg is a package manager that downloads the source code of the desired

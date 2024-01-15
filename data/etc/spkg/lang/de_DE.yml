@@ -1,7 +1,7 @@
 # Language Strings for de_DE (German)
 de_DE:
   Help: |-
-    {underline}{bold}Advanced Source Package Managment (spkg) {version} {arch}{creset}%s
+    {underline}{bold}Advanced Source Package Managment (spkg) %s %s{creset}
     {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
 
     spkg ist ein Paketmanager, der den Quellcode des gewünschten
