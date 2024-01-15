@@ -95,13 +95,13 @@ en_US:
   ContinuePackageUninstallationCompact: "{creset}The {cyan}{bold}%s{creset} package will now be removed. \nFor this, the package configuration file is downloaded."
   ContinuePackageDownload: "{creset}The archiv {cyan}{bold}%s{creset} will now be downloaded. Continue? [Y/N] "
   SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}{bold}spkg update{reset}{creset} to check for package updates."
-  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: At least one package database could not be synchronized."
-  UnsuccessSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
+  AtLeastOneUnsuccessfulSyncingPackageDatabase: "{bold}{yellow}W: At least one package database could not be synchronized."
+  UnsuccessfulSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
   SearchingDatabaseForPackage: "{bold}Searching through the database for package ...."
   SearchingForUpdates: "Search for available updates ..."
-  UnsuccessPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
-  UnsuccessDownloadingPackages: "{yellow}The packages could not be downloaded."
-  AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: At least one package could not be downloaded."
+  UnsuccessfulPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
+  UnsuccessfulDownloadingPackages: "{yellow}The packages could not be downloaded."
+  AtLeastOneUnsuccessfulPackageDownload: "{bold}{yellow}W: At least one package could not be downloaded."
   GettingSpecfile: "The package configuration file is requested and downloaded..."
 
   # Permission-related messages
@@ -136,7 +136,7 @@ en_US:
   ChangedLanguage: "{bold}Changed language to {cyan}%s{reset}"
   SearchingWorldForPackage: "{bold}Searching through the local world database for the installed package ..."
   InstallingToSandboxEnv: "{CYAN}Package will be installed to the sandbox."
-  ExecutungSpkgPackageConf: ""
+  ExecutingSpkgPackageConf: ""
 
   # Installation messages
   ParsingSpecfile: "The package configuration is read in"
