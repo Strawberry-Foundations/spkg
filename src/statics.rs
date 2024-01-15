@@ -1,0 +1,1 @@
+pub const DEVELOPMENT_MODE: bool = true;
