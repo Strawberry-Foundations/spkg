@@ -23,6 +23,12 @@ impl Args {
             options: SpkgOptions { sandbox: false },
         };
 
+        let x: Vec<String> = env::args().collect();
+
+        if x.len() <= 1 {
+            return args
+        }
+
         let parser: Vec<String> = env::args().skip(1).collect();
 
         args.args = parser.clone();
@@ -37,7 +43,8 @@ impl Args {
             sandbox: false
         };
 
-        for (index, arg) in self.args.iter().enumerate() {
+        // for (_index, arg) in self.args.iter().enumerate() {
+        for arg in self.args.iter() {
             match arg.as_str() {
                 "-s" | "--sandbox" =>  spkg_options.sandbox = true,
                 _ => { }
