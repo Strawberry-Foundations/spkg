@@ -1,10 +1,14 @@
-use crate::spkg_core::STRING_LOADER;
+use crate::cli::ARGS;
 
 mod cli;
 mod spkg_core;
 mod statics;
 mod utilities;
+mod commands;
 
 fn main() {
-    println!("{}", STRING_LOADER.str("Get"));
+    match ARGS.command.as_str() {
+        "install" => {}
+        _ => commands::help::help(),
+    }
 }
