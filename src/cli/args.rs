@@ -14,7 +14,6 @@ pub struct Args {
 }
 
 
-
 impl Args {
     pub fn collect() -> Self {
         let mut args = Self {
