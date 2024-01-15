@@ -6,6 +6,7 @@ use lazy_static::lazy_static;
 use stblib::strings::Strings;
 
 lazy_static!(
+    pub static ref CONFIG: config::Config = config::Config::new();
     pub static ref SPKG_DIRECTORIES: files::SpkgDirectories = files::SpkgDirectories::new();
     pub static ref SPKG_FILES: files::SpkgFiles = files::SpkgFiles::new();
 
