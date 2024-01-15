@@ -95,13 +95,13 @@ de_DE:
   ContinuePackageUninstallationCompact: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun entfernt. \nDafür wird die Paketkonfigurationsdatei heruntergeladen."
   ContinuePackageDownload: "{creset}Das Archiv {cyan}{bold}%s{creset} wird nun heruntergeladen. Fortfahren? [J/N] "
   SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}{bold}spkg update{reset}{creset} aus, um nach Paketupdates zu suchen."
-  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
-  UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
+  AtLeastOneUnsuccessfulSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
+  UnsuccessfulSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..."
-  UnsuccessPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
-  UnsuccessDownloadingPackages: "{yellow}Die Pakete konnte nicht heruntergeladen werden."
-  AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: Mindestens ein Paket konnte nicht heruntergeladen werden."
+  UnsuccessfulPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
+  UnsuccessfulDownloadingPackages: "{yellow}Die Pakete konnte nicht heruntergeladen werden."
+  AtLeastOneUnsuccessfulPackageDownload: "{bold}{yellow}W: Mindestens ein Paket konnte nicht heruntergeladen werden."
   GettingSpecfile: "Die Paketkonfigurationsdatei wird angefordert und heruntergeladen..."
 
   # Permission-related messages
@@ -136,7 +136,7 @@ de_DE:
   ChangedLanguage: "{bold}Sprache wurde zu {cyan}%s{reset} geändert"
   SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
   InstallingToSandboxEnv: "{CYAN}Paket wird in der Sandbox installiert."
-  ExecutungSpkgPackageConf: ""
+  ExecutingSpkgPackageConf: ""
 
   # Installation messages
   ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
