@@ -1,3 +1,0 @@
-sandbox:
-  bootstrap_location: /spkg
-  handler: bwrap
