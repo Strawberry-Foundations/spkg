@@ -15,7 +15,7 @@ pub struct Args {
 
 
 
-impl Args {ssssssssssssssssss
+impl Args {
     pub fn collect() -> Self {
         let mut args = Self {
             args: vec![],
