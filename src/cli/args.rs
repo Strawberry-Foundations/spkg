@@ -3,30 +3,47 @@
 
 use std::env;
 
+pub struct SpkgOptions {
+    pub sandbox: bool,
+}
+
 pub struct Args {
     pub args: Vec<String>,
     pub command: String,
-    pub options: Vec<String>,
+    pub options: SpkgOptions
 }
 
+
+
 impl Args {
-    pub fn new() -> Self {
-        Self {
+    pub fn collect() -> Self {
+        let mut args = Self {
             args: vec![],
-            command: String::new(),
-            options: vec![],
-        }
-    }
+            command: "".to_string(),
+            options: SpkgOptions { sandbox: false },
+        };
 
-    pub fn collect(&mut self) -> Vec<String> {
-        let args: Vec<String> = env::args().skip(1).collect();
+        let parser: Vec<String> = env::args().skip(1).collect();
 
-        self.args = args.clone();
+        args.args = parser.clone();
 
-        self.command = args.clone().first().unwrap().to_string();
-
-        self.options = env::args().skip(2).collect();
+        args.command = parser.clone().first().unwrap().to_string();
 
         args
+    }
+
+    pub fn collect_options(&mut self) -> SpkgOptions {
+        let mut spkg_options = SpkgOptions {
+            sandbox: false
+        };
+
+        for (index, arg) in self.args.iter().enumerate() {
+            match arg.as_str() {
+                "-s" | "--sandbox" =>  spkg_options.sandbox = true,
+                _ => { }
+            }
+        }
+
+        spkg_options
     }
 }
