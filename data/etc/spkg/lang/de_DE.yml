@@ -1,0 +1,170 @@
+# Language Strings for de_DE (German)
+de_DE:
+  Help: |-
+    {underline}{bold}Advanced Source Package Managment (spkg) {version} {arch}{creset}%s
+    {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
+
+    spkg ist ein Paketmanager, der den Quellcode des gewünschten
+    Paketes (meist) von den offiziellen Quellen herunterlädt,
+    und diesen dann für dein Gerät kompiliert.
+    Das Ziel von spkg ist, einfach und auch ohne viel Erfahrung die
+    neusten offiziellen Versionen von Programmen zu erhalten, auch
+    unter Distrobutionen die nicht die neuste Version anbieten.
+    Durch das kompilieren des Paketes ist das Programm für dein Gerät
+    optimiert und läuft dementsprechend optimierter.
+
+    {underline}{bold}Befehle:{creset}
+    {bold} -> {blue}install:{reset} Installiert ein Pakete{creset}
+    {bold} -> {blue}remove:{reset} Entfernt ein Pakete{creset}
+    {bold} -> {blue}reinstall:{reset} Installiert ein Pakete neu{creset}
+    {bold} -> {blue}update:{reset} Überprüft auf Paketaktualisierungen{creset}
+    {bold} -> {blue}upgrade:{reset} Aktualisiert ein Paket{creset}
+    {bold} -> {blue}sync:{reset} Synchronisiert die Paketdatenbanken{creset}
+    {bold} -> {blue}info:{reset} Gibt dir Informationen über ein Paket aus{creset}
+    {bold} -> {blue}list:{reset} Zählt verfügbare Pakete auf{creset}
+    {bold} -> {blue}download:{reset} Lädt ein Paket herunter{creset}
+    {bold} -> {blue}build:{reset} Baut verschiedene Dinge *^____^*{creset}
+    {bold}    -> {blue}world:{reset} Baut die lokale World-Datenbank von neu auf{creset}
+    {bold} -> {blue}plugins:{reset} Plugin Verwaltung{creset}
+    {bold}    -> {blue}list:{reset} Zählt alle installierten Plugins auf{creset}
+    {bold}    -> {blue}exec:{reset} Führt einen Befehl eines Plugins aus{creset}
+    {bold}    -> {blue}enable:{reset} Aktiviert ein Plugin{creset}
+    {bold}    -> {blue}disable:{reset} Deaktiviert ein Plugin{creset}
+    {bold}    -> {blue}market:{reset} Plugin Marketplace{creset}
+    {bold}       -> {blue}list:{reset} Zählt verfügbare Plugins auf{creset}
+    {bold}    -> {blue}get:{reset} Installiert ein Plugin{creset}
+    {bold} -> {blue}config:{reset} Konfigurationsverwaltung{creset}
+    {bold}    -> {blue}language:{reset} Sprachkonfigurierung{creset}
+
+    Copyright (C) 2023 Juliandev02 @ Strawberry Foundations - Made with <3
+
+  # Basic strings
+  Get: "Holen"
+  Architecture: "Architektur"
+  Abort: "Abbruch ... "
+  Name: "Name"
+  Version: "Version"
+  Branch: "Branch"
+  PackageUrl: "Paket-URL"
+  PkgbuildUrl: "Buildscript-URL"
+  Condition: "Zustand"
+  Description: "Beschreibung"
+  Commands: "Befehle"
+  ErrorCode: "Fehlercode"
+  Enabled: "Aktiviert"
+  Disabled: "Deaktiviert"
+  Error: "Fehler"
+
+  # Error messages
+  HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  HttpErrorOnePackage: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Mindestens ein Paket konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
+  UnknownError: "{red}{bold}E:{reset} Unbekannter Fehler"
+  UnknownOperation: "{red}{bold}E:{reset} Ungültige Operation:"
+  UnknownLanguage: "{red}{bold}E:{reset} Unbekannte Sprache."
+  NoArgument: "{red}{bold}E:{reset} Kein Argument angegeben!"
+  Canceled: "{red}{bold}E:{reset} Prozess wurde abgebrochen!"
+  WorldDatabaseNotBuilded: "{red}{bold}E:{reset} Die lokale World Datenbank wurde noch nicht aufgebaut. Ist deine spkg Installation korrupt? (Versuche {cyan}{bold}spkg build world{reset} auszuführen)"
+  NoRepositories: "{bold}{red}Es wurde kein Repository-Server angegeben. Überprüfe deine Konfigurationsdatei von spkg."
+  ParsingError: "{red}{bold}E:{reset} Fehler beim Parsen der Paketkonfigurationsdatei: Inkorrekte Syntax und/oder falsches Format."
+  InstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht installiert werden (%s)"
+  UpdateError: "{red}{bold}E:{reset} Das Paket konnte nicht aktualisiert werden (%s)"
+  ExtractError: "{red}{bold}E:{reset} Das Paketarchiv konnte nicht entpackt werden: Das Archivformat wird nicht unterstützt."
+  EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
+  UninstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht entfernt werden (%s)"
+  ErrorExecutingPluginCommand: "{red}{bold}E:{reset} Ein Fehler beim ausführen des Plugin-Commands %s ist aufgetreten: %c"
+
+  # Warning messages
+  UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
+  ReinstallNotAsRoot: "{yellow}{bold}W:{reset} Führe Neuinstallationen nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
+  UserConfigNotExists2: "{yellow}{bold}Warnung:{reset}{creset} Deine Nutzerkonfiguration existiert nicht. Versuche, Konfigurationsordner zu erstellen ..."
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} Dies wird die lokale >> {cyan}{bold}World-Datenbank{creset}{yellow} << neu generieren! Bist du dir sicher? [Ja/Nein] "
+  RecommendedRunningAsRoot: "{yellow}{bold}W:{reset} Es wird empfohlen, Pakete als root (sudo) zu installieren. Es könnte sonst zu Berechtigungsproblemen kommen"
+  RecommendedRunningAsRootRemove: "{yellow}{bold}W:{reset} Es wird empfohlen, Pakete als root (sudo) zu entfernen. Es könnte sonst zu Berechtigungsproblemen kommen"
+  ForceNoSandbox: "{yellow}{bold}W:{reset} Paket kann nicht in der Sandbox installiert werden: Es ist Host-only."
+  DevelopmentRelease: "{yellow}{bold}W:{reset} Dies ist eine Entwicklungsversion von spkg!{creset}"
+
+  # Package-related messages
+  PackageNotFound: "{red}{bold}E:{reset} Paket wurde nicht gefunden{creset}"
+  PackageDatabaseNotSynced: "{yellow}{bold}W:{reset} Die Paketdatenbank wurde noch nicht synchronisiert. Führe {cyan}spkg sync{reset} aus, um die Datenbank zu synchronisieren"
+  PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Paket wurde bereits installiert. Es gibt nichts zu tun."
+  PackageNotInstalled: "{yellow}{bold}W:{reset} Paket ist nicht installiert, es gibt nichts zu aktualisieren."
+  PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Paket ist nicht installiert, es gibt nichts zu entfernen."
+  ContinuePackageInstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun heruntergeladen. \nDafür müssen {green}{bold}%c MB{creset} heruntergeladen werden. Fortfahren? [J/N] "
+  ContinuePackageInstallationCompact: "{creset}Das Paket {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} wird nun heruntergeladen und installiert."
+  ContinuePackageUninstallation: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun entfernt. \nDafür muss die Paketkonfigurationsdatei heruntergeladen werden. Fortfahren? [J/N] "
+  ContinuePackageUninstallationCompact: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun entfernt. \nDafür wird die Paketkonfigurationsdatei heruntergeladen."
+  ContinuePackageDownload: "{creset}Das Archiv {cyan}{bold}%s{creset} wird nun heruntergeladen. Fortfahren? [J/N] "
+  SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}{bold}spkg update{reset}{creset} aus, um nach Paketupdates zu suchen."
+  AtLeastOneUnsuccessSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
+  UnsuccessSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
+  SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
+  SearchingForUpdates: "Suche nach verfügbaren Updates ..."
+  UnsuccessPackageDownload: "{bold}{red}%s: Paket konnte nicht heruntergeladen werden. (Ist der Repository-Server offline?)"
+  UnsuccessDownloadingPackages: "{yellow}Die Pakete konnte nicht heruntergeladen werden."
+  AtLeastOneUnsuccessPackageDownload: "{bold}{yellow}W: Mindestens ein Paket konnte nicht heruntergeladen werden."
+  GettingSpecfile: "Die Paketkonfigurationsdatei wird angefordert und heruntergeladen..."
+
+  # Permission-related messages
+  MissingPermissions: "{reset}{creset}Fehlende Berechtigung"
+  MissingPermissionsPluginConfig: "{red}{bold}Die Plugin-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsPluginInstallation: "{red}{bold}Das Plugin konnte nicht installiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsPackageDatabaseUpdate: "{red}{bold}Die Paketdatenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabase: "{red}{bold}Die World Datenbank konnte nicht aktualisiert werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabaseInsert: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neu installierte Paket konnte daher nicht eingefügt werden (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}Die World Datenbank konnte nicht beschrieben werden. \nDer Eintrag für das neulich entfernte Paket konnte daher nicht entfernt werden (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsSpkgConfig: "{red}{bold}Die Spkg-Config konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsLockfile: "{red}{bold}Die Sperrdatei konnte nicht bearbeitet werden. (Wird spkg als Root ausgeführt?)"
+  MissingPermissionsSandbox: "{red}{bold}Es konnte keine Datei/Ordner im Sandbox-Ordner verändert werden (Wird spkg als Root ausgeführt?)"
+
+  # Plugin-related messages
+  PluginNotEnabled: "{yellow}{bold}W:{reset} Plugin ist nicht aktiviert."
+  PluginIsAlreadyEnabled: "{yellow}{bold}W:{reset} Plugin ist bereits aktiviert."
+  PluginIsAlreadyDisabled: "{yellow}{bold}W:{reset} Plugin ist bereits deaktiviert."
+  PluginManagement: "Pluginverwaltung"
+  InstalledPlugins: "Installierte Plugins"
+  SearchingDatabaseForPlugin: "{bold}Durchsuche Datenbank nach Plugin ..."
+
+  # Information messages
+  RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
+  PackageInformationTitle: "{bold}{underline}{green}Information über das Paket"
+  FinishedDownloading: "Download abgeschlossen für"
+  FinishedDownloadingCompact: "Download abgeschlossen"
+  SyncingPackageDatabase: "Synchronisieren von"
+  ExecutingSetup: "Setup Script wird ausgeführt... Bitte warten"
+  BuildingWorldDatabase: "{bold}Die World Datenbank wird neu aufgebaut ..."
+  SuccessBuildingWorldDatabase: "{green}{bold}[✓]{reset} Die World Datenbank wurde erfolgreich aufgebaut!"
+  ChangedLanguage: "{bold}Sprache wurde zu {cyan}%s{reset} geändert"
+  SearchingWorldForPackage: "{bold}Durchsuche lokale World Datenbak nach installierten Paket ..."
+  InstallingToSandboxEnv: "{CYAN}Paket wird in der Sandbox installiert."
+  ExecutungSpkgPackageConf: ""
+
+  # Installation messages
+  ParsingSpecfile: "Die Paketkonfiguration wird eingelesen"
+  SuccessParsingSpecfile: "Die Paketkonfiguration wurde eingelesen"
+  ExtractArchive: "Entpacke Paketarchiv..."
+  SuccessExtractArchive: "Paketarchiv wurde entpackt"
+  DeterminateDependencies: "Abhängigkeiten werden ermittelt und installiert"
+  SuccessDeterminateDependencies: "Abhängigkeiten wurden installiert (in %s s)"
+  DeterminatePipDependencies: "Es wird ermittelt, ob Pip-Abhängigkeiten benötigt werden"
+  NoNeedPipDependencies: "Keine Pip-Abhängigkeiten gefunden..."
+  NeedPipDependencies: "Pip-Abhängigkeiten wurden gefunden."
+  SuccessPipDeterminateDependencies: "Pip-Abhängigkeiten wurden installiert (in %s s)"
+  PrepareCompile: "Paketkompilierung wird vorbereitet..."
+  Compile: "Starte Kompilierung des Paketes"
+  NoCompileNeed: "Es wird keine Kompilierung des Paketes benötigt."
+  PrepareInstall: "Paketinstallation wird vorbereitet..."
+  Install: "Paket wird installiert..."
+  SuccessInstall: "{green}{bold}%s wurde in %c s installiert."
+
+  # Uninstallation messages
+  RequiresArchiveForUninstall: "Dieses Paket benötigt das Paketarchiv, um mit der Entfernung fortzufahren."
+  RemoveDependenciesForYourself: "Wenn du die folgenden Abhängigkeiten dieses Paketes nicht mehr benötigst, kannst du diese selber bei Bedarf entfernen.\n    Bitte beachte das manche der Abhängigkeiten wichtig für das System sein könnten!"
+  Remove: "Paket wird entfernt..."
+  SuccessRemove: "{green}{bold}%s wurde in %c s entfernt."
+
+  # Upgrade messages
+  ContinuePackageUpdate: "{creset}Zum Aktualisieren dieses Paketes muss das Paket {cyan}{bold}%s{creset} heruntergeladen werden. \nDafür werden {green}{bold}%c MB{creset} an Update-Daten benötigt. Fortfahren? [J/N] "
+  ContinuePackageUpdateCompact: "{creset}Das Paket {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} wird nun heruntergeladen und aktualisiert."
+  PrepareUpdate: "Paketaktualisierung wird vorbereitet..."
+  Update: "Paket wird aktualisiert..."
+  SuccessUpdate: "{green}{bold}%s wurde in %c s aktualisiert."
