@@ -7,6 +7,7 @@ mod spkg_core;
 mod statics;
 mod utilities;
 mod commands;
+mod net;
 
 fn main() {
     match ARGS.command.as_str() {
