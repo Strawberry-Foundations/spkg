@@ -1,7 +1,7 @@
-use crate::cli::SPKG_OPTIONS;
-
 mod cli;
+mod spkg_core;
+mod statics;
 
 fn main() {
-    println!("{}", SPKG_OPTIONS.sandbox);
+    println!("Hello World!");
 }
