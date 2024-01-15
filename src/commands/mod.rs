@@ -1,1 +1,1 @@
-mod sync;
+pub mod sync;
