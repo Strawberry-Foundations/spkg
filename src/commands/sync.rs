@@ -1,11 +1,14 @@
 use std::fs::File;
 use std::io::copy;
+use std::time::Instant;
 
 use stblib::colors::{BOLD, C_RESET, CYAN};
 
 use crate::spkg_core::{CONFIG, SPKG_DIRECTORIES, STRING_LOADER};
 
 pub fn sync() {
+    let start_time = Instant::now();
+
     for (name, url) in CONFIG.repositories.iter() {
         let database_repo = format!("{url}/package.db");
         let database_local = format!("{}{name}.db", SPKG_DIRECTORIES.mirrors);
@@ -37,5 +40,5 @@ pub fn sync() {
         }
     }
 
-    println!("{}", STRING_LOADER.str("SuccessSyncingPackageDatabase"));
+    println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
 }
