@@ -6,6 +6,7 @@ pub struct SpkgDirectories {
     pub user_config: String,
     pub data: String,
     pub mirrors: String,
+    pub language_files: String,
 }
 
 pub struct SpkgFiles {
@@ -24,6 +25,7 @@ impl SpkgDirectories {
             user_config: "".to_string(),
             data: "".to_string(),
             mirrors: "".to_string(),
+            language_files: "".to_string(),
         };
 
         if DEVELOPMENT_MODE {
@@ -31,12 +33,14 @@ impl SpkgDirectories {
             directories.user_config = String::from("../../data/userconfig/spkg/");
             directories.data = String::from("../../data/var/lib/spkg/");
             directories.mirrors = String::from("../../data/var/lib/spkg/mirrors/");
+            directories.language_files = String::from("../../data/etc/spkg/lang/");
         }
         else {
             directories.system_config = String::from("/etc/spkg/");
             directories.user_config = String::from("/home/user/.config/spkg/");
             directories.data = String::from("/var/lib/spkg/");
             directories.mirrors = String::from("/var/lib/spkg/mirrors/");
+            directories.language_files = String::from("/etc/spkg/lang/");
         }
 
         directories
