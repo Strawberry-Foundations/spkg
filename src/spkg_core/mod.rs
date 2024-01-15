@@ -10,5 +10,5 @@ lazy_static!(
     pub static ref SPKG_DIRECTORIES: files::SpkgDirectories = files::SpkgDirectories::new();
     pub static ref SPKG_FILES: files::SpkgFiles = files::SpkgFiles::new();
 
-    pub static ref STRING_LOADER: Strings = Strings::new();
+    pub static ref STRING_LOADER: Strings = Strings::new(&CONFIG.language, &CONFIG.language_strings);
 );
