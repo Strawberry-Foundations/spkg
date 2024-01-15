@@ -6,7 +6,8 @@ pub struct SpkgDirectories {
     pub user_config: String,
     pub data: String,
     pub mirrors: String,
-    pub language_files: String,
+    pub
+    language_files: String,
 }
 
 pub struct SpkgFiles {
@@ -14,7 +15,6 @@ pub struct SpkgFiles {
     pub package_database: String,
     pub system_config: String,
     pub user_config: String,
-    pub lang_strings: String,
     pub lockfile: String,
 }
 
@@ -54,7 +54,6 @@ impl SpkgFiles {
             package_database: format!("{}main.db", SPKG_DIRECTORIES.mirrors),
             system_config: format!("{}config.yml", SPKG_DIRECTORIES.system_config),
             user_config: format!("{}config.yml", SPKG_DIRECTORIES.user_config),
-            lang_strings: format!("{}lang.yml", SPKG_DIRECTORIES.system_config),
             lockfile: format!("{}lock", SPKG_DIRECTORIES.data),
         }
     }
