@@ -29,11 +29,11 @@ impl SpkgDirectories {
         };
 
         if DEVELOPMENT_MODE {
-            directories.system_config = String::from("../../data/etc/spkg/");
-            directories.user_config = String::from("../../data/userconfig/spkg/");
-            directories.data = String::from("../../data/var/lib/spkg/");
-            directories.mirrors = String::from("../../data/var/lib/spkg/mirrors/");
-            directories.language_files = String::from("../../data/etc/spkg/lang/");
+            directories.system_config = String::from("./data/etc/spkg/");
+            directories.user_config = String::from("./data/userconfig/spkg/");
+            directories.data = String::from("./data/var/lib/spkg/");
+            directories.mirrors = String::from("./data/var/lib/spkg/mirrors/");
+            directories.language_files = String::from("./data/etc/spkg/lang/");
         }
         else {
             directories.system_config = String::from("/etc/spkg/");
