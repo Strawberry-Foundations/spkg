@@ -17,7 +17,7 @@ pub fn sync() {
 
         let mut response = reqwest::blocking::get(database_repo).unwrap_or_else(|_| {
             eprintln!("{}", STRING_LOADER.str("HttpError"));
-            std::process::exit(1)
+            std::process::exit(1);
         });
 
         if response.status().is_success() {
@@ -36,7 +36,6 @@ pub fn sync() {
         }
         else {
             eprintln!("{}", STRING_LOADER.str("HttpError"));
-            std::process::exit(1)
         }
     }
 
