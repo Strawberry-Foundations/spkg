@@ -11,10 +11,12 @@ mod net;
 mod fs;
 mod db;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     match ARGS.command.as_str() {
         "install" => {}
-        "sync" => commands::sync::sync(),
+        "sync" => commands::sync::sync().await,
+        "list" => commands::list::list().await,
         _ => println!("{}", STRING_LOADER.str_params("Help", &[&VERSION, &std::env::consts::ARCH])),
     }
 }
