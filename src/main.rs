@@ -9,6 +9,7 @@ mod utilities;
 mod commands;
 mod net;
 mod fs;
+mod db;
 
 fn main() {
     match ARGS.command.as_str() {
