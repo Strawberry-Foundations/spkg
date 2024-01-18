@@ -1,7 +1,7 @@
 use reqwest::header;
 
-pub fn remote_header(url: &String) -> u64 {
-    let response = match reqwest::blocking::Client::new().head(url).send() {
+pub async fn remote_header(url: &String) -> u64 {
+    let response = match reqwest::Client::new().head(url).send().await {
         Ok(res) => res,
         Err(_) => return 0
     };
