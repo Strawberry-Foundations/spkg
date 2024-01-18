@@ -85,7 +85,7 @@ en_US:
 
   # Package-related messages
   PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
-  PackageDatabaseNotSynced: "The package database has not been synchronized yet. Run {cyan}spkg sync{reset} to synchronize the database"
+  PackageDatabaseNotSynced: "{bold}The package database has not been synchronized yet.\n   Run {cyan}spkg sync{reset} to synchronize the database"
   PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Package has already been installed. There is nothing to do."
   PackageNotInstalled: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to upgrade."
   PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to uninstall."
