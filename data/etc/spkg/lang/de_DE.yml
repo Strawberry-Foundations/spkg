@@ -46,7 +46,7 @@ de_DE:
   Version: "Version"
   Branch: "Branch"
   PackageUrl: "Paket-URL"
-  PkgbuildUrl: "Buildscript-URL"
+  SpecfileUrl: "Specfile-URL"
   Condition: "Zustand"
   Description: "Beschreibung"
   Commands: "Befehle"
