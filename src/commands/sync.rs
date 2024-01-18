@@ -3,7 +3,8 @@ use std::io::copy;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
-use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED};
+use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, YELLOW};
+use crate::net::remote::remote_header;
 
 use crate::spkg_core::{CONFIG, SPKG_DIRECTORIES, STRING_LOADER};
 use crate::utilities::delete_last_line;
@@ -22,12 +23,10 @@ pub fn sync() {
 
         println!("... {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
 
-        std::thread::sleep(std::time::Duration::from_secs(2));
-
         let Ok(mut response) = reqwest::blocking::get(database_repo.clone()) else {
             delete_last_line();
 
-            eprintln!("{RED}{BOLD}[×]{C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
+            eprintln!("{RED}{BOLD} × {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
             eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", STRING_LOADER.str("HttpError"));
 
             let mut counter = unsuccess_counter_clone.lock().unwrap();
@@ -55,14 +54,24 @@ pub fn sync() {
         }
 
         delete_last_line();
-        println!("{GREEN}{BOLD}[✓]{C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
+        println!("{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) {}...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"), remote_header(url));
 
         let mut counter = success_counter.lock().unwrap();
         *counter += 1;
     }
 
-    println!("{}", success_counter.lock().unwrap());
-    println!("{}", unsuccess_counter.lock().unwrap());
+    // println!("{}", success_counter.lock().unwrap());
+    // println!("{}", unsuccess_counter.lock().unwrap());
 
-    println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+    if *unsuccess_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() == 0 {
+        eprintln!("{}{C_RESET}", STRING_LOADER.str("UnsuccessfulSyncingPackageDatabase"));
+        std::process::exit(1);
+    }
+    else if *unsuccess_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() >= 1 {
+        eprintln!("{YELLOW}{BOLD} ! {C_RESET} {}{C_RESET}", STRING_LOADER.str("AtLeastOneUnsuccessfulSyncingPackageDatabase"));
+        println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+    }
+    else {
+        println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+    }
 }
