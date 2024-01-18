@@ -5,6 +5,7 @@ use std::env;
 
 #[derive(Default)]
 pub struct SpkgOptions{
+    pub package_name: String,
     pub sandbox: bool,
     pub list_installed: bool,
     pub list_custom_arch: bool,
@@ -58,7 +59,7 @@ impl Args {
                     spkg_options.list_custom_arch_type = self.args.get(index + 1).unwrap_or(&env::consts::ARCH.to_string()).to_owned();
                 },
                 "world" => spkg_options.build_world = true,
-                _ => {}
+                _ => spkg_options.package_name = self.args.get(index).unwrap().to_owned(),
             }
         }
 
