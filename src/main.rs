@@ -14,9 +14,16 @@ mod db;
 #[tokio::main]
 async fn main() {
     match ARGS.command.as_str() {
-        "install" => {}
+        "install" => {},
+        "remove" => {},
+        "reinstall" => {},
+        "update" => {},
+        "upgrade" => {},
         "sync" => commands::sync::sync().await,
+        "info" => {},
         "list" => commands::list::list().await,
+        "download" => {},
+        "build" => {},
         _ => println!("{}", STRING_LOADER.str_params("Help", &[&VERSION, &std::env::consts::ARCH])),
     }
 }
