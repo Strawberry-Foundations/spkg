@@ -8,6 +8,7 @@ mod statics;
 mod utilities;
 mod commands;
 mod net;
+mod fs;
 
 fn main() {
     match ARGS.command.as_str() {
