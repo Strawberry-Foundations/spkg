@@ -4,9 +4,11 @@
 use std::env;
 
 #[derive(Default)]
-pub struct SpkgOptions {
+pub struct SpkgOptions{
     pub sandbox: bool,
     pub list_installed: bool,
+    pub list_custom_arch: bool,
+    pub list_custom_arch_type: String
 }
 
 pub struct Args {
@@ -46,11 +48,14 @@ impl Args {
             ..Default::default()
         };
 
-        // for (_index, arg) in self.args.iter().enumerate() {
-        for arg in self.args.iter() {
+        for (index, arg) in self.args.iter().enumerate() {
             match arg.as_str() {
                 "-s" | "--sandbox" =>  spkg_options.sandbox = true,
                 "-i" | "--installed" => spkg_options.list_installed = true,
+                "-a" | "--arch" => {
+                    spkg_options.list_custom_arch = true;
+                    spkg_options.list_custom_arch_type = self.args.get(index + 1).unwrap_or(&env::consts::ARCH.to_string()).to_owned();
+                },
                 _ => {}
             }
         }
