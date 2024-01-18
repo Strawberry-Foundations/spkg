@@ -18,13 +18,13 @@ pub async fn info() {
     }).get("arch");
 
     let package = if arch == "all" {
-        sqlx::query("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ?")
+        sqlx::query("SELECT name, version, branch, arch, url, specfile FROM packages where name = ?")
             .bind(&SPKG_OPTIONS.package_name)
             .fetch_all(&db.connection)
             .await.unwrap()
     }
     else {
-        sqlx::query("SELECT name, version, branch, arch, fetch_url, setup_script FROM packages where name = ? AND arch = ?")
+        sqlx::query("SELECT name, version, branch, arch, url, specfile FROM packages where name = ? AND arch = ?")
             .bind(&SPKG_OPTIONS.package_name)
             .bind(std::env::consts::ARCH)
             .fetch_all(&db.connection)
@@ -36,8 +36,8 @@ pub async fn info() {
         let version: String = entry.get("version");
         let branch: String = entry.get("branch");
         let arch: String = entry.get("arch");
-        let packagefile_url: String = entry.get("fetch_url");
-        let specfile_url: String = entry.get("setup_script");
+        let packagefile_url: String = entry.get("url");
+        let specfile_url: String = entry.get("specfile");
 
         println!("{BOLD}{UNDERLINE}{} {name} ({version}){C_RESET}", STRING_LOADER.str("PackageInformationTitle"));
         println!("{}: {name}", STRING_LOADER.str("Name"));
@@ -45,7 +45,7 @@ pub async fn info() {
         println!("{}: {branch}", STRING_LOADER.str("Branch"));
         println!("{}: {arch}", STRING_LOADER.str("Architecture"));
         println!("{}: {packagefile_url}", STRING_LOADER.str("PackageUrl"));
-        println!("{}: {specfile_url}", STRING_LOADER.str("PkgbuildUrl"));
+        println!("{}: {specfile_url}", STRING_LOADER.str("SpecfileUrl"));
     }
 
 
