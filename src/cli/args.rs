@@ -3,8 +3,10 @@
 
 use std::env;
 
+#[derive(Default)]
 pub struct SpkgOptions {
     pub sandbox: bool,
+    pub list_installed: bool,
 }
 
 pub struct Args {
@@ -19,7 +21,9 @@ impl Args {
         let mut args = Self {
             args: vec![],
             command: "".to_string(),
-            options: SpkgOptions { sandbox: false },
+            options: SpkgOptions {
+                ..Default::default()
+            },
         };
 
         let x: Vec<String> = env::args().collect();
@@ -39,14 +43,15 @@ impl Args {
 
     pub fn collect_options(&mut self) -> SpkgOptions {
         let mut spkg_options = SpkgOptions {
-            sandbox: false
+            ..Default::default()
         };
 
         // for (_index, arg) in self.args.iter().enumerate() {
         for arg in self.args.iter() {
             match arg.as_str() {
                 "-s" | "--sandbox" =>  spkg_options.sandbox = true,
-                _ => { }
+                "-i" | "--installed" => spkg_options.list_installed = true,
+                _ => {}
             }
         }
 
