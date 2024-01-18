@@ -1,7 +1,11 @@
-use std::fs::File;
-use std::io::copy;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
+
+use tokio::fs::File;
+use tokio::io::AsyncWriteExt;
+
+use futures_util::stream::StreamExt; // Hinzugefügte Zeile
+
 
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, YELLOW};
 use crate::fs::format::format_size;
@@ -10,7 +14,7 @@ use crate::net::remote::remote_header;
 use crate::spkg_core::{CONFIG, SPKG_DIRECTORIES, STRING_LOADER};
 use crate::utilities::delete_last_line;
 
-pub fn sync() {
+pub async fn sync() {
     let start_time = Instant::now();
 
     let success_counter = Arc::new(Mutex::new(0));
@@ -21,11 +25,11 @@ pub fn sync() {
 
         let database_repo = format!("{url}/package.db");
         let database_local = format!("{}{name}.db", SPKG_DIRECTORIES.mirrors);
-        let content_size = remote_header(&database_repo);
+        let content_size = remote_header(&database_repo).await;
 
         println!("... {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
 
-        let Ok(mut response) = reqwest::blocking::get(database_repo.clone()) else {
+        let Ok(response) = reqwest::get(database_repo.clone()).await else {
             delete_last_line();
 
             eprintln!("{RED}{BOLD} × {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
@@ -38,19 +42,25 @@ pub fn sync() {
         };
 
         if response.status().is_success() {
-            let mut database = File::create(database_local).unwrap_or_else(|_| {
+            let mut database = File::create(database_local).await.unwrap_or_else(|_| {
                 eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.str("MissingPermissions"));
                 eprintln!("{}", STRING_LOADER.str("MissingPermissionsPackageDatabaseUpdate"));
                 std::process::exit(1);
             });
 
-            copy(&mut response, &mut database).unwrap_or_else(|_| {
-                eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.str("MissingPermissions"));
-                eprintln!("{}", STRING_LOADER.str("MissingPermissionsPackageDatabaseUpdate"));
-                std::process::exit(1);
-            });
+            let mut stream = response.bytes_stream();
 
+            while let Some(item) = stream.next().await {
+                let chunk = item;
+
+                database.write_all(&chunk.unwrap()).await.unwrap_or_else(|_| {
+                    eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.str("MissingPermissions"));
+                    eprintln!("{}", STRING_LOADER.str("MissingPermissionsPackageDatabaseUpdate"));
+                    std::process::exit(1);
+                });
+            }
         }
+
         else {
             eprintln!("{}{C_RESET}", STRING_LOADER.str("HttpError"));
         }
