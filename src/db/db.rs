@@ -16,7 +16,7 @@ impl Database {
                 std::process::exit(1);
             }
 
-            eprintln!("{}", STRING_LOADER.str("PackageDatabaseNotSynced"));
+            eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRING_LOADER.str("PackageDatabaseNotSynced"));
             std::process::exit(1);
         });
 
