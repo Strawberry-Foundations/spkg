@@ -20,7 +20,7 @@ async fn main() {
         "update" => {},
         "upgrade" => {},
         "sync" => commands::sync::sync().await,
-        "info" => {},
+        "info" => commands::info::info().await,
         "list" => commands::list::list().await,
         "download" => {},
         "build" => commands::build::build().await,
