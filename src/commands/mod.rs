@@ -1,4 +1,4 @@
 pub mod sync;
 pub mod list;
-mod build;
-mod info;
+pub mod build;
+pub mod info;
