@@ -4,6 +4,7 @@ use std::sync::{Arc, Mutex};
 use std::time::Instant;
 
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, YELLOW};
+use crate::fs::format::format_size;
 use crate::net::remote::remote_header;
 
 use crate::spkg_core::{CONFIG, SPKG_DIRECTORIES, STRING_LOADER};
@@ -20,6 +21,7 @@ pub fn sync() {
 
         let database_repo = format!("{url}/package.db");
         let database_local = format!("{}{name}.db", SPKG_DIRECTORIES.mirrors);
+        let content_size = remote_header(&database_repo);
 
         println!("... {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
 
@@ -54,7 +56,10 @@ pub fn sync() {
         }
 
         delete_last_line();
-        println!("{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) {}...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"), remote_header(url));
+        println!("{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ({}) ...{C_RESET}",
+                 STRING_LOADER.str("SyncingPackageDatabase"),
+                 format_size(content_size)
+        );
 
         let mut counter = success_counter.lock().unwrap();
         *counter += 1;
