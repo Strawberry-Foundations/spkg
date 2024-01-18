@@ -8,7 +8,8 @@ pub struct SpkgOptions{
     pub sandbox: bool,
     pub list_installed: bool,
     pub list_custom_arch: bool,
-    pub list_custom_arch_type: String
+    pub list_custom_arch_type: String,
+    pub build_world: bool,
 }
 
 pub struct Args {
@@ -56,6 +57,7 @@ impl Args {
                     spkg_options.list_custom_arch = true;
                     spkg_options.list_custom_arch_type = self.args.get(index + 1).unwrap_or(&env::consts::ARCH.to_string()).to_owned();
                 },
+                "world" => spkg_options.build_world = true,
                 _ => {}
             }
         }
