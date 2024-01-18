@@ -63,7 +63,7 @@ en_US:
   UnknownLanguage: "{red}{bold}E:{reset} Unknown language."
   NoArgument: "{red}{bold}E:{reset} No Argument passed!"
   Canceled: "{red}{bold}E:{reset} Process canceled!"
-  WorldDatabaseNotBuilded: "{red}{bold}E:{reset} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
+  WorldDatabaseNotBuilt: "{red}{bold}E:{reset} The local world database has not been built yet. Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
   NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
   ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
   InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
@@ -85,7 +85,7 @@ en_US:
 
   # Package-related messages
   PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
-  PackageDatabaseNotSynced: "{yellow}{bold}W:{reset} The package database has not been synchronized yet. Run {cyan}spkg sync{reset} to synchronize the database"
+  PackageDatabaseNotSynced: "The package database has not been synchronized yet. Run {cyan}spkg sync{reset} to synchronize the database"
   PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Package has already been installed. There is nothing to do."
   PackageNotInstalled: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to upgrade."
   PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to uninstall."
