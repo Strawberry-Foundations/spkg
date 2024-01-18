@@ -95,7 +95,7 @@ de_DE:
   ContinuePackageUninstallationCompact: "{creset}Das Paket {cyan}{bold}%s{creset} wird nun entfernt. \nDafür wird die Paketkonfigurationsdatei heruntergeladen."
   ContinuePackageDownload: "{creset}Das Archiv {cyan}{bold}%s{creset} wird nun heruntergeladen. Fortfahren? [J/N] "
   SuccessSyncingPackageDatabase: "Die Paketdatenbank wurde in %s s synchronisiert. Führe {cyan}{bold}spkg update{reset}{creset} aus, um nach Paketupdates zu suchen."
-  AtLeastOneUnsuccessfulSyncingPackageDatabase: "{bold}{yellow}W: Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
+  AtLeastOneUnsuccessfulSyncingPackageDatabase: "{bold}{yellow}Mindestens eine Paketdatenbank konnte nicht synchronisiert werden."
   UnsuccessfulSyncingPackageDatabase: "{yellow}Die Paketdatenbank konnte nicht synchronisiert werden."
   SearchingDatabaseForPackage: "{bold}Durchsuche Datenbank nach Paket ..."
   SearchingForUpdates: "Suche nach verfügbaren Updates ..."
