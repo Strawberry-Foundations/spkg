@@ -63,7 +63,7 @@ en_US:
   UnknownLanguage: "{red}{bold}E:{reset} Unknown language."
   NoArgument: "{red}{bold}E:{reset} No Argument passed!"
   Canceled: "{red}{bold}E:{reset} Process canceled!"
-  WorldDatabaseNotBuilt: "The local world database has not been built yet. Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
+  WorldDatabaseNotBuilt: "{bold}The local world database has not been built yet.\n   Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
   NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
   ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
   InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
