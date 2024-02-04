@@ -32,13 +32,11 @@ impl Package {
             Color::Green
         );
 
-
-
         match file_download(&self.url, &self.filename).await {
             Ok(_) => {
                 spinner.stop();
                 delete_last_line();
-                println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRING_LOADER.str("Get"), self.url, self.name);
+                println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.str("Get"), self.url, format_size(content_size), self.name);
             }
             Err(err) => {
                 spinner.stop();
