@@ -1,6 +1,8 @@
 pub mod files;
 pub mod types;
 pub mod config;
+pub mod package;
+pub mod err;
 
 use lazy_static::lazy_static;
 use stblib::strings::Strings;
