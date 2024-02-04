@@ -1,4 +1,5 @@
 pub mod args;
+pub mod spinner;
 
 use lazy_static::lazy_static;
 
