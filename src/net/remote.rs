@@ -7,7 +7,7 @@ pub async fn remote_header(url: &String) -> u64 {
     };
 
     if response.status().is_success() {
-        return response.headers().get(header::CONTENT_LENGTH).unwrap().to_str().unwrap().parse().unwrap();
+        return response.headers().get(header::CONTENT_LENGTH).unwrap().to_str().unwrap().parse().unwrap_or(0);
     }
 
     0
