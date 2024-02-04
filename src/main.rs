@@ -22,7 +22,7 @@ async fn main() {
         "sync" => commands::sync::sync().await,
         "info" => commands::info::info().await,
         "list" => commands::list::list().await,
-        "download" => {},
+        "download" => commands::download::download().await,
         "build" => commands::build::build().await,
         _ => println!("{}", STRING_LOADER.str_params("Help", &[&VERSION, &std::env::consts::ARCH])),
     }
