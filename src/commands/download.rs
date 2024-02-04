@@ -35,6 +35,28 @@ pub async fn download() {
         package.download().await;
     }
     else if packages.len() >= 2 {
-        println!("");
+        for package in packages {
+            let package_db = sqlx::query("SELECT * FROM packages where name = ?")
+                .bind(package)
+                .fetch_all(&db.connection)
+                .await.unwrap();
+
+            let package_db = package_db.first().unwrap_or_else(|| {
+                eprintln!("{}", STRING_LOADER.str("PackageNotFound"));
+                std::process::exit(1);
+            });
+
+            let package = Package {
+                name: package_db.get("name"),
+                version: package_db.get("version"),
+                branch: package_db.get("branch"),
+                arch: package_db.get("arch"),
+                url: package_db.get("url"),
+                specfile: package_db.get("specfile"),
+                filename: package_db.get("filename"),
+            };
+
+            package.download().await;
+        }
     }
 }
