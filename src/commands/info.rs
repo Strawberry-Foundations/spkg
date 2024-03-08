@@ -13,7 +13,7 @@ pub async fn info() {
         .await.unwrap();
 
     let arch: String = result.first().unwrap_or_else(|| {
-        eprintln!("{}", STRING_LOADER.str("PackageNotFound"));
+        eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
         std::process::exit(1);
     }).get("arch");
 
@@ -39,13 +39,13 @@ pub async fn info() {
         let packagefile_url: String = entry.get("url");
         let specfile_url: String = entry.get("specfile");
 
-        println!("{BOLD}{UNDERLINE}{} {name} ({version}){C_RESET}", STRING_LOADER.str("PackageInformationTitle"));
-        println!("{}: {name}", STRING_LOADER.str("Name"));
-        println!("{}: {version}", STRING_LOADER.str("Version"));
-        println!("{}: {branch}", STRING_LOADER.str("Branch"));
-        println!("{}: {arch}", STRING_LOADER.str("Architecture"));
-        println!("{}: {packagefile_url}", STRING_LOADER.str("PackageUrl"));
-        println!("{}: {specfile_url}", STRING_LOADER.str("SpecfileUrl"));
+        println!("{BOLD}{UNDERLINE}{} {name} ({version}){C_RESET}", STRING_LOADER.load("PackageInformationTitle"));
+        println!("{}: {name}", STRING_LOADER.load("Name"));
+        println!("{}: {version}", STRING_LOADER.load("Version"));
+        println!("{}: {branch}", STRING_LOADER.load("Branch"));
+        println!("{}: {arch}", STRING_LOADER.load("Architecture"));
+        println!("{}: {packagefile_url}", STRING_LOADER.load("PackageUrl"));
+        println!("{}: {specfile_url}", STRING_LOADER.load("SpecfileUrl"));
     }
 
 
