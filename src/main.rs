@@ -24,6 +24,6 @@ async fn main() {
         "list" => commands::list::list().await,
         "download" => commands::download::download().await,
         "build" => commands::build::build().await,
-        _ => println!("{}", STRING_LOADER.str_params("Help", &[&VERSION, &std::env::consts::ARCH])),
+        _ => println!("{}", STRING_LOADER.load_with_params("Help", &[&VERSION, &std::env::consts::ARCH])),
     }
 }
