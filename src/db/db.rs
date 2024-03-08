@@ -12,11 +12,11 @@ impl Database {
     pub async fn new(path: impl ToString) -> Self {
         let sqlite_db = SqlitePool::connect(&path.to_string()).await.unwrap_or_else(|_| {
             if path.to_string() == SPKG_FILES.world_database {
-                eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRING_LOADER.str("WorldDatabaseNotBuilt"));
+                eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRING_LOADER.load("WorldDatabaseNotBuilt"));
                 std::process::exit(1);
             }
 
-            eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRING_LOADER.str("PackageDatabaseNotSynced"));
+            eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRING_LOADER.load("PackageDatabaseNotSynced"));
             std::process::exit(1);
         });
 
