@@ -28,7 +28,7 @@ impl Package {
 
         let mut spinner = Spinner::new(
             frame,
-            format!("{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.str("Get"), self.url, format_size(content_size), self.name),
+            format!("{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name),
             Color::Green
         );
 
@@ -36,13 +36,13 @@ impl Package {
             Ok(_) => {
                 spinner.stop();
                 delete_last_line();
-                println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.str("Get"), self.url, format_size(content_size), self.name);
+                println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name);
             }
             Err(err) => {
                 spinner.stop();
                 delete_last_line();
                 delete_last_line();
-                eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRING_LOADER.str("Get"), self.url, self.name);
+                eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, self.name);
                 eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
             }
         };
