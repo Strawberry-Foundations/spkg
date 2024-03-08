@@ -12,7 +12,7 @@ pub async fn build() {
     if SPKG_OPTIONS.build_world {
         let mut line_reader = rustyline::DefaultEditor::new().unwrap();
 
-        let input: String = match line_reader.readline(&STRING_LOADER.str("AskRegenWorld")) {
+        let input: String = match line_reader.readline(&STRING_LOADER.load("AskRegenWorld")) {
             Ok(i) => i,
             Err(ReadlineError::Interrupted) => {
                 sleep(Duration::from_millis(300)).await;
@@ -23,11 +23,11 @@ pub async fn build() {
         };
 
         if input.to_lowercase() == "yes" || input.to_lowercase() == "ja" {
-            println!("{C_RESET}{}", STRING_LOADER.str("BuildingWorldDatabase"));
+            println!("{C_RESET}{}", STRING_LOADER.load("BuildingWorldDatabase"));
 
             std::fs::remove_file(&SPKG_FILES.world_database).unwrap_or_else(|_| {
-                eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_FILES.world_database, STRING_LOADER.str("MissingPermissions"));
-                eprintln!("{}", STRING_LOADER.str("MissingPermissionsWorldDatabase"));
+                eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_FILES.world_database, STRING_LOADER.load("MissingPermissions"));
+                eprintln!("{}", STRING_LOADER.load("MissingPermissionsWorldDatabase"));
                 exit(1);
             });
 
