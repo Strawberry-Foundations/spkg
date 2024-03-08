@@ -18,7 +18,7 @@ pub async fn download() {
             .await.unwrap();
 
         let package_db = package_db.first().unwrap_or_else(|| {
-            eprintln!("{}", STRING_LOADER.str("PackageNotFound"));
+            eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
             std::process::exit(1);
         });
 
@@ -42,7 +42,7 @@ pub async fn download() {
                 .await.unwrap();
 
             let package_db = package_db.first().unwrap_or_else(|| {
-                eprintln!("{}", STRING_LOADER.str("PackageNotFound"));
+                eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
                 std::process::exit(1);
             });
 
