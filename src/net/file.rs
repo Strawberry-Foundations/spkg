@@ -6,7 +6,7 @@ use crate::spkg_core::STRING_LOADER;
 
 pub async fn file_download(url: &String, filename: &String) -> anyhow::Result<()> {
     let client = Client::new();
-    let response = client.get(url).send().await.map_err(|_| SpkgError::new(STRING_LOADER.str("HttpError")))?;
+    let response = client.get(url).send().await.map_err(|_| SpkgError::new(STRING_LOADER.load("HttpError")))?;
 
     if response.status().is_success() {
         let mut file = File::create(filename)?;
