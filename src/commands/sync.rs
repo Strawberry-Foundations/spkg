@@ -26,13 +26,13 @@ pub async fn sync() {
         let database_local = format!("{}{name}.db", SPKG_DIRECTORIES.mirrors);
         let content_size = remote_header(&database_repo).await;
 
-        println!("... {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
+        println!("... {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.load("SyncingPackageDatabase"));
 
         let Ok(response) = reqwest::get(database_repo.clone()).await else {
             delete_last_line();
 
-            eprintln!("{RED}{BOLD} × {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.str("SyncingPackageDatabase"));
-            eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", STRING_LOADER.str("HttpError"));
+            eprintln!("{RED}{BOLD} × {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ...{C_RESET}", STRING_LOADER.load("SyncingPackageDatabase"));
+            eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", STRING_LOADER.load("HttpError"));
 
             let mut counter = unsuccess_counter_clone.lock().unwrap();
             *counter += 1;
@@ -42,8 +42,8 @@ pub async fn sync() {
 
         if response.status().is_success() {
             let mut database = File::create(database_local).await.unwrap_or_else(|_| {
-                eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.str("MissingPermissions"));
-                eprintln!("{}", STRING_LOADER.str("MissingPermissionsPackageDatabaseUpdate"));
+                eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.load("MissingPermissions"));
+                eprintln!("{}", STRING_LOADER.load("MissingPermissionsPackageDatabaseUpdate"));
                 std::process::exit(1);
             });
 
@@ -53,20 +53,20 @@ pub async fn sync() {
                 let chunk = item;
 
                 database.write_all(&chunk.unwrap()).await.unwrap_or_else(|_| {
-                    eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.str("MissingPermissions"));
-                    eprintln!("{}", STRING_LOADER.str("MissingPermissionsPackageDatabaseUpdate"));
+                    eprintln!("{CYAN}{BOLD}{}:{C_RESET} {}", SPKG_DIRECTORIES.mirrors, STRING_LOADER.load("MissingPermissions"));
+                    eprintln!("{}", STRING_LOADER.load("MissingPermissionsPackageDatabaseUpdate"));
                     std::process::exit(1);
                 });
             }
         }
 
         else {
-            eprintln!("{}{C_RESET}", STRING_LOADER.str("HttpError"));
+            eprintln!("{}{C_RESET}", STRING_LOADER.load("HttpError"));
         }
 
         delete_last_line();
         println!("{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ({}) ...{C_RESET}",
-                 STRING_LOADER.str("SyncingPackageDatabase"),
+                 STRING_LOADER.load("SyncingPackageDatabase"),
                  format_size(content_size)
         );
 
@@ -78,14 +78,14 @@ pub async fn sync() {
     // println!("{}", unsuccess_counter.lock().unwrap());
 
     if *unsuccess_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() == 0 {
-        eprintln!("{}{C_RESET}", STRING_LOADER.str("UnsuccessfulSyncingPackageDatabase"));
+        eprintln!("{}{C_RESET}", STRING_LOADER.load("UnsuccessfulSyncingPackageDatabase"));
         std::process::exit(1);
     }
     else if *unsuccess_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() >= 1 {
-        eprintln!("{YELLOW}{BOLD} ! {C_RESET} {}{C_RESET}", STRING_LOADER.str("AtLeastOneUnsuccessfulSyncingPackageDatabase"));
-        println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+        eprintln!("{YELLOW}{BOLD} ! {C_RESET} {}{C_RESET}", STRING_LOADER.load("AtLeastOneUnsuccessfulSyncingPackageDatabase"));
+        println!("{}", STRING_LOADER.load_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
     }
     else {
-        println!("{}", STRING_LOADER.str_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+        println!("{}", STRING_LOADER.load_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
     }
 }
