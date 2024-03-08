@@ -83,9 +83,9 @@ pub async fn sync() {
     }
     else if *unsuccess_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() >= 1 {
         eprintln!("{YELLOW}{BOLD} ! {C_RESET} {}{C_RESET}", STRING_LOADER.load("AtLeastOneUnsuccessfulSyncingPackageDatabase"));
-        println!("{}", STRING_LOADER.load_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+        println!("{}", STRING_LOADER.load_with_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
     }
     else {
-        println!("{}", STRING_LOADER.load_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
+        println!("{}", STRING_LOADER.load_with_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
     }
 }
