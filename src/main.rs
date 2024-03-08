@@ -1,4 +1,5 @@
 use crate::cli::ARGS;
+use crate::spkg_core::config::get_language_strings;
 use crate::spkg_core::STRING_LOADER;
 use crate::statics::VERSION;
 
@@ -24,6 +25,8 @@ async fn main() {
         "list" => commands::list::list().await,
         "download" => commands::download::download().await,
         "build" => commands::build::build().await,
-        _ => println!("{}", STRING_LOADER.load_with_params("Help", &[&VERSION, &std::env::consts::ARCH])),
+        _ => {
+            println!("{}", STRING_LOADER.load_with_params("Help", &[&VERSION, &std::env::consts::ARCH]))
+        },
     }
 }
