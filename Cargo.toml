@@ -12,7 +12,8 @@ futures-util = "0.3.30"
 serde = "1.0.195"
 serde_yaml = "0.9.30"
 lazy_static = "1.4.0"
-stblib = "0.5.13"
+# stblib = "0.5.13"
+stblib = { version = "0.5.13", path = "../stblib-rust" }
 reqwest = { version = "0.11.23", features = ["stream"] }
 rustyline = "14.0.0"
 spinoff = "0.8.0"
