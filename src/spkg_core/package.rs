@@ -1,9 +1,9 @@
-use spinoff::{Color, Spinner};
-use spinoff::spinners::SpinnerFrames;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
+
 use crate::fs::format::format_size;
 use crate::net::file::file_download;
 use crate::net::remote::remote_header;
+use crate::spinners::Spinners;
 use crate::spkg_core::STRING_LOADER;
 use crate::utilities::delete_last_line;
 
@@ -19,27 +19,16 @@ pub struct Package {
 
 impl Package {
     pub async fn download(&self) {
-        let frame = SpinnerFrames {
-            frames: vec!["[-]", "[\\]", "[|]", "[/]"],
-            interval: 200,
-        };
-
         let content_size = remote_header(&self.url).await;
 
-        let mut spinner = Spinner::new(
-            frame,
-            format!("{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name),
-            Color::Green
-        );
+        let mut sp = crate::spinners::Spinner::new(Spinners::Line, format!("{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name));
 
         match file_download(&self.url, &self.filename).await {
             Ok(_) => {
-                spinner.stop();
-                delete_last_line();
-                println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name);
+                sp.stop_with_message(format!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, format_size(content_size), self.name));
             }
             Err(err) => {
-                spinner.stop();
+                sp.stop();
                 delete_last_line();
                 delete_last_line();
                 eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRING_LOADER.load("Get"), self.url, self.name);
