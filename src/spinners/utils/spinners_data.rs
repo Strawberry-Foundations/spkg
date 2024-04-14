@@ -2,6 +2,7 @@ use crate::spinners::utils::spinner_data::SpinnerData;
 use lazy_static::lazy_static;
 use maplit::{self, hashmap};
 use std::collections::HashMap;
+
 lazy_static! {
     pub static ref SPINNERS: HashMap<String, SpinnerData> = {
         hashmap! {
@@ -503,10 +504,10 @@ lazy_static! {
           "⣿"
         ], interval: 80},
         "Line".into() => SpinnerData {frames: vec![
-          "-",
-          "\\",
-          "|",
-          "/"
+          "\x1b[32m\x1b[1m - \x1b[0m",
+          "\x1b[32m\x1b[1m \\ \x1b[0m",
+          "\x1b[32m\x1b[1m | \x1b[0m",
+          "\x1b[32m\x1b[1m / \x1b[0m"
         ], interval: 130},
         "Line2".into() => SpinnerData {frames: vec![
           "⠂",
