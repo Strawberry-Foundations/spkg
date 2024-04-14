@@ -10,20 +10,19 @@ pub struct Spinner {
 }
 
 impl Spinner {
-    pub fn new(string: String) -> Self {
+    pub fn new(string: impl ToString) -> Self {
         Self {
-            text: string,
+            text: string.to_string(),
             running: false,
             frames: vec!["[-]", "[\\]", "[|]", "[/]"],
             interval: 200,
         }
-
     }
+    
     pub async fn start(&mut self) {
         self.running = true;
-        let running = self.running;
-
-        while running {
+        
+        loop {
             for frame in &self.frames {
                 println!("{}", self.text.replace("%spinner%", frame));
                 tokio::time::sleep(Duration::from_millis(self.interval)).await;
