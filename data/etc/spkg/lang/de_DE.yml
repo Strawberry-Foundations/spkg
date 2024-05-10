@@ -36,7 +36,7 @@ de_DE:
     {bold} -> {blue}config:{reset} Konfigurationsverwaltung{creset}
     {bold}    -> {blue}language:{reset} Sprachkonfigurierung{creset}
 
-    Copyright (C) 2023 Juliandev02 @ Strawberry Foundations - Made with <3
+    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
 
   # Basic strings
   Get: "Holen"
