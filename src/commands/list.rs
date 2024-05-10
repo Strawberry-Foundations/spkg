@@ -46,10 +46,16 @@ pub async fn list() {
         let db_location = &SPKG_FILES.package_database.replace("main.db", format!("{name}.db").as_str());
         let db = Database::new(db_location).await;
 
-        let pkg: Vec<SpkgListPackage> = sqlx::query_as("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
-            .bind(&SPKG_OPTIONS.list_custom_arch_type)
-            .fetch_all(&db.connection)
-            .await.unwrap();
+        let pkg: Vec<SpkgListPackage> = if SPKG_OPTIONS.list_custom_arch {
+            sqlx::query_as("SELECT * FROM packages WHERE arch = ? ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+                .bind(&SPKG_OPTIONS.list_custom_arch_type)
+                .fetch_all(&db.connection)
+                .await.unwrap()
+        } else {
+            sqlx::query_as("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+                .fetch_all(&db.connection)
+                .await.unwrap()
+        };
 
         packages.extend(pkg);
     };
