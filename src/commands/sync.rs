@@ -38,7 +38,7 @@ pub async fn sync() {
         let Ok(response) = reqwest::get(database_repo.clone()).await else {
             sp.stop_with_message(String::new());
             delete_last_line();
-            err::throw(SpkgError::HttpError, &[url, name]);
+            err::throw(SpkgError::HttpError(url, name));
 
             let mut counter = failed_counter_clone.lock().unwrap();
             *counter += 1;
@@ -50,7 +50,7 @@ pub async fn sync() {
             let mut database = File::create(database_local).await.unwrap_or_else(|_| {
                 sp.stop_with_message(String::new());
                 delete_last_line();
-                err::throw(SpkgError::MissingPermissions("MissingPermissionsPackageDatabaseUpdate"), &[]);
+                err::throw(SpkgError::MissingPermissions("MissingPermissionsPackageDatabaseUpdate"));
                 std::process::exit(1);
             });
 
@@ -62,7 +62,7 @@ pub async fn sync() {
                 database.write_all(&chunk.unwrap()).await.unwrap_or_else(|_| {
                     sp.stop_with_message(String::new());
                     delete_last_line();
-                    err::throw(SpkgError::MissingPermissions("MissingPermissionsPackageDatabaseUpdate"), &[]);
+                    err::throw(SpkgError::MissingPermissions("MissingPermissionsPackageDatabaseUpdate"));
                     std::process::exit(1);
                 });
             }
@@ -71,7 +71,7 @@ pub async fn sync() {
         else {
             sp.stop_with_message(String::new());
             delete_last_line();
-            err::throw(SpkgError::HttpError, &[url, name]);
+            err::throw(SpkgError::HttpError(url, name));
 
             let mut counter = failed_counter_clone.lock().unwrap();
             *counter += 1;
