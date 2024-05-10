@@ -36,7 +36,7 @@ en_US:
     {bold} -> {blue}config:{reset} Configuration management{creset}
     {bold} -> {blue}language:{reset} Language configuration{creset}
 
-    Copyright (C) 2023 Juliandev02 @ Strawberry Foundations - Made with <3
+    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
 
   # Basic strings
   Get: "Get"
