@@ -1,52 +1,55 @@
 use sqlx::Row;
 use stblib::colors::{BOLD, C_RESET, UNDERLINE};
+
 use crate::cli::SPKG_OPTIONS;
 use crate::db::db::Database;
-use crate::spkg_core::{SPKG_FILES, STRING_LOADER};
+use crate::spkg_core::{CONFIG, SPKG_FILES, STRING_LOADER};
+use crate::spkg_core::package::Package;
 
 pub async fn info() {
-    let db = Database::new(&SPKG_FILES.package_database).await;
-
-    let result= sqlx::query("SELECT arch FROM packages where name = ?")
-        .bind(&SPKG_OPTIONS.package_name)
-        .fetch_all(&db.connection)
-        .await.unwrap();
-
-    let arch: String = result.first().unwrap_or_else(|| {
-        eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
-        std::process::exit(1);
-    }).get("arch");
+    let mut package: Vec<Package> = vec![];
     
-    let package = if arch == "all" {
-        sqlx::query("SELECT name, version, branch, arch, url, specfile FROM packages where name = ?")
+    for (name, _) in CONFIG.repositories.iter() {
+        let db_location = &SPKG_FILES.package_database.replace("main.db", format!("{name}.db").as_str());
+        let db = Database::new(db_location).await;
+        
+        let result= sqlx::query("SELECT arch FROM packages where name = ?")
             .bind(&SPKG_OPTIONS.package_name)
             .fetch_all(&db.connection)
-            .await.unwrap()
-    }
-    else {
-        sqlx::query("SELECT name, version, branch, arch, url, specfile FROM packages where name = ? AND arch = ?")
-            .bind(&SPKG_OPTIONS.package_name)
-            .bind(std::env::consts::ARCH)
-            .fetch_all(&db.connection)
-            .await.unwrap()
+            .await.unwrap();
+
+        let arch: String = match result.first() {
+            Some(res) => res.get("arch"),
+            None => continue
+        };
+
+        package = if arch == "all" {
+            sqlx::query_as("SELECT * FROM packages where name = ?")
+                .bind(&SPKG_OPTIONS.package_name)
+                .fetch_all(&db.connection)
+                .await.unwrap()
+        }
+        else {
+            sqlx::query_as("SELECT * FROM packages where name = ? AND arch = ?")
+                .bind(&SPKG_OPTIONS.package_name)
+                .bind(std::env::consts::ARCH)
+                .fetch_all(&db.connection)
+                .await.unwrap()
+        };
     };
 
-    for entry in package {
-        let name: String = entry.get("name");
-        let version: String = entry.get("version");
-        let branch: String = entry.get("branch");
-        let arch: String = entry.get("arch");
-        let packagefile_url: String = entry.get("url");
-        let specfile_url: String = entry.get("specfile");
+    let package = package.first().unwrap_or_else(|| {
+        eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
+        std::process::exit(1);
+    });
 
-        println!("{BOLD}{UNDERLINE}{} {name} ({version}){C_RESET}", STRING_LOADER.load("PackageInformationTitle"));
-        println!("{}: {name}", STRING_LOADER.load("Name"));
-        println!("{}: {version}", STRING_LOADER.load("Version"));
-        println!("{}: {branch}", STRING_LOADER.load("Branch"));
-        println!("{}: {arch}", STRING_LOADER.load("Architecture"));
-        println!("{}: {packagefile_url}", STRING_LOADER.load("PackageUrl"));
-        println!("{}: {specfile_url}", STRING_LOADER.load("SpecfileUrl"));
-    }
+    println!("{BOLD}{UNDERLINE}{} {} ({}){C_RESET}", STRING_LOADER.load("PackageInformationTitle"), package.name, package.version);
+    println!("{}: {}", STRING_LOADER.load("Name"), package.name);
+    println!("{}: {}", STRING_LOADER.load("Version"), package.version);
+    println!("{}: {}", STRING_LOADER.load("Branch"), package.branch);
+    println!("{}: {}", STRING_LOADER.load("Architecture"), package.arch);
+    println!("{}: {}", STRING_LOADER.load("PackageUrl"), package.url);
+    println!("{}: {}", STRING_LOADER.load("SpecfileUrl"), package.specfile);
 
 
 }
