@@ -11,6 +11,7 @@ mod net;
 mod fs;
 mod db;
 mod spinners;
+mod err;
 
 #[tokio::main]
 async fn main() {
