@@ -1,3 +1,4 @@
+use sqlx::FromRow;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
 use crate::fs::format::format_size;
@@ -7,6 +8,7 @@ use crate::spinners::Spinners;
 use crate::spkg_core::STRING_LOADER;
 use crate::utilities::delete_last_line;
 
+#[derive(FromRow)]
 pub struct Package {
     pub name: String,
     pub version: String,
