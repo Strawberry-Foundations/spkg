@@ -24,7 +24,7 @@ impl Config {
         let system_config_raw = open_file(&SPKG_FILES.system_config);
         let config: Self = from_str(&system_config_raw).unwrap_or_else(|err| {
             err::throw(SpkgError::ConfigError(format!("{err}")));
-            std::process::exit(1)
+            std::process::exit(1);
         });
 
         config
