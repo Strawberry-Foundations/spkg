@@ -16,7 +16,7 @@ pub async fn info() {
         eprintln!("{}", STRING_LOADER.load("PackageNotFound"));
         std::process::exit(1);
     }).get("arch");
-
+    
     let package = if arch == "all" {
         sqlx::query("SELECT name, version, branch, arch, url, specfile FROM packages where name = ?")
             .bind(&SPKG_OPTIONS.package_name)
