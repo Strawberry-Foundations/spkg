@@ -73,6 +73,8 @@ en_US:
   UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
   ErrorExecutingPluginCommand: "{red}{bold}E:{reset} An error occurred while executing the plugin command %s: %c"
 
+  InvalidConfig: "{red}{bold}E:{reset} The spkg configuration file is invalid. Check your configuration."
+
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Do not perform upgrades with root. This could manipulate the installation of the package!"
   ReinstallNotAsRoot: "{yellow}{bold}W:{reset} Do not perform reinstallations with root. This could manipulate the installation of the package!"
