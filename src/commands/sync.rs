@@ -80,7 +80,7 @@ pub async fn sync() {
         }
 
         sp.stop_with_message(format!(
-            "{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ({}) ...{C_RESET}", 
+            "{GREEN}{BOLD} ✓ {C_RESET} {} {CYAN}{BOLD}{url}{C_RESET} ({name}) ({}) ...{C_RESET}",
             STRING_LOADER.load("SyncingPackageDatabase"), format_size(content_size)
             ));
 
@@ -96,6 +96,6 @@ pub async fn sync() {
     else if *failed_counter.lock().unwrap() >= 1 && *success_counter.lock().unwrap() >= 1 {
         eprintln!("{YELLOW}{BOLD} ! {C_RESET} {}{C_RESET}", STRING_LOADER.load("AtLeastOneUnsuccessfulSyncingPackageDatabase"));
     }
-    
+
     println!("{}", STRING_LOADER.load_with_params("SuccessSyncingPackageDatabase", &[&format!("{:.2}", start_time.elapsed().as_secs_f64())]));
 }
