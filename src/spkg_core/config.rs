@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use serde_yaml::from_str;
 
+use crate::err;
+use crate::err::SpkgError;
 use crate::spkg_core::{CONFIG, SPKG_DIRECTORIES, SPKG_FILES};
 use crate::utilities::open_file;
 
@@ -20,7 +22,10 @@ pub fn get_language_strings() -> String {
 impl Config {
     pub fn new() -> Self {
         let system_config_raw = open_file(&SPKG_FILES.system_config);
-        let config: Self = from_str(&system_config_raw).unwrap();
+        let config: Self = from_str(&system_config_raw).unwrap_or_else(|err| {
+            err::throw(SpkgError::ConfigError(format!("{err}")));
+            std::process::exit(1)
+        });
 
         config
     }
