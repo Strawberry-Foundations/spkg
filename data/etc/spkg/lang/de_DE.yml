@@ -72,6 +72,7 @@ de_DE:
   EncounteredErrors: "{red}{bold}Aufgetretene Fehler:{creset}"
   UninstallationError: "{red}{bold}E:{reset} Das Paket konnte nicht entfernt werden (%s)"
   ErrorExecutingPluginCommand: "{red}{bold}E:{reset} Ein Fehler beim ausführen des Plugin-Commands %s ist aufgetreten: %c"
+  InvalidConfig: "{red}{bold}E:{reset} Die Spkg-Konfigurationsdatei ungültig. Überprüfe deine Konfiguration."
 
   # Warning messages
   UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Führe Upgrades nicht mit Root durch. Dies könnte die Installation des Paketes manipulieren!"
