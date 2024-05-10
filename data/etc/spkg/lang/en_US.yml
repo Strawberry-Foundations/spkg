@@ -72,7 +72,6 @@ en_US:
   EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
   UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
   ErrorExecutingPluginCommand: "{red}{bold}E:{reset} An error occurred while executing the plugin command %s: %c"
-
   InvalidConfig: "{red}{bold}E:{reset} The spkg configuration file is invalid. Check your configuration."
 
   # Warning messages
