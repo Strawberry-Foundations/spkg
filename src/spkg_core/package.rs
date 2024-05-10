@@ -1,5 +1,6 @@
 use sqlx::FromRow;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
+use crate::db::db::Database;
 
 use crate::fs::format::format_size;
 use crate::net::file::file_download;
@@ -39,4 +40,15 @@ impl Package {
         };
 
     }
+}
+
+pub async fn package_download(db: &Database, package: &String) {
+    let package: Vec<Package> = sqlx::query_as("SELECT * FROM packages where name = ?")
+        .bind(package)
+        .fetch_all(&db.connection)
+        .await.unwrap();
+
+    let package = package.first().unwrap();
+
+    package.download().await;
 }
