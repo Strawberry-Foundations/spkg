@@ -6,8 +6,7 @@ pub struct SpkgDirectories {
     pub user_config: String,
     pub data: String,
     pub mirrors: String,
-    pub
-    language_files: String,
+    pub language_files: String,
 }
 
 pub struct SpkgFiles {
