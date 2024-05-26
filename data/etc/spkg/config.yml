@@ -9,3 +9,4 @@ build_directory: /tmp/_spkg.build/
 repositories:
   main: https://sources.strawberryfoundations.xyz/packages
   test: https://sources.strawberryfoundations.xyz/tests
+  future: https://sources.strawberryfoundations.xyz/future
