@@ -38,7 +38,6 @@ impl Package {
                 eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
             }
         };
-
     }
 }
 
