@@ -17,6 +17,7 @@ pub enum Command {
 #[derive(Default, Debug)]
 pub struct CommandOptions {
     pub sandbox: bool,
+    pub installed: bool,
 }
 
 pub struct Args {
@@ -45,9 +46,8 @@ impl Args {
         let mut i = 1;
         while i < args.len() {
             match args[i].as_str() {
-                "-s" | "--sandbox" => {
-                    options.sandbox = true;
-                }
+                "-s" | "--sandbox" => options.sandbox = true,
+                "--installed" => options.installed = true,
                 _ => {
                     if !args[i].starts_with('-') {
                         non_option_args.push(args[i].clone());
