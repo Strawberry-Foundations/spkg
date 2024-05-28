@@ -1,5 +1,6 @@
 mod config;
 mod fs;
+mod package;
 
 use lazy_static::lazy_static;
 use stblib::strings::Strings;
