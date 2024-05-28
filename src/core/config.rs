@@ -17,7 +17,7 @@ pub struct Config {
 impl Config {
     pub fn new() -> Self {
         let system_config_raw = open_file(&SPKG_FILES.system_config);
-        let config: Self = from_str(&system_config_raw).unwrap_or_else(|err| {
+        let config: Self = from_str(&system_config_raw).unwrap_or_else(|_err| {
             std::process::exit(1);
         });
 
