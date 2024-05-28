@@ -5,5 +5,6 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.37.0", features = ["rt", "macros", "rt-multi-thread"] }
+stblib = "0.6.2"
 
 lazy_static = "1.4.0"
