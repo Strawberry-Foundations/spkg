@@ -22,6 +22,7 @@ pub struct BasePackage {
     pub arch: String,
 }
 
+
 pub struct PackageList {
     pub packages: Vec<Package>,
 }
@@ -54,6 +55,26 @@ impl PackageList {
     }
 }
 
+impl Iterator for PackageList {
+    type Item = Package;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.packages.is_empty() {
+            None
+        } else {
+            Some(self.packages.remove(0))
+        }
+    }
+}
+
+impl FromIterator<Package> for PackageList {
+    fn from_iter<I: IntoIterator<Item = Package>>(iter: I) -> Self {
+        let packages = iter.into_iter().collect();
+        PackageList { packages }
+    }
+}
+
+
 pub struct BasePackageList {
     pub packages: Vec<BasePackage>
 }
@@ -75,18 +96,6 @@ impl BasePackageList {
 
     pub fn get(&self, package_name: String) -> &BasePackage {
         self.packages.iter().find(|package| package.name == package_name).unwrap()
-    }
-}
-
-impl Iterator for PackageList {
-    type Item = Package;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.packages.is_empty() {
-            None
-        } else {
-            Some(self.packages.remove(0))
-        }
     }
 }
 
