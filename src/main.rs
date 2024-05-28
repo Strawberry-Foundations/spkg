@@ -4,6 +4,8 @@ pub mod cli;
 pub mod err;
 pub mod commands;
 pub mod statics;
+mod core;
+mod utilities;
 
 #[tokio::main]
 async fn main() {
