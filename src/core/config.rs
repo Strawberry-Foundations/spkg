@@ -2,8 +2,7 @@ use std::collections::HashMap;
 use serde::Deserialize;
 use serde_yaml::from_str;
 
-use crate::err;
-use crate::core::{CONFIG, SPKG_DIRECTORIES, SPKG_FILES};
+use crate::core::{SPKG_FILES};
 use crate::utilities::open_file;
 
 #[derive(Debug, Deserialize)]
