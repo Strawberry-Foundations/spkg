@@ -68,6 +68,10 @@ impl Args {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 },
+                "list" => {
+                    
+                    Command::List(options)
+                }
                 _ => Command::Help,
             }
         } else {
