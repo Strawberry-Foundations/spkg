@@ -1,9 +1,8 @@
 use sqlx::{Pool, Sqlite};
 use sqlx::sqlite::SqlitePool;
-use crate::core::fs::SpkgFiles;
-use crate::core::SPKG_FILES;
 
-use crate::err::DatabaseError;
+use crate::core::SPKG_FILES;
+use crate::err::db::DatabaseError;
 
 pub struct Database {
     pub connection: Pool<Sqlite>,
