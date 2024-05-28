@@ -1,7 +1,9 @@
 use sqlx::{Pool, Sqlite};
 use sqlx::sqlite::SqlitePool;
-use stblib::colors::{BOLD, C_RESET, YELLOW};
-use crate::core::{SPKG_FILES, STRINGS};
+use crate::core::fs::SpkgFiles;
+use crate::core::SPKG_FILES;
+
+use crate::err::DatabaseError;
 
 pub struct Database {
     pub connection: Pool<Sqlite>,
@@ -9,20 +11,20 @@ pub struct Database {
 }
 
 impl Database {
-    pub async fn new(path: impl ToString) -> Self {
-        let sqlite_db = SqlitePool::connect(&path.to_string()).await.unwrap_or_else(|_| {
-            if path.to_string() == SPKG_FILES.world_database {
-                eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRINGS.load("WorldDatabaseNotBuilt"));
-                std::process::exit(1);
+    pub async fn new(path: impl ToString) -> eyre::Result<Self, DatabaseError> {
+        let database = match SqlitePool::connect(&path.to_string()).await {
+            Ok(pool) => pool,
+            Err(_) => {
+                if path.to_string() == SPKG_FILES.world_database {
+                    return Err(DatabaseError::WorldDatabaseNotBuilt)
+                };
+                return Err(DatabaseError::PackageDatabaseNotSynced)
             }
+        };
 
-            eprintln!("{YELLOW}{BOLD} ! {C_RESET}{}{C_RESET}", STRINGS.load("PackageDatabaseNotSynced"));
-            std::process::exit(1);
-        });
-
-        Self {
-            connection: sqlite_db,
+        Ok(Self {
+            connection: database,
             location: path.to_string()
-        }
+        })
     }
 }
