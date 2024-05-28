@@ -8,8 +8,8 @@ pub mod cli;
 pub mod err;
 pub mod commands;
 pub mod statics;
-mod core;
-mod utilities;
+pub mod core;
+pub mod utilities;
 
 #[tokio::main]
 async fn main() {
