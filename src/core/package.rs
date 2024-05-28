@@ -22,9 +22,8 @@ pub struct BasePackage {
     pub arch: String,
 }
 
-
 pub struct PackageList {
-    pub packages: Vec<Package>
+    pub packages: Vec<Package>,
 }
 
 impl PackageList {
@@ -55,8 +54,44 @@ impl PackageList {
     }
 }
 
+pub struct BasePackageList {
+    pub packages: Vec<BasePackage>
+}
+
+impl BasePackageList {
+    pub async fn new_local() -> Self {
+        let db = Database::new(&SPKG_FILES.world_database).await.unwrap();
+
+        let mut packages: Vec<BasePackage> = sqlx::query_as("SELECT * FROM packages ORDER BY name GLOB '[A-Za-z]*' DESC, name")
+            .fetch_all(&db.connection)
+            .await.unwrap();
+
+        packages.sort_by(|a, b| a.name.cmp(&b.name));
+
+        Self {
+            packages
+        }
+    }
+
+    pub fn get(&self, package_name: String) -> &BasePackage {
+        self.packages.iter().find(|package| package.name == package_name).unwrap()
+    }
+}
+
 impl Iterator for PackageList {
     type Item = Package;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.packages.is_empty() {
+            None
+        } else {
+            Some(self.packages.remove(0))
+        }
+    }
+}
+
+impl Iterator for BasePackageList {
+    type Item = BasePackage;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.packages.is_empty() {
