@@ -5,7 +5,7 @@ de_DE:
     {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
 
     spkg ist ein universeller Paketmanager, der nach Wunsch den Quellcode 
-    eines gewünschten Paketes Gerätespezifisch auf deinem Computer kompiliert,
+    eines gewünschten Paketes gerätespezifisch auf deinem Computer kompiliert,
     um so die bestmögliche Performance & Sicherheit rauszuholen.
 
     {underline}{bold}Befehle:{creset}
