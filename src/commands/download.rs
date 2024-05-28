@@ -1,7 +1,6 @@
 use std::env;
 
 use crate::cli::SPKG_OPTIONS;
-use crate::commands::list::SpkgListPackage;
 use crate::db::db::Database;
 use crate::spkg_core::package::{Package, package_download};
 use crate::spkg_core::{CONFIG, SPKG_FILES};
