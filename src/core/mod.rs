@@ -1,6 +1,7 @@
-mod config;
-mod fs;
-mod package;
+pub mod config;
+pub mod fs;
+pub mod package;
+pub mod db;
 
 use lazy_static::lazy_static;
 use stblib::strings::Strings;
