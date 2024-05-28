@@ -1,17 +1,12 @@
 # Language Strings for de_DE (German)
 de_DE:
   Help: |-
-    {underline}{bold}Advanced Source Package Managment (spkg) %s %s{creset}
+    {underline}{bold}Advanced Source Package Management (spkg) %s %s{creset}
     {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
 
-    spkg ist ein Paketmanager, der den Quellcode des gewünschten
-    Paketes (meist) von den offiziellen Quellen herunterlädt,
-    und diesen dann für dein Gerät kompiliert.
-    Das Ziel von spkg ist, einfach und auch ohne viel Erfahrung die
-    neusten offiziellen Versionen von Programmen zu erhalten, auch
-    unter Distrobutionen die nicht die neuste Version anbieten.
-    Durch das kompilieren des Paketes ist das Programm für dein Gerät
-    optimiert und läuft dementsprechend optimierter.
+    spkg ist ein universeller Paketmanager, der nach Wunsch den Quellcode 
+    eines gewünschten Paketes Gerätespezifisch auf deinem Computer kompiliert,
+    um so die bestmögliche Performance & Sicherheit rauszuholen.
 
     {underline}{bold}Befehle:{creset}
     {bold} -> {blue}install:{reset} Installiert ein Pakete{creset}
@@ -25,14 +20,6 @@ de_DE:
     {bold} -> {blue}download:{reset} Lädt ein Paket herunter{creset}
     {bold} -> {blue}build:{reset} Baut verschiedene Dinge *^____^*{creset}
     {bold}    -> {blue}world:{reset} Baut die lokale World-Datenbank von neu auf{creset}
-    {bold} -> {blue}plugins:{reset} Plugin Verwaltung{creset}
-    {bold}    -> {blue}list:{reset} Zählt alle installierten Plugins auf{creset}
-    {bold}    -> {blue}exec:{reset} Führt einen Befehl eines Plugins aus{creset}
-    {bold}    -> {blue}enable:{reset} Aktiviert ein Plugin{creset}
-    {bold}    -> {blue}disable:{reset} Deaktiviert ein Plugin{creset}
-    {bold}    -> {blue}market:{reset} Plugin Marketplace{creset}
-    {bold}       -> {blue}list:{reset} Zählt verfügbare Plugins auf{creset}
-    {bold}    -> {blue}get:{reset} Installiert ein Plugin{creset}
     {bold} -> {blue}config:{reset} Konfigurationsverwaltung{creset}
     {bold}    -> {blue}language:{reset} Sprachkonfigurierung{creset}
 
