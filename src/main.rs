@@ -23,8 +23,8 @@ async fn main() {
         Command::Info(package, options) => {
             println!("{package} - {options:?}")
         }
-        Command::List(..) => {
-            
+        Command::List(options) => {
+            commands::list::list(options).await;
         }
         Command::Err(error) => {
             eprintln!("{error}")
