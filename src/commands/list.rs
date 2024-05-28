@@ -1,3 +1,4 @@
+use spkg_api::repo::packages::PackageList;
 use sqlx::FromRow;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RESET};
 use crate::cli::SPKG_OPTIONS;
@@ -39,7 +40,8 @@ pub async fn list() {
         
         std::process::exit(0);
     };
-
+    
+    let packages = PackageList::new(&CONFIG.repositories).await;
     let mut packages: Vec<SpkgListPackage> = vec![];
 
     for (name, _) in CONFIG.repositories.iter() {
