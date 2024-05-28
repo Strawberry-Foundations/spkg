@@ -1,18 +1,18 @@
-use crate::cli::ARGS;
-use crate::cli::args::Command;
+use crate::cli::args::{Args, Command};
 
 pub mod cli;
-mod err;
+pub mod err;
 
 #[tokio::main]
 async fn main() {
-    match &ARGS.command {
-        Command::Install(package) => {
-            println!("{package}")
+    match Args::new().command {
+        Command::Install(package, options) => {
+            println!("{package} - {options:?}")
         }
-        Command::Info(package) => {
-            
-        } 
+        Command::Err(error) => {
+            eprintln!("{error}")
+
+        }
         _ => {}
     }
 }
