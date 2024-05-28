@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use crate::cli::args::{Args, Command};
 
 pub mod cli;
