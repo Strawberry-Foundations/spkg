@@ -23,7 +23,6 @@ pub struct BasePackage {
 }
 
 
-
 pub struct PackageList {
     pub packages: Vec<Package>
 }
@@ -44,6 +43,8 @@ impl PackageList {
             packages.extend(pkg);
         }
 
+        packages.sort_by(|a, b| a.name.cmp(&b.name));
+
         Self {
             packages
         }
@@ -51,5 +52,17 @@ impl PackageList {
 
     pub fn get(&self, package_name: String) -> &Package {
         self.packages.iter().find(|package| package.name == package_name).unwrap()
+    }
+}
+
+impl Iterator for PackageList {
+    type Item = Package;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.packages.is_empty() {
+            None
+        } else {
+            Some(self.packages.remove(0))
+        }
     }
 }
