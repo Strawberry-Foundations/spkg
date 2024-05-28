@@ -21,7 +21,7 @@ async fn main() {
             println!("{package} - {options:?}")
         }
         Command::Info(package, options) => {
-            println!("{package} - {options:?}")
+            commands::info::info(package, options).await;
         }
         Command::List(options) => {
             commands::list::list(options).await;
