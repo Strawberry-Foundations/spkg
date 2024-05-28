@@ -8,7 +8,7 @@ pub struct PackageList {
 }
 
 impl PackageList {
-    pub async fn new(repo_list: HashMap<String, String>) -> Self {
+    pub async fn new(repo_list: &HashMap<String, String>) -> Self {
         let mut packages: Vec<Package> = vec![];
 
         for (name, _) in repo_list.iter() {
