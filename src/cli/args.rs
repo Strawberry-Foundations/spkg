@@ -7,7 +7,7 @@ use std::error::Error;
 use crate::err::spkg::SpkgError;
 
 pub enum Command {
-    None,
+    Help,
     Err(Box<dyn Error>),
     Install(String, CommandOptions),
     Info(String, CommandOptions),
@@ -67,7 +67,7 @@ impl Args {
                     Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                 }
             },
-            _ => Command::None,
+            _ => Command::Help,
         };
 
         Self {
