@@ -8,3 +8,5 @@ tokio = { version = "1.37.0", features = ["rt", "macros", "rt-multi-thread"] }
 stblib = "0.6.2"
 
 lazy_static = "1.4.0"
+serde = { version = "1.0.203", features = ["derive"] }
+serde_yaml = "0.9.34+deprecated"
