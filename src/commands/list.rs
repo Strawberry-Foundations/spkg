@@ -15,8 +15,12 @@ pub async fn list(options: CommandOptions) {
             );
         }
     }
-
-    let packages = PackageList::new(&CONFIG.repositories).await;
+    
+    let mut packages = PackageList::new(&CONFIG.repositories).await;
+    
+    if let Some(arch) = options.arch {
+        packages = packages.filter(|p| p.arch == arch).collect();
+    }
 
     for entry in packages {
         println!(
