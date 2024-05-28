@@ -11,7 +11,7 @@ pub enum Command {
     Err(Box<dyn Error>),
     Install(String, CommandOptions),
     Info(String, CommandOptions),
-    List,
+    List(CommandOptions),
 }
 
 #[derive(Default, Debug)]
@@ -59,15 +59,19 @@ impl Args {
             i += 1;
         }
 
-        let command = match non_option_args[0].as_str() {
-            "install" => {
-                if let Some(package) = non_option_args.get(1) {
-                    Command::Install(package.to_owned(), options)
-                } else {
-                    Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
-                }
-            },
-            _ => Command::Help,
+        let command = if let Some(cmd) = non_option_args.first() {
+            match cmd.as_str() {
+                "install" => {
+                    if let Some(package) = non_option_args.get(1) {
+                        Command::Install(package.to_owned(), options)
+                    } else {
+                        Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
+                    }
+                },
+                _ => Command::Help,
+            }
+        } else {
+            Command::Help
         };
 
         Self {
