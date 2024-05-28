@@ -18,6 +18,7 @@ pub enum Command {
 pub struct CommandOptions {
     pub sandbox: bool,
     pub installed: bool,
+    pub arch: Option<String>,
 }
 
 pub struct Args {
@@ -48,6 +49,14 @@ impl Args {
             match args[i].as_str() {
                 "-s" | "--sandbox" => options.sandbox = true,
                 "--installed" => options.installed = true,
+                "-a" | "--arch" => {
+                    if i + 1 < args.len() {
+                        options.arch = Some(args[i + 1].clone());
+                        i += 1;
+                    } else {
+                        eprintln!("error");
+                    }
+                }
                 _ => {
                     if !args[i].starts_with('-') {
                         non_option_args.push(args[i].clone());
@@ -69,7 +78,7 @@ impl Args {
                     }
                 },
                 "list" => {
-                    
+
                     Command::List(options)
                 }
                 _ => Command::Help,
