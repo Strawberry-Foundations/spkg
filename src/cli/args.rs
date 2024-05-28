@@ -4,65 +4,72 @@
 use std::env;
 
 #[derive(Default)]
-pub struct SpkgOptions{
-    pub package_name: String,
-    pub sandbox: bool,
-    pub list_installed: bool,
-    pub list_custom_arch: bool,
-    pub list_custom_arch_type: String,
-    pub build_world: bool,
+pub enum Command {
+    #[default]
+    None,
+    Err(String),
+    Install(String),
+    Info(String),
+    List,
 }
 
+#[derive(Default)]
+pub struct CommandOptions {
+    pub sandbox: bool,
+}
+
+#[derive(Default)]
 pub struct Args {
     pub args: Vec<String>,
-    pub command: String,
-    pub options: SpkgOptions
+    pub command: Command,
+    pub options: CommandOptions
 }
 
 
 impl Args {
-    pub fn collect() -> Self {
-        let mut args = Self {
-            args: vec![],
-            command: "".to_string(),
-            options: SpkgOptions {
-                ..Default::default()
-            },
-        };
-
-        let x: Vec<String> = env::args().collect();
-
-        if x.len() <= 1 {
-            return args
-        }
-
-        let parser: Vec<String> = env::args().skip(1).collect();
-
-        args.args = parser.clone();
-
-        args.command = parser.clone().first().unwrap().to_string();
-
+    pub fn new() -> Self {
+        let args = Self::collect();
         args
     }
 
-    pub fn collect_options(&mut self) -> SpkgOptions {
-        let mut spkg_options = SpkgOptions {
-            ..Default::default()
-        };
+    pub fn collect() -> Self {
+        let args: Vec<String> = env::args().collect();
+        
+        let mut options = CommandOptions::default();
+        let mut non_option_args = Vec::new();
 
-        for (index, arg) in self.args.iter().enumerate() {
-            match arg.as_str() {
-                "-s" | "--sandbox" =>  spkg_options.sandbox = true,
-                "-i" | "--installed" => spkg_options.list_installed = true,
-                "-a" | "--arch" => {
-                    spkg_options.list_custom_arch = true;
-                    spkg_options.list_custom_arch_type = self.args.get(index + 1).unwrap_or(&env::consts::ARCH.to_string()).to_owned();
-                },
-                "world" => spkg_options.build_world = true,
-                _ => spkg_options.package_name = self.args.get(index).unwrap().to_owned(),
+        let mut i = 1;
+        while i < args.len() {
+            match args[i].as_str() {
+                "-s" | "--sandbox" => {
+                    options.sandbox = true;
+                }
+                _ => {
+                    if !args[i].starts_with('-') {
+                        non_option_args.push(args[i].clone());
+                    } else {
+                        eprintln!("Warning: Unrecognized option {}", args[i]);
+                    }
+                }
             }
+            i += 1;
         }
 
-        spkg_options
+        let command = match non_option_args[0].as_str() {
+            "install" => {
+                if let Some(package) = non_option_args.get(1) {
+                    Command::Install(package.to_owned())
+                } else {
+                    Command::None
+                }
+            },
+            _ => Command::None,
+        };
+
+        Self {
+            args,
+            command,
+            options
+        }
     }
 }

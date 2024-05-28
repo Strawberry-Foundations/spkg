@@ -3,26 +3,7 @@ name = "spkg"
 version = "3.0.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-spkg_api = { path = "./spkg_api", version = "0.1"}
-sqlx = { version = "0.7.4", features = ["sqlite", "runtime-tokio-native-tls"]  }
 tokio = { version = "1.37.0", features = ["rt", "macros", "rt-multi-thread"] }
-futures-util = "0.3.30"
-serde = "1.0.197"
-serde_yaml = "0.9.34"
-lazy_static = "1.4.0"
-stblib = { version = "0.6.1", path = "../stblib-rust" }
-# stblib = "0.6.1"
-reqwest = { version = "0.12.3", features = ["stream"] }
-rustyline = "14.0.0"
-spinoff = "0.8.0"
-anyhow = "1.0.82"
-strum = { version = "0.26.2", features = ["derive"] }
-maplit = "1.0.2"
 
-[profile.release]
-opt-level = 'z'
-strip = true
-lto = true
+lazy_static = "1.4.0"
