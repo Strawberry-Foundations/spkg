@@ -2,7 +2,7 @@ use crate::cli::args::{Args, Command};
 
 pub mod cli;
 pub mod err;
-mod commands;
+pub mod commands;
 
 #[tokio::main]
 async fn main() {
