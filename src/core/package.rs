@@ -1,10 +1,15 @@
 use sqlx::FromRow;
 use std::collections::HashMap;
 use eyre::Report;
+use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 use crate::cli::args::CommandOptions;
 use crate::core::db::Database;
-use crate::core::SPKG_FILES;
+use crate::core::{SPKG_FILES, STRINGS};
+use crate::core::fs::format_size;
 use crate::err::spkg::SpkgError;
+use crate::net::http::{file_download, remote_header};
+use crate::spinners::Spinners;
+use crate::utilities::delete_last_line;
 
 #[derive(FromRow, Debug)]
 pub struct Package {
@@ -17,6 +22,11 @@ pub struct Package {
     pub filename: String,
 }
 
+pub struct PackageList {
+    pub packages: Vec<Package>,
+}
+
+
 #[derive(FromRow, Debug)]
 pub struct BasePackage {
     pub name: String,
@@ -25,9 +35,36 @@ pub struct BasePackage {
     pub arch: String,
 }
 
+pub struct BasePackageList {
+    pub packages: Vec<BasePackage>
+}
 
-pub struct PackageList {
-    pub packages: Vec<Package>,
+
+impl Package {
+    pub async fn download(&self) -> eyre::Result<()> {
+        let content_size = remote_header(&self.url).await;
+
+        let mut sp = crate::spinners::Spinner::new(
+            Spinners::Line,
+            format!(
+                "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}",
+                STRINGS.load("Get"), self.url, format_size(content_size), self.name)
+        );
+
+        match file_download(&self.url, &self.filename).await {
+            Ok(_) => {
+                sp.stop_with_message(format!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRINGS.load("Get"), self.url, format_size(content_size), self.name));
+            }
+            Err(err) => {
+                sp.stop();
+                delete_last_line();
+                delete_last_line();
+                eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRINGS.load("Get"), self.url, self.name);
+                eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
+            }
+        };
+        Ok(())
+    }
 }
 
 impl PackageList {
@@ -78,9 +115,7 @@ impl FromIterator<Package> for PackageList {
 }
 
 
-pub struct BasePackageList {
-    pub packages: Vec<BasePackage>
-}
+
 
 impl BasePackageList {
     pub async fn new_local() -> Self {
