@@ -23,7 +23,10 @@ async fn main() {
             println!("{package} - {options:?}")
         }
         Command::Info(package, options) => {
-            commands::info::info(package, options).await;
+            match commands::info::info(package, options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
         }
         Command::List(options) => {
             commands::list::list(options).await;
