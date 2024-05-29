@@ -149,9 +149,9 @@ impl Iterator for BasePackageList {
     }
 }
 
-pub fn get_package(package: String, mut packages: PackageList, options: CommandOptions) -> eyre::Result<Package> {
+pub fn get_package(package: &String, mut packages: PackageList, options: CommandOptions) -> eyre::Result<Package> {
     if let Some(arch) = options.arch {
-        match packages.find(|p| p.name == package && p.arch == arch) {
+        match packages.find(|p| &p.name == package && p.arch == arch) {
             Some(package) => Ok(package),
             None => {
                 Err(Report::from(SpkgError::PackageNotFound))
@@ -159,7 +159,7 @@ pub fn get_package(package: String, mut packages: PackageList, options: CommandO
         }
     }
     else {
-        match packages.find(|p| p.name == package && (p.arch == "all" || p.arch == std::env::consts::ARCH)) {
+        match packages.find(|p| &p.name == package && (p.arch == "all" || p.arch == std::env::consts::ARCH)) {
             Some(package) => Ok(package),
             None => {
                 Err(Report::from(SpkgError::PackageNotFound))
