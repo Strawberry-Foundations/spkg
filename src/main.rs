@@ -37,8 +37,8 @@ async fn main() {
         Command::List(options) => {
             commands::list::list(options).await;
         }
-        Command::Download(package, options) => {
-            match commands::download::download(package, options).await {
+        Command::Download(packages, options) => {
+            match commands::download::download(packages, options).await {
                 Ok(..) => (),
                 Err(err) => throw!(err)
             }
