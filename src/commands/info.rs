@@ -8,11 +8,21 @@ use crate::err::spkg::SpkgError;
 
 pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> {
     let mut packages = PackageList::new(&CONFIG.repositories).await;
-
-    let package = match packages.find(|p| p.name == package && (p.arch == "all" || p.arch == std::env::consts::ARCH)) {
-        Some(package) => package,
-        None => {
-            return Err(Report::from(SpkgError::PackageNotFound))
+    
+    let package = if let Some(arch) = options.arch {
+        match packages.find(|p| p.name == package && p.arch == arch) {
+            Some(package) => package,
+            None => {
+                return Err(Report::from(SpkgError::PackageNotFound))
+            }
+        }
+    }
+    else {
+        match packages.find(|p| p.name == package && (p.arch == "all" || p.arch == std::env::consts::ARCH)) {
+            Some(package) => package,
+            None => {
+                return Err(Report::from(SpkgError::PackageNotFound))
+            }
         }
     };
 
