@@ -22,6 +22,12 @@ async fn main() {
         Command::Install(package, options) => {
             println!("{package} - {options:?}")
         }
+        Command::Sync(options) => {
+            match commands::sync::sync(options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
+        }
         Command::Info(package, options) => {
             match commands::info::info(package, options).await {
                 Ok(..) => (),
@@ -31,8 +37,8 @@ async fn main() {
         Command::List(options) => {
             commands::list::list(options).await;
         }
-        Command::Sync(options) => {
-            match commands::sync::sync(options).await {
+        Command::Download(package, options) => {
+            match commands::download::download(package, options).await {
                 Ok(..) => (),
                 Err(err) => throw!(err)
             }
