@@ -5,8 +5,8 @@ use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
 
 pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> {
-    let packages = PackageList::new(&CONFIG.repositories).await;
-    let package = get_package(&package, packages, options).unwrap();
+    let mut packages = PackageList::new(&CONFIG.repositories).await;
+    let package = get_package(&package, &mut packages, &options).unwrap();
 
     println!("{BOLD}{UNDERLINE}{} {} ({}){C_RESET}", STRINGS.load("PackageInformationTitle"), package.name, package.version);
     println!("{}: {}", STRINGS.load("Name"), package.name);
