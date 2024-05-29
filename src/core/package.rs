@@ -11,7 +11,7 @@ use crate::net::http::{file_download, remote_header};
 use crate::spinners::Spinners;
 use crate::utilities::delete_last_line;
 
-#[derive(FromRow, Debug)]
+#[derive(FromRow, Debug, Clone)]
 pub struct Package {
     pub name: String,
     pub version: String,
@@ -22,6 +22,7 @@ pub struct Package {
     pub filename: String,
 }
 
+#[derive(Clone)]
 pub struct PackageList {
     pub packages: Vec<Package>,
 }
@@ -149,9 +150,9 @@ impl Iterator for BasePackageList {
     }
 }
 
-pub fn get_package(package: &String, mut packages: PackageList, options: CommandOptions) -> eyre::Result<Package> {
-    if let Some(arch) = options.arch {
-        match packages.find(|p| &p.name == package && p.arch == arch) {
+pub fn get_package(package: &String, packages: &mut PackageList, options: &CommandOptions) -> eyre::Result<Package> {
+    if let Some(arch) = &options.arch {
+        match packages.find(|p| &p.name == package && &p.arch == arch) {
             Some(package) => Ok(package),
             None => {
                 Err(Report::from(SpkgError::PackageNotFound))
