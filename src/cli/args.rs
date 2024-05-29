@@ -10,9 +10,10 @@ pub enum Command {
     Help,
     Err(Box<dyn Error>),
     Install(String, CommandOptions),
+    Sync(CommandOptions),
     Info(String, CommandOptions),
     List(CommandOptions),
-    Sync(CommandOptions),
+    Download(String, CommandOptions),
 }
 
 #[derive(Default, Debug)]
