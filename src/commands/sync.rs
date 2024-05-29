@@ -17,7 +17,7 @@ use crate::err::fs::PermissionsError;
 use crate::net::http::remote_header;
 use crate::utilities::delete_last_line;
 
-pub async fn sync(options: CommandOptions) -> eyre::Result<()> {
+pub async fn sync(_: CommandOptions) -> eyre::Result<()> {
     let start_time = Instant::now();
 
     let success_counter = Arc::new(Mutex::new(0));
@@ -69,7 +69,7 @@ pub async fn sync(options: CommandOptions) -> eyre::Result<()> {
                         return Err(Report::from(PermissionsError::MissingPermissionsPackageDatabaseUpdate))
                     }
                 }
-            }   
+            }
         }
 
         else {
