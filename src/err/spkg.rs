@@ -4,13 +4,15 @@ use crate::core::STRINGS;
 
 #[derive(Debug)]
 pub enum SpkgError {
-    InvalidArgument(String)
+    InvalidArgument(String),
+    PackageNotFound
 }
 
 impl Display for SpkgError {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         match self {
             SpkgError::InvalidArgument(..) => write!(f, "{}", STRINGS.load("NoArgument")),
+            SpkgError::PackageNotFound => write!(f, "{}", STRINGS.load("PackageNotFound")),
         }
     }
 }
