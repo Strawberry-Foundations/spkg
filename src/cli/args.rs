@@ -12,6 +12,7 @@ pub enum Command {
     Install(String, CommandOptions),
     Info(String, CommandOptions),
     List(CommandOptions),
+    Sync(CommandOptions),
 }
 
 #[derive(Default, Debug)]
@@ -78,8 +79,17 @@ impl Args {
                     }
                 },
                 "list" => {
-
                     Command::List(options)
+                }
+                "info" => {
+                    if let Some(package) = non_option_args.get(1) {
+                        Command::Install(package.to_owned(), options)
+                    } else {
+                        Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
+                    }
+                }
+                "sync" => {
+                    Command::Sync(options)
                 }
                 _ => Command::Help,
             }
