@@ -13,7 +13,7 @@ pub enum Command {
     Sync(CommandOptions),
     Info(String, CommandOptions),
     List(CommandOptions),
-    Download(String, CommandOptions),
+    Download(Vec<String>, CommandOptions),
 }
 
 #[derive(Default, Debug)]
@@ -93,7 +93,7 @@ impl Args {
                     Command::List(options)
                 }
                 "download" => {
-                    if let Some(package) = non_option_args.get(1) {
+                    if let Some(package) = non_option_args.get(1..) {
                         Command::Download(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
