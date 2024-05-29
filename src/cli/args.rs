@@ -83,7 +83,7 @@ impl Args {
                 }
                 "info" => {
                     if let Some(package) = non_option_args.get(1) {
-                        Command::Install(package.to_owned(), options)
+                        Command::Info(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
