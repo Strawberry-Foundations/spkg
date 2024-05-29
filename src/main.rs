@@ -11,7 +11,7 @@ pub mod statics;
 pub mod core;
 pub mod utilities;
 pub mod spinners;
-mod net;
+pub mod net;
 
 #[tokio::main]
 async fn main() {
@@ -29,7 +29,10 @@ async fn main() {
             commands::list::list(options).await;
         }
         Command::Sync(options) => {
-            commands::sync::sync(options).await;
+            match commands::sync::sync(options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
         }
         Command::Err(error) => {
             eprintln!("{error}")
