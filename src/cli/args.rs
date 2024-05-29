@@ -79,8 +79,8 @@ impl Args {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 },
-                "list" => {
-                    Command::List(options)
+                "sync" => {
+                    Command::Sync(options)
                 }
                 "info" => {
                     if let Some(package) = non_option_args.get(1) {
@@ -89,8 +89,15 @@ impl Args {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 }
-                "sync" => {
-                    Command::Sync(options)
+                "list" => {
+                    Command::List(options)
+                }
+                "download" => {
+                    if let Some(package) = non_option_args.get(1) {
+                        Command::Download(package.to_owned(), options)
+                    } else {
+                        Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
+                    }
                 }
                 _ => Command::Help,
             }
