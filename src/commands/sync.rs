@@ -1,3 +1,4 @@
+use std::fs::{read_dir, remove_file};
 use std::sync::{Arc, Mutex};
 use std::time::{Instant};
 use eyre::Report;
@@ -22,6 +23,32 @@ pub async fn sync(_: CommandOptions) -> eyre::Result<()> {
 
     let success_counter = Arc::new(Mutex::new(0));
     let failed_counter = Arc::new(Mutex::new(0));
+
+    let mut existing_databases: Vec<String> = Vec::new();
+    let mut configured_databases: Vec<String> = Vec::new();
+
+    for entry in read_dir(&SPKG_DIRECTORIES.mirrors)? {
+        let entry = entry?;
+        let path = entry.path();
+
+        if path.is_file() {
+            if let Some(name) = path.file_name() {
+                if let Some(name_str) = name.to_str() {
+                    existing_databases.push(name_str.to_string());
+                }
+            }
+        }
+    }
+
+    for (name, _) in CONFIG.repositories.iter() {
+        configured_databases.push(format!("{name}.db"));
+    }
+
+    for database in existing_databases {
+        if !configured_databases.contains(&database) {
+            remove_file(format!("{}{database}", SPKG_DIRECTORIES.mirrors)).unwrap()
+        }
+    }
 
     for (name, url) in CONFIG.repositories.iter() {
         let failed_counter_clone = failed_counter.clone();
