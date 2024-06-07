@@ -1,0 +1,158 @@
+# Language Strings for en_US (English)
+en_US:
+  Help: |-
+    {underline}{bold}Advanced Source Package Management (spkg) %s %s{creset}
+    {cyan}{bold}call:{reset} spkg {green}[command]{red} <argument>{creset}
+
+    spkg is a universal package manager that compiles the source code of a desired 
+    compiles the source code of a desired package device-specifically on your computer,
+    to get the best possible performance and security.
+
+    {underline}{bold}Commands:{creset}
+    {bold} -> {blue}install:{reset} Installs a package{creset}
+    {bold} -> {blue}remove:{reset} Removes a package{creset}
+    {bold} -> {blue}reinstall:{reset} Reinstall a package{creset}
+    {bold} -> {blue}update:{reset} Checks for package updates{creset}
+    {bold} -> {blue}upgrade:{reset} Updates a package{creset}
+    {bold} -> {blue}sync:{reset} Synchronizes the package databases{creset}
+    {bold} -> {blue}info:{reset} Gives you information about a package{creset}
+    {bold} -> {blue}list:{reset} Lists available packages{creset}
+    {bold} -> {blue}download:{reset} Downloads a package{creset}
+    {bold} -> {blue}build:{reset} Builds various things *^____^*{creset}
+    {bold}    -> {blue}world:{reset} Builds the local world database from scratch{creset}
+    {bold} -> {blue}config:{reset} Configuration management{creset}
+    {bold}    -> {blue}language:{reset} Language configuration{creset}
+
+    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
+
+  # Basic strings
+  Get: "Get"
+  Architecture: "Architecture"
+  Abort: "Aborting ... "
+  Name: "Name"
+  Version: "Version"
+  Branch: "Branch"
+  PackageUrl: "Package URL"
+  SpecfileUrl: "Specfile URL"
+  Condition: "Condition"
+  Description: "Description"
+  Commands: "Commands"
+  ErrorCode: "Error code"
+  Enabled: "Enabled"
+  Disabled: "Disabled"
+  Error: "Error"
+
+  # Error messages
+  HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
+  HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
+  UnknownError: "{red}{bold}E:{reset} Unknown error"
+  UnknownOperation: "{red}{bold}E{reset} Invalid Operation:"
+  UnknownLanguage: "{red}{bold}E:{reset} Unknown language."
+  NoArgument: "{red}{bold}E:{reset} No Argument passed!"
+  Canceled: "{red}{bold}E:{reset} Process canceled!"
+  WorldDatabaseNotBuilt: "{bold}The local world database has not been built yet.\n   Is your spkg installation corrupt? (Try running {cyan}{bold}spkg build world{reset})"
+  NoRepositories: "{bold}{red}No repository server was specified. Check your spkg configuration file."
+  ParsingError: "{red}{bold}E:{reset} Error parsing the package configuration file: Incorrect syntax and/or format."
+  InstallationError: "{red}{bold}E:{reset} The package could not be installed (%s)"
+  UpdateError: "{red}{bold}E:{reset} The package could not be updated (%s)"
+  ExtractError: "{red}{bold}E:{reset} The package archive could not be unpacked: The archive format is not supported."
+  EncounteredErrors: "{red}{bold}Errors encountered:{creset}"
+  UninstallationError: "{red}{bold}E:{reset} The package could not be removed (%s)"
+  ErrorExecutingPluginCommand: "{red}{bold}E:{reset} An error occurred while executing the plugin command %s: %c"
+  InvalidConfig: "{red}{bold}E:{reset} The spkg configuration file is invalid. Check your configuration."
+
+  # Warning messages
+  UpgradeNotAsRoot: "{yellow}{bold}W:{reset} Do not perform upgrades with root. This could manipulate the installation of the package!"
+  ReinstallNotAsRoot: "{yellow}{bold}W:{reset} Do not perform reinstallations with root. This could manipulate the installation of the package!"
+  UserConfigNotExists2: "{yellow}{bold}W:{reset}{creset} Your user configuration does not exist. Try to create the configuration folder ..."
+  AskRegenWorld: "{yellow}{bold}Warnung:{creset}{yellow} This will regenerate the local >> {cyan}{bold}World database{creset}{yellow} <<! Are you sure? [Yes/No] "
+  RecommendedRunningAsRoot: "{yellow}{bold}W:{reset} It is recommended to install packages as root (sudo). Otherwise permission problems could occur"
+  RecommendedRunningAsRootRemove: "{yellow}{bold}W:{reset} It is recommended to remove packages as root (sudo). Otherwise permission problems could occur"
+  ForceNoSandbox: "{yellow}{bold}W:{reset} Package cannot be installed in the sandbox: It is host-only."
+  DevelopmentRelease: "{yellow}{bold}W:{reset} This is a development version of spkg!{creset}"
+
+  # Package-related messages
+  PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
+  PackageDatabaseNotSynced: "{bold}The package database has not been synchronized yet.\n   Run {cyan}spkg sync{reset} to synchronize the database"
+  PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Package has already been installed. There is nothing to do."
+  PackageNotInstalled: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to upgrade."
+  PackageNotInstalledRemove: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to uninstall."
+  ContinuePackageInstallation: "{creset}The package {cyan}{bold}%s{creset} will now be downloaded. \nThis requires {green}{bold}%c MB{creset} to be downloaded. Continue? [Y/N] "
+  ContinuePackageInstallationCompact: "{creset}The package {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} will now be downloaded and installed."
+  ContinuePackageUninstallation: "{creset}The {cyan}{bold}%s{creset} package will now be removed. \nFor this, the package configuration file must be downloaded. Continue? [Y/N] "
+  ContinuePackageUninstallationCompact: "{creset}The {cyan}{bold}%s{creset} package will now be removed. \nFor this, the package configuration file is downloaded."
+  ContinuePackageDownload: "{creset}The archiv {cyan}{bold}%s{creset} will now be downloaded. Continue? [Y/N] "
+  SuccessSyncingPackageDatabase: "The package database was synchronized in %s s. Run {cyan}{bold}spkg update{reset}{creset} to check for package updates."
+  AtLeastOneUnsuccessfulSyncingPackageDatabase: "{bold}{yellow}W: At least one package database could not be synchronized."
+  UnsuccessfulSyncingPackageDatabase: "{yellow}The package database could not be synchronized."
+  SearchingDatabaseForPackage: "{bold}Searching through the database for package ...."
+  SearchingForUpdates: "Search for available updates ..."
+  UnsuccessfulPackageDownload: "{bold}{red}%s: Package could not be downloaded. (Is the repository server offline?)"
+  UnsuccessfulDownloadingPackages: "{yellow}The packages could not be downloaded."
+  AtLeastOneUnsuccessfulPackageDownload: "{bold}{yellow}W: At least one package could not be downloaded."
+  GettingSpecfile: "The package configuration file is requested and downloaded..."
+
+  # Permission-related messages
+  MissingPermissions: "{reset}{creset}Missing permissions"
+  MissingPermissionsPluginConfig: "{red}{bold}The plugin config could not be edited. (Is spkg run as root?)"
+  MissingPermissionsPluginInstallation: "{red}{bold}The plugin could not be installed. (Is spkg run as root?)"
+  MissingPermissionsPackageDatabaseUpdate: "{red}{bold}The package database could not be updated. (Is spkg run as root?)"
+  MissingPermissionsWorldDatabase: "{red}{bold}The world database could not be updated. (Is spkg run as root?)"
+  MissingPermissionsWorldDatabaseInsert: "{red}{bold}The world database could not be written to. \nThe entry for the newly installed package could therefore not be inserted (Is spkg run as root?)."
+  MissingPermissionsWorldDatabaseInsertRemove: "{red}{bold}The world database could not be written to. \nThe entry for the recently removed package could therefore not be removed (Is spkg run as root?)."
+  MissingPermissionsSpkgConfig: "{red}{bold}The spkg config could not be edited. (Is spkg run as root?)"
+  MissingPermissionsLockfile: "{red}{bold}The lock file could not be edited. (Is spkg run as root?)"
+  MissingPermissionsSandbox: "{red}{bold}No file/folder could be modified in the sandbox folder. (Is spkg run as root?)"
+
+  # Plugin-related messages
+  PluginNotEnabled: "{yellow}{bold}W:{reset} Plugin is not activated."
+  PluginIsAlreadyEnabled: "{yellow}{bold}W:{reset} Plugin is already enabled."
+  PluginIsAlreadyDisabled: "{yellow} bold}W:{reset} Plugin is already disabled."
+  PluginManagement: "Plugin Management"
+  InstalledPlugins: "Installed Plugins"
+  SearchingDatabaseForPlugin: "{bold}Searching through the database for plugin ...."
+
+  # Information messages
+  RebuiltWorldDatabase: "{green}{bold}The World database was rebuilt"
+  PackageInformationTitle: "{bold}{underline}{green}Information about the package"
+  FinishedDownloading: "Finished downloading"
+  FinishedDownloadingCompact: "Finished downloading"
+  SyncingPackageDatabase: "Synchronize from"
+  ExecutingSetup: "Executing Setup Script... Please wait"
+  BuildingWorldDatabase: "{bold}The World database is being rebuilt ..."
+  SuccessBuildingWorldDatabase: "{green}{bold}[✓]{reset} The World database was successfully built!"
+  ChangedLanguage: "{bold}Changed language to {cyan}%s{reset}"
+  SearchingWorldForPackage: "{bold}Searching through the local world database for the installed package ..."
+  InstallingToSandboxEnv: "{CYAN}Package will be installed to the sandbox."
+  ExecutingSpkgPackageConf: ""
+
+  # Installation messages
+  ParsingSpecfile: "The package configuration is read in"
+  SuccessParsingSpecfile: "The package configuration was read in"
+  ExtractArchive: "Unpack package archive..."
+  SuccessExtractArchive: "Package archive has been unpacked"
+  DeterminateDependencies: "Dependencies are determined and installed"
+  SuccessDeterminateDependencies: "Dependencies were installed (in %s s)"
+  DeterminatePipDependencies: "Determine if pip dependencies are needed"
+  NoNeedPipDependencies: "No pip dependencies found..."
+  NeedPipDependencies: "Pip dependencies were found."
+  SuccessPipDeterminateDependencies: "Pip dependencies were installed (in %s s)"
+  PrepareCompile: "Package compilation is prepared..."
+  Compile: "Starting compilation of the package"
+  NoCompileNeed: "No compilation of the package is needed."
+  PrepareInstall: "Package installation is being prepared..."
+  Install: "Package will be installed..."
+  SuccessInstall: "{green}{bold}%s has been installed in %c s."
+
+  # Uninstallation messages
+  RequiresArchiveForUninstall: "This package requires the package archive to proceed with removal."
+  RemoveDependenciesForYourself: "If you don't need the following dependencies of this package anymore, you can remove them yourself if needed.\n    Please note that some of the dependencies might be important for the system!"
+  Remove: "Package will be removed..."
+  SuccessRemove: "{green}{bold}%s has been removed in %c s."
+
+  # Upgrade messages
+  ContinuePackageUpdate: "{creset}To update this package, the {cyan}{bold}%s{creset} package must be downloaded. \nThis requires {green}{bold}%c MB{creset} of update data. Continue? [Y/N] "
+  ContinuePackageUpdateCompact: "{creset}The package {cyan}{bold}%s{creset} {green}{bold}(%c MB){creset} will now be downloaded and updated."
+  PrepareUpdate: "Package update is being prepared..."
+  Update: "Package will be updated..."
+  SuccessUpdate: "{green}{bold}%s has been updated in %c s."

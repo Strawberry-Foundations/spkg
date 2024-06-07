@@ -1,20 +1,12 @@
 # Language for spkg (de_DE, en_US)
 language: de_DE
-# main_url: https://sources.strawberryfoundations.xyz/
-main_url: http://sources.strawberryfoundations.xyz:49171/
+main_url: https://sources.strawberryfoundations.xyz
 
 # You shouldn't change this unless you know what you're doing!!!
 build_directory: /tmp/_spkg.build/
 
-# Plugins
-plugins:
-  sandbox: false
-  test: true
-  docker: false
-  repomgr: false
-
 # Repositories
 repositories:
-  main: http://sources.strawberryfoundations.xyz:49171/packages/
-  test: http://sources.strawberryfoundations.xyz:49171/tests/
-  # test: https://sources.strawberryfoundations.xyz/tests/
+  # main: https://sources.strawberryfoundations.xyz/packages
+  test: https://sources.strawberryfoundations.xyz/tests
+  # future: https://sources.strawberryfoundations.xyz/future
