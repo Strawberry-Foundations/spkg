@@ -14,6 +14,7 @@ pub async fn list(options: CommandOptions) {
                 entry.name, entry.version, entry.branch, entry.arch
             );
         }
+        return
     }
     
     let mut packages = PackageList::new(&CONFIG.repositories).await;
