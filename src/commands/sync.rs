@@ -46,7 +46,7 @@ pub async fn sync(_: CommandOptions) -> eyre::Result<()> {
 
     for database in existing_databases {
         if !configured_databases.contains(&database) {
-            remove_file(format!("{}{database}", SPKG_DIRECTORIES.mirrors)).unwrap()
+            remove_file(format!("{}{database}", SPKG_DIRECTORIES.mirrors))?
         }
     }
 
@@ -88,7 +88,7 @@ pub async fn sync(_: CommandOptions) -> eyre::Result<()> {
             while let Some(item) = stream.next().await {
                 let chunk = item;
 
-                match database.write_all(&chunk.unwrap()).await {
+                match database.write_all(&chunk?).await {
                     Ok(..) => (),
                     Err(_) => {
                         sp.stop_with_message(String::new());
