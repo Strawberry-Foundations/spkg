@@ -18,3 +18,6 @@ maplit = "1.0.2"
 
 lazy_static = "1.5.0"
 eyre = "0.6.12"
+
+libloading = "0.8.4"
+libspkg = { path = "../libspkg" }
