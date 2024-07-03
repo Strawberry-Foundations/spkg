@@ -1,29 +1,29 @@
 # Language Strings for de_DE (German)
 de_DE:
   Help: |-
-    {underline}{bold}Advanced Source Package Management (spkg) %s %s{creset}
-    {cyan}{bold}Aufruf:{reset} spkg {green}[Befehl]{red} <Argument>{creset}
+    {underline}{bold}{cyan}Advanced Source Package Management (spkg) %s %s{creset}
+    {green}{bold}Aufruf:{reset} spkg {cyan}[Befehl]{red} [<Argument>]{creset}
 
     spkg ist ein universeller Paketmanager, der nach Wunsch den Quellcode 
     eines gewünschten Paketes gerätespezifisch auf deinem Computer kompiliert,
     um so die bestmögliche Performance & Sicherheit rauszuholen.
 
-    {underline}{bold}Befehle:{creset}
-    {bold} -> {blue}install:{reset} Installiert ein Pakete{creset}
-    {bold} -> {blue}remove:{reset} Entfernt ein Pakete{creset}
-    {bold} -> {blue}reinstall:{reset} Installiert ein Pakete neu{creset}
-    {bold} -> {blue}update:{reset} Überprüft auf Paketaktualisierungen{creset}
-    {bold} -> {blue}upgrade:{reset} Aktualisiert ein Paket{creset}
-    {bold} -> {blue}sync:{reset} Synchronisiert die Paketdatenbanken{creset}
-    {bold} -> {blue}info:{reset} Gibt dir Informationen über ein Paket aus{creset}
-    {bold} -> {blue}list:{reset} Zählt verfügbare Pakete auf{creset}
-    {bold} -> {blue}download:{reset} Lädt ein Paket herunter{creset}
-    {bold} -> {blue}build:{reset} Baut verschiedene Dinge *^____^*{creset}
-    {bold}    -> {blue}world:{reset} Baut die lokale World-Datenbank von neu auf{creset}
-    {bold} -> {blue}config:{reset} Konfigurationsverwaltung{creset}
-    {bold}    -> {blue}language:{reset} Sprachkonfigurierung{creset}
+    {bold}{magenta}Befehle:{creset}
+    {bold}    {cyan}install:{creset} Installiert ein Pakete{creset}
+    {bold}    {cyan}remove:{creset} Entfernt ein Pakete{creset}
+    {bold}    {cyan}reinstall:{creset} Installiert ein Pakete neu{creset}
+    {bold}    {cyan}update:{creset} Überprüft auf Paketaktualisierungen{creset}
+    {bold}    {cyan}upgrade:{creset} Aktualisiert ein Paket{creset}
+    {bold}    {cyan}sync:{creset} Synchronisiert die Paketdatenbanken{creset}
+    {bold}    {cyan}info:{creset} Gibt dir Informationen über ein Paket aus{creset}
+    {bold}    {cyan}list:{creset} Zählt verfügbare Pakete auf{creset}
+    {bold}    {cyan}download:{creset} Lädt ein Paket herunter{creset}
+    {bold}    {cyan}build:{creset} Baut verschiedene Dinge *^____^*{creset}
+    {bold}     ↳ {cyan}world:{creset} Baut die lokale World-Datenbank von neu auf{creset}
+    {bold}    {cyan}config:{creset} Konfigurationsverwaltung{creset}
+    {bold}     ↳ {cyan}language:{creset} Sprachkonfigurierung{creset}
 
-    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
+    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with {red}<3{reset}
 
   # Basic strings
   Get: "Holen"
@@ -114,7 +114,7 @@ de_DE:
 
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
-  PackageInformationTitle: "{bold}{underline}{green}Information über das Paket"
+  PackageInformationTitle: "Information über das Paket"
   FinishedDownloading: "Download abgeschlossen für"
   FinishedDownloadingCompact: "Download abgeschlossen"
   SyncingPackageDatabase: "Synchronisieren von"
