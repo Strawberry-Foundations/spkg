@@ -1,27 +1,27 @@
 # Language Strings for en_US (English)
 en_US:
   Help: |-
-    {underline}{bold}Advanced Source Package Management (spkg) %s %s{creset}
-    {cyan}{bold}call:{reset} spkg {green}[command]{red} <argument>{creset}
+    {underline}{bold}{cyan}Advanced Source Package Management (spkg) %s %s{creset}
+    {green}{bold}Usage:{reset} spkg {cyan}[command]{red} [<options>]{creset}
 
     spkg is a universal package manager that compiles the source code of a desired 
     compiles the source code of a desired package device-specifically on your computer,
     to get the best possible performance and security.
 
-    {underline}{bold}Commands:{creset}
-    {bold} -> {blue}install:{reset} Installs a package{creset}
-    {bold} -> {blue}remove:{reset} Removes a package{creset}
-    {bold} -> {blue}reinstall:{reset} Reinstall a package{creset}
-    {bold} -> {blue}update:{reset} Checks for package updates{creset}
-    {bold} -> {blue}upgrade:{reset} Updates a package{creset}
-    {bold} -> {blue}sync:{reset} Synchronizes the package databases{creset}
-    {bold} -> {blue}info:{reset} Gives you information about a package{creset}
-    {bold} -> {blue}list:{reset} Lists available packages{creset}
-    {bold} -> {blue}download:{reset} Downloads a package{creset}
-    {bold} -> {blue}build:{reset} Builds various things *^____^*{creset}
-    {bold}    -> {blue}world:{reset} Builds the local world database from scratch{creset}
-    {bold} -> {blue}config:{reset} Configuration management{creset}
-    {bold}    -> {blue}language:{reset} Language configuration{creset}
+    {bold}{magenta}Commands:{creset}
+    {bold}    {cyan}install:{reset} Installs a package{creset}
+    {bold}    {cyan}remove:{reset} Removes a package{creset}
+    {bold}    {cyan}reinstall:{reset} Reinstall a package{creset}
+    {bold}    {cyan}update:{reset} Checks for package updates{creset}
+    {bold}    {cyan}upgrade:{reset} Updates a package{creset}
+    {bold}    {cyan}sync:{reset} Synchronizes the package databases{creset}
+    {bold}    {cyan}info:{reset} Gives you information about a package{creset}
+    {bold}    {cyan}list:{reset} Lists available packages{creset}
+    {bold}    {cyan}download:{reset} Downloads a package{creset}
+    {bold}    {cyan}build:{reset} Builds various things *^____^*{creset}
+    {bold}     ↳ {cyan}world:{reset} Builds the local world database from scratch{creset}
+    {bold}    {cyan}config:{reset} Configuration management{creset}
+    {bold}     ↳ {cyan}language:{reset} Language configuration{creset}
 
     Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
 
@@ -114,7 +114,7 @@ en_US:
 
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}The World database was rebuilt"
-  PackageInformationTitle: "{bold}{underline}{green}Information about the package"
+  PackageInformationTitle: "Information about the package"
   FinishedDownloading: "Finished downloading"
   FinishedDownloadingCompact: "Finished downloading"
   SyncingPackageDatabase: "Synchronize from"
