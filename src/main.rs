@@ -62,6 +62,9 @@ async fn main() {
                 Err(err) => throw!(err)
             }
         }
+        Command::Dummy => {
+            commands::plugin::execute()
+        }
         Command::Err(error) => {
             eprintln!("{error}")
         }
