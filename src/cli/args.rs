@@ -16,6 +16,7 @@ pub enum Command {
     Info(String, CommandOptions),
     List(CommandOptions),
     Download(Vec<String>, CommandOptions),
+    Dummy
 }
 
 #[derive(Default, Debug)]
@@ -107,6 +108,10 @@ impl Args {
                 }
                 "list" => {
                     Command::List(options)
+                }
+                
+                "plugin" => {
+                    Command::Dummy
                 }
                 "download" => {
                     if let Some(package) = non_option_args.get(1..) {
