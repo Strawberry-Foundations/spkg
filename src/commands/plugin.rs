@@ -3,6 +3,18 @@ use libspkg::plugin::Plugin;
 use std::path::PathBuf;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN};
 
+pub fn main(args: Vec<String>) {
+    println!("{args:?}")
+}
+
+pub fn list() {
+    
+}
+
+pub fn register() {
+    
+}
+
 pub fn execute() {
     let path = PathBuf::from("/home/julian/Projekte/libspkg/example_plugin/target/release/libexample_plugin.so");
     
