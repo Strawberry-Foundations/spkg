@@ -114,6 +114,9 @@ impl Args {
                     let args: Vec<String> = env::args().skip(2).collect();
                     Command::Plugin(args)
                 }
+                "dummy" => {
+                    Command::Dummy
+                }
                 "download" => {
                     if let Some(package) = non_option_args.get(1..) {
                         Command::Download(package.to_owned(), options)
