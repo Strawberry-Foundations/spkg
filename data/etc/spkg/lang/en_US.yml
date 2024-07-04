@@ -41,6 +41,7 @@ en_US:
   Enabled: "Enabled"
   Disabled: "Disabled"
   Error: "Error"
+  PackageId: "Package-ID"
 
   # Error messages
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
