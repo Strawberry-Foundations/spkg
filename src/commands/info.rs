@@ -14,6 +14,8 @@ pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> 
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Branch"), package.branch);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Architecture"), package.arch);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SpecfileUrl"), package.specfile);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SrcPkgAvailable"), package.metadata.srcpkg);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), package.metadata.binpkg);
 
     Ok(())
 }
