@@ -3,6 +3,7 @@ pub mod fs;
 pub mod package;
 pub mod db;
 pub mod plugin;
+pub mod metadata;
 
 use lazy_static::lazy_static;
 use stblib::strings::Strings;
