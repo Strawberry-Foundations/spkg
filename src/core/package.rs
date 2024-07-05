@@ -1,4 +1,4 @@
-#![allow(unreachable_code)]
+#![allow(unreachable_code, unused_variables)]
 use sqlx::FromRow;
 use std::collections::HashMap;
 use eyre::Report;
@@ -7,6 +7,7 @@ use crate::cli::args::CommandOptions;
 use crate::core::db::Database;
 use crate::core::{SPKG_FILES, STRINGS};
 use crate::core::fs::format_size;
+use crate::core::metadata::Metadata;
 use crate::err::spkg::SpkgError;
 use crate::net::http::{file_download, remote_header};
 use crate::spinners::Spinners;
@@ -19,7 +20,7 @@ pub struct Package {
     pub branch: String,
     pub arch: String,
     pub specfile: String,
-    pub metadata: String,
+    pub metadata: Metadata,
     pub binpkg_url: String,
     pub srcpkg_url: String,
 }
