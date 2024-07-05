@@ -10,7 +10,7 @@ pub async fn list(options: CommandOptions) {
 
         for entry in packages {
             println!(
-                "{GREEN}{BOLD}{}{C_RESET} ({}) @ {CYAN} {}{RESET}/{}",
+                "{GREEN}{BOLD}{}{C_RESET} ({}) @{CYAN} {}{RESET}/{}",
                 entry.name, entry.version, entry.branch, entry.arch
             );
         }
@@ -25,7 +25,7 @@ pub async fn list(options: CommandOptions) {
 
     for entry in packages {
         println!(
-            "{GREEN}{BOLD}{}{C_RESET} ({}) @ {CYAN} {}{RESET}/{}",
+            "{GREEN}{BOLD}{}{C_RESET} ({}) @{CYAN} {}{RESET}/{}",
             entry.name, entry.version, entry.branch, entry.arch
         );
     }
