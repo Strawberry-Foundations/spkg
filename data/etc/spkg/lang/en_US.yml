@@ -42,6 +42,8 @@ en_US:
   Disabled: "Disabled"
   Error: "Error"
   PackageId: "Package-ID"
+  SrcPkgAvailable: "Source package available: "
+  BinPkgAvailable: "Binary package available: "
 
   # Error messages
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
