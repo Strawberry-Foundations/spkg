@@ -13,9 +13,19 @@ pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> 
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), package.version);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Branch"), package.branch);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Architecture"), package.arch);
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SpecfileUrl"), package.specfile);
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SrcPkgAvailable"), package.metadata.srcpkg);
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), package.metadata.binpkg);
+    println!("{}: {GREEN}{BOLD}{CYAN}{}{C_RESET}", STRINGS.load("SpecfileUrl"), package.specfile);
+    println!(
+        "{}: {GREEN}{BOLD}{}{C_RESET}{}", STRINGS.load("SrcPkgAvailable"),
+        package.metadata.srcpkg, {
+            if package.metadata.srcpkg { format!(" {BOLD}({CYAN}{}{C_RESET})", package.srcpkg_url) } else { String::new() }
+        }
+    );
+    println!(
+        "{}: {GREEN}{BOLD}{}{C_RESET}{}", STRINGS.load("BinPkgAvailable"),
+        package.metadata.binpkg, {
+            if package.metadata.binpkg { format!(" {BOLD}({CYAN}{}{C_RESET})", package.binpkg_url) } else { String::new() }
+        }
+    );
 
     Ok(())
 }
