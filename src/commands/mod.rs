@@ -3,4 +3,4 @@ pub mod info;
 pub mod sync;
 pub mod download;
 pub mod plugin;
-mod spec;
+pub mod spec;
