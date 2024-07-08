@@ -16,6 +16,7 @@ de_DE:
     {bold}    {cyan}upgrade:{creset} Aktualisiert ein Paket{creset}
     {bold}    {cyan}sync:{creset} Synchronisiert die Paketdatenbanken{creset}
     {bold}    {cyan}info:{creset} Gibt dir Informationen über ein Paket aus{creset}
+    {bold}    {cyan}spec:{creset} Gibt dir die Paketspezifikationen über ein Paket aus{creset}
     {bold}    {cyan}list:{creset} Zählt verfügbare Pakete auf{creset}
     {bold}    {cyan}download:{creset} Lädt ein Paket herunter{creset}
     {bold}    {cyan}build:{creset} Baut verschiedene Dinge *^____^*{creset}
