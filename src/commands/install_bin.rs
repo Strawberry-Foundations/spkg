@@ -41,7 +41,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         Ok(_) => {
             sp.stop();
             println!(
-                "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{url_base}/{branch} {}{C_RESET} ({GREEN}{}{RESET}){C_RESET}",
+                "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{url_base}/{branch} {}{C_RESET} ({GREEN}{}{RESET}){C_RESET}          ",
                 STRINGS.load("Get"), &get_basename(binpkg_url).unwrap(), format_size(content_size)
             )
         }
@@ -56,10 +56,17 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
 
     let mut sp = crate::spinners::simple::SimpleSpinner::new();
     sp.start(format!(
-        "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
-        STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name));
+        "{BOLD}{} {CYAN}{}{C_RESET} ...",
+        STRINGS.load("ExtractingPackage"), &get_basename(binpkg_url).unwrap()
+    ));
 
     let binpkg = BinPkg::extract(format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap()), format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
+
+    sp.stop();
+    println!(
+        "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{} {CYAN}{}{C_RESET}{C_RESET}      ",
+        STRINGS.load("ExtractingPackage"), &get_basename(binpkg_url).unwrap()
+    );
 
 
     Ok(())
