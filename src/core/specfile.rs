@@ -1,14 +1,14 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Specfile {
     pub package: SpecfilePackage,
     pub srcpkg: Option<SpecfileSrcPkg>,
     pub binpkg: Option<SpecfileBinPkg>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpecfilePackage {
     pub name: String,
     pub version: String,
@@ -16,18 +16,18 @@ pub struct SpecfilePackage {
     pub author: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpecfileSrcPkg {
     pub compose: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpecfileBinPkg {
     pub x86_64: Option<SpecfileBinPkgArch>,
     pub aarch64: Option<SpecfileBinPkgArch>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SpecfileBinPkgArch {
     pub url: String
 }
