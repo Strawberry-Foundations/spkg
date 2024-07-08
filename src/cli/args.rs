@@ -91,7 +91,7 @@ impl Args {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 },
-                "install-source" => {
+                "install-src" => {
                     if let Some(package) = non_option_args.get(1..) {
                         Command::InstallSource(package.to_owned(), options)
                     } else {
