@@ -1,3 +1,4 @@
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -29,4 +30,18 @@ pub struct SpecfileBinPkg {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SpecfileBinPkgArch {
     pub url: String
+}
+
+pub async fn fetch_specfile(url: String) -> Specfile {
+    let response = Client::new().get(url).send().await.unwrap();
+
+    if !response.status().is_success() {
+        println!("Err not reachable");
+        std::process::exit(1)
+    }
+
+    let specfile = response.text().await.unwrap();
+    let data: Specfile = serde_yaml::from_str(&specfile).unwrap();
+
+    data
 }
