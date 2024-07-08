@@ -21,7 +21,7 @@ pub async fn do_install(packages: Vec<String>, options: &CommandOptions, mut pac
     };
 
     if binpkg_available && data.srcpkg.is_some() {
-        println!("{}", STRINGS.load("BinPkgAndSrcPkgAvailable"));
+        println!("{}", STRINGS.load_with_params("BinPkgAndSrcPkgAvailable", &[&package.name]));
 
         let theme = ColorfulTheme::default();
         let selector = Select::with_theme(&theme).clear(false).default(0);
