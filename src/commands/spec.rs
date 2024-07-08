@@ -1,10 +1,10 @@
 use reqwest::Client;
-use serde_yaml::Value;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
 
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
+use crate::core::specfile::Specfile;
 
 pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> {
     let mut packages = PackageList::new(&CONFIG.repositories).await;
@@ -19,11 +19,25 @@ pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> 
 
     let specfile = response.text().await?;
 
-    let data: Value = serde_yaml::from_str(&specfile)?;
+    let data: Specfile = serde_yaml::from_str(&specfile)?;
 
     println!("{BOLD}{UNDERLINE}{CYAN}{} {} ({}){C_RESET}", STRINGS.load("PackageSpecInformationTitle"), package.name, package.version);
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), data["package"]["name"].as_str().unwrap());
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), data["package"]["version"].as_str().unwrap());
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), data.package.name);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), data.package.version);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Description"), data.package.description);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Author"), data.package.author);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SrcPkgAvailable"), {
+        if data.srcpkg.is_some() { STRINGS.load("Yes") } else { STRINGS.load("No") }
+    });
+    if data.srcpkg.is_some() {
+        println!("  {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("ComposeFile"), data.srcpkg.unwrap().compose);
+    }
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), {
+        if data.binpkg.is_some() { STRINGS.load("Yes") } else { STRINGS.load("No") }
+    });
+    for arch in data.binpkg {
+        println!{"arch:?"}
+    }
 
     Ok(())
 }
