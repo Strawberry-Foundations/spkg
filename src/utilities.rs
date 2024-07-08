@@ -49,7 +49,7 @@ pub fn get_url_basename(url: &str) -> Result<(String, String), String> {
 pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> std::io::Result<()> {
     fs::create_dir_all(&dst)?;
 
-    for entry in WalkDir::new(src) {
+    for entry in WalkDir::new(&src) {
         let entry = entry?;
         let path = entry.path();
         let relative_path = path.strip_prefix(src.as_ref()).unwrap();
