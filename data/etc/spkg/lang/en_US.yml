@@ -55,6 +55,7 @@ en_US:
   SrcPkgAvailable: "Source package available"
   ComposeFile: "Compose file"
   BinPkgAvailable: "Binary package available"
+  ExtractingPackage: "Extracting package"
 
   # Error messages
   PackageNotAvailable: "E: The specified package is not available because there is no valid installation method"
