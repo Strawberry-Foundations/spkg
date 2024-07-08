@@ -9,6 +9,12 @@ pub struct SimpleSpinner {
     pub running: Arc<AtomicBool>,
 }
 
+impl Default for SimpleSpinner {
+    fn default() -> Self {
+        SimpleSpinner::new()
+    }
+}
+
 impl SimpleSpinner {
     pub fn new() -> Self {
         SimpleSpinner {
@@ -32,7 +38,7 @@ impl SimpleSpinner {
 
             while running.load(Ordering::SeqCst) {
                 let display_text = if text.len() > max_text_length {
-                    format!("{}...", &text[..max_text_length - 3])
+                    format!("{} ...", &text[..max_text_length - 3])
                 } else {
                     text.clone()
                 };
