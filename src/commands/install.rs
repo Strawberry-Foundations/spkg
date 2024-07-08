@@ -1,9 +1,13 @@
 use std::env::consts::ARCH;
 use stblib::colors::{BOLD, RED};
-use crate::cli::args::CommandOptions;
+
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
 use crate::core::specfile::fetch_specfile;
+use crate::cli::args::CommandOptions;
+use crate::commands::install_bin::install_bin;
+use crate::commands::install_src::install_src;
+
 
 pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Result<()> {
     let mut package_list = PackageList::new(&CONFIG.repositories).await;
@@ -22,16 +26,14 @@ pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Re
             println!("Binpkg & srcpkg available")
         }
         else if binpkg_available && data.srcpkg.is_none() {
-            println!("Binpkg available")
+            install_bin(packages, options).await?;
         }
         else if !binpkg_available && data.srcpkg.is_some() {
-            println!("srcpkg available")
+            install_src(packages, options).await?;
         }
         else {
             println!("{RED}{BOLD}{}", STRINGS.load("PackageNotAvailable"))
         }
-
-
     }
     else {
         for package in packages {
