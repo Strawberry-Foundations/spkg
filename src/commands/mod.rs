@@ -4,3 +4,6 @@ pub mod sync;
 pub mod download;
 pub mod plugin;
 pub mod spec;
+pub mod install;
+pub mod install_bin;
+pub mod install_src;
