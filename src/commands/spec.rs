@@ -23,7 +23,7 @@ pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> 
 
     println!("{BOLD}{UNDERLINE}{CYAN}{} {} ({}){C_RESET}", STRINGS.load("PackageInformationTitle"), package.name, package.version);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), data["package"]["name"].as_str().unwrap());
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), data["package"]["name"].as_str().unwrap());
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), data["package"]["version"].as_str().unwrap());
 
     Ok(())
 }
