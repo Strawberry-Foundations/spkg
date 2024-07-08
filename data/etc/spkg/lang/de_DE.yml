@@ -19,6 +19,8 @@ de_DE:
     {bold}    {cyan}spec:{creset} Gibt dir die Paketspezifikationen über ein Paket aus{creset}
     {bold}    {cyan}list:{creset} Zählt verfügbare Pakete auf{creset}
     {bold}    {cyan}download:{creset} Lädt ein Paket herunter{creset}
+    {bold}    {cyan}plugin:{creset} Pluginverwaltung{creset}
+    {bold}     ↳ {cyan}list:{creset} Zählt installierte Plugins auf{creset}
     {bold}    {cyan}build:{creset} Befehl zum erstellen von Paketen & Datenbanken{creset}
     {bold}     ↳ {cyan}world:{creset} Baut die lokale World-Datenbank von neu auf{creset}
     {bold}    {cyan}config:{creset} Konfigurationsverwaltung{creset}
