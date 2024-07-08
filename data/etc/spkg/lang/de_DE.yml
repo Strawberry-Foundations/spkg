@@ -48,6 +48,8 @@ de_DE:
   Disabled: "Deaktiviert"
   Error: "Fehler"
   PackageId: "Paket-ID"
+  BinPkg: "Binärpaket"
+  SrcPkg: "Sourcepaket"
   SrcPkgAvailable: "Sourcepaket verfügbar"
   ComposeFile: "Compose-Datei"
   BinPkgAvailable: "Binärpaket verfügbar"

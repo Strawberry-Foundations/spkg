@@ -48,6 +48,8 @@ en_US:
   Disabled: "Disabled"
   Error: "Error"
   PackageId: "Package-ID"
+  BinPkg: "Binary package"
+  SrcPkg: "Source package"
   SrcPkgAvailable: "Source package available"
   ComposeFile: "Compose file"
   BinPkgAvailable: "Binary package available"
