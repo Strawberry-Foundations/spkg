@@ -21,7 +21,7 @@ pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> 
 
     let data: Value = serde_yaml::from_str(&specfile)?;
 
-    println!("{BOLD}{UNDERLINE}{CYAN}{} {} ({}){C_RESET}", STRINGS.load("PackageInformationTitle"), package.name, package.version);
+    println!("{BOLD}{UNDERLINE}{CYAN}{} {} ({}){C_RESET}", STRINGS.load("PackageSpecInformationTitle"), package.name, package.version);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), data["package"]["name"].as_str().unwrap());
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), data["package"]["version"].as_str().unwrap());
 
