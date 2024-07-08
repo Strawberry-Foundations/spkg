@@ -7,7 +7,13 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
 }
 
 pub async fn install_src(packages: Vec<String>, options: &CommandOptions) -> eyre::Result<()> {
-    let mut package_list = PackageList::new(&CONFIG.repositories).await;
-
+    if packages.len() < 2 {
+        do_install(packages, options, PackageList::new(&CONFIG.repositories).await).await?;
+    }
+    else {
+        for package in packages {
+            do_install(vec![package], options, PackageList::new(&CONFIG.repositories).await).await?;
+        }
+    }
     Ok(())
 }
