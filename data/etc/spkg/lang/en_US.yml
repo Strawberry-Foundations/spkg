@@ -86,6 +86,7 @@ en_US:
 
   # Package-related messages
   BinPkgAndSrcPkgAvailable: "The package can be installed as a {cyan}{bold}binary{creset} package and as a {cyan}{bold}source package{creset}.\nPlease select the method you would like to use for installation"
+  PackageWillInstall: "The package will be installed using the {cyan}{bold}%s{creset} method."
   PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
   PackageDatabaseNotSynced: "{bold}The package database has not been synchronized yet.\n   Run {cyan}spkg sync{reset} to synchronize the database"
   PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Package has already been installed. There is nothing to do."
