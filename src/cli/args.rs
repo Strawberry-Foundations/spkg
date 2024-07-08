@@ -14,6 +14,7 @@ pub enum Command {
     InstallSource(String, CommandOptions),
     Sync(CommandOptions),
     Info(String, CommandOptions),
+    Spec(String, CommandOptions),
     List(CommandOptions),
     Download(Vec<String>, CommandOptions),
     Plugin(Vec<String>),
@@ -103,6 +104,13 @@ impl Args {
                 "info" => {
                     if let Some(package) = non_option_args.get(1) {
                         Command::Info(package.to_owned(), options)
+                    } else {
+                        Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
+                    }
+                }
+                "spec" => {
+                    if let Some(package) = non_option_args.get(1) {
+                        Command::Spec(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
