@@ -56,6 +56,8 @@ en_US:
 
   # Error messages
   PackageNotAvailable: "E: The specified package is not available because there is no valid installation method"
+  PackageNotAvailableAsBinPkg: "E: The specified package cannot be installed as a binary package because this installation method is not available for this package."
+  PackageNotAvailableAsSrcPkg: "E: The specified package cannot be installed as a source package because this installation method is not available for this package.""
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unknown error"
