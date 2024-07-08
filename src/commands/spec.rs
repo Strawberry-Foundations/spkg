@@ -1,10 +1,9 @@
-use reqwest::Client;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE, RED};
 
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
-use crate::core::specfile::{fetch_specfile, Specfile};
+use crate::core::specfile::fetch_specfile;
 
 pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> {
     let mut packages = PackageList::new(&CONFIG.repositories).await;
