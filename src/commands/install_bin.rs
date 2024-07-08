@@ -8,7 +8,7 @@ use crate::core::fs::format_size;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
 use crate::net::http::{file_download, remote_header};
-use crate::utilities::{delete_last_line, get_basename};
+use crate::utilities::get_basename;
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
     let binpkg_available = match ARCH {
