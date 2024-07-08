@@ -29,7 +29,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
     };
 
     let content_size = remote_header(binpkg_url).await;
-    
+
     let mut sp = crate::spinners::simple::SimpleSpinner::new();
     sp.start(format!(
         "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{ACCEPT_CHARSET}) ({}) ...{C_RESET}",
@@ -42,8 +42,6 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         }
         Err(err) => {
             sp.stop();
-            delete_last_line();
-            delete_last_line();
             eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRINGS.load("Get"), &binpkg_url, package.name);
             eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
         }
