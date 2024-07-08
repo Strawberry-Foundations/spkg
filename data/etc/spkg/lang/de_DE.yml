@@ -9,7 +9,9 @@ de_DE:
     um so die bestmögliche Performance & Sicherheit rauszuholen.
 
     {bold}{magenta}Befehle:{creset}
-    {bold}    {cyan}install:{creset} Installiert ein Pakete{creset}
+    {bold}    {cyan}install:{creset} Installiert ein Paket{creset}
+    {bold}    {cyan}install-bin:{creset} Installiert ein Paket mithilfe der binpkg-Methode{creset}
+    {bold}    {cyan}install-src:{creset} Installiert ein Paket mithilfe der srcpkg-Methode{creset}
     {bold}    {cyan}remove:{creset} Entfernt ein Pakete{creset}
     {bold}    {cyan}reinstall:{creset} Installiert ein Pakete neu{creset}
     {bold}    {cyan}update:{creset} Überprüft auf Paketaktualisierungen{creset}
