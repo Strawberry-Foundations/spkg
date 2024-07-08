@@ -19,7 +19,7 @@ en_US:
     {bold}    {cyan}spec:{creset} Gives you the package specifications for a package{creset}
     {bold}    {cyan}list:{creset} Lists available packages{creset}
     {bold}    {cyan}download:{creset} Downloads a package{creset}
-    {bold}    {cyan}build:{creset} Builds various things *^____^*{creset}
+    {bold}    {cyan}build:{creset} Command for creating packages & databases{creset}
     {bold}     ↳ {cyan}world:{creset} Builds the local world database from scratch{creset}
     {bold}    {cyan}config:{creset} Configuration management{creset}
     {bold}     ↳ {cyan}language:{creset} Language configuration{creset}
