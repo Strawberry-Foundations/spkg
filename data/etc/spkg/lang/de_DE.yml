@@ -85,7 +85,7 @@ de_DE:
   DevelopmentRelease: "{yellow}{bold}W:{reset} Dies ist eine Entwicklungsversion von spkg!{creset}"
 
   # Package-related messages
-  BinPkgAndSrcPkgAvailable: "Das Paket kann als {cyan}{bold}Binärpaket{creset} sowie als {cyan}{bold}Sourcepaket{creset} installiert werden.\nBitte wähle eine Methode aus, die du zur Installation verwenden möchtest"
+  BinPkgAndSrcPkgAvailable: "Das Paket {green}{bold}%s{creset} kann als {cyan}{bold}Binärpaket{creset} sowie als {cyan}{bold}Sourcepaket{creset} installiert werden.\nBitte wähle eine Methode aus, die du zur Installation verwenden möchtest"
   PackageWillInstall: "Das Paket wird nun mit der {cyan}{bold}%s{creset} Methode installiert"
   PackageNotFound: "{red}{bold}E:{reset} Paket wurde nicht gefunden{creset}"
   PackageDatabaseNotSynced: "{bold}Die Paketdatenbank wurde noch nicht synchronisiert.\n   Führe {cyan}spkg sync{reset} aus, um die Datenbank zu synchronisieren"
