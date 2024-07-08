@@ -4,20 +4,20 @@ use std::thread;
 use std::time::Duration;
 use terminal_size::{terminal_size, Width};
 
-struct SimpleSpinner {
-    handle: Option<thread::JoinHandle<()>>,
-    running: Arc<AtomicBool>,
+pub struct SimpleSpinner {
+    pub handle: Option<thread::JoinHandle<()>>,
+    pub running: Arc<AtomicBool>,
 }
 
 impl SimpleSpinner {
-    fn new() -> Self {
+    pub fn new() -> Self {
         SimpleSpinner {
             handle: None,
             running: Arc::new(AtomicBool::new(false)),
         }
     }
 
-    fn start(&mut self, text: &str) {
+    pub fn start(&mut self, text: impl ToString) {
         let running = self.running.clone();
         let text = text.to_string();
         running.store(true, Ordering::SeqCst);
@@ -49,7 +49,7 @@ impl SimpleSpinner {
         }));
     }
 
-    fn stop(&mut self) {
+    pub fn stop(&mut self) {
         self.running.store(false, Ordering::SeqCst);
         if let Some(handle) = self.handle.take() {
             handle.join().unwrap();
