@@ -47,6 +47,7 @@ de_DE:
   Error: "Fehler"
   PackageId: "Paket-ID"
   SrcPkgAvailable: "Sourcepaket verfügbar"
+  ComposeFile: "Compose-Datei"
   BinPkgAvailable: "Binärpaket verfügbar"
 
   # Error messages

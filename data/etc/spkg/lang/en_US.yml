@@ -47,6 +47,7 @@ en_US:
   Error: "Error"
   PackageId: "Package-ID"
   SrcPkgAvailable: "Source package available"
+  ComposeFile: "Compose file"
   BinPkgAvailable: "Binary package available"
 
   # Error messages
