@@ -27,6 +27,8 @@ en_US:
     Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
 
   # Basic strings
+  Yes: "Yes"
+  No: "No"
   Get: "Get"
   Architecture: "Architecture"
   Abort: "Aborting ... "
