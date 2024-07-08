@@ -19,22 +19,21 @@ async fn main() {
         Command::Help => {
             println!("{}", STRINGS.load_with_params("Help", &[&VERSION, &std::env::consts::ARCH]))
         }
-        Command::Install(package, options) => {
-            println!("{package} - {options:?}");
+        Command::Install(packages, options) => {
+            match commands::install::install(packages, options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
+        }
+        Command::InstallBin(packages, options) => {
+            println!("{packages:?} - {options:?}");
             println!("How install works:
 'Install' will ask you which method you prefer - Install from source or install from bin.
 'Install-Bin' will install from bin
 'Install-Src' will install frm source");
         }
-        Command::InstallBin(package, options) => {
-            println!("{package} - {options:?}");
-            println!("How install works:
-'Install' will ask you which method you prefer - Install from source or install from bin.
-'Install-Bin' will install from bin
-'Install-Src' will install frm source");
-        }
-        Command::InstallSource(package, options) => {
-            println!("{package} - {options:?}");
+        Command::InstallSource(packages, options) => {
+            println!("{packages:?} - {options:?}");
             println!("How install works:
 'Install' will ask you which method you prefer - Install from source or install from bin.
 'Install-Bin' will install from bin
