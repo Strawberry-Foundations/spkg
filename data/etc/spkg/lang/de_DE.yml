@@ -53,6 +53,7 @@ de_DE:
   BinPkgAvailable: "Binärpaket verfügbar"
 
   # Error messages
+  PackageNotAvailable: "E: Das angegebene Paket ist nicht verfügbar, da keine gültige Installationsmethode vorliegt"
   HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Mindestens ein Paket konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unbekannter Fehler"
