@@ -65,6 +65,6 @@ pub fn execute() {
         println!("Plugin Version: {GREEN}{BOLD}{}{C_RESET}", plugin.properties().version);
         println!("Plugin ID: {GREEN}{BOLD}{}{C_RESET}", plugin.properties().id);
         println!("Plugin Package ID: {GREEN}{BOLD}{}{C_RESET}\n", plugin.properties().package_id);
-        plugin.execute();
+        plugin.execute(&[String::from("help")]);
     }
 }
