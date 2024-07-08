@@ -10,6 +10,8 @@ en_US:
 
     {bold}{magenta}Commands:{creset}
     {bold}    {cyan}install:{creset} Installs a package{creset}
+    {bold}    {cyan}install-bin:{creset} Installs a package using the binpkg method{creset}
+    {bold}    {cyan}install-src:{creset} Installs a package using the srcpkg method{creset}
     {bold}    {cyan}remove:{creset} Removes a package{creset}
     {bold}    {cyan}reinstall:{creset} Reinstall a package{creset}
     {bold}    {cyan}update:{creset} Checks for package updates{creset}
