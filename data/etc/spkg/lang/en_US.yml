@@ -53,6 +53,7 @@ en_US:
   BinPkgAvailable: "Binary package available"
 
   # Error messages
+  PackageNotAvailable: "E: The specified package is not available because there is no valid installation method"
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unknown error"
