@@ -83,6 +83,7 @@ de_DE:
   DevelopmentRelease: "{yellow}{bold}W:{reset} Dies ist eine Entwicklungsversion von spkg!{creset}"
 
   # Package-related messages
+  BinPkgAndSrcPkgAvailable: "Das Paket kann als Binärpaket sowie als Sourcepaket installiert werden. Bitte wähle eine Methode aus, die du zur Installation verwenden möchtest"
   PackageNotFound: "{red}{bold}E:{reset} Paket wurde nicht gefunden{creset}"
   PackageDatabaseNotSynced: "{bold}Die Paketdatenbank wurde noch nicht synchronisiert.\n   Führe {cyan}spkg sync{reset} aus, um die Datenbank zu synchronisieren"
   PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Paket wurde bereits installiert. Es gibt nichts zu tun."
