@@ -1,3 +1,4 @@
+use stblib::colors::{BOLD, C_RESET, RED};
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
@@ -8,7 +9,7 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
     let data = fetch_specfile(&package.specfile).await;
 
     if data.srcpkg.is_none() {
-        eprintln!("{}", STRINGS.load("PackageNotAvailableAsSrcPkg"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("PackageNotAvailableAsSrcPkg"));
         std::process::exit(1);
     }
 
