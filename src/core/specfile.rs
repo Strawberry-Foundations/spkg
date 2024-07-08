@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Specfile {
     pub package: SpecfilePackage,
     pub srcpkg: Option<SpecfileSrcPkg>,
     pub binpkg: Option<SpecfileBinPkg>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SpecfilePackage {
     pub name: String,
     pub version: String,
@@ -15,18 +15,18 @@ pub struct SpecfilePackage {
     pub author: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SpecfileSrcPkg {
     pub compose: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SpecfileBinPkg {
     pub x86_64: Option<SpecfileBinPkgArch>,
     pub aarch64: Option<SpecfileBinPkgArch>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SpecfileBinPkgArch {
     pub url: String
 }
