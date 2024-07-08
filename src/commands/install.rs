@@ -33,20 +33,20 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
         match selection {
             0 => {
                 println!("\n{}", STRINGS.load_with_params("PackageWillInstall", &[&STRINGS.load("BinPkg")]));
-                install_bin(packages, options).await?;
+                install_bin(packages, options, Some(data)).await?;
             },
             1 => {
                 println!("\n{}", STRINGS.load_with_params("PackageWillInstall", &[&STRINGS.load("SrcPkg")]));
-                install_src(packages, options).await?;
+                install_src(packages, options, Some(data)).await?;
             },
             _ => unreachable!(),
         }
     }
     else if binpkg_available && data.srcpkg.is_none() {
-        install_bin(packages, options).await?;
+        install_bin(packages, options, Some(data)).await?;
     }
     else if !binpkg_available && data.srcpkg.is_some() {
-        install_src(packages, options).await?;
+        install_src(packages, options, Some(data)).await?;
     }
     else {
         println!("{RED}{BOLD}{}", STRINGS.load("PackageNotAvailable"))
