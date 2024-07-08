@@ -119,7 +119,7 @@ de_DE:
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}Die World-Datenbank wurde neu aufgebaut"
   PackageInformationTitle: "Information über das Paket"
-  PackageSpecInformationTitle: "Informationen über die Paketspezifikatioenn für das Paket"
+  PackageSpecInformationTitle: "Informationen über die Paketspezifikationen für das Paket"
   FinishedDownloading: "Download abgeschlossen für"
   FinishedDownloadingCompact: "Download abgeschlossen"
   SyncingPackageDatabase: "Synchronisieren von"
