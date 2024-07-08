@@ -4,9 +4,9 @@ en_US:
     {underline}{bold}{cyan}Advanced Source Package Management (spkg) %s %s{creset}
     {green}{bold}Usage:{reset} spkg {cyan}[command]{red} [<options>]{creset}
 
-    spkg is a universal package manager that compiles the source code of a desired 
-    compiles the source code of a desired package device-specifically on your computer,
-    to get the best possible performance and security.
+    spkg is a universal package manager that compiles the source code
+    of a desired package on your computer according to your wishes,
+    in order to achieve the best possible performance and security.
 
     {bold}{magenta}Commands:{creset}
     {bold}    {cyan}install:{creset} Installs a package{creset}
