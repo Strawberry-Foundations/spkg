@@ -53,6 +53,12 @@ async fn main() {
                 Err(err) => throw!(err)
             }
         }
+        Command::Spec(package, options) => {
+            match commands::spec::spec(package, options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
+        }
         Command::List(options) => {
             commands::list::list(options).await;
         }
