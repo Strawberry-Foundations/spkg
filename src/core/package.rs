@@ -21,7 +21,6 @@ pub struct Package {
     pub arch: String,
     pub specfile: String,
     pub metadata: Metadata,
-    pub binpkg_url: String,
     pub srcpkg_url: String,
 }
 
@@ -46,7 +45,7 @@ pub struct BasePackageList {
 
 impl Package {
     pub async fn download(&self) -> eyre::Result<()> {
-        let content_size = remote_header(&self.binpkg_url).await;
+        let content_size = remote_header(&self.srcpkg_url).await;
 
         println!("Command temporarily disabled");
         std::process::exit(0);
@@ -54,18 +53,18 @@ impl Package {
             Spinners::Line,
             format!(
                 "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}",
-                STRINGS.load("Get"), self.binpkg_url, format_size(content_size), self.name)
+                STRINGS.load("Get"), self.srcpkg_url, format_size(content_size), self.name)
         );
 
-        match file_download(&self.binpkg_url, &self.binpkg_url).await {
+        match file_download(&self.srcpkg_url, &self.srcpkg_url).await {
             Ok(_) => {
-                sp.stop_with_message(format!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRINGS.load("Get"), self.binpkg_url, format_size(content_size), self.name));
+                sp.stop_with_message(format!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRINGS.load("Get"), self.srcpkg_url, format_size(content_size), self.name));
             }
             Err(err) => {
                 sp.stop();
                 delete_last_line();
                 delete_last_line();
-                eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRINGS.load("Get"), self.binpkg_url, self.name);
+                eprintln!("{RED}{BOLD} × {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({}) ...{C_RESET}", STRINGS.load("Get"), self.srcpkg_url, self.name);
                 eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
             }
         };
