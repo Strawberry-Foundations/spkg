@@ -119,6 +119,7 @@ en_US:
   # Information messages
   RebuiltWorldDatabase: "{green}{bold}The World database was rebuilt"
   PackageInformationTitle: "Information about the package"
+  PackageSpecInformationTitle: "Information about the package specifications for the package"
   FinishedDownloading: "Finished downloading"
   FinishedDownloadingCompact: "Finished downloading"
   SyncingPackageDatabase: "Synchronize from"
