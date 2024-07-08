@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct Specfile {
     pub package: SpecfilePackage,
-    pub srcpkg: Option<SpecfilePackage>,
-    pub binpkg: Option<SpecfileSrcPkg>,
+    pub srcpkg: Option<SpecfileSrcPkg>,
+    pub binpkg: Option<SpecfileBinPkg>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -22,6 +22,11 @@ pub struct SpecfileSrcPkg {
 
 #[derive(Serialize, Deserialize)]
 pub struct SpecfileBinPkg {
-    pub x86_64: Option<String>,
-    pub aarch64: Option<String>,
+    pub x86_64: Option<SpecfileBinPkgArch>,
+    pub aarch64: Option<SpecfileBinPkgArch>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SpecfileBinPkgArch {
+    pub url: String
 }
