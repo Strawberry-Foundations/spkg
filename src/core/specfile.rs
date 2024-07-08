@@ -32,7 +32,7 @@ pub struct SpecfileBinPkgArch {
     pub url: String
 }
 
-pub async fn fetch_specfile(url: String) -> Specfile {
+pub async fn fetch_specfile(url: &String) -> Specfile {
     let response = Client::new().get(url).send().await.unwrap();
 
     if !response.status().is_success() {
