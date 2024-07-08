@@ -35,6 +35,7 @@ de_DE:
   Branch: "Branch"
   PackageUrl: "Paket-URL"
   SpecfileUrl: "Specfile-URL"
+  Author: "Author"
   Condition: "Zustand"
   Description: "Beschreibung"
   Commands: "Befehle"
