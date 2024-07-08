@@ -8,7 +8,7 @@ use crate::core::fs::format_size;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
 use crate::net::http::{file_download, remote_header};
-use crate::utilities::get_basename;
+use crate::utilities::{get_basename, get_url_basename};
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
     let binpkg_available = match ARCH {
@@ -32,13 +32,17 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
 
     let mut sp = crate::spinners::simple::SimpleSpinner::new();
     sp.start(format!(
-        "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
-        STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name));
+        "{BOLD}{}: {CYAN}{} {}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
+        STRINGS.load("Get"), &get_url_basename(binpkg_url).unwrap(), &get_basename(binpkg_url).unwrap(), format_size(content_size), package.name));
 
     match file_download(binpkg_url, &format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap())).await {
         Ok(_) => {
             sp.stop();
-            println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name)
+            println!(
+                "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{} {}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}",
+                STRINGS.load("Get"), &get_url_basename(binpkg_url).unwrap(),
+                &get_basename(binpkg_url).unwrap(), format_size(content_size), package.name
+            )
         }
         Err(err) => {
             sp.stop();
