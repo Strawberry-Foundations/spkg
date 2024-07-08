@@ -2,6 +2,7 @@ use std::io::{self, Write};
 use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
 use std::thread;
 use std::time::Duration;
+use stblib::colors::C_RESET;
 use terminal_size::{terminal_size, Width};
 
 pub struct SimpleSpinner {
@@ -38,7 +39,7 @@ impl SimpleSpinner {
 
             while running.load(Ordering::SeqCst) {
                 let display_text = if text.len() > max_text_length {
-                    format!("{} ...", &text[..max_text_length - 3])
+                    format!("{} {C_RESET}(...)", &text[..max_text_length - 3])
                 } else {
                     text.clone()
                 };
