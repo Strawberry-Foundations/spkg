@@ -9,9 +9,9 @@ use crate::err::spkg::SpkgError;
 pub enum Command {
     Help,
     Err(Box<dyn Error>),
-    Install(String, CommandOptions),
-    InstallBin(String, CommandOptions),
-    InstallSource(String, CommandOptions),
+    Install(Vec<String>, CommandOptions),
+    InstallBin(Vec<String>, CommandOptions),
+    InstallSource(Vec<String>, CommandOptions),
     Sync(CommandOptions),
     Info(String, CommandOptions),
     Spec(String, CommandOptions),
@@ -78,21 +78,21 @@ impl Args {
         let command = if let Some(cmd) = non_option_args.first() {
             match cmd.as_str() {
                 "install" => {
-                    if let Some(package) = non_option_args.get(1) {
+                    if let Some(package) = non_option_args.get(1..) {
                         Command::Install(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 },
                 "install-bin" | "binstall" => {
-                    if let Some(package) = non_option_args.get(1) {
+                    if let Some(package) = non_option_args.get(1..) {
                         Command::InstallBin(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
                     }
                 },
                 "install-source" => {
-                    if let Some(package) = non_option_args.get(1) {
+                    if let Some(package) = non_option_args.get(1..) {
                         Command::InstallSource(package.to_owned(), options)
                     } else {
                         Command::Err(Box::new(SpkgError::InvalidArgument(String::from("Argument cannot be empty"))))
