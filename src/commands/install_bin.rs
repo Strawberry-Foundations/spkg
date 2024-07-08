@@ -1,5 +1,4 @@
 use std::env::consts::ARCH;
-use reqwest::header::ACCEPT_CHARSET;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
 use crate::cli::args::CommandOptions;
@@ -32,7 +31,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
 
     let mut sp = crate::spinners::simple::SimpleSpinner::new();
     sp.start(format!(
-        "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{ACCEPT_CHARSET}) ({}) ...{C_RESET}",
+        "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
         STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name));
 
     match file_download(binpkg_url, &get_basename(binpkg_url).unwrap()).await {
