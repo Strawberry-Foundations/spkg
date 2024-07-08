@@ -9,19 +9,20 @@ en_US:
     to get the best possible performance and security.
 
     {bold}{magenta}Commands:{creset}
-    {bold}    {cyan}install:{reset} Installs a package{creset}
-    {bold}    {cyan}remove:{reset} Removes a package{creset}
-    {bold}    {cyan}reinstall:{reset} Reinstall a package{creset}
-    {bold}    {cyan}update:{reset} Checks for package updates{creset}
-    {bold}    {cyan}upgrade:{reset} Updates a package{creset}
-    {bold}    {cyan}sync:{reset} Synchronizes the package databases{creset}
-    {bold}    {cyan}info:{reset} Gives you information about a package{creset}
-    {bold}    {cyan}list:{reset} Lists available packages{creset}
-    {bold}    {cyan}download:{reset} Downloads a package{creset}
-    {bold}    {cyan}build:{reset} Builds various things *^____^*{creset}
-    {bold}     ↳ {cyan}world:{reset} Builds the local world database from scratch{creset}
-    {bold}    {cyan}config:{reset} Configuration management{creset}
-    {bold}     ↳ {cyan}language:{reset} Language configuration{creset}
+    {bold}    {cyan}install:{creset} Installs a package{creset}
+    {bold}    {cyan}remove:{creset} Removes a package{creset}
+    {bold}    {cyan}reinstall:{creset} Reinstall a package{creset}
+    {bold}    {cyan}update:{creset} Checks for package updates{creset}
+    {bold}    {cyan}upgrade:{creset} Updates a package{creset}
+    {bold}    {cyan}sync:{creset} Synchronizes the package databases{creset}
+    {bold}    {cyan}info:{creset} Gives you information about a package{creset}
+    {bold}    {cyan}spec:{creset} Gives you the package specifications for a package{creset}
+    {bold}    {cyan}list:{creset} Lists available packages{creset}
+    {bold}    {cyan}download:{creset} Downloads a package{creset}
+    {bold}    {cyan}build:{creset} Builds various things *^____^*{creset}
+    {bold}     ↳ {cyan}world:{creset} Builds the local world database from scratch{creset}
+    {bold}    {cyan}config:{creset} Configuration management{creset}
+    {bold}     ↳ {cyan}language:{creset} Language configuration{creset}
 
     Copyright (C) 2023 - 2024 Strawberry Foundations - Made with <3
 
