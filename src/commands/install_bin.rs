@@ -26,11 +26,11 @@ pub async fn install_bin(packages: Vec<String>, options: &CommandOptions, data: 
     if packages.len() < 2 {
         let mut package_list= PackageList::new(&CONFIG.repositories).await;
         let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
-        let data = if data.is_none() {
-            fetch_specfile(&package.specfile).await
+        let data = if let Some(data) = data {
+            data
         }
         else {
-            data.unwrap()
+            fetch_specfile(&package.specfile).await
         };
         do_install(package, options, data).await?;
     }
