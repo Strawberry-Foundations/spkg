@@ -1,6 +1,7 @@
 use std::{fs, io};
 use std::io::Write;
 use std::path::Path;
+use url::Url;
 use crate::core::{CONFIG, SPKG_DIRECTORIES};
 
 pub fn open_file(path: &str) -> String {
@@ -20,4 +21,18 @@ pub fn get_language_strings() -> String {
 pub fn get_basename(path: &str) -> Option<String> {
     let path = Path::new(path);
     path.file_name()?.to_str().map(|s| s.to_string())
+}
+
+pub fn get_url_basename(url: &str) -> Result<String, String> {
+    match Url::parse(url) {
+        Ok(parsed_url) => {
+            let scheme = parsed_url.scheme();
+            let host = match parsed_url.host_str() {
+                Some(host) => host,
+                None => return Err("Invalid URL: no host found".to_string()),
+            };
+            Ok(format!("{}://{}", scheme, host))
+        },
+        Err(e) => Err(format!("Failed to parse URL: {}", e)),
+    }
 }
