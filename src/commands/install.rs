@@ -1,6 +1,7 @@
 use std::env::consts::ARCH;
+use dialoguer::console::style;
 use dialoguer::Select;
-use dialoguer::theme::ColorfulTheme;
+use dialoguer::theme::{ColorfulTheme, SimpleTheme, Theme};
 use stblib::colors::{BOLD, RED, GREEN, C_RESET};
 
 use crate::core::{CONFIG, STRINGS};
@@ -33,8 +34,14 @@ pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Re
                 .unwrap();
 
             match selection {
-                0 => println!("You selected: Yes"),
-                1 => println!("You selected: No"),
+                0 => {
+                    println!("\n{}", STRINGS.load_with_params("PackageWillInstall", &[&STRINGS.load("BinPkg")]));
+                    install_bin(packages, options).await?;
+                },
+                1 => {
+                    println!("\n{}", STRINGS.load_with_params("PackageWillInstall", &[&STRINGS.load("SrcPkg")]));
+                    install_src(packages, options).await?;
+                },
                 _ => unreachable!(),
             }
         }
