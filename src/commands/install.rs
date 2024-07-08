@@ -1,7 +1,6 @@
 use std::env::consts::ARCH;
-use dialoguer::console::style;
 use dialoguer::Select;
-use dialoguer::theme::{ColorfulTheme, SimpleTheme, Theme};
+use dialoguer::theme::{ColorfulTheme, Theme};
 use stblib::colors::{BOLD, RED, GREEN, C_RESET};
 
 use crate::core::{CONFIG, STRINGS};
@@ -28,7 +27,9 @@ pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Re
         if binpkg_available && data.srcpkg.is_some() {
             println!("{}", STRINGS.load("BinPkgAndSrcPkgAvailable"));
 
-            let selection = Select::with_theme(&ColorfulTheme::default())
+            let theme = ColorfulTheme::default();
+            let selector = Select::with_theme(&theme).clear(false).default(0);
+            let selection = selector
                 .items(&[STRINGS.load("BinPkg"), STRINGS.load("SrcPkg")])
                 .interact()
                 .unwrap();
