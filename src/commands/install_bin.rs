@@ -1,4 +1,5 @@
 use std::env::consts::ARCH;
+use libspkg::binpkg::BinPkg;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
 use crate::cli::args::CommandOptions;
@@ -45,6 +46,15 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
             eprintln!("{RED}{BOLD} ↳  {}{C_RESET}", err);
         }
     };
+
+    println!("{} {CYAN}{BOLD}{}{C_RESET}", STRINGS.load("FinishedDownloading"), get_basename(binpkg_url).unwrap());
+
+    let mut sp = crate::spinners::simple::SimpleSpinner::new();
+    sp.start(format!(
+        "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
+        STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name));
+
+    let binpkg = BinPkg::extract(format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap()), format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
 
 
     Ok(())
