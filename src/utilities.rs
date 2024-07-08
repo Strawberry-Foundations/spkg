@@ -46,20 +46,26 @@ pub fn get_url_basename(url: &str) -> Result<(String, String), String> {
     }
 }
 
-pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> std::io::Result<()> {
-    fs::create_dir_all(&dst)?;
+pub fn copy_dir_all(src: impl ToString, dst: &str) -> io::Result<()> {
+    let entries = fs::read_dir(src.to_string())?;
 
-    for entry in WalkDir::new(&src) {
+    for entry in entries {
         let entry = entry?;
-        let path = entry.path();
-        let relative_path = path.strip_prefix(src.as_ref()).unwrap();
-        let dest_path = dst.as_ref().join(relative_path);
+        let entry_path = entry.path();
 
-        if path.is_dir() {
-            fs::create_dir_all(&dest_path)?;
-        } else {
-            fs::copy(path, &dest_path)?;
+        if entry_path.is_dir() && entry_path.file_name() == Some(Path::new("_data").as_os_str()) {
+            continue;
+        }
+
+        let target_path = Path::new(dst).join(entry_path.file_name().unwrap());
+
+        if entry_path.is_file() {
+            fs::copy(&entry_path, &target_path)?;
+        } else if entry_path.is_dir() {
+            fs::create_dir_all(&target_path)?;
+            copy_dir_all(&entry_path.to_string_lossy(), &target_path.to_string_lossy())?;
         }
     }
+
     Ok(())
 }
