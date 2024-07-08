@@ -1,5 +1,5 @@
 use reqwest::Client;
-use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
+use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE, RED};
 
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
@@ -27,13 +27,13 @@ pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> 
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Description"), data.package.description);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Author"), data.package.author);
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("SrcPkgAvailable"), {
-        if data.srcpkg.is_some() { STRINGS.load("Yes") } else { STRINGS.load("No") }
+        if data.srcpkg.is_some() { STRINGS.load("Yes") } else { format!("{RED}{}", STRINGS.load("No")) }
     });
     if data.srcpkg.is_some() {
         println!("  {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("ComposeFile"), data.srcpkg.unwrap().compose);
     }
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), {
-        if data.binpkg.is_some() { STRINGS.load("Yes") } else { STRINGS.load("No") }
+        if data.binpkg.is_some() { STRINGS.load("Yes") } else { format!("{RED}{}", STRINGS.load("No")) }
     });
 
     if let Some(binpkg) = &data.binpkg {
