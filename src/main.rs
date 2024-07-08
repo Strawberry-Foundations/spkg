@@ -26,13 +26,13 @@ async fn main() {
             }
         }
         Command::InstallBin(packages, options) => {
-            match commands::install_bin::install_bin(packages, &options).await {
+            match commands::install_bin::install_bin(packages, &options, None).await {
                 Ok(..) => (),
                 Err(err) => throw!(err)
             }
         }
         Command::InstallSource(packages, options) => {
-            match commands::install_src::install_src(packages, &options).await {
+            match commands::install_src::install_src(packages, &options, None).await {
                 Ok(..) => (),
                 Err(err) => throw!(err)
             }
