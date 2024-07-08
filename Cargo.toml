@@ -15,6 +15,7 @@ terminal_size = "0.3.0"
 karen = "0.1.2"
 url = "2.5.2"
 walkdir = "2.5.0"
+subprocess = "0.2.9"
 
 serde = { version = "1.0.204", features = ["derive"] }
 serde_yaml = "0.9.34"
