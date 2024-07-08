@@ -2,7 +2,7 @@ use std::env::consts::ARCH;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
 use crate::cli::args::CommandOptions;
-use crate::core::{CONFIG, STRINGS};
+use crate::core::{CONFIG, SPKG_DIRECTORIES, STRINGS};
 use crate::core::fs::format_size;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
@@ -34,7 +34,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         "{BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{C_RESET}) ({}) ...{C_RESET}",
         STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name));
 
-    match file_download(binpkg_url, &get_basename(binpkg_url).unwrap()).await {
+    match file_download(binpkg_url, &format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap())).await {
         Ok(_) => {
             sp.stop();
             println!("{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{}{C_RESET} ({GREEN}{}{RESET}) ({}) ...{C_RESET}", STRINGS.load("Get"), &binpkg_url, format_size(content_size), package.name)
