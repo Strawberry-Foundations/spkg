@@ -23,7 +23,7 @@ pub fn get_basename(path: &str) -> Option<String> {
     path.file_name()?.to_str().map(|s| s.to_string())
 }
 
-pub fn get_url_basename(url: &str) -> Result<String, String> {
+pub fn get_url_basename(url: &str) -> Result<(String, String), String> {
     match Url::parse(url) {
         Ok(parsed_url) => {
             let scheme = parsed_url.scheme();
@@ -31,7 +31,15 @@ pub fn get_url_basename(url: &str) -> Result<String, String> {
                 Some(host) => host,
                 None => return Err("Invalid URL: no host found".to_string()),
             };
-            Ok(format!("{}://{}", scheme, host))
+            let domain = format!("{}://{}", scheme, host);
+
+            let path_segments: Vec<&str> = parsed_url.path_segments().map_or(Vec::new(), |c| c.collect());
+            if path_segments.len() < 2 {
+                return Err("Invalid URL: not enough path segments".to_string());
+            }
+            let branch = path_segments[1].to_string();
+
+            Ok((domain, branch))
         },
         Err(e) => Err(format!("Failed to parse URL: {}", e)),
     }
