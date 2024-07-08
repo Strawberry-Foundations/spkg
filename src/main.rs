@@ -26,18 +26,16 @@ async fn main() {
             }
         }
         Command::InstallBin(packages, options) => {
-            println!("{packages:?} - {options:?}");
-            println!("How install works:
-'Install' will ask you which method you prefer - Install from source or install from bin.
-'Install-Bin' will install from bin
-'Install-Src' will install frm source");
+            match commands::install_bin::install_bin(packages, &options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
         }
         Command::InstallSource(packages, options) => {
-            println!("{packages:?} - {options:?}");
-            println!("How install works:
-'Install' will ask you which method you prefer - Install from source or install from bin.
-'Install-Bin' will install from bin
-'Install-Src' will install frm source");
+            match commands::install_src::install_src(packages, &options).await {
+                Ok(..) => (),
+                Err(err) => throw!(err)
+            }
         }
 
         Command::Sync(options) => {
