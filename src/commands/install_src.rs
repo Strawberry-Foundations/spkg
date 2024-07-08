@@ -6,7 +6,7 @@ use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
 
 async fn do_install(package: Package, options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
-    if !data.srcpkg.is_none() {
+    if data.srcpkg.is_none() {
         eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("PackageNotAvailableAsSrcPkg"));
         std::process::exit(1);
     }
