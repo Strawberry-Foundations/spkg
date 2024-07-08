@@ -8,7 +8,7 @@ use crate::core::fs::format_size;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
 use crate::net::http::{file_download, remote_header};
-use crate::utilities::{get_basename, get_url_basename};
+use crate::utilities::{copy_dir_all, get_basename, get_url_basename};
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
     let binpkg_available = match ARCH {
@@ -41,7 +41,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         Ok(_) => {
             sp.stop();
             println!(
-                "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{url_base}/{branch} {}{C_RESET} ({GREEN}{}{RESET}){C_RESET}          ",
+                "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{}: {CYAN}{url_base}/{branch} {}{C_RESET} ({GREEN}{}{RESET}){C_RESET}   ",
                 STRINGS.load("Get"), &get_basename(binpkg_url).unwrap(), format_size(content_size)
             )
         }
@@ -67,6 +67,8 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{} {CYAN}{}{C_RESET}{C_RESET}      ",
         STRINGS.load("ExtractingPackage"), &get_basename(binpkg_url).unwrap()
     );
+    
+    copy_dir_all(format!("{}archives/_data", &SPKG_DIRECTORIES.data), "/").unwrap();
 
 
     Ok(())
