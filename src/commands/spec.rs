@@ -35,8 +35,14 @@ pub async fn spec(package: String, options: CommandOptions) -> eyre::Result<()> 
     println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), {
         if data.binpkg.is_some() { STRINGS.load("Yes") } else { STRINGS.load("No") }
     });
-    for arch in data.binpkg {
-        println!{"arch:?"}
+
+    if let Some(binpkg) = &data.binpkg {
+        if let Some(arch) = &binpkg.x86_64 {
+            println!("  x86_64: {GREEN}{BOLD}{}{C_RESET}", arch.url);
+        }
+        if let Some(arch) = &binpkg.aarch64 {
+            println!("  aarch64: {GREEN}{BOLD}{}{C_RESET}", arch.url);
+        }
     }
 
     Ok(())
