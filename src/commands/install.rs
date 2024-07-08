@@ -1,5 +1,7 @@
 use std::env::consts::ARCH;
-use stblib::colors::{BOLD, RED};
+use dialoguer::Select;
+use dialoguer::theme::ColorfulTheme;
+use stblib::colors::{BOLD, RED, GREEN, C_RESET};
 
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
@@ -23,7 +25,18 @@ pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Re
         };
 
         if binpkg_available && data.srcpkg.is_some() {
-            println!("{}", STRINGS.load("BinPkgAndSrcPkgAvailable"))
+            println!("{}", STRINGS.load("BinPkgAndSrcPkgAvailable"));
+
+            let selection = Select::with_theme(&ColorfulTheme::default())
+                .items(&[STRINGS.load("BinPkg"), STRINGS.load("SrcPkg")])
+                .interact()
+                .unwrap();
+
+            match selection {
+                0 => println!("You selected: Yes"),
+                1 => println!("You selected: No"),
+                _ => unreachable!(),
+            }
         }
         else if binpkg_available && data.srcpkg.is_none() {
             install_bin(packages, options).await?;
