@@ -2,6 +2,7 @@ use std::{fs, io};
 use std::io::Write;
 use std::path::Path;
 use url::Url;
+use walkdir::WalkDir;
 use crate::core::{CONFIG, SPKG_DIRECTORIES};
 
 pub fn open_file(path: &str) -> String {
@@ -43,4 +44,22 @@ pub fn get_url_basename(url: &str) -> Result<(String, String), String> {
         },
         Err(e) => Err(format!("Failed to parse URL: {}", e)),
     }
+}
+
+pub fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> std::io::Result<()> {
+    fs::create_dir_all(&dst)?;
+
+    for entry in WalkDir::new(src) {
+        let entry = entry?;
+        let path = entry.path();
+        let relative_path = path.strip_prefix(src.as_ref()).unwrap();
+        let dest_path = dst.as_ref().join(relative_path);
+
+        if path.is_dir() {
+            fs::create_dir_all(&dest_path)?;
+        } else {
+            fs::copy(path, &dest_path)?;
+        }
+    }
+    Ok(())
 }
