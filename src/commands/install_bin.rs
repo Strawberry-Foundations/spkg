@@ -1,5 +1,5 @@
 use std::env::consts::ARCH;
-use std::fs::remove_dir;
+use std::fs::remove_dir_all;
 use std::process::Command;
 use libspkg::binpkg::BinPkg;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
@@ -72,7 +72,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
 
     let output = Command::new("cp")
         .arg("-r")
-        .arg("/var/lib/spkg/archives/_data/*")
+        .arg(format!("{}archives/_data/*", &SPKG_DIRECTORIES.data))
         .arg("/")
         .output()
         .expect("err");
@@ -81,8 +81,8 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         println!("err ({output:?})");
     }
 
-    remove_dir(format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
-    
+    remove_dir_all(format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
+
     Ok(())
 }
 
