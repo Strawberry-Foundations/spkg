@@ -14,6 +14,12 @@ pub struct Config {
 }
 
 
+impl Default for Config {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Config {
     pub fn new() -> Self {
         let system_config_raw = open_file(&SPKG_FILES.system_config);
