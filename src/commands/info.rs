@@ -20,12 +20,7 @@ pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> 
             if package.metadata.srcpkg { format!(" {BOLD}({CYAN}{}{C_RESET})", package.srcpkg_url) } else { String::new() }
         }
     );
-    println!(
-        "{}: {GREEN}{BOLD}{}{C_RESET}{}", STRINGS.load("BinPkgAvailable"),
-        package.metadata.binpkg, {
-            if package.metadata.binpkg { format!(" {BOLD}({CYAN}{}{C_RESET})", package.binpkg_url) } else { String::new() }
-        }
-    );
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), package.metadata.binpkg);
 
     Ok(())
 }
