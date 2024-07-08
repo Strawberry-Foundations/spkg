@@ -23,7 +23,7 @@ pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Re
         };
 
         if binpkg_available && data.srcpkg.is_some() {
-            println!("Binpkg & srcpkg available")
+            println!("{}", STRINGS.load("BinPkgAndSrcPkgAvailable"))
         }
         else if binpkg_available && data.srcpkg.is_none() {
             install_bin(packages, options).await?;
