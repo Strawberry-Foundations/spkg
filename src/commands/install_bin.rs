@@ -62,7 +62,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
         STRINGS.load("ExtractingPackage"), &get_basename(binpkg_url).unwrap()
     ));
 
-    let binpkg = BinPkg::extract(format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap()), format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
+    let _binpkg = BinPkg::extract(format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap()), format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
 
     sp.stop();
     println!(
