@@ -94,7 +94,7 @@ impl Spinner {
             .get(&spinner_name)
             .unwrap_or_else(|| panic!("No Spinner found with the given name: {}", spinner_name));
 
-        let stream = if let Some(stream) = stream { stream } else { Stream::default() };
+        let stream = stream.unwrap_or_default();
 
         let (sender, recv) = channel::<(Instant, Option<String>)>();
 
