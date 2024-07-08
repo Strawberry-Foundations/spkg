@@ -1,4 +1,5 @@
 use std::env::consts::ARCH;
+use stblib::colors::{BOLD, C_RESET, RED};
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
 use crate::core::package::{get_package, PackageList};
@@ -15,7 +16,7 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
     };
     
     if !binpkg_available {
-        eprintln!("{}", STRINGS.load("PackageNotAvailableAsBinPkg"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("PackageNotAvailableAsBinPkg"));
         std::process::exit(1);
     }
     
