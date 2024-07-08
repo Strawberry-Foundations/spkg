@@ -17,6 +17,12 @@ pub struct SpkgFiles {
     pub lockfile: String,
 }
 
+impl Default for SpkgDirectories {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SpkgDirectories {
     pub fn new() -> Self {
         let mut directories = Self {
@@ -43,6 +49,12 @@ impl SpkgDirectories {
         }
 
         directories
+    }
+}
+
+impl Default for SpkgFiles {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
