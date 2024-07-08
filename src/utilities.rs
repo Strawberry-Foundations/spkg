@@ -2,7 +2,6 @@ use std::{fs, io};
 use std::io::Write;
 use std::path::Path;
 use url::Url;
-use walkdir::WalkDir;
 use crate::core::{CONFIG, SPKG_DIRECTORIES};
 
 pub fn open_file(path: &str) -> String {
