@@ -1,6 +1,5 @@
 use std::env::consts::ARCH;
 use std::fs::remove_dir_all;
-use std::process::Command;
 use libspkg::binpkg::BinPkg;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
@@ -65,21 +64,26 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
     let _binpkg = BinPkg::extract(format!("{}archives/{}", &SPKG_DIRECTORIES.data, &get_basename(binpkg_url).unwrap()), format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
 
     sp.stop();
+
     println!(
         "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{} {CYAN}{}{C_RESET}{C_RESET}      ",
         STRINGS.load("ExtractingPackage"), &get_basename(binpkg_url).unwrap()
     );
 
-    let output = Command::new("cp")
-        .arg("-r")
-        .arg(format!("{}archives/_data/*", &SPKG_DIRECTORIES.data))
-        .arg("/")
-        .output()
-        .expect("err");
+    let mut sp = crate::spinners::simple::SimpleSpinner::new();
+    sp.start(format!(
+        "{BOLD}{} {CYAN}{}-{}{C_RESET} ...",
+        STRINGS.load("InstallPackage"), &package.name, &package.version
+    ));
 
-    if !output.status.success() {
-        println!("err ({output:?})");
-    }
+    subprocess::Exec::shell(format!("cp -r {}archives/_data/* /", &SPKG_DIRECTORIES.data)).popen().unwrap();
+
+    sp.stop();
+
+    println!(
+        "{GREEN}{BOLD} ✓ {C_RESET} {BOLD}{} {CYAN}{}-{}{C_RESET}{C_RESET}      ",
+        STRINGS.load("InstallPackage"), &package.name, &package.version
+    );
 
     remove_dir_all(format!("{}archives/_data", &SPKG_DIRECTORIES.data)).unwrap();
 
