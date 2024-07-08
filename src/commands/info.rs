@@ -1,4 +1,4 @@
-use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE};
+use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, UNDERLINE, RED};
 
 use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, STRINGS};
@@ -16,11 +16,16 @@ pub async fn info(package: String, options: CommandOptions) -> eyre::Result<()> 
     println!("{}: {GREEN}{BOLD}{CYAN}{}{C_RESET}", STRINGS.load("SpecfileUrl"), package.specfile);
     println!(
         "{}: {GREEN}{BOLD}{}{C_RESET}{}", STRINGS.load("SrcPkgAvailable"),
-        package.metadata.srcpkg, {
+        {
+            if package.metadata.srcpkg { STRINGS.load("Yes") } else { format!("{RED}{}", STRINGS.load("No"))}
+        },
+        {
             if package.metadata.srcpkg { format!(" {BOLD}({CYAN}{}{C_RESET})", package.srcpkg_url) } else { String::new() }
         }
     );
-    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), package.metadata.binpkg);
+    println!("{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("BinPkgAvailable"), {
+        if package.metadata.binpkg { STRINGS.load("Yes") } else { format!("{RED}{}", STRINGS.load("No"))}
+    },);
 
     Ok(())
 }
