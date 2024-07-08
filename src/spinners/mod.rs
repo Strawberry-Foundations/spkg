@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 pub mod utils;
+pub mod simple;
 
 use std::thread::JoinHandle;
 use std::time::Instant;
