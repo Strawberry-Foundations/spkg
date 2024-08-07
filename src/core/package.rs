@@ -6,6 +6,7 @@ use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 use crate::cli::args::CommandOptions;
 use crate::core::db::Database;
 use crate::core::{SPKG_FILES, STRINGS};
+use crate::core::config::RepositoryInfo;
 use crate::core::fs::format_size;
 use crate::core::metadata::Metadata;
 use crate::err::spkg::SpkgError;
@@ -73,19 +74,27 @@ impl Package {
 }
 
 impl PackageList {
-    pub async fn new(repo_list: &HashMap<String, String>) -> Self {
+    pub async fn new(repo_list: &HashMap<String, RepositoryInfo>) -> Self {
         let mut packages: Vec<Package> = vec![];
 
-        for (name, _) in repo_list.iter() {
-            let db_location = &SPKG_FILES.package_database.replace("main.db", format!("{name}.db").as_str());
-            let db = Database::new(db_location).await.unwrap();
+        for (name, info) in repo_list.iter() {
+            for arch in info.arch.iter() {
+                let db_location = &SPKG_FILES.package_database.replace("main.db", format!("{name}.{arch}.db").as_str());
+                let db = match Database::new(db_location).await {
+                    Ok(db) => db,
+                    Err(err) => {
+                        eprintln!("{RED}{BOLD} × {C_RESET}{CYAN}{arch}:{C_RESET} {}", STRINGS.load("PackageDatabaseNotSynced"));
+                        continue
+                    }
+                };
 
-            let pkg: Vec<Package> =
-                sqlx::query_as("SELECT * FROM packages")
-                    .fetch_all(&db.connection)
-                    .await.unwrap();
+                let pkg: Vec<Package> =
+                    sqlx::query_as("SELECT * FROM packages")
+                        .fetch_all(&db.connection)
+                        .await.unwrap();
 
-            packages.extend(pkg);
+                packages.extend(pkg);
+            }
         }
 
         packages.sort_by(|a, b| a.name.cmp(&b.name));
