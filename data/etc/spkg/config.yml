@@ -5,6 +5,11 @@ main_url: https://spkg.strawberryfoundations.org
 # You shouldn't change this unless you know what you're doing!!!
 build_directory: /tmp/_spkg.build/
 
+old_repo:
+  main: https://spkg.strawberryfoundations.org/packages
+
 # Repositories
 repositories:
-  main: https://spkg.strawberryfoundations.org/packages
+  main:
+    url: https://spkg.strawberryfoundations.org/packages
+    arch: [x86_64, all]
