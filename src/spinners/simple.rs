@@ -30,10 +30,12 @@ impl SimpleSpinner {
         running.store(true, Ordering::SeqCst);
 
         self.handle = Some(thread::spawn(move || {
-            let spinner_chars = ["\x1b[32m\x1b[1m - \x1b[0m",
-                "\x1b[32m\x1b[1m \\ \x1b[0m",
-                "\x1b[32m\x1b[1m | \x1b[0m",
-                "\x1b[32m\x1b[1m / \x1b[0m"];
+            let spinner_chars = [
+                "\x1b[32m\x1b[1m  - \x1b[0m",
+                "\x1b[32m\x1b[1m  \\ \x1b[0m",
+                "\x1b[32m\x1b[1m  | \x1b[0m",
+                "\x1b[32m\x1b[1m  / \x1b[0m"
+            ];
             let mut index = 0;
             let max_text_length = terminal_size().map(|(Width(w), _)| w as usize).unwrap_or(80) - 3;
 
@@ -48,7 +50,7 @@ impl SimpleSpinner {
                 io::stdout().flush().unwrap();
 
                 index = (index + 1) % spinner_chars.len();
-                thread::sleep(Duration::from_millis(100));
+                thread::sleep(Duration::from_millis(110));
             }
 
             print!("\r ");
@@ -61,5 +63,10 @@ impl SimpleSpinner {
         if let Some(handle) = self.handle.take() {
             handle.join().unwrap();
         }
+    }
+
+    pub fn stop_with_message(&mut self, message: impl ToString) {
+        self.stop();
+        println!("{}", message.to_string());
     }
 }
