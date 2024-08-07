@@ -1,4 +1,4 @@
-pub const VERSION: &str = "3.0.0b2";
+pub const VERSION: &str = "3.0.0b3";
 
 #[cfg(debug_assertions)]
 pub const DEVELOPMENT_MODE: bool = true;
