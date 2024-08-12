@@ -13,13 +13,8 @@ use crate::statics::VERSION;
 
 async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package_list: PackageList) -> eyre::Result<()> {
     karen::escalate_if_needed().unwrap();
-    
-    let Some(package) = packages.first() else {
-        println!("{}", STRINGS.load_with_params("Help", &[&VERSION, &ARCH]));
-        std::process::exit(0);
-    };
-    
-    let package = get_package(package, &mut package_list, options)?;
+
+    let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
     let data = fetch_specfile(&package.specfile).await;
 
     let binpkg_available = match ARCH {
@@ -64,7 +59,11 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
 }
 
 pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Result<()> {
-    if packages.len() < 2 {
+    if packages.is_empty() {
+        println!("{}", STRINGS.load_with_params("Help", &[&VERSION, &ARCH]));
+        std::process::exit(0);
+    }
+    else if packages.len() < 2 {
         do_install(packages, &options, PackageList::new(&CONFIG.repositories).await).await?;
     }
     else {
