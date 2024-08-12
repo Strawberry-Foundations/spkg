@@ -12,8 +12,6 @@ use crate::commands::install_src::install_src;
 use crate::statics::VERSION;
 
 async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package_list: PackageList) -> eyre::Result<()> {
-    karen::escalate_if_needed().unwrap();
-
     let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
     let data = fetch_specfile(&package.specfile).await;
 
@@ -22,6 +20,8 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
         "aarch64" => data.binpkg.as_ref().map_or(false, |binpkg| binpkg.aarch64.is_some()),
         _ => false,
     };
+    
+    karen::escalate_if_needed().unwrap();
 
     if binpkg_available && data.srcpkg.is_some() {
         println!("{}", STRINGS.load_with_params("BinPkgAndSrcPkgAvailable", &[&package.name]));
