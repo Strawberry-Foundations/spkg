@@ -1,13 +1,13 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use eyre::Report;
+
 use libloading::{Library, Symbol};
 use libspkg::plugin::Plugin;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN};
 
 use crate::core::{SPKG_DIRECTORIES, STRINGS};
 use crate::err::plugin::PluginError;
-use crate::err::spkg::SpkgError;
 
 pub fn main(args: Vec<String>) -> eyre::Result<()> {
     match args.first().unwrap_or(&String::from("")).as_str() {
@@ -17,7 +17,9 @@ pub fn main(args: Vec<String>) -> eyre::Result<()> {
         "info" => {
             list()
         }
-        _ => {}
+        _ => {
+            Ok(())
+        }
     }
 }
 
