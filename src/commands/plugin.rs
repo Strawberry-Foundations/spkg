@@ -1,13 +1,15 @@
 use std::fs;
 use std::path::{Path, PathBuf};
-
+use eyre::Report;
 use libloading::{Library, Symbol};
 use libspkg::plugin::Plugin;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN};
 
 use crate::core::{SPKG_DIRECTORIES, STRINGS};
+use crate::err::plugin::PluginError;
+use crate::err::spkg::SpkgError;
 
-pub fn main(args: Vec<String>) {
+pub fn main(args: Vec<String>) -> eyre::Result<()> {
     match args.first().unwrap_or(&String::from("")).as_str() {
         "list" => {
             list()
@@ -19,7 +21,7 @@ pub fn main(args: Vec<String>) {
     }
 }
 
-pub fn list() {
+pub fn list() -> eyre::Result<()> {
     let path = format!("{}plugins", &SPKG_DIRECTORIES.system_config);
     let dir_path = Path::new(&path);
 
@@ -30,8 +32,18 @@ pub fn list() {
                     Ok(entry) => unsafe {
                         let path = entry.path();
                         if !path.is_dir() {
-                            let lib = Library::new(&path).expect("Could not load library");
-                            let create_plugin: Symbol<unsafe extern "C" fn() -> Box<dyn Plugin>> = lib.get(b"create_plugin").expect("Could not load symbol");
+                            let lib = match Library::new(&path) {
+                                Ok(obj) => obj,
+                                Err(..) => {
+                                    return Err(Report::from(PluginError::PluginLoadError(path.file_name().unwrap().to_str().unwrap().to_string())))
+                                }
+                            };
+                            let create_plugin: Symbol<unsafe extern "C" fn() -> Box<dyn Plugin>> = match lib.get(b"create_plugin") {
+                                Ok(symbol) => symbol,
+                                Err(..) => {
+                                    return Err(Report::from(PluginError::PluginLoadError(path.file_name().unwrap().to_str().unwrap().to_string())))
+                                }
+                            };
                             let plugin = create_plugin();
 
                             println!("{BOLD}* {CYAN}{} ({}){C_RESET}", path.file_name().unwrap().to_str().unwrap(), plugin.properties().id);
@@ -46,6 +58,8 @@ pub fn list() {
         }
         Err(e) => println!("{e}"),
     }
+
+    Ok(())
 }
 
 pub fn register() {
