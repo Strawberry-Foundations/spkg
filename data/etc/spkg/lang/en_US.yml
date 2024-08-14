@@ -58,9 +58,11 @@ en_US:
   ExtractingPackage: "Extracting package"
 
   # Error messages
-  PackageNotAvailable: "E: Package %s is not available because there is no valid installation method"
-  PackageNotAvailableAsBinPkg: "E: Package %s cannot be installed as a binary package because this installation method is not available for this package."
-  PackageNotAvailableAsSrcPkg: "E: Package %s cannot be installed as a source package because this installation method is not available for this package."
+  PackageNotAvailable: "Package %s is not available because there is no valid installation method"
+  PackageNotAvailableAsBinPkg: "Package %s cannot be installed as a binary package because this installation method is not available for this package."
+  PackageNotAvailableAsSrcPkg: "Package %s cannot be installed as a source package because this installation method is not available for this package."
+  PackageNotFound: "Package %s not found"
+
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unknown error"
@@ -93,7 +95,6 @@ en_US:
   BinPkgAndSrcPkgAvailable: "The package {green}{bold}%s{creset} can be installed as a {cyan}{bold}binary{creset} package and as a {cyan}{bold}source package{creset}.\nPlease select the method you would like to use for installation"
   PackageWillInstall: "The package will be installed using the {cyan}{bold}%s{creset} method."
   InstallPackage: "Installing package"
-  PackageNotFound: "{red}{bold}E:{reset} Package not found{creset}"
   PackageDatabaseNotSynced: "{bold}The package database has not been synchronized yet.\n   Run {cyan}spkg sync{reset} to synchronize the database"
   PackageAlreadyInstalled: "{yellow}{bold}W:{reset} Package has already been installed. There is nothing to do."
   PackageNotInstalled: "{yellow}{bold}W:{reset} Package is not installed, there is nothing to upgrade."
