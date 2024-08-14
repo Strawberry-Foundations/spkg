@@ -1,13 +1,15 @@
 use std::env::consts::ARCH;
 use std::fs::remove_dir_all;
+use eyre::Report;
 use libspkg::binpkg::BinPkg;
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN, RED, RESET};
 
-use crate::cli::args::CommandOptions;
 use crate::core::{CONFIG, SPKG_DIRECTORIES, STRINGS};
 use crate::core::fs::format_size;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
+use crate::err::spkg::SpkgError;
+use crate::cli::args::CommandOptions;
 use crate::net::http::{file_download, remote_header};
 use crate::utilities::{get_basename, get_url_basename};
 
@@ -19,8 +21,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
     };
 
     if !binpkg_available {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load_with_params("PackageNotAvailableAsBinPkg", &[&package.name]));
-        std::process::exit(1);
+        return Err(Report::from(SpkgError::PackageNotAvailableAsBinPkg(package.name)));
     }
 
     let binpkg_url = match ARCH {
