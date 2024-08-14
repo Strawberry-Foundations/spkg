@@ -19,7 +19,7 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
     };
 
     if !binpkg_available {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load("PackageNotAvailableAsBinPkg"));
+        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load_with_params("PackageNotAvailableAsBinPkg", &[&package.name]));
         std::process::exit(1);
     }
 
