@@ -168,7 +168,7 @@ pub fn get_package(package: &String, packages: &mut PackageList, options: &Comma
         match packages.find(|p| &p.name == package && &p.arch == arch) {
             Some(package) => Ok(package),
             None => {
-                Err(Report::from(SpkgError::PackageNotFound))
+                Err(Report::from(SpkgError::PackageNotFound(package.to_owned())))
             }
         }
     }
@@ -176,7 +176,7 @@ pub fn get_package(package: &String, packages: &mut PackageList, options: &Comma
         match packages.find(|p| &p.name == package && (p.arch == "all" || p.arch == std::env::consts::ARCH)) {
             Some(package) => Ok(package),
             None => {
-                Err(Report::from(SpkgError::PackageNotFound))
+                Err(Report::from(SpkgError::PackageNotFound(package.to_owned())))
             }
         }
     }
