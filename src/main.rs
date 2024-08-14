@@ -69,7 +69,9 @@ async fn main() {
             commands::plugin::execute()
         }
         Command::Plugin(args) => {
-            commands::plugin::main(args)
+            match commands::plugin::main(args) {
+                
+            }
         }
         Command::Err(error) => {
             eprintln!("{error}")
