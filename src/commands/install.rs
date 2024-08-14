@@ -11,7 +11,6 @@ use crate::cli::args::CommandOptions;
 use crate::commands::install_bin::install_bin;
 use crate::commands::install_src::install_src;
 use crate::err::spkg::SpkgError;
-use crate::statics::VERSION;
 
 async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package_list: PackageList) -> eyre::Result<()> {
     let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
