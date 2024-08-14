@@ -9,6 +9,7 @@ use crate::core::STRINGS;
 #[derive(Debug)]
 pub enum SpkgError {
     InvalidArgument(String),
+    NoPackageGiven,
     PackageNotFound(String),
     PackageNotAvailable(String),
     PackageNotAvailableAsBinPkg(String),
@@ -25,6 +26,9 @@ impl Display for SpkgError {
             SpkgError::InvalidArgument(..) => {
                 write!(f, "{}{}", *FORMAT, STRINGS.load("NoArgument"))
             },
+            SpkgError::NoPackageGiven => {
+                write!(f, "{}{}", *FORMAT, STRINGS.load("NoPackageGiven"))
+            }
             SpkgError::PackageNotFound(package) => {
                 write!(f, "{}{}", *FORMAT, STRINGS.load_with_params("PackageNotFound", &[package]))
             },
