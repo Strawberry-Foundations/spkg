@@ -62,6 +62,7 @@ en_US:
   PackageNotAvailableAsBinPkg: "Package %s cannot be installed as a binary package because this installation method is not available for this package."
   PackageNotAvailableAsSrcPkg: "Package %s cannot be installed as a source package because this installation method is not available for this package."
   PackageNotFound: "Package %s not found"
+  NoPackageGiven: "Please specify a package for installation"
 
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
