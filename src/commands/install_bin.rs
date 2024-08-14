@@ -11,6 +11,7 @@ use crate::core::specfile::{fetch_specfile, Specfile};
 use crate::err::spkg::SpkgError;
 use crate::cli::args::CommandOptions;
 use crate::net::http::{file_download, remote_header};
+use crate::statics::VERSION;
 use crate::utilities::{get_basename, get_url_basename};
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
@@ -92,6 +93,9 @@ async fn do_install(package: Package, _options: &CommandOptions, data: Specfile)
 }
 
 pub async fn install_bin(packages: Vec<String>, options: &CommandOptions, data: Option<Specfile>) -> eyre::Result<()> {
+    if packages.is_empty() {
+        return Err(Report::from(SpkgError::NoPackageGiven));
+    }
     if packages.len() < 2 {
         let mut package_list= PackageList::new(&CONFIG.repositories).await;
         let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
