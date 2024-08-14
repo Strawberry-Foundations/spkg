@@ -58,9 +58,9 @@ de_DE:
   ExtractingPackage: "Extrahiere Paket"
 
   # Error messages
-  PackageNotAvailable: "E: Das angegebene Paket ist nicht verfügbar, da keine gültige Installationsmethode vorliegt"
-  PackageNotAvailableAsBinPkg: "E: Das angegebene Paket kann nicht als Binärpaket installiert werden, da diese Installationsmethode für dieses Paket nicht verfügbar ist."
-  PackageNotAvailableAsSrcPkg: "E: Das angegebene Paket kann nicht als Sourcepaket installiert werden, da diese Installationsmethode für dieses Paket nicht verfügbar ist."
+  PackageNotAvailable: "E: Das Paket %s ist nicht verfügbar, da keine gültige Installationsmethode vorliegt"
+  PackageNotAvailableAsBinPkg: "E: Das Paket %s kann nicht als Binärpaket installiert werden, da diese Installationsmethode für dieses Paket nicht verfügbar ist."
+  PackageNotAvailableAsSrcPkg: "E: Das Paket %s kann nicht als Sourcepaket installiert werden, da diese Installationsmethode für dieses Paket nicht verfügbar ist."
   HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Mindestens ein Paket konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
   UnknownError: "{red}{bold}E:{reset} Unbekannter Fehler"
