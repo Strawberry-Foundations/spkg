@@ -11,7 +11,6 @@ use crate::core::specfile::{fetch_specfile, Specfile};
 use crate::err::spkg::SpkgError;
 use crate::cli::args::CommandOptions;
 use crate::net::http::{file_download, remote_header};
-use crate::statics::VERSION;
 use crate::utilities::{get_basename, get_url_basename};
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
