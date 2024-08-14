@@ -52,6 +52,7 @@ pub fn list() -> eyre::Result<()> {
                             println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), properties.name);
                             println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), properties.version);
                             println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("PackageId"), properties.package_id);
+                            println!("   - Library-{}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), properties.library_version);
                         }
                     }
                     Err(e) => println!("{e}"),
