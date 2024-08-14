@@ -67,6 +67,7 @@ en_US:
 
   # -- Plugin related
   PluginLoadError: "The plugin %s could not be loaded. The plugin may be corrupt, or it may not be compatible with your architecture"
+  InvalidPlugin: "The plugin %s could not be loaded correctly. The plugin may not be supported by Spkg"
 
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
