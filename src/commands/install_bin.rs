@@ -96,7 +96,7 @@ pub async fn install_bin(packages: Vec<String>, options: &CommandOptions, data: 
     if packages.is_empty() {
         return Err(Report::from(SpkgError::NoPackageGiven));
     }
-    if packages.len() < 2 {
+    else if packages.len() < 2 {
         let mut package_list= PackageList::new(&CONFIG.repositories).await;
         let package = get_package(packages.first().unwrap(), &mut package_list, options)?;
         let data = if let Some(data) = data {
