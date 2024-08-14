@@ -66,7 +66,7 @@ en_US:
   NoPackageGiven: "Please specify a package for installation"
 
   # -- Plugin related
-  PluginLoadError: "The plugin %s could not be loaded. The plugin may be corrupt, or it may not be compatible with your architecture"
+  PluginLoadError: "The plugin %s could not be loaded.\n   The plugin may be corrupt, or it may not be compatible with your architecture"
   InvalidPlugin: "The plugin %s could not be loaded correctly. The plugin may not be supported by Spkg"
 
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"

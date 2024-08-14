@@ -66,7 +66,7 @@ de_DE:
   NoPackageGiven: "Bitte gebe ein Paket zur Installation an"
 
   # -- Plugin related
-  PluginLoadError: "Das Plugin %s konnte nicht geladen werden. Möglicherweise ist das Plugin korrupt, oder es ist nicht mit deiner Architektur kompatibel"
+  PluginLoadError: "Das Plugin %s konnte nicht geladen werden.\n   Möglicherweise ist das Plugin korrupt, oder es ist nicht mit deiner Architektur kompatibel"
   InvalidPlugin: "Das Plugin %s konnte nicht korrekt geladen werden. Möglicherweise wird das Plugin nicht von Spkg unterstützt"
 
   HttpError: "{red}{bold}E: Ein HTTP-Fehler ist aufgetreten. Die angeforderte Datei konnte nicht angefordert werden. (Ist der Repository-Server offline?)"
