@@ -58,11 +58,15 @@ en_US:
   ExtractingPackage: "Extracting package"
 
   # Error messages
+  # -- Package related
   PackageNotAvailable: "Package %s is not available because there is no valid installation method"
   PackageNotAvailableAsBinPkg: "Package %s cannot be installed as a binary package because this installation method is not available for this package."
   PackageNotAvailableAsSrcPkg: "Package %s cannot be installed as a source package because this installation method is not available for this package."
   PackageNotFound: "Package %s not found"
   NoPackageGiven: "Please specify a package for installation"
+
+  # -- Plugin related
+  PluginLoadError: "The plugin %s could not be loaded. The plugin may be corrupt, or it may not be compatible with your architecture"
 
   HttpError: "{red}{bold}E: An HTTP error has occurred. The requested file could not be requested. (Is the repository server offline?)"
   HttpErrorOnePackage: "{red}{bold}E: An HTTP error has occurred. At least one package could not be requested. (Is the repository server offline?)"
