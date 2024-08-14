@@ -1,14 +1,15 @@
-use stblib::colors::{BOLD, C_RESET, RED};
+use eyre::Report;
 
-use crate::cli::args::CommandOptions;
-use crate::core::{CONFIG, STRINGS};
+use crate::core::CONFIG;
 use crate::core::package::{get_package, Package, PackageList};
 use crate::core::specfile::{fetch_specfile, Specfile};
+use crate::err::spkg::SpkgError;
+use crate::cli::args::CommandOptions;
+
 
 async fn do_install(package: Package, _options: &CommandOptions, data: Specfile) -> eyre::Result<()> {
     if data.srcpkg.is_none() {
-        eprintln!("{RED}{BOLD}{}{C_RESET}", STRINGS.load_with_params("PackageNotAvailableAsSrcPkg", &[&package.name]));
-        std::process::exit(1);
+        return Err(Report::from(SpkgError::PackageNotAvailableAsSrcPkg(package.name)));
     }
 
     Ok(())
