@@ -70,7 +70,8 @@ async fn main() {
         }
         Command::Plugin(args) => {
             match commands::plugin::main(args) {
-                
+                Ok(..) => (),
+                Err(err) => throw!(err)
             }
         }
         Command::Err(error) => {
