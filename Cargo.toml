@@ -8,7 +8,7 @@ tokio = { version = "1.39.2", features = ["rt", "macros", "rt-multi-thread"] }
 futures-util = "0.3.30"
 
 reqwest = { version = "0.12.5", features = ["stream"] }
-stblib = "0.6.2"
+stblib = "0.6.3-pre1"
 sqlx = { version = "0.8.0", features = ["sqlite", "runtime-tokio-native-tls", "macros", "chrono"]  }
 dialoguer = "0.11.0"
 terminal_size = "0.3.0"
@@ -26,4 +26,4 @@ lazy_static = "1.5.0"
 eyre = "0.6.12"
 
 libloading = "0.8.5"
-libspkg = { git = "https://github.com/Strawberry-Foundations/libspkg", features = ["plugin", "binpkg"]}
+libspkg = { version = "0.1.5" , features = ["plugin", "binpkg"]}
