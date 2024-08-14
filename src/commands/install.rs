@@ -1,6 +1,7 @@
 use std::env::consts::ARCH;
 use dialoguer::Select;
 use dialoguer::theme::{ColorfulTheme};
+use eyre::Report;
 use stblib::colors::{BOLD, RED};
 
 use crate::core::{CONFIG, STRINGS};
@@ -9,6 +10,7 @@ use crate::core::specfile::fetch_specfile;
 use crate::cli::args::CommandOptions;
 use crate::commands::install_bin::install_bin;
 use crate::commands::install_src::install_src;
+use crate::err::spkg::SpkgError;
 use crate::statics::VERSION;
 
 async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package_list: PackageList) -> eyre::Result<()> {
@@ -60,8 +62,7 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
 
 pub async fn install(packages: Vec<String>, options: CommandOptions) -> eyre::Result<()> {
     if packages.is_empty() {
-        println!("{}", STRINGS.load_with_params("Help", &[&VERSION, &ARCH]));
-        std::process::exit(0);
+        return Err(Report::from(SpkgError::NoPackageGiven));
     }
     else if packages.len() < 2 {
         do_install(packages, &options, PackageList::new(&CONFIG.repositories).await).await?;
