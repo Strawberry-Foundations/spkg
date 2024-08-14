@@ -9,6 +9,7 @@ use crate::core::STRINGS;
 #[derive(Debug)]
 pub enum PluginError {
     PluginLoadError(String),
+    InvalidPlugin(String),
 }
 
 lazy_static! {
@@ -21,7 +22,9 @@ impl Display for PluginError {
             PluginError::PluginLoadError(plugin) => {
                 write!(f, "{}{}", *FORMAT, STRINGS.load_with_params("PluginLoadError", &[plugin]))
             },
-            
+            PluginError::InvalidPlugin(plugin) => {
+                write!(f, "{}{}", *FORMAT, STRINGS.load_with_params("InvalidPlugin", &[plugin]))
+            },
         }
     }
 }
