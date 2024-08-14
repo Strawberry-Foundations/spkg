@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use eyre::Report;
 
 use libloading::{Library, Symbol};
-use libspkg::plugin::Plugin;
+use libspkg::plugin::{Plugin, PluginProperties};
 use stblib::colors::{BOLD, C_RESET, CYAN, GREEN};
 
 use crate::core::{SPKG_DIRECTORIES, STRINGS};
@@ -40,18 +40,18 @@ pub fn list() -> eyre::Result<()> {
                                     return Err(Report::from(PluginError::PluginLoadError(path.file_name().unwrap().to_str().unwrap().to_string())))
                                 }
                             };
-                            let create_plugin: Symbol<unsafe extern "C" fn() -> Box<dyn Plugin>> = match lib.get(b"create_plugin") {
+                            let create_plugin: Symbol<unsafe extern "C" fn() -> (Box<dyn Plugin>, PluginProperties)> = match lib.get(b"create_plugin") {
                                 Ok(symbol) => symbol,
                                 Err(..) => {
                                     return Err(Report::from(PluginError::PluginLoadError(path.file_name().unwrap().to_str().unwrap().to_string())))
                                 }
                             };
-                            let plugin = create_plugin();
+                            let (_plugin, properties) = create_plugin();
 
-                            println!("{BOLD}* {CYAN}{} ({}){C_RESET}", path.file_name().unwrap().to_str().unwrap(), plugin.properties().id);
-                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), plugin.properties().name);
-                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), plugin.properties().version);
-                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("PackageId"), plugin.properties().package_id);
+                            println!("{BOLD}* {CYAN}{} ({}){C_RESET}", path.file_name().unwrap().to_str().unwrap(), properties.id);
+                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Name"), properties.name);
+                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("Version"), properties.version);
+                            println!("   - {}: {GREEN}{BOLD}{}{C_RESET}", STRINGS.load("PackageId"), properties.package_id);
                         }
                     }
                     Err(e) => println!("{e}"),
@@ -73,14 +73,14 @@ pub fn execute() {
     
     unsafe {
         let lib = Library::new(&path).expect("Could not load library");
-        let create_plugin: Symbol<unsafe extern "C" fn() -> Box<dyn Plugin>> = lib.get(b"create_plugin").expect("Could not load symbol");
-        let plugin = create_plugin();
+        let create_plugin: Symbol<unsafe extern "C" fn() -> (Box<dyn Plugin>, PluginProperties)> = lib.get(b"create_plugin").expect("Could not load symbol");
+        let (plugin, properties) = create_plugin();
 
         println!("Loaded plugin {CYAN}{}{C_RESET}", path.file_name().unwrap().to_str().unwrap());
-        println!("Plugin Name: {GREEN}{BOLD}{}{C_RESET}", plugin.properties().name);
-        println!("Plugin Version: {GREEN}{BOLD}{}{C_RESET}", plugin.properties().version);
-        println!("Plugin ID: {GREEN}{BOLD}{}{C_RESET}", plugin.properties().id);
-        println!("Plugin Package ID: {GREEN}{BOLD}{}{C_RESET}\n", plugin.properties().package_id);
+        println!("Plugin Name: {GREEN}{BOLD}{}{C_RESET}", properties.name);
+        println!("Plugin Version: {GREEN}{BOLD}{}{C_RESET}", properties.version);
+        println!("Plugin ID: {GREEN}{BOLD}{}{C_RESET}", properties.id);
+        println!("Plugin Package ID: {GREEN}{BOLD}{}{C_RESET}\n", properties.package_id);
         plugin.execute(&[String::from("help")]);
     }
 }
