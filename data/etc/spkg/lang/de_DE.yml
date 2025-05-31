@@ -28,7 +28,7 @@ de_DE:
     {bold}    {cyan}config:{creset} Konfigurationsverwaltung{creset}
     {bold}     ↳ {cyan}language:{creset} Sprachkonfigurierung{creset}
 
-    Copyright (C) 2023 - 2024 Strawberry Foundations - Made with {red}<3{reset}
+    Copyright (C) 2023 - 2025 Strawberry Foundations - Made with {red}<3{reset}
 
   # Basic strings
   Yes: "Ja"
