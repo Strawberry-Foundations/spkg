@@ -4,26 +4,26 @@ version = "3.0.0-b4"
 edition = "2021"
 
 [dependencies]
-tokio = { version = "1.39.2", features = ["rt", "macros", "rt-multi-thread"] }
-futures-util = "0.3.30"
+tokio = { version = "1.45.1", features = ["rt", "macros", "rt-multi-thread"] }
+futures-util = "0.3.31"
 
-reqwest = { version = "0.12.5", features = ["stream"] }
-stblib = "0.6.3-pre1"
-sqlx = { version = "0.8.0", features = ["sqlite", "runtime-tokio-native-tls", "macros", "chrono"]  }
+reqwest = { version = "0.12.18", features = ["stream"] }
+stblib = "0.7.0"
+sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio-native-tls", "macros", "chrono"]  }
 dialoguer = "0.11.0"
-terminal_size = "0.3.0"
+terminal_size = "0.4.2"
 karen = "0.1.2"
-url = "2.5.2"
+url = "2.5.4"
 walkdir = "2.5.0"
 subprocess = "0.2.9"
 
-serde = { version = "1.0.204", features = ["derive"] }
+serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34"
-strum = { version = "0.26.3", features = ["derive"] }
+strum = { version = "0.27.1", features = ["derive"] }
 maplit = "1.0.2"
 
 lazy_static = "1.5.0"
 eyre = "0.6.12"
 
-libloading = "0.8.5"
+libloading = "0.8.8"
 libspkg = { version = "0.1.6" , features = ["plugin", "binpkg"]}
