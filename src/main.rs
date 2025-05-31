@@ -17,7 +17,7 @@ pub mod net;
 async fn main() {
     match Args::new().command {
         Command::Help => {
-            println!("{}", STRINGS.load_with_params("Help", &[&VERSION, &std::env::consts::ARCH]))
+            println!("{}", STRINGS.load_with_params("Help", &[&*VERSION, &std::env::consts::ARCH]))
         }
         Command::Install(packages, options) => {
             match commands::install::install(packages, options).await {

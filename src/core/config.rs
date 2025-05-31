@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 use serde::Deserialize;
 use serde_yaml::from_str;
-
-use crate::core::{SPKG_FILES};
+use crate::core::{FALLBACK_STRINGS, SPKG_FILES};
 use crate::utilities::open_file;
 
 #[derive(Debug, Deserialize)]
@@ -62,8 +61,9 @@ impl Default for Config {
 impl Config {
     pub fn new() -> Self {
         let system_config_raw = open_file(&SPKG_FILES.system_config);
-        let config: Self = from_str(&system_config_raw).unwrap_or_else(|err| {
-            panic!("Config Error! {err}");
+        let config: Self = from_str(&system_config_raw).unwrap_or_else(|_| {
+            eprintln!("{}", FALLBACK_STRINGS.load("InvalidConfig"));
+            std::process::exit(1);
         });
 
         config

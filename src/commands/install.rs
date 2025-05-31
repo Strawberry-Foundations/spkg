@@ -17,8 +17,8 @@ async fn do_install(packages: Vec<String>, options: &CommandOptions, mut package
     let data = fetch_specfile(&package.specfile).await;
 
     let binpkg_available = match ARCH {
-        "x86_64" => data.binpkg.as_ref().map_or(false, |binpkg| binpkg.x86_64.is_some()),
-        "aarch64" => data.binpkg.as_ref().map_or(false, |binpkg| binpkg.aarch64.is_some()),
+        "x86_64" => data.binpkg.as_ref().is_some_and(|binpkg| binpkg.x86_64.is_some()),
+        "aarch64" => data.binpkg.as_ref().is_some_and(|binpkg| binpkg.aarch64.is_some()),
         _ => false,
     };
     

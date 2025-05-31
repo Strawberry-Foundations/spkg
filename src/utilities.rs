@@ -62,7 +62,7 @@ pub fn copy_dir_all(src: impl ToString, dst: &str) -> io::Result<()> {
             fs::copy(&entry_path, &target_path)?;
         } else if entry_path.is_dir() {
             fs::create_dir_all(&target_path)?;
-            copy_dir_all(&entry_path.to_string_lossy(), &target_path.to_string_lossy())?;
+            copy_dir_all(entry_path.to_string_lossy(), &target_path.to_string_lossy())?;
         }
     }
 
